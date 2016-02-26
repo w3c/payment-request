@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Basic Card Payment</title>
+    <meta charset='utf-8'>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
+            async class='remove'></script>
+    <script class='remove'>
+      var respecConfig = {
+          shortName:  "payment-method-basic-card",
+          edDraftURI:   "https://w3c.github.io/browser-payment-api/basic-card-payment.html",
+
+          specStatus: "ED",
+          editors: [
+                {   name:       "Adrian Bateman",
+                    company:    "Microsoft Corporation" },
+                {   name:       "Zach Koch",
+                    company:    "Google" },
+                {   name:       "Richard Barnes",
+                    company:    "Mozilla Foundation" }
+          ],
+
+          useExperimentalStyles: true,
+          license:      "w3c-software-doc",
+
+          //previousMaturity: "FPWD",
+          //previousPublishDate:  "1977-03-15",
+
+          wg:           "Web Payments Working Group",
+          wgURI:        "https://www.w3.org/Payments/WG/",
+          wgPublicList: "public-payments-wg",
+          wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/83744/status",
+
+          issueBase:    "https://github.com/w3c/browser-payment-api/issues/",
+
+          localBiblio:  {
+              "PAYMENTARCH": {
+                  title:    "Payment Request Architecture"
+              ,   href:     "architecture.html"
+              ,   authors:  [
+                      "Adrian Bateman"
+                  ,   "Zach Koch"
+                  ,   "Richard Barnes"
+                  ]
+              ,   status:   "ED"
+              },
+              "PAYMENTREQUESTAPI": {
+                  title:    "Payment Request API"
+              ,   href:     "paymentrequest.html"
+              ,   authors:  [
+                      "Adrian Bateman"
+                  ,   "Zach Koch"
+                  ,   "Richard Barnes"
+                  ]
+              ,   status:   "ED"
+              },
+              "METHODIDENTIFIERS": {
+                  title:    "Payment Method Identifiers"
+              ,   href:     "method-identifiers.html"
+              ,   authors:  [
+                      "Adrian Bateman"
+                  ,   "Zach Koch"
+                  ,   "Richard Barnes"
+                  ]
+              ,   status:   "ED"
+              }
+          }
+      };
+    </script>
+    <style>
+    dt { margin-top: 0.75em; }
+    table { margin-top: 0.75em; border-collapse:collapse; border-style:hidden hidden none hidden }
+    table thead { border-bottom:solid }
+    table tbody th:first-child { border-left:solid }
+    table td, table th { border-left:solid; border-right:solid; border-bottom:solid thin; vertical-align:top; padding:0.2em }
+    li { margin-top: 0.5em; margin-bottom: 0.5em;}
+    </style>
+  </head>
+  <body>
+    <section id='abstract'>
+      <p>
+        The Basic Card Payment specification describes the data formats used by the
+        PaymentRequest API [[!PAYMENTREQUESTAPI]] to support payment by payment cards such as
+        credit or debit cards.
+      </p>
+    </section>
+
+    <section id='sotd'>
+      <p>
+        The working group maintains <a href="https://github.com/w3c/browser-payment-api/issues">a
+        list of all bug reports that the group has not yet addressed</a>.
+        This draft highlights some of the pending issues that are still to be discussed in the working
+        group. No decision has been taken on the outcome of these issues including whether they are valid.
+        Pull requests with proposed specification text for outstanding issues are strongly encouraged.
+      </p>
+      <p>
+        This specification was derived from a report published previously by the
+        <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a>.
+      </p>
+    </section>
+    
+    <section class='informative'>
+      <h2>Introduction</h2>
+      <p>
+        This specification is a <a>Payment Transaction Message Specification</a> used by the PaymentRequest API
+        [[!PAYMENTREQUESTAPI]] to support payment by payment cards such as credit or debit cards. It is intended
+        to provide compatibility for merchants who currently request card details from customers to ease adoption
+        of the PaymentRequest API.
+      </p>
+      <p>
+        In the future, merchants should favour payment methods that provide a tokenized response rather than
+        clear text credit card details.
+      </p>
+    </section>
+
+    <section id="dependencies"> 
+      <h2>Dependencies</h2> 
+      <p> 
+      This specification relies on several other underlying specifications. 
+      </p> 
+      <dl> 
+        <dt>Payment Request Document Architecture</dt>
+        <dd>The terms <dfn data-lt="payment method|payment methods">Payment Method</dfn>,
+        <dfn data-lt="payment app|payment apps">Payment App</dfn>, and <dfn>Payment Transaction
+        Message Specification</dfn> are defined by the Payment Request Architecture document
+        [[!PAYMENTARCH]].</dd>
+        <dt>Payment Request API</dt>
+        <dd>The term <dfn>PaymentRequest constructor</dfn> is defined by the PaymentRequest API
+        specification [[!PAYMENTREQUESTAPI]].</dd>
+        <dt>Payment Request Document Architecture</dt>
+        <dd>The term <dfn data-lt="payment method identifier|payment method identifiers">Payment
+        Method Identifier</dfn> is defined by the Payment Method Identifiers specification
+        [[!METHODIDENTIFIERS]].</dd>
+        <dt>Web IDL</dt>
+        <dd>The IDL in this specification is defined by Web IDL [[!WEBIDL]].</dd>
+      </dl>
+    </section>
+
+    <section id="method-id">
+      <h2>Payment Method Identifier</h2>
+      <p>The following <a>payment method identifier</a> strings are supported by the Basic Card Payment data formats.</p>
+
+      <table>
+        <tr><th>Identifier String</th><th>Description</th></tr>
+        <tr><td>visa</td><td>VISA cards</td></tr>
+        <tr><td>...</td><td>...</td></tr>
+      </table>
+    </section>
+
+    <section id="init-data">
+      <h2>Payment Method Specific Data for the PaymentRequest constructor</h2>
+      <p>This section describes payment method specific data that is supplied as part of the <code>data</code>
+      argument to the PaymentRequest constructor.</p>
+      <p>There is no payment method specific data used by the PaymentRequest constructor when processing
+      Basic Card Payment methods.</p>
+    </section>
+
+    <section id="response">
+      <h2>Payment Method Response</h2>
+      <p>The <dfn><code>BasicCardResponse</code></dfn> dictionary contains the response from the
+      PaymentRequest API when a user accepts payment with a Basic Payment Card payment method.</p>
+
+      <section>
+      <h2>BasicCardResponse</h2>
+      <pre class="idl">
+        dictionary BasicCardResponse {
+          required DOMString nameOnCard;
+          required DOMString pan;
+          required DOMString expiryMonth;
+          required DOMString expiryYear;
+          DOMString securityCode;
+         
+          BillingAddress? billingAddress;
+        };
+      </pre>
+
+      <p>
+        The <code>BasicCardResponse</code> dictionary contains the following fields:
+      </p>
+
+      <dl>
+        <dt><dfn><code>nameOnCard</code></dfn></dt>
+        <dd>The <code>nameOnCard</code> field contains the card holder's name as it appears on the card.</dd>
+        <dt><dfn><code>pan</code></dfn></dt>
+        <dd>The <code>pan</code> field contains the card number or primary account number (PAN) for the payment card.</dd>
+        <dt><dfn><code>expiryMonth</code></dfn></dt>
+        <dd>The <code>expiryMonth</code> field contains a two-digit string for the expiry month
+        of the card in the range <code>01</code> to <code>12</code>.</dd>
+        <dt><dfn><code>expiryYear</code></dfn></dt>
+        <dd>The <code>expiryYear</code> field contains a two-digit string for the expiry year
+        of the card in the range <code>00</code> to <code>99</code>.</dd>
+        <dt><dfn><code>securityCode</code></dfn></dt>
+        <dd>The <code>securityCode</code> field contains a three or four digit string for the
+        security code of the card (e.g. sometimes known as the CVV, CVC, or CID).</dd>
+      </dl>
+
+      <div class="issue" data-number="9" title="Different card schemes have different mandatory field requirements">
+        There is an open issue highlighting that different card schemes have different manadatory
+        requirements. This suggests that there might be a base credit card message format that supports
+        the minimal set of required fields such as PAN and expiry date and other derived message formats
+        based on the this that adds other fields such as start date.
+      </div>
+
+      </section>
+
+      <section>
+      <h2>BillingAddress</h2>
+      <pre class="idl">
+        dictionary BillingAddress {
+          // [...] fields TBC - most likely the same as shipping address
+        };
+      </pre>
+
+      <p>The <dfn><code>BillingAddress</code></dfn> dictionary contains the billing address
+      information associated with the payment card.</p>
+
+      <p class="issue">
+        The fields of the <code>BillingAddress</code> will most likely match those in the 
+        shipping address of the PaymentRequest API once those are defined.
+      </p>
+
+      </section>
+    </section>
+
+  </body>
+</html>
