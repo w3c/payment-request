@@ -1,39 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="utf-8">
-    <title>Unicorn Toasters Markup API</title>
-    <script src="http://www.w3.org/Tools/respec/respec-w3c-common" class="remove"></script>
-    <script class='remove'>
-      var respecConfig = {
-                  specStatus: "webspec"
-              ,   shortName: "browser-payment-api"
-              ,   editors: [{
-                      name: "ianbjacobs"
-                  }]
-      };
-    </script>
+    <meta charset='utf-8'>
+    <title>W3C Web Payments Working Group - Browser Payment API Specifications</title>
+    <link href="https://www.w3.org/StyleSheets/TR/W3C-ED" rel="stylesheet">
+    <style>
+    dt { margin-top: 0.75em; }
+    body { background-image: none; }
+    </style>
   </head>
   <body>
-    <section id="abstract">
-      <p>
-        This specification does all manners of neat stuff.
-      </p>
-    </section>
-    <section id="sotd">
-      <p>
-        Pay no attention to this section at this time.
-      </p>
-    </section>
+    <header>
+      <h1><a href="https://www.w3.org/Payments/WG/">W3C Web Payments Working Group</a></h1>
+      <h1>Browser Payment API Specifications</h1>
+    </header>
 
-    <section id="introduction">
-      <h2>Introduction</h2>
-      <p>
-        There is a theory which states that if ever anybody discovers exactly what the Universe is
-        for and why it is here, it will instantly disappear and be replaced by something even more
-        bizarre and inexplicable. There is another theory which states that this has already
-        happened.
-      </p>
+    <section>
+      <h2>Specifications - Editor's Drafts</h2>
+      <dl>
+        <dt><a href="specs/architecture.html">Architecture</a></dt>
+        <dd>
+          The Payment Request architecture is designed to separate different concerns of 
+          the Payment Request system into different specifications so that they can be 
+          discussed and moved forward independently. This document describes the 
+          architecture and explains what different specifications may be created and 
+          how the relate to each other.
+        </dd>
+        <dt><a href="specs/method-identifiers.html">Payment Method Identifiers</a></dt>
+        <dd>
+          The <a href="specs/paymentrequest.html">PaymentRequest API</a> requires that 
+          merchants supply a list identifiers for supported payment methods. This 
+          document defines those identifier strings and how they are created.
+        </dd>
+        <dt><a href="specs/paymentrequest.html">PaymentRequest API</a></dt>
+        <dd>
+          This is a proposal for a new web API that will allow merchants (i.e. websites 
+          selling physical or digital goods) to easily accept payments from multiple 
+          payment methods with minimal integration.
+        </dd>
+        <dt><a href="specs/basic-card-payment.html">Basic Card Payment</a></dt>
+        <dd>
+          This specification is a <em>Payment Transaction Message Specification</em> used by the
+          PaymentRequest API to support payment by payment cards such as credit or debit cards.
+        </dd>
+      </dl>          
     </section>
+        
   </body>
 </html>
