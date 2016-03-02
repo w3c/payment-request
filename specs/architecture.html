@@ -31,10 +31,7 @@
           wgPublicList: "public-payments-wg",
           wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/83744/status",
 
-          issueBase:    "https://github.com/WICG/paymentrequest/issues/",
-
-          // Issues need to be migrated to this list
-          //issueBase:    "https://github.com/w3c/browser-payment-api/issues/",
+          issueBase:    "https://github.com/w3c/browser-payment-api/issues/",
 
           localBiblio:  {
               "PAYMENTREQUESTAPI": {
@@ -153,7 +150,7 @@
 
       <section>
         <h2>Payment Method Registration Specifications</h2>
-        <div class="issue" data-number="5" title="Payment instrument installation is platform-dependent">
+        <div class="issue" data-number="8" title="Payment instrument installation is platform-dependent">
           There is an open question within the working group about what registration scenarios
           should be supported by specifications from the group.
         </div>
@@ -184,13 +181,6 @@
         <a>payment apps</a>. For example, we expect multiple different payment apps to support returning
         credit card PANs and they should all do so using the same field names.
         </p>
-
-        <div class="issue" data-number="20" title="Standardizing Common Payment Instruments">
-          There is an open issue highlighting that different card schemes have different manadatory
-          requirements. This suggests that there might be a base credit card message format that supports
-          the minimal set of required fields such as PAN and expiry date and other derived message formats
-          based on the this that adds other fields such as start date.
-        </div>
       </section>
 
       <section>
@@ -201,7 +191,7 @@
         For convenience, we may choose to host a Wiki page that allows developers of payment methods
         to publish links to their documentation including the format of payment request messages.
         The architecture diagram indicates this Wiki.
-        <div class="issue" data-number="35" title="Should well-known identifiers be used for ubiquitous payment methods">
+        <div class="issue" data-number="10" title="Should well-known identifiers be used for ubiquitous payment methods">
         If we choose to support well-known short strings for payment methods then we will need to
         determine where to define them. We may choose to define these well-known strings in a
         formal specification.

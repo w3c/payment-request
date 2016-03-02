@@ -31,10 +31,7 @@
           wgPublicList: "public-payments-wg",
           wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/83744/status",
 
-          issueBase:    "https://github.com/WICG/paymentrequest/issues/",
-
-          // Issues need to be migrated to this list
-          //issueBase:    "https://github.com/w3c/browser-payment-api/issues/",
+          issueBase:    "https://github.com/w3c/browser-payment-api/issues/",
 
           localBiblio:  {
               "PAYMENTARCH": {
@@ -348,7 +345,7 @@
           <li>
             If the <a>browsing context</a> of the script calling the constructor is
             not a <a>top-level browsing context</a>, then <a>throw</a> a <a><code>SecurityError</code></a>.
-            <div class="issue" data-number="30"
+            <div class="issue" data-number="2"
                 title="Should the Payment Request API only be available in a top-level browsing context? ">
               <p>There is an open issue about requiring
               a top-level browsing context for using <code>PaymentRequest</code>. Requiring one
@@ -670,10 +667,13 @@ dictionary PaymentOptions {
         <dt><code>amount</code></dt>
         <dd>
           A <a><code>CurrencyAmount</code></a> containing the monetary amount for the item.
-          <div class="issue" data-number="19" title="Clarity on Currency Conversion">
-            There is an open issue about whether there needs to be consideration of differences between
-            the currency specified by the merchant for the transaction amount and the currencies that
-            the <a>payment method</a> might support.
+          <div class="issue" data-number="3" title="Should it be possible to provide amounts in more than one currency">
+            There is an open issue about whether it should be possible to provide a <code>PaymentItem</code>
+            with amounts in more than once currency.
+          </div>
+          <div class="issue" data-number="4" title="Should it be possible to vary amounts depending on payment method">
+            There is an open issue about whether it should be possible to provide a different amounts depending
+            upon the payment method.
           </div>
         </dd>
       </dl>
@@ -692,14 +692,13 @@ dictionary PaymentOptions {
         <code>shippingAddress</code> field of the <a><code>PaymentRequest</code></a> object with
         the user's selected shipping address.
       </p>
-      <div class="issue" data-number="28" title="Write-up proposal for shipping address fields">
+      <div class="issue" data-number="6" title="Write-up proposal for shipping address fields">
         The fields of the <a><code>ShippingAddress</code></a> interface are
         yet to be defined.
       </div>
-      <div class="issue" data-number="16" title="Merchant requesting arbitrary data from the UA">
+      <div class="issue" data-number="1" title="Should the merchant be able to request your email and recipient phone number">
         There is an open question about what data beyond shipping address the merchant might be able
-        to request from the <a>user agent</a>. For example, billing address, contact phone number, e-mail
-        address, or proof of age.
+        to request from the <a>user agent</a>. Is capturing email and recipient phone important to you?
       </div>
     </section>
 
@@ -786,7 +785,7 @@ dictionary PaymentOptions {
           <li>Resolve <em>promise</em> with <code>undefined</code>.</li>
         </ol>
 
-        <div class="issue" data-number="32" title="Should the web page be able to provide status information before calling complete()">
+        <div class="issue" data-number="5" title="Should the web page be able to provide status information before calling complete()">
         There is an open issue about whether there should be a way for a merchant to keep the user
         informed about the progress of a tranaction after the user approves the payment request.
         </div>
@@ -1030,7 +1029,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           </li>
         </ol>
 
-        <div class="issue" data-number="33" title="Should we support a delegated state for PaymentRequest?">
+        <div class="issue" data-number="7" title="Should we support a delegated state for PaymentRequest?">
           <p>We believe there are <a>user agent</a> configurations that can cause the UI to get into a state
           where cancellation by the web page during user interaction is difficult. Users should still
           be able to cancel the payment but script will not be able to. We need to investigate in more
