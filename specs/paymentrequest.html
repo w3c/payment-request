@@ -358,6 +358,9 @@
           <li>
             If the <a>global object</a> of the script calling the constructor is
             not considered a <a>secure context</a>, then <a>throw</a> a <a><code>SecurityError</code></a>.
+            <div class="issue" data-number="22" title="Spec should use [SecureContext] once that is defined in Web IDL">
+              Using [SecureContext] in Web IDL will allow us to eliminate this prose.
+            </div>
           </li>
           <li>
             If the <a>browsing context</a> of the script calling the constructor is
