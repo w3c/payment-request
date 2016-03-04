@@ -164,12 +164,15 @@
       <h2>BasicCardResponse</h2>
       <pre class="idl">
         dictionary BasicCardResponse {
-          required DOMString nameOnCard;
-          required DOMString pan;
+          required DOMString cardHolderName;
+          required DOMString cardNumber;
           required DOMString expiryMonth;
           required DOMString expiryYear;
-          DOMString securityCode;
-         
+		  DOMString cardSecurityCode;
+          DOMString startMonth;
+		  DOMString startYear;
+		  DOMString issueNumber;
+		  
           BillingAddress? billingAddress;
         };
       </pre>
@@ -179,27 +182,33 @@
       </p>
 
       <dl>
-        <dt><dfn><code>nameOnCard</code></dfn></dt>
-        <dd>The <code>nameOnCard</code> field contains the card holder's name as it appears on the card.</dd>
-        <dt><dfn><code>pan</code></dfn></dt>
-        <dd>The <code>pan</code> field contains the card number or primary account number (PAN) for the payment card.</dd>
+        <dt><dfn><code>cardHolderName</code></dfn></dt>
+        <dd>The <code>cardHolderName</code> field contains the card holder's name as it appears on the card.</dd>
+        <dt><dfn><code>cardNumber</code></dfn></dt>
+        <dd>The <code>cardNumber</code> field contains the primary account number (PAN) for the payment card.</dd>
         <dt><dfn><code>expiryMonth</code></dfn></dt>
         <dd>The <code>expiryMonth</code> field contains a two-digit string for the expiry month
         of the card in the range <code>01</code> to <code>12</code>.</dd>
         <dt><dfn><code>expiryYear</code></dfn></dt>
         <dd>The <code>expiryYear</code> field contains a two-digit string for the expiry year
         of the card in the range <code>00</code> to <code>99</code>.</dd>
-        <dt><dfn><code>securityCode</code></dfn></dt>
-        <dd>The <code>securityCode</code> field contains a three or four digit string for the
-        security code of the card (e.g. sometimes known as the CVV, CVC, or CID).</dd>
+        <dt><dfn><code>cardSecurityCode</code></dfn></dt>
+        <dd>The <code>cardSecurityCode</code> field contains a three or four digit string for the
+        security code of the card (e.g. sometimes known as the CVV, CVC, CVN, CVE or CID).</dd>
+		
+		For certain debit cards, the following fields are needed
+		
+		<dt><dfn><code>startMonth</code></dfn></dt>
+        <dd>The <code>startMonth</code> field contains a two-digit string for the start month
+        of the card in the range <code>01</code> to <code>12</code>.</dd>
+        <dt><dfn><code>startYear</code></dfn></dt>
+        <dd>The <code>startYear</code> field contains a two-digit string for the start year
+        of the card in the range <code>00</code> to <code>99</code>.</dd>
+		<dt><dfn><code>issueNumber</code></dfn></dt>
+        <dd>The <code>issueNumber</code> field contains a two-digit string for the start year
+        of the card in the range <code>00</code> to <code>99</code>.</dd>
+		
       </dl>
-
-      <div class="issue" data-number="9" title="Different card schemes have different mandatory field requirements">
-        There is an open issue highlighting that different card schemes have different manadatory
-        requirements. This suggests that there might be a base credit card message format that supports
-        the minimal set of required fields such as PAN and expiry date and other derived message formats
-        based on the this that adds other fields such as start date.
-      </div>
 
       </section>
 
