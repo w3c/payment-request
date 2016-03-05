@@ -142,9 +142,14 @@
 
       <table>
         <tr><th>Identifier String</th><th>Description</th></tr>
-        <tr><td>visa</td><td>VISA cards</td></tr>
-        <tr><td>...</td><td>...</td></tr>
-      </table>
+        <tr><td>visa</td><td>Visa (Credit, Debit, Delta or Electron)</td></tr>
+        <tr><td>mastercard</td><td>MasterCard and EuroCard</td></tr>
+        <tr><td>amex</td><td>American Express</td></tr>
+        <tr><td>discover</td><td>Discover</td></tr>
+        <tr><td>maestro</td><td>Maestro</td></tr>
+	    <tr><td>diner</td><td>Diners Club</td></tr>
+        <tr><td>jcb</td><td>JCB</td></tr>
+	  </table>
     </section>
 
     <section id="init-data">
@@ -182,8 +187,8 @@
       </p>
 
       <dl>
-        <dt><dfn><code>cardHolderName</code></dfn></dt>
-        <dd>The <code>cardHolderName</code> field contains the card holder's name as it appears on the card.</dd>
+        <dt><dfn><code>cardholderName</code></dfn></dt>
+        <dd>The <code>cardholderName</code> field contains the cardholder's name as it appears on the card.</dd>
         <dt><dfn><code>cardNumber</code></dfn></dt>
         <dd>The <code>cardNumber</code> field contains the primary account number (PAN) for the payment card.</dd>
         <dt><dfn><code>expiryMonth</code></dfn></dt>
@@ -194,9 +199,9 @@
         of the card in the range <code>00</code> to <code>99</code>.</dd>
         <dt><dfn><code>cardSecurityCode</code></dfn></dt>
         <dd>The <code>cardSecurityCode</code> field contains a three or four digit string for the
-        security code of the card (e.g. sometimes known as the CVV, CVC, CVN, CVE or CID).</dd>
+        security code of the card (sometimes known as the CVV, CVC, CVN, CVE or CID).</dd>
 		
-		For certain debit cards, the following fields are needed
+		For certain debit cards, the following fields are used
 		
 		<dt><dfn><code>startMonth</code></dfn></dt>
         <dd>The <code>startMonth</code> field contains a two-digit string for the start month
@@ -205,8 +210,7 @@
         <dd>The <code>startYear</code> field contains a two-digit string for the start year
         of the card in the range <code>00</code> to <code>99</code>.</dd>
 		<dt><dfn><code>issueNumber</code></dfn></dt>
-        <dd>The <code>issueNumber</code> field contains a two-digit string for the start year
-        of the card in the range <code>00</code> to <code>99</code>.</dd>
+        <dd>The <code>issueNumber</code> field contains a one or two digit string from the issue number from the card</dd>
 		
       </dl>
 
