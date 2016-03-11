@@ -174,9 +174,6 @@
           required DOMString expiryMonth;
           required DOMString expiryYear;
 		  DOMString cardSecurityCode;
-          DOMString startMonth;
-		  DOMString startYear;
-		  DOMString issueNumber;
 		  
           BillingAddress? billingAddress;
         };
@@ -200,17 +197,6 @@
         <dt><dfn><code>cardSecurityCode</code></dfn></dt>
         <dd>The <code>cardSecurityCode</code> field contains a three or four digit string for the
         security code of the card (sometimes known as the CVV, CVC, CVN, CVE or CID).</dd>
-		
-		For certain debit cards, the following fields are used
-		
-		<dt><dfn><code>startMonth</code></dfn></dt>
-        <dd>The <code>startMonth</code> field contains a two-digit string for the start month
-        of the card in the range <code>01</code> to <code>12</code>.</dd>
-        <dt><dfn><code>startYear</code></dfn></dt>
-        <dd>The <code>startYear</code> field contains a two-digit string for the start year
-        of the card in the range <code>00</code> to <code>99</code>.</dd>
-		<dt><dfn><code>issueNumber</code></dfn></dt>
-        <dd>The <code>issueNumber</code> field contains a one or two digit string from the issue number from the card</dd>
 		
       </dl>
 
