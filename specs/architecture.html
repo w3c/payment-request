@@ -183,8 +183,7 @@
       <section>
 	<h3><dfn data-lt="payment method|payment methods">Payment Methods</dfn></h3>
 
-	<p>Each payment app will support one or more payment methods. A payment method is a system and set of rules for payments.  We are designing the API to support the broadest possible array of payment methods. When a merchant accepts a given payment method, the assumption is that the merchant will know how to process the data returned by the payment app for that payment method. Examples: Visa, Mastercard, American Express, bobspay.com.
-          payment methods.</p>
+	<p>Each payment app will support one or more payment methods. A payment method is a system and set of rules for payments.  We are designing the API to support the broadest possible array of payment methods. When a merchant accepts a given payment method, the assumption is that the merchant will know how to process the data returned by the payment app for that payment method.</p>
 
 	<p>Each payment method is identified by a <dfn data-lt="payment method identifiers|payment method identifiers">Payment Method Identifier</dfn>.
 	   The payment mediator compares payment method identifiers to determine which
@@ -287,8 +286,7 @@
       <dl>
         <dt><dfn data-lt="payment method|payment methods">Payment Method</dfn></dt>
         <dd>A way of paying. A system and set of rules for payments. A payment app may support one or
-        more payment methods. For example, Visa, Mastercard, American Express, bobspay.com are
-        payment methods.
+        more payment methods. Examples: cleartext-visa, tokenized-mastercard, bobspay.com (a fictitious payment service).
         </dd>
         <dt><dfn data-lt="payment method identifiers|payment method identifiers">Payment Method Identifier</dfn></dt>
         <dd>A way to identify a payment method. The payment mediator compares payment method identifiers to determine which
@@ -306,7 +304,7 @@
         </dd>
         <dt><dfn data-lt="payment method data">Payment Method Data</dfn></dt>
         <dd>
-        The data describing an instance of a payment method. For example, for the Visa payment
+        The data describing an instance of a payment method. For example, for the cleartext-visa payment
         method this might be the card primary account number (PAN), expiry date, and CVV.
         </dd>
 </dl>
