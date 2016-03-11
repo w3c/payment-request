@@ -67,7 +67,7 @@
         The Payment Request architecture is designed to separate different concerns of the
         Payment Request system into different specifications so that they can be discussed and moved
         forward independently. This document describes the architecture and explains what different
-        specifications may be created and how the relate to each other.
+        specifications may be created and how they relate to each other.
       </p>
     </section>
 
@@ -155,7 +155,7 @@
           should be supported by specifications from the group.
         </div>
         <p>
-        The architecture highlights two possibilities for registration scenario. Other
+        The architecture highlights two possibilities for registration scenarios. Other
         scenarios could be supported.
         </p>
         <p>
@@ -165,8 +165,10 @@
         </p>
         <p>
         Another scenario is that of registering specific <a>Payment Method Data</a> within a payment
-        app. For example, this would allow a user logged in to the Alice Bank web site to register
-        their Visa credit card with the Visa payment app.
+        app. For example, this would allow a user logged in to the web site of their payment app issuer
+        to register a new payment instrument (like their credit card) with their payment app, which should
+        in turn notify the user agent that the payment app now supports one or more additional payment methods
+        using that new payment instrument.
         </p>
       </section>
 
@@ -189,7 +191,7 @@
         Payment Method Identifiers will support distributed extensibility, meaning that there does
         not need to be a central machine-readable registry to discover or register <a>payment methods</a>.
         For convenience, we may choose to host a Wiki page that allows developers of payment methods
-        to publish links to their documentation including the format of payment request messages.
+        to publish links to their documentation including the format of payment request and response messages.
         The architecture diagram indicates this Wiki.
         <div class="issue" data-number="10" title="Should well-known identifiers be used for ubiquitous payment methods">
         If we choose to support well-known short strings for payment methods then we will need to
@@ -215,17 +217,18 @@
         <dt><dfn data-lt="payment method|payment methods">Payment Method</dfn></dt>
         <dd>
         A way of paying. A system and set of rules for payments. A payment app may support one or
-        more payment methods. For example, Visa, Mastercard, American Express, bobspay.com are
+        more payment methods. For example, cleartext-visa, encrypted-mastercard, bobspay.com are
         payment methods.
         </dd>
         <dt><dfn data-lt="payment app|payment apps">Payment App</dfn></dt>
         <dd>
-        A piece of software that enables a payer to make payments. A payment app will one or more
-        <a>payment methods</a>.
+        A piece of software that enables a payer to make payments. A payment app will support one or more
+        <a>payment methods</a>. Payment apps may be Web applications (hosted on a remote server and rendered by
+          the user agent).
         </dd>
         <dt><dfn>Payment Method Data</dfn></dt>
         <dd>
-        The data describing an instance of a payment method. For example, for the Visa payment
+        The data describing an instance of a payment method. For example, for the cleartext-visa payment
         method this might be the card primary account number (PAN), expiry date, and CVV.
         <div class="ednote">
         Payment Method Data is unique to this spec and isn't currently defined in the Web Payments architecture wiki.
