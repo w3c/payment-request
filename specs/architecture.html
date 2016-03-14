@@ -20,7 +20,6 @@
                     company:    "Mozilla Foundation" }
           ],
 
-          useExperimentalStyles: true,
           license:      "w3c-software-doc",
 
           //previousMaturity: "FPWD",
@@ -32,6 +31,18 @@
           wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/83744/status",
 
           issueBase:    "https://github.com/w3c/browser-payment-api/issues/",
+          // additional defines to improve github integration
+          githubAPI:  "https://api.github.com/repos/w3c/webpayments-ig",
+          otherLinks: [{
+            key: "Version control",
+            data: [{
+              value: "Github Repository",
+              href: "https://github.com/w3c/browser-payment-api"
+            }, {
+              value: "Issues",
+              href: "https://github.com/w3c/browser-payment-api/issues"
+            }]
+          }],
 
           localBiblio:  {
               "PAYMENTREQUESTAPI": {
