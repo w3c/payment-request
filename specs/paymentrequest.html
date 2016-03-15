@@ -311,7 +311,7 @@
 
           <pre class="example highlight">
             {
-              "requestShipping": true
+              "requestedData": ['shipping-address']
             }
           </pre>
 
@@ -648,7 +648,7 @@ dictionary PaymentDetails {
       <h2>PaymentOptions dictionary</h2>
       <pre class="idl">
 dictionary PaymentOptions {
-  boolean requestShipping = false;
+  sequence&lt;RequestedData&gt; requestedData;
 };
       </pre>
 
@@ -660,16 +660,25 @@ dictionary PaymentOptions {
         The following fields MAY be passed to the <a><code>PaymentRequest</code></a> constructor:
       </p>
       <dl>
-        <dt><code><dfn>requestShipping</dfn></code></dt>
+        <dt><code>requestedData</code></dt>
         <dd>
-          This <em>boolean</em> value indicates whether the <a>user agent</a> should collect and return
-          a shipping address as part of the payment request. For example, this would be set to
-          <code>true</code> when physical goods need to be shipped by the merchant to the user.
-          This would be set to <code>false</code> for an online-only electronic purchase transaction.
-          If this value is not supplied then the the <a><code>PaymentRequest</code></a> behaves as
-          if a value of <code>false</code> had been supplied.
+          A sequence containing one or more <code>RequestedData</code> values that the user agent should collect and return as part of the payment request. For example, if a merchant needs to collect shipping address and email, they can request both <code>shipping-address</code> and <code>email</code>
         </dd>
       </dl>
+    </section>
+    
+    <section>
+      <h2>RequestedData Registry</h2>
+      <pre class="idl">
+        enum RequestedData {
+          "shipping-address",
+          "email",
+          "phone-number"
+        };
+      </pre>
+      <p>
+        The <code><dfn>RequestedData</dfn></code> enum defines the list of known values that can be requested as part of the payment request. 
+      </p>
     </section>
 
     <section>
@@ -722,7 +731,7 @@ dictionary PaymentOptions {
         };
       </pre>
       <p>
-        If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
+        If shipping was requested as part of <a>RequestedData</a> in the <a>PaymentOptions</a>
         passed to the <a>PaymentRequest</a> constructor, then the <a>user agent</a> will populate the
         <code>shippingAddress</code> field of the <a><code>PaymentRequest</code></a> object with
         the user's selected shipping address.
@@ -1105,7 +1114,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
             The <a>user agent</a> user interface should ensure that this never occurs.
           </li>
           <li>
-            If the <code>requestShipping</code> value of <em>request</em>@[[\options]]
+            If <code>requestedData</code> contains <code>shipping-address</code> in <em>request</em>@[[\options]]
             is <code>true</code>, then if the <code>shippingAddress</code> attribute of <em>request</em>
             is <code>null</code> or if the <code>shippingOption</code> attribute of <em>request</em>
             is <code>null</code>, then terminate this algorithm and take no further action. This should
