@@ -236,7 +236,7 @@
 
       <p>The Payment Request Architecture organizes the above concepts into several component specifications
 	      so that they can be discussed and moved forward independently. The
-        <a href="#payment-method-identifiers">Payment Method Identifiers</a> specification the only
+        <a href="#payment-method-identifiers">Payment Method Identifiers</a> specification is the only
         common dependency. The following diagram shows the references between different specifications that describe
         the Payment Request Architecture. The arrows show normative references pointing from the referring
         document to the referenced document.
@@ -348,7 +348,7 @@
         <ul>
         	<li>
         	  In the physical world it is not practical for users to have multiple wallets. On the Web this is
-            possible and for there to be a copies of the same payment method data in more than one wallet.</li>
+            possible and for there to be copies of the same payment method data in more than one wallet.</li>
         	<li> In the physical world the process of deciding how to pay is not done by the wallet, it is done by
            the user. On the Web the process of selection can be facilitated by digital algorithms that are capable
             of processing complex data and relationships to assist the user in deciding how to pay.</li>
@@ -369,7 +369,8 @@
       	  <tr>
       	    <td>Payment App</td>
       	    <td>Digital Wallet, Payment Instrument </td>
-      	    <td>A piece of software to pay</td>
+      	    <td>An application, registered by the payer, that supports processing payment 
+      	    requests and returning payment responses for one or more payment methods.</td>
       	  </tr>
       	  <tr>
       	    <td>Payment Method</td>
@@ -379,7 +380,7 @@
       	  <tr>
       	    <td>Payment Mediator</td>
       	    <td>Digital Wallet, Payment Instrument</td>
-      	    <td>A piece of software that coordinates messages between Web apps and Payment apps</td>
+      	    <td>A piece of software that coordinates messages between sellers and Payment apps.</td>
       	  </tr>
       	</table>
       </section>
