@@ -1063,6 +1063,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           only available for a limited amount of time. If the user does not accept the payment request
           within the allowed time period, then the request will be aborted.
         </p>
+
         <p>
           A <a>user agent</a> may not always be able to abort a request. For example, if the <a>user agent</a>
           has delegated responsibility for the request to another app. To support this situation,
@@ -1089,6 +1090,14 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
             Set <em>request</em>@[[\state]] to <em>delegated</em>.
           </li>
         </ol>
+
+        <p class="issue" data-number="39" title="How are web-based payment apps supported?">
+          The architecture document suggests that payment apps may take
+          numerous forms, including as web-based apps. This specification
+          should describe how the user-agent will pass the payment request
+          data and the complete signal to a web-based payment app and also how
+          it will receive the payment response from the payment app.
+        </p>
 
         <div class="issue" data-number="7" title="Should we support a delegated state for PaymentRequest?">
           <p>We believe there are <a>user agent</a> configurations that can cause the UI to get into a state
