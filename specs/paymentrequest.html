@@ -272,6 +272,14 @@
           list, the payment <code>details</code>, the payment <code>options</code>, and any <a>payment
           method</a> specific <code>data</code>.
         </p>
+        <div class="issue" data-number="40" title="How does a website pass additional (not payment method specific) data to the payment app?">
+          It is proposed that a conformance criteria for implementations of this API be 
+          that any data passed into the request is passed on to the payment app unaltered. 
+          This would allow extensions of the data schema such as the addition of 
+          properties that are not documented in this specification or known to implementors 
+          such as JSON-LD @context or similar to be passed between the website and 
+          payment app.
+        </div>
         <div class="note">
           <p>The <code>supportedMethods</code> sequence contains the <a>payment method identifiers</a>
           for the <a>payment methods</a> that the merchant web site accepts.</p>
