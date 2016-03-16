@@ -282,6 +282,39 @@
             ["visa", "bitcoin", "bobpay.com"]
           </pre>
 
+
+          <div class="issue" data-number="48" title="Should list of accepted payment methods be strings or objects?">
+            <p>
+              Should the list of acceptable payment methods be listed as simple
+              strings or complex objects? If simple strings, as proposed above,
+              then how can price vary based on the payment method? The following
+              example shows an alternative way of providing acceptable payment
+              methods that allows for price variation based on payment method.
+            </p>
+
+            <pre class="example highlight">
+  acceptedScheme: [{
+    scheme: [
+      'https://w3id.org/payment-schemes#Visa',
+      'https://w3id.org/payment-schemes#Mastercard',
+      'https://w3id.org/payment-schemes#Discover'
+    ],
+    transfer: {
+      amount: '4.35',
+      currency: 'USD'
+    },
+    paymentRequestService: 'https://merchant-psp.example.com/services/getPaymentInfo'
+  }, {
+    scheme: 'https://w3id.org/payment-schemes#Bitcoin',
+    transfer: {
+      amount: '0.0177',
+      currency: 'BTC'
+    },
+    destination: '3QJmV3qfvL9SuYo34YihAf3sRCW3qSinyC'
+  }
+            </pre>
+          </div>
+
           <p>The <code>details</code> object contains information about the transaction that the
           user is being asked to complete such as the line items in an order.</p>
           <pre class="example highlight">
