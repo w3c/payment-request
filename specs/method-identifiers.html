@@ -43,6 +43,10 @@
                   ,   "Richard Barnes"
                   ]
               ,   status:   "ED"
+              },
+              "REVERSEDOMAINS": {
+                  title:    "Reverse Domain Name Notation"
+              ,   href:     "https://en.wikipedia.org/wiki/Reverse_domain_name_notation"
               }
           }
       };
@@ -82,8 +86,201 @@
         </p>
     </section>
 
+    <section class="informative">
+      <h2>Requirements for identifiers</h2>
+      <p>There are a set of requirements that the payment method identifiers are designed to support:</p>
+      <ol>
+        <li id="req1">It must be possible for the Working Group to mint a payment method identifier for any payment method.</li>
+        <li id="req2">It must be possible for the anyone to mint a payment method identifier for a payment method under their control.</li>
+        <li id="req3">It should be possible to use a standard short string to identify common payment methods.</li>
+        <li id="req4">It must be possible for someone minting a non-standard identifier to make it globally unique in a cost-effective manner.</li>
+      </ol>
+    </section>
+
     <section>
+      <h2>Payment Method Identifier</h2>
+      <p>
+        The <dfn>Payment Method Identifier</dfn> is a string that uniquely identifies a payment method that a user can use to complete a transaction. For example, Visa, MasterCard, and American Express are payment methods used in some countries.
+      </p>
+    </section>    
+
+    <div class="note">This document currently specifies multiple alternate options for payment method identifiers. The Working Group has
+    not yet selected an approach, which might be one documented in this specification or another as yet undocumented proposal.</div> 
+
+    <section>
+      <h2>Option 1</h2>
+      <p>This section describes an approach to payment method identifiers using URLs.</p>
+
+      <section>
+        <h2>Identifier format</h2>
+        <p>Payment method identifiers are strings containing a <a>URL</a>. The string can be either an <a>absolute URL</a>
+        or a <a>relative URL</a>.</p>
+
+        <section>
+          <h2>Base URL</h2>
+          <p>If the string is a <a>relative URL</a> then the <a>base URL</a> used by the <a>URL parser</a> is <em>https://www.example.com/to-be-determined/</em>.</p>
+          <p class="ednote">
+            The base URL needs to be determined and specified here. The base URL should be from a domain that the Working Group controls.
+          </p>
+        </section>
+      </section>
+      <section>
+        <h2>Short identifiers</h2>
+        <p>Since payment method identifiers can be relative URLs, simple short strings can be used as identifiers
+        and they will be parsed using the base URL.</p>
+        <p>For example, the string <code>visa</code> would be parsed into the URL
+        <code>https://www.example.com/to-be-determined/visa</code>.</p>
+      </section>
+      <section>
+        <h2>Identifier equivalence</h2>
+        <p>When the PaymentRequest API is invoked, the web page provides a list of identifiers for supported payment methods.
+        The user agent must compare these identifiers to those available to the user and use this to filter what the user
+        can select. To determine whether two identifiers match, perform the following test:</p>
+        <ul>
+          <li>Let <em>A</em> be the first payment method identifier string and let <em>B</em> be the second payment method
+          identifier string.</li>
+          <li>Let <em>urlA</em> be the result from the <a>URL parser</a> when parsing <em>A</em> using the
+          <a>base URL</a> specified above.</li>
+          <li>Let <em>urlB</em> be the result from the <a>URL parser</a> when parsing <em>B</em> using the
+          <a>base URL</a> specified above.</li>
+          <li>The identifiers match if <em>urlA</em> <strong>equals</strong> <em>urlB</em> using the
+          <a>URL equivalence</a> test (i.e. the test returns true).</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Dependencies</h2>
+        <p>This section relies on several other underlying specifications.</p>
+        <dl>
+          <dt>URL</dt>
+          <dd>The terms <dfn>URL</dfn>, <dfn>absolute URL</dfn>, <dfn>base URL</dfn>, <dfn>relative URL</dfn>, <dfn>URL parser</dfn>, and <dfn>URL equivalence</dfn> are defined by [[!url-1-20141209]] <small><em>(or the editor's draft)</em></small>.</dd>
+        </dl>
+      </section>
+      <section class="informative">
+        <h2>Discussion topics</h2>
+        <p>The following observations are made about this option:</p>
+        <ul>
+          <li>
+            This option satisfies <a href="#req1">requirement 1</a> because the Working Group can specify
+            identifiers leading to URLs from domains that the Working Group controls.
+          </li>
+          <li>
+            This option satisfies <a href="#req2">requirement 2</a> because anybody can specify
+            identifiers leading to URLs from domains that they control.
+          </li>
+          <li>
+            This option satisfies <a href="#req3">requirement 3</a> because the Working Group can specify
+            common payment method identifiers as short string relative URLs. Since the Working Group
+            is defining them, they can be relative to the Working Group defined base URL.
+          </li>
+          <li>
+            This option satisfies <a href="#req4">requirement 4</a> because it is within your control to
+            create URLs from domains that you control that are globally unique.
+          </li>
+          <li>
+            Advantages:
+            <ul>
+              <li>URLs are familiar and easily understood.</li>
+              <li>URLs can easily be created in a distributed fashion.</li>
+              <li><p>The parsed URL could be used as part of a discoverable registration mechanism. For example,
+                a manifest resource could be located at the URL: a user agent could download the manifest whenever
+                a merchant supports a method that the user agent doesn't recognised.</p>
+              <p>However, registration is a
+              comparatively rare operation compared to making a payment. If a user agent downloads manifests
+              every time a site calls the API this could result in a tremendous amount of traffic.</p><p>For example,
+              if bobspay.com has a manifest file then lots of merchants might support this payment method. If there
+              exist lots of users who never want to install the bobspay.com payment app but who visit sites that accept
+              bobspay.com then there is going to be lots of traffic generated for the bobspay.com manifest.</p></li>
+            </ul>
+          </li>
+          <li>
+            Disadvantages:
+            <ul>
+              <li>URLs are difficult to remember and developers often need to find a reference to copy and paste them from.</li>
+              <li>Developers may find it confusing to us a URL if it isn't intended to point to a resource.</li>
+              <li>Overloading the same string to mean an identifier in some cases and a resource location in others is undesirable. The intent of a URL is to load or locate a resource and may only be done sometimes with this proposal. A URL might mistakenly be crafted
+              as an identifier but later lead to attempts to load it that weren't anticipated (by potentially large numbers of users).</li>
+              <li>Experience with XML namespaces suggests that optional downloading resources from identifiers tends to encourage
+              user agents to hard code common identifiers for performance reasons potentially leading to a closed or unbalanced
+              system.</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+    </section>
+
+    <section>
+      <h2>Option 2</h2>
+      <p>This section describes an approach to payment method identifiers using strings that might be reverse domain names.</p>
+
+      <section>
+        <h2>Identifier format</h2>
+        <p>Payment method identifiers are strings. The strings can contain any characters.</p>
+        <p>Payment method identifiers that are not created by the Working Group MUST be <a>reverse domain name</a> strings
+        with at least one U+002E FULL STOP character. They SHOULD be based on domain names controlled by the creator.</p>
+        <p>It is RECOMMENDED that payment methods use simple lower-case ASCII identifier strings.</p>
+      </section>
+      <section>
+        <h2>Short identifiers</h2>
+        <p>Payment method identifiers that do not contain any U+002E FULL STOP characters MAY be created by the Working Group.
+        These identifiers MAY be aliases for reverse domain name identifiers that do contain U+002E FULL STOP characters. If this is
+        the case then implementations MUST process the identifier as if the reverse domain name form had been provided.</p>
+        <p class="note">Any registration mechanism must allow a payment app to be registered with multiple aliases representing
+        the same payment method identifier.</p>
+      </section>
+      <section>
+        <h2>Identifier equivalence</h2>
+        <p>Payment method identifier strings are compared using case-sensitive matching.</p>
+        <p>If a short identifier containing no U+002E FULL STOP characters is an alias for a reverse domain name identifier then
+        the reverse domain name identifier should be used in any comparison.</p>
+      </section>
+      <section>
+        <h2>Dependencies</h2>
+        <p>A <dfn>reverse domain name</dfn> is defined by [[REVERSEDOMAINS]]. For example, <code>com.example.somemethod</code>.</p>
+      </section>
+      <section class="informative">
+        <h2>Discussion topics</h2>
+        <p>The following observations are made about this option:</p>
+        <ul>
+          <li>
+            This option satisfies <a href="#req1">requirement 1</a> because the Working Group can specify
+            identifiers from reverse domains that the Working Group controls.
+          </li>
+          <li>
+            This option satisfies <a href="#req2">requirement 2</a> because anybody can specify
+            identifiers from reverse domains that they control.
+          </li>
+          <li>
+            This option satisfies <a href="#req3">requirement 3</a> because the Working Group can specify
+            common payment method identifiers as short strings that do not contain a
+            U+002E FULL STOP character.
+          </li>
+          <li>
+            This option satisfies <a href="#req4">requirement 4</a> because it is within your control to
+            create identifiers from domains that you control that are globally unique.
+          </li>
+          <li>
+            Advantages:
+            <ul>
+              <li>Identifiers are relatively short strings even in the reverse domain case.</li>
+              <li>It is straightforward to create new identifiers from a domain you control and
+              there is no ambiguity about its use or purpose.</li>
+            </ul>
+          </li>
+          <li>
+            Disadvantages:
+            <ul>
+              <li>There is no way to automatically dereference a payment method identifier from this
+              option to a resource located at a URL.</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+    </section>
+
+    <section class="appendix">
       <h2>Issues</h2>
+
+        <p>The following issues are tracking aspects of the payment method identifier specification:</p>
 
         <div class="issue" data-number="11" title="What is the format for payment method identifiers for distributed extensibility">
           <p>Should the format of the identifiers be URLs (e.g. http://example.com/paymentmethod) or reverse host name (e.g. com.example.paymentmethod) or some other extensible syntax?</p>
@@ -104,13 +301,6 @@
           <p>Is there a need to describe the payment method at the URL or provide some other information?</p>
         </div>
     </section>
-
-    <section>
-      <h2>Payment Method Identifier</h2>
-      <p>
-        The <dfn>Payment Method Identifier</dfn> is a string that uniquely identifies a payment method that a user can use to complete a transaction. For example, Visa, MasterCard, and American Express are payment methods used in some countries.
-      </p>
-    </section>    
 
   </body>
 </html>
