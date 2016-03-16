@@ -242,6 +242,23 @@
         };
       </pre>
 
+      <div class="issue" data-number="51" title="Should the payment API be more conversational or less conversational?">
+        <p>
+          A more conversational flow for the API has been suggested by
+          Dave Longley. Instead of the above, developers could do something
+          like this instead:
+        </p>
+
+        <pre class="example highlight">
+var checkout = new Checkout();
+checkout
+  .send('paymentItem', paymentItems)  // send line item estimate to browser
+  .request('shippingAddress')         // request shippingAddress from browser
+  .start()                            // start the checkout UI
+  .then(finishCheckout);              // checkout UI has collected the info
+        </pre>
+      </div>
+
       <p>
         A web page creates a <a><code>PaymentRequest</code></a> to make a payment request. This is
         typically associated with the user activating a "Buy", "Purchase", or "Checkout" button.
