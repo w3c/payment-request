@@ -779,6 +779,13 @@ dictionary PaymentOptions {
         };
       </pre>
 
+      <p class="issue" data-number="50" title="How are payment requests and responses passed between the browser and third-party native wallets?">
+        How are payment messages routed between the browser and native payment
+        apps? The spec should give developers some idea of how the integration
+        might happen via a NOTE or similar mechanism to ensure that people know
+        it won't be just the OS vendors providing payment apps.
+      </p>
+
       <p>
         A <code><dfn>PaymentResponse</dfn></code> is returned when a user has selected a payment method and
         approved a payment request. It contains the following fields:
