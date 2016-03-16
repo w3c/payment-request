@@ -249,6 +249,30 @@
         <a>user agent</a> while the user is providing input before approving or denying a payment request.
       </p>
 
+      <div class="issue" data-number="47" title="Should a payment request be just data, or a programmable object?">
+        Instead of a programmable object, it has been suggested that a payment
+        request should be just pure data that can be operated on by methods
+        like so:
+        <pre class="example highlight">
+// data-only payment request object example
+var request = {
+  type: 'PaymentRequest',
+  description: 'Payment to ExampleMerch for widgets',
+  acceptablePayment: {
+    paymentMethod: 'Visa',
+    paymentAmount: {
+      amount: '4.35',
+      currency: 'USD'
+    }
+  }
+};
+
+// request payment and get a promise that will resolve to
+// a payment acknowledgement
+var payment = navigator.payment.request(request);
+        </pre>
+      </div>
+
       <p>The following example shows how to construct a <a><code>PaymentRequest</code></a> and begin the
       user interaction:</p>
 
