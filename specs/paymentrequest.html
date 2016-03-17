@@ -89,7 +89,7 @@
         <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a>.
       </p>
     </section>
-    
+
     <section class='informative'>
       <h2>Introduction</h2>
         <p>Buying things on the
@@ -133,50 +133,50 @@
       </section>
 
     </section>
-    
+
     <section id='conformance'>
       <p>
         As well as sections marked as non-normative, all authoring guidelines, diagrams, examples,
         and notes in this specification are non-normative. Everything else in this specification is
         normative.
       </p>
-      <p> 
-        This specification defines one class of products: 
-      </p> 
-      <dl> 
-      <dt><dfn>Conforming user agent</dfn></dt> 
-      <dd> 
-        <p> 
-        A <dfn data-lt="user agents">user agent</dfn> MUST behave as described in this specification 
+      <p>
+        This specification defines one class of products:
+      </p>
+      <dl>
+      <dt><dfn>Conforming user agent</dfn></dt>
+      <dd>
+        <p>
+        A <dfn data-lt="user agents">user agent</dfn> MUST behave as described in this specification
         in order to be considered conformant. In this specification, <a>user agent</a> means a <em>Web
         browser or other interactive user agent</em> as defined in [[!HTML5]].
-        </p> 
-        <p> 
-        User agents MAY implement algorithms given in this 
-        specification in any way desired, so long as the end result is 
-        indistinguishable from the result that would be obtained by the 
-        specification's algorithms. 
-        </p> 
-        <p> 
-        A conforming Payment Request API user agent MUST also be a 
-        <em>conforming implementation</em> of the IDL fragments 
-        of this specification, as described in the 
-        “Web IDL” specification. [[!WEBIDL]] 
         </p>
- 
-        <aside class="note"> 
-        This specification uses both the terms "conforming user agent(s)" 
-        and "user agent(s)" to refer to this product class. 
-        </aside> 
+        <p>
+        User agents MAY implement algorithms given in this
+        specification in any way desired, so long as the end result is
+        indistinguishable from the result that would be obtained by the
+        specification's algorithms.
+        </p>
+        <p>
+        A conforming Payment Request API user agent MUST also be a
+        <em>conforming implementation</em> of the IDL fragments
+        of this specification, as described in the
+        “Web IDL” specification. [[!WEBIDL]]
+        </p>
+
+        <aside class="note">
+        This specification uses both the terms "conforming user agent(s)"
+        and "user agent(s)" to refer to this product class.
+        </aside>
       </dd>
     </section>
 
-    <section id="dependencies"> 
-      <h3>Dependencies</h3> 
-      <p> 
-      This specification relies on several other underlying specifications. 
-      </p> 
-      <dl> 
+    <section id="dependencies">
+      <h3>Dependencies</h3>
+      <p>
+      This specification relies on several other underlying specifications.
+      </p>
+      <dl>
         <dt>Payment Request Document Architecture</dt>
         <dd>The terms <dfn data-lt="payment method|payment methods">Payment Method</dfn>,
         <dfn data-lt="payment app|payment apps">Payment App</dfn>, and <dfn>Payment Transaction
@@ -200,7 +200,7 @@
           be serialized to a string using <a>JSON.stringify</a> and later deserialized back to an object
           using <a>JSON.parse</a> with no loss of data.</p>
         </dd>
-        <dt>DOM4</dt> 
+        <dt>DOM4</dt>
         <dd>
         The <code><dfn>Event</dfn></code> type and the terms <dfn>fire an event</dfn>, <dfn>dispatch flag</dfn>,
         <dfn>stop propagation flag</dfn>, and <dfn>stop immediate propagation flag</dfn> are defined by [[!DOM4]].
@@ -249,7 +249,7 @@
         <a>user agent</a> while the user is providing input before approving or denying a payment request.
       </p>
 
-      <p>The following example shows how to construct a <a><code>PaymentRequest</code></a> and begin the 
+      <p>The following example shows how to construct a <a><code>PaymentRequest</code></a> and begin the
       user interaction:</p>
 
       <pre class="example highlight">
@@ -408,7 +408,7 @@
             Set the value of the <a><code>shippingOption</code></a> attribute on <em>request</em> to <em>null</em>.
           </li>
           <li>
-            If <code>details</code> contains a <code>shippingOptions</code> sequence with a 
+            If <code>details</code> contains a <code>shippingOptions</code> sequence with a
             length of 1, then set <a><code>shippingOption</code></a> to the <code>id</code> of
             the only <a><code>ShippingOption</code></a> in the sequence.
           </li>
@@ -938,7 +938,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
               </li>
               <li>Let <em>newOption</em> be <em>null</em>.</li>
               <li>
-                If <code>details</code> contains a <code>shippingOptions</code> sequence with a 
+                If <code>details</code> contains a <code>shippingOptions</code> sequence with a
                 length of 1, then set <em>newOption</em> to the <code>id</code> of the only
                 <a><code>ShippingOption</code></a> in the sequence.
               </li>
@@ -1013,7 +1013,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           The <dfn>PaymentRequest updated algorithm</dfn> is run by other algorithms above to fire
           an event to indicate that a user has made a change to a <a><code>PaymentRequest</code></a>
           called <em>request</em> with an event name of <em>name</em>.</p>
-        <p>It MUST run the following steps:</p> 
+        <p>It MUST run the following steps:</p>
         <ol>
           <li>
             If the <em>request</em>@[[\updating]] is <em>true</em>, then terminate
