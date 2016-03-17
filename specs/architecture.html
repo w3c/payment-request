@@ -83,7 +83,7 @@
       <p>The group is chartered to develop multiple technologies. The current document describes a set of
     	technologies &mdash;the Payment Request Architecture&mdash; that, together,
     	provide merchants with a consistent way to request payment information
-    	from the user, aided by a browser or other user agent.</p>
+    	from the user, aided by a user agent.</p>
 
       <p>The focus of the Payment Request Architecture is to provide
         an abstract interface between a web page and a <a>Payment
@@ -123,9 +123,9 @@
       <ul>
       	<li> At the end of shopping on a merchant site, the user pushes the “buy” button.</li>
       	<li>The merchant site calls the payment API with purchase amount, currency, accepted payment methods (e.g., Visa, Paypal, Bitcoin), and any custom data for those payment methods.</li>
-      	<li>The browser (or other user agent) determines the intersection of merchant-accepted payment methods and user-registered payment methods. The merchant can (optionally) use the API to capture shipping information through the same user experience.</li>
+      	<li>The user agent determines the intersection of merchant-accepted payment methods and user-registered payment methods. The merchant can (optionally) use the API to capture shipping information through the same user experience.</li>
       	<li>The user selects a payment app to pay, and carries out any app-supported activities as needed, such as authentication.</li>
-      	<li>Assuming the payment is authorized, the payment app returns payment method-specific data through the browser to the merchant site.</li>
+      	<li>Assuming the payment is authorized, the payment app returns payment method-specific data through the user agent to the merchant site.</li>
       	<li>Depending on the payment method, this data will either enable the merchant to be paid, or signal that the merchant has already been paid.</li>
       </ul>
     </section>
@@ -149,7 +149,7 @@
 	
       	<p>A Payment App is software used to pay. Banks, merchants,
       	mobile operators, and anyone else who wants to will make
-      	these available. Browsers are also likely to act as basic
+      	these available. User agents are also likely to act as basic
       	payment apps, storing some information on behalf of the
       	user, as they already do today with passwords. We expect
       	payment apps will increase security and privacy by giving
@@ -214,7 +214,7 @@
       	  <li> It passes payment request data to the payer's selected Payment App.</li>
       	</ul>
 
-      	<p>We expect that browsers will primarily act as payment mediators in this architecture.</p>
+      	<p>We expect that user agents will primarily act as payment mediators in this architecture.</p>
       </section>
     </section>
 
