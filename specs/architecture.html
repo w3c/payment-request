@@ -79,7 +79,7 @@
   <body>
     <section id='abstract'>
       <p>The mission of the Web Payments Working Group is to make payments easier and more secure on the Web.</p>
-  
+
       <p>The group is chartered to develop multiple technologies. The current document describes a set of
     	technologies &mdash;the Payment Request Architecture&mdash; that, together,
     	provide merchants with a consistent way to request payment information
@@ -108,7 +108,7 @@
       <p>
         This specification was derived from a report published
         previously by the
-        <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a> and 
+        <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a> and
 	       <a href="https://github.com/w3c/webpayments/wiki/A-Payments-Initiation-Architecture-for-the-Web">A Payments Initiation Architecture for the Web</a>
          developed within the Web Payments Working Group, and a <a href="https://www.w3.org/blog/wpwg/2016/03/04/fpwd/">blog post</a>
          on the Working Group's work.
@@ -129,12 +129,12 @@
       	<li>Depending on the payment method, this data will either enable the merchant to be paid, or signal that the merchant has already been paid.</li>
       </ul>
     </section>
-    
+
     <section>
       <h2>Components</h2>
 
       <p>
-        The following are key components of the Payment Request Architecture. These 
+        The following are key components of the Payment Request Architecture. These
 	      components would normally sit between
         the Payment Service Providers (PSPs) of the payer and
         payee. Different implementations of this architecture may result in components running on entirely
@@ -146,7 +146,7 @@
 
       <section>
         <h2>Payment Apps</h2>
-	
+
       	<p>A Payment App is software used to pay. Banks, merchants,
       	mobile operators, and anyone else who wants to will make
       	these available. User agents are also likely to act as basic
@@ -188,6 +188,15 @@
       	Host, as an execution environment for the app, and the
       	Payment Mediator, that mediates all interactions between the
       	Payment App and other components.</p>
+
+        <p class="issue" data-number="38" title="How are payment apps shared between different browser brands?">
+        When a user registers a new payment instrument, how is that payment
+        instrument shared between different browser brands? For example, if I
+        register a Visa debit card issued by my bank in Google Chrome on my
+        laptop, when I go to purchase something using my mobile phone, is
+        that same debit card available to me via my Firefox web browser
+        (assuming I've authenticated in some way with both browsers)?</p>
+
       </section>
 
       <section>
