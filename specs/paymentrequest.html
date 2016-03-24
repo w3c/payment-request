@@ -272,6 +272,15 @@
           list, the payment <code>details</code>, the payment <code>options</code>, and any <a>payment
           method</a> specific <code>data</code>.
         </p>
+
+        <p class="issue" data-number="40" title="How do developers layer additional information in the core payment messages?">
+          How does a developer access the <code>data</code> object?
+          How is <code>data</code> sent to the payment app?
+          Are the core set of payment messages (request/response) extensible?
+          If they are extensible, what is the extensibility mechanism?
+          Is the browser required to understand this extensibility mechanism?
+        </p>
+
         <div class="note">
           <p>The <code>supportedMethods</code> sequence contains the <a>payment method identifiers</a>
           for the <a>payment methods</a> that the merchant web site accepts.</p>
