@@ -297,17 +297,17 @@
                 {
                   "id": "basket",
                   "label": "Sub-total",
-                  "amount": { "currencyCode": "USD", "value" : "55.00" }, // US$55.00
+                  "amount": { "currency": "USD", "value" : "55.00" }, // US$55.00
                 },
                 {
                   "id": "tax",
                   "label": "Sales Tax",
-                  "amount": { "currencyCode": "USD", "value" : "5.00" }, // US$5.00
+                  "amount": { "currency": "USD", "value" : "5.00" }, // US$5.00
                 },
                 {
                   "id": "total",
                   "label": "Total due",
-                  "amount": { "currencyCode": "USD", "value" : "60.00" }, // US$60.00
+                  "amount": { "currency": "USD", "value" : "60.00" }, // US$60.00
                 }
               ]
             }
@@ -599,7 +599,7 @@
       <h2>CurrencyAmount</h2>
       <pre class="idl">
 dictionary CurrencyAmount {
-  required DOMString currencyCode;
+  required DOMString currency;
   required DOMString value;
 };
       </pre>
@@ -608,19 +608,20 @@ dictionary CurrencyAmount {
         The following fields MUST be supplied for a <a><code>CurrencyAmount</code></a> to be valid:
       </p>
       <dl>
-        <dt><code><dfn>currencyCode</dfn></code></dt>
+        <dt><code><dfn>currency</dfn></code></dt>
         <dd>
-          <code>currencyCode</code> is a string containing a three-letter alphabetic code for the
-          currency as defined by [[!ISO4217]]. For example, <code>"USD"</code> for US Dollars.
+          <code>currency</code> is a string containing a currency identifier. The most common
+          identifiers are three-letter alphabetic codes as defined by [[!ISO4217]] (for example,
+          <code>"USD"</code> for US Dollars) however any string is considered valid and
+          <dfn data-lt="user agents">user agents</dfn> MUST not attempt to validate this string.
         </dd>
         <dt><code><dfn>value</dfn></code></dt>
         <dd>
           A string containing the decimal monetary value. If a decimal separator is needed then the string
-          MUST use a single U+002E FULL STOP character as the decimal separator. The string MUST begin
-          with a single U+002D HYPHEN-MINUS character if the value is negative. All other characters must
+          MUST use a single U+002E FULL STOP character as the decimal separator. All other characters must
           be characters in the range U+0030 DIGIT ZERO (0) to U+0039 DIGIT NINE (9).
           <div class="note">
-            The string should match the regular expression <code>^-?[0-9]+(\.[0-9]+)?$</code>.
+            The string should match the regular expression <code>^[0-9]+(\.[0-9]+)?$</code>.
           </div>
         </dd>
       </dl>
@@ -628,7 +629,7 @@ dictionary CurrencyAmount {
       <p>The following example shows how to represent US$55.00.</p>
       <pre class="example highlight">
 {
-  "currencyCode": "USD",
+  "currency": "USD",
   "value" : "55.00"
 }
       </pre>
