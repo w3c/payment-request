@@ -459,18 +459,6 @@
             later be resolved by the <a>user accepts the payment request algorithm</a> through interaction with the user interface.
           </li>
         </ol>
-
-
-        <p class="issue" data-number="39" title="How are web-based payment apps supported?">
-          How do we support Web-based payment apps? These instruments require
-          a user to: <br/>
-          1. Start on the merchant website<br/>
-          2. Click buy<br/>
-          3. Select the web-based instrument<br/>
-          4. Navigate to a 3rd party website to approve the transaction<br/>
-          5. Return to the merchant website with a token, approval code, or
-          other proof that the transaction has been approved.
-        </p>
       </section>
 
       <section>
@@ -1055,6 +1043,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           only available for a limited amount of time. If the user does not accept the payment request
           within the allowed time period, then the request will be aborted.
         </p>
+
         <p>
           A <a>user agent</a> may not always be able to abort a request. For example, if the <a>user agent</a>
           has delegated responsibility for the request to another app. To support this situation,
@@ -1081,6 +1070,14 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
             Set <em>request</em>@[[\state]] to <em>delegated</em>.
           </li>
         </ol>
+
+        <p class="issue" data-number="39" title="How are web-based payment apps supported?">
+          The architecture document suggests that payment apps may take
+          numerous forms, including as web-based apps. This specification
+          should describe how the user-agent will pass the payment request
+          data and the complete signal to a web-based payment app and also how
+          it will receive the payment response from the payment app.
+        </p>
 
         <div class="issue" data-number="7" title="Should we support a delegated state for PaymentRequest?">
           <p>We believe there are <a>user agent</a> configurations that can cause the UI to get into a state
