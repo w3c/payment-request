@@ -46,9 +46,29 @@
                   ]
               ,   status:   "ED"
               },
+              "PAYMENTREQUESTAPI": {
+                  title:    "Payment Request API"
+              ,   href:     "paymentrequest.html"
+              ,   authors:  [
+                      "Adrian Bateman"
+                  ,   "Zach Koch"
+                  ,   "Richard Barnes"
+                  ]
+              ,   status:   "ED"
+              },
               "METHODIDENTIFIERS": {
                   title:    "Payment Method Identifiers"
               ,   href:     "method-identifiers.html"
+              ,   authors:  [
+                      "Adrian Bateman"
+                  ,   "Zach Koch"
+                  ,   "Richard Barnes"
+                  ]
+              ,   status:   "ED"
+              },
+              "BASICCARDPAYMENTS": {
+                  title:    "Basic Card Payment"
+              ,   href:     "basic-card-payment.html"
               ,   authors:  [
                       "Adrian Bateman"
                   ,   "Zach Koch"
@@ -221,6 +241,112 @@
     </section>
 
     <section>
+      <h2>The Payment Request API Architecture</h2>
+
+      <p>The focus of the Payment Request API Architecture is to provide
+        an abstract interface between a web page and a <a>Payment
+        App</a> to facilitate a payment transaction. This is expected
+        to streamline checkout and help reduce shopping cart
+        abandonment, as well as make it easier to use new payment methods on
+        the Web. This document does not describe a complete architecture for
+        end-to-end payments on the Web.
+      </p>
+
+      <p>This document describes a set of technologies that, together,
+        provide merchants with a consistent way to request payment information
+    	  from the user, aided by a user agent.
+    	</p>
+
+      <section>
+        <h3>Overview of Anticipated User Experience</h3>
+
+        <p>This (imperfect) overview of the anticipated user experience will help explain the architecture:</p>
+
+        <ul>
+        	<li> At the end of shopping on a merchant site, the user pushes the “buy” button.</li>
+        	<li>The merchant site calls the payment API with purchase amount, currency, accepted payment methods (e.g., Visa, Paypal, Bitcoin), and any custom data for those payment methods.</li>
+        	<li>The user agent determines the intersection of merchant-accepted payment methods and user-registered payment methods. The merchant can (optionally) use the API to capture shipping information through the same user experience.</li>
+        	<li>The user selects a payment app to pay, and carries out any app-supported activities as needed, such as authentication.</li>
+        	<li>Assuming the payment is authorized, the payment app returns payment method-specific data through the user agent to the merchant site.</li>
+        	<li>Depending on the payment method, this data will either enable the merchant to be paid, or signal that the merchant has already been paid.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Specifications</h2>
+
+        <p>The Payment Request Architecture organizes the above concepts into several component specifications
+  	      so that they can be discussed and moved forward independently. The
+          <a href="#payment-method-identifiers">Payment Method Identifiers</a> specification the only
+          common dependency. The following diagram shows the references between different specifications that describe
+          the Payment Request Architecture. The arrows show normative references pointing from the referring
+          document to the referenced document.
+        </p>
+        <p>
+          <figure>
+            <img src="arch.svg" width=700 height=465>
+            <figcaption>Relationship among different specifications in the Payment Request system</figcaption>
+          </figure>
+        </p>
+
+        <section>
+          <h2>Payment Request API</h2>
+          <p>
+          This specification, the Payment Request API [[PAYMENTREQUESTAPI]], defines the API that makes a
+          user agent the conduit for messages exchanged between web pages (or applications) and <a>payment apps</a>.
+          The web page supplies a list of payment methods accepted by the merchant. The Payment Mediator
+          matches those against payment methods supported by the user’s registered Payment Apps.
+          </p>
+          <p>
+          One principle of the Payment Request system is that when a merchant web site declares
+          that it accepts a given payment method then it must know how to process the resulting
+  	      response.
+          </p>
+        </section>
+
+        <section>
+          <h2>Payment Method Identifiers</h2>
+          <p>The Payment Method Identifiers [[METHODIDENTIFIERS]] specification defines the format of
+            Payment Method Identifiers. </p>
+
+  	      <div class="issue" data-number="10" title="Should well-known identifiers be used for ubiquitous payment methods">
+          If we choose to support well-known short strings for payment methods then we will need to
+          determine where to define them. We may choose to define these well-known strings in a
+          formal specification.
+          </div>
+
+        </section>
+
+        <section>
+          <h2>Payment Method Specifications</h2>
+          <p>
+          The Payment Request API specification has no intrinsic knowledge of the payment
+          methods available. When a transaction is enacted by the user through the API a JSON object
+          containing the relevant information necessary to process the transaction is returned. The
+          format of this "message" is defined specifically for the <a>payment method</a> and might be private
+          to that method.</p>
+
+  	      <p>We expect some message definitions to be shared amongst different
+          <a>payment apps</a>. One example is the [[BASICCARDPAYMENTS]], which defines a payment
+  	      method identifier, method-specific request data, and method-specific response data
+  	      for a basic card payment method. We expect this specification to be a model for other
+  	      payment method specifications.</p>
+          </p>
+        </section>
+
+        <section>
+          <h2>Payment App  Registration Specifications</h2>
+          <div class="issue" data-number="8" title="Payment app installation is platform-dependent">
+            There is an open question within the working group about what registration scenarios
+            should be supported by specifications from the group. See the <a href="https://github.com/WICG/paymentrequest/blob/gh-pages/docs/registration.md">Payment App Registration</a> explainer and <a href="https://github.com/w3c/webpayments/wiki/RegistrationTypes">registration scenarios</a>.
+          </div>
+        </section>
+
+      </section>
+
+    </section>
+
+    <section>
       <h2>PaymentRequest interface</h2>
       <pre class="idl">
         [Constructor(sequence&lt;DOMString&gt; supportedMethods, PaymentDetails details, optional PaymentOptions options, optional object data)]
@@ -241,7 +367,7 @@
 
       <p>
         A web page creates a <a><code>PaymentRequest</code></a> to make a payment request. This is
-        typically associated with the user initiating a payment process 
+        typically associated with the user initiating a payment process
         (e.g., selecting a "Power Up" in an interactive game, pulling up to an automated kiosk in a parking structure,
         or activating a "Buy", "Purchase", or "Checkout" button).
         The <a><code>PaymentRequest</code></a> allows the web page to exchange information with the
@@ -275,11 +401,11 @@
           method</a> specific <code>data</code>.
         </p>
         <div class="issue" data-number="40" title="How does a website pass additional (not payment method specific) data to the payment app?">
-          It is proposed that a conformance criteria for implementations of this API be 
-          that any data passed into the request is passed on to the payment app unaltered. 
-          This would allow extensions of the data schema such as the addition of 
-          properties that are not documented in this specification or known to implementors 
-          such as JSON-LD @context or similar to be passed between the website and 
+          It is proposed that a conformance criteria for implementations of this API be
+          that any data passed into the request is passed on to the payment app unaltered.
+          This would allow extensions of the data schema such as the addition of
+          properties that are not documented in this specification or known to implementors
+          such as JSON-LD @context or similar to be passed between the website and
           payment app.
         </div>
         <div class="note">
@@ -495,7 +621,7 @@
       <section>
         <h2 id="state-transitions" class="informative">State transitions</h2>
           <p>The internal slot [[\state]] follows the following state transitions:</p>
-          <img alt="Transition diagram for internal slot state of a PaymentRequest object" 
+          <img alt="Transition diagram for internal slot state of a PaymentRequest object"
                src="state-transitions.svg" width="608" height="235">
       </section>
 

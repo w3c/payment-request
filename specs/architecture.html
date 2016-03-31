@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Payment Request API Architecture</title>
+    <title>Web Payments API Architecture</title>
     <meta charset='utf-8'>
     <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
             async class='remove'></script>
     <script class='remove'>
       var respecConfig = {
-          shortName:  "payment-request-architecture",
+          shortName:  "web-payments-api-architecture",
           edDraftURI:   "https://w3c.github.io/browser-payment-api/architecture.html",
 
           specStatus: "ED",
@@ -92,21 +92,10 @@
   <body>
     <section id='abstract'>
       <p>The mission of the Web Payments Working Group is to make payments easier and more secure on the Web.</p>
-  
-      <p>The group is chartered to develop multiple technologies. The current document describes a set of
-    	technologies &mdash;the Payment Request Architecture&mdash; that, together,
-    	provide merchants with a consistent way to request payment information
-    	from the user, aided by a user agent.</p>
 
-      <p>The focus of the Payment Request Architecture is to provide
-        an abstract interface between a web page and a <a>Payment
-        App</a> to facilitate a payment transaction. This is expected
-        to streamline checkout and help reduce shopping cart
-        abandonment, as well as make it easier to use new payment methods on the Web. This document
-      	does not describe a complete architecture for end-to-end payments on the Web.</p>
-      </p>
-
-      <p>This document does not address the full set of deliverables of the Web Payments Working Group.</p>
+      <p>The group is chartered to develop multiple specifications including
+      a browser API, an HTTP API, and other supporting payments-related
+      specifications.</p>
     </section>
 
     <section id='sotd'>
@@ -121,7 +110,7 @@
       <p>
         This specification was derived from a report published
         previously by the
-        <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a> and 
+        <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a> and
 	       <a href="https://github.com/w3c/webpayments/wiki/A-Payments-Initiation-Architecture-for-the-Web">A Payments Initiation Architecture for the Web</a>
          developed within the Web Payments Working Group, and a <a href="https://www.w3.org/blog/wpwg/2016/03/04/fpwd/">blog post</a>
          on the Working Group's work.
@@ -129,25 +118,10 @@
     </section>
 
     <section>
-      <h2>Overview of Anticipated User Experience</h2>
-
-      <p>This (imperfect) overview of the anticipated user experience will help explain the architecture:</p>
-
-      <ul>
-      	<li> At the end of shopping on a merchant site, the user pushes the “buy” button.</li>
-      	<li>The merchant site calls the payment API with purchase amount, currency, accepted payment methods (e.g., Visa, Paypal, Bitcoin), and any custom data for those payment methods.</li>
-      	<li>The user agent determines the intersection of merchant-accepted payment methods and user-registered payment methods. The merchant can (optionally) use the API to capture shipping information through the same user experience.</li>
-      	<li>The user selects a payment app to pay, and carries out any app-supported activities as needed, such as authentication.</li>
-      	<li>Assuming the payment is authorized, the payment app returns payment method-specific data through the user agent to the merchant site.</li>
-      	<li>Depending on the payment method, this data will either enable the merchant to be paid, or signal that the merchant has already been paid.</li>
-      </ul>
-    </section>
-    
-    <section>
       <h2>Components</h2>
 
       <p>
-        The following are key components of the Payment Request Architecture. These 
+        The following are key components of the Payment Request Architecture. These
 	      components would normally sit between
         the Payment Service Providers (PSPs) of the payer and
         payee. Different implementations of this architecture may result in components running on entirely
@@ -159,7 +133,7 @@
 
       <section>
         <h2>Payment Apps</h2>
-	
+
       	<p>A Payment App is software used to pay. Banks, merchants,
       	mobile operators, and anyone else who wants to will make
       	these available. User agents are also likely to act as basic
@@ -231,88 +205,16 @@
       </section>
     </section>
 
-    <section>
-      <h2>Specifications</h2>
-
-      <p>The Payment Request Architecture organizes the above concepts into several component specifications
-	      so that they can be discussed and moved forward independently. The
-        <a href="#payment-method-identifiers">Payment Method Identifiers</a> specification the only
-        common dependency. The following diagram shows the references between different specifications that describe
-        the Payment Request Architecture. The arrows show normative references pointing from the referring
-        document to the referenced document.
-      </p>
-      <p>
-        <figure>
-          <img src="arch.svg" width=700 height=465>
-          <figcaption>Relationship among different specifications in the Payment Request system</figcaption>
-        </figure>
-      </p>
-
-      <section>
-        <h2>Payment Method Identifiers</h2>
-        <p>The Payment Method Identifiers [[METHODIDENTIFIERS]] specification defines the format of
-          Payment Method Identifiers. </p>
-
-	      <div class="issue" data-number="10" title="Should well-known identifiers be used for ubiquitous payment methods">
-        If we choose to support well-known short strings for payment methods then we will need to
-        determine where to define them. We may choose to define these well-known strings in a
-        formal specification.
-        </div>
-
-      </section>
-
-      <section>
-        <h2>Payment Request API</h2>
-        <p>
-        The Payment Request API [[PAYMENTREQUESTAPI]] specification defines the API that makes a
-        user agent the conduit for messages exchanged between web pages (or applications) and <a>payment apps</a>.
-        The web page supplies a list of payment methods accepted by the merchant. The Payment Mediator
-        matches those against payment methods supported by the user’s registered Payment Apps.
-        </p>
-        <p>
-        One principle of the Payment Request system is that when a merchant web site declares
-        that it accepts a given payment method then it must know how to process the resulting
-	      response.
-        </p>
-      </section>
-
-      <section>
-        <h2>Payment Method Specifications</h2>
-        <p>
-        The Payment Request API specification has no intrinsic knowledge of the payment
-        methods available. When a transaction is enacted by the user through the API a JSON object
-        containing the relevant information necessary to process the transaction is returned. The
-        format of this "message" is defined specifically for the <a>payment method</a> and might be private
-        to that method.</p>
-
-	      <p>We expect some message definitions to be shared amongst different
-        <a>payment apps</a>. One example is the [[BASICCARDPAYMENTS]], which defines a payment
-	      method identifier, method-specific request data, and method-specific response data
-	      for a basic card payment method. We expect this specification to be a model for other
-	      payment method specifications.</p>
-        </p>
-      </section>
-
-      <section>
-        <h2>Payment App  Registration Specifications</h2>
-        <div class="issue" data-number="8" title="Payment app installation is platform-dependent">
-          There is an open question within the working group about what registration scenarios
-          should be supported by specifications from the group. See the <a href="https://github.com/WICG/paymentrequest/blob/gh-pages/docs/registration.md">Payment App Registration</a> explainer and <a href="https://github.com/w3c/webpayments/wiki/RegistrationTypes">registration scenarios</a>.
-        </div>
-      </section>
-
-    </section>
-
     <section class="appendix">
       <h2>Glossary</h2>
 
-      <div class="issue" data-number="43" title="Terminology across all Web Payments documents should be aligned">  
-        It has been suggested that all Web Payments specifications should use  
-        common terminology. There is a Web Payments Interest Group glossary that  
-        contains common terminology that could be integrated into this  
-        specification and automatically kept in sync via ReSpec's dynamic  
-        terminology import feature.  
-      </div>  
+      <div class="issue" data-number="43" title="Terminology across all Web Payments documents should be aligned">
+        It has been suggested that all Web Payments specifications should use
+        common terminology. There is a Web Payments Interest Group glossary that
+        contains common terminology that could be integrated into this
+        specification and automatically kept in sync via ReSpec's dynamic
+        terminology import feature.
+      </div>
 
       <dl>
         <dt><dfn data-lt="payment method|payment methods">Payment Method</dfn></dt>
