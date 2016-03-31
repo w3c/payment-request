@@ -295,16 +295,19 @@
                 {
                   "id": "basket",
                   "label": "Sub-total",
+                  "type" : "debit"
                   "amount": { "currencyCode": "USD", "value" : "55.00" }, // US$55.00
                 },
                 {
                   "id": "tax",
                   "label": "Sales Tax",
+                  "type" : "debit"
                   "amount": { "currencyCode": "USD", "value" : "5.00" }, // US$5.00
                 },
                 {
                   "id": "total",
                   "label": "Total due",
+                  "type" : "capture"
                   "amount": { "currencyCode": "USD", "value" : "60.00" }, // US$60.00
                 }
               ]
@@ -685,17 +688,76 @@ dictionary PaymentOptions {
     </section>
 
     <section>
+      <h2>Transaction Types</h2>
+      <pre class="idl">
+
+        enum TransactionType {
+          "debit",
+          "credit",
+          "auth",
+          "capture",
+          "repeat-debit",
+          "repeat-credit"
+        };
+      </pre>
+      <div class="issue" title="Should the set of transaction types be fixed?">
+        Defining a fixed list will allow <a>user agents</a> to manage the user interface for each transaction type
+        appropriately however it is possible that new payment methods may wish to define new types that are not
+        currently widely known.
+      </div>
+      <p>
+        The <code>type</code> attribute of a <code>PaymentItem</code> provides hints to the <a>user agent</a>
+        and <a>payment app</a> about how to display and process the request.
+      </p>
+      <p>
+        All but the last <code>PaymentItem</code> should have a <code>type</code> of either <code>debit</code> or
+        <code>credit</code> indicating if the payer is being debited or credited as a result of this item.
+        For example, a sub-total for a goods purchase would be a debit whereas a discount would be a credit.
+      </p>
+      <p>
+        The type of the final <code>PaymentItem</code> indicates to the <a>user agent</a> and <a>Payment App</a>
+        the type of transaction that the payee is requesting.
+      </p>
+      <p>The following types MUST be supported:</p>
+      <dl>
+        <dt><code>debit</code></dt>
+        <dd>A standard payment/debit against the payer's account.</dd>
+        <dt><code>credit</code></dt>
+        <dd>A refund/credit against the payer's account.</dd>
+        <dt><code>authorization</code></dt>
+        <dd>A request to authorize a payment that may be settled between the payer and payee at some
+          time in the future. The specifics of an authorization will depend on the payment method that is used
+          to process the payment.</dd>
+        <dt><code>capture</code></dt>
+        <dd>A request to capture the details of the payer (and possibly the payment itself) for future use.</dd>
+        <dt><code>repeat-debit</code></dt>
+        <dd>A request to peform repeated future debits against the payer's account. This may be for any recurring
+          payment such as a subscription. The details of the recurring payment should be handled by the payment
+          method.</dd>
+        <dt><code>repeat-credit</code></dt>
+        <dd>A request to peform repeated future credits against the payer's account. This may be for any recurring
+          credit such as a wage payment or proceeds of a sale. The details of the recurring payment should be
+          handled by the payment method.</dd>
+      </dl>
+    </section>
+
+    <section>
       <h2>PaymentItem dictionary</h2>
       <pre class="idl">
         dictionary PaymentItem {
           required DOMString id;
           required DOMString label;
+          required TransactionType type;
           required CurrencyAmount amount;
         };
       </pre>
       <p>
         A sequence of one or more <code>PaymentItem</code> dictionaries is included in the <a><code>PaymentDetails</code></a>
-        dictionary to indicate the what the payment request is for and the value asked for.
+        dictionary to indicate what the payment request is for and the value asked for.
+      </p>
+      <p>
+        The <a>user agent</a> MAY use the provided <code>PaymentItem</code> dictionaries to infer appropriate user interface details
+        to be displayed to the user.
       </p>
       <p>
         The following fields MUST be included in a <code>PaymentItem</code> for it to be valid:
@@ -706,7 +768,10 @@ dictionary PaymentOptions {
         unique for a given <a><code>PaymentRequest</code></a>.</dd>
         <dt><code>label</code></dt>
         <dd>This is a human-readable description of the item. The <a>user agent</a> may display
-        this to the user.</dd>
+          this to the user.</dd>
+        <dt><code>type</code> (Defaults to <code>debit</code>.)</dt>
+        <dd>The type of transaction that should be performed for this line item. The value for all but the
+          last line item SHOULD be either <code>debit</code> or <code>credit</code>.</dd>
         <dt><code>amount</code></dt>
         <dd>
           A <a><code>CurrencyAmount</code></a> containing the monetary amount for the item.
