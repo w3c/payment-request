@@ -689,6 +689,7 @@ dictionary PaymentOptions {
 
     <section>
       <h2>Transaction Types</h2>
+
       <pre class="idl">
 
         enum TransactionType {
@@ -700,10 +701,14 @@ dictionary PaymentOptions {
           "repeat-credit"
         };
       </pre>
-      <div class="issue" title="Should the set of transaction types be fixed?">
+      <div class="issue" data-number="112" title="Should the set of transaction types be fixed?">
         Defining a fixed list will allow <a>user agents</a> to manage the user interface for each transaction type
         appropriately however it is possible that new payment methods may wish to define new types that are not
         currently widely known.
+      </div>
+      <div class="issue" data-number="19" title="What is the appropriate set of payment method agnostic transaction types?">
+        There is currently a discussion around the approriate set of transaction types that should be defined in this
+        specification. This list is just the initial proposal.
       </div>
       <p>
         The <code>type</code> attribute of a <code>PaymentItem</code> provides hints to the <a>user agent</a>
