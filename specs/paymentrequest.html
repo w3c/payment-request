@@ -295,17 +295,17 @@
                 {
                   "id": "basket",
                   "label": "Sub-total",
-                  "amount": { "currency": "USD", "amount" : "55.00" }, // US$55.00
+                  "amount": { "currency": "USD", "value" : "55.00" }, // US$55.00
                 },
                 {
                   "id": "tax",
                   "label": "Sales Tax",
-                  "amount": { "currency": "USD", "amount" : "5.00" }, // US$5.00
+                  "amount": { "currency": "USD", "value" : "5.00" }, // US$5.00
                 },
                 {
                   "id": "total",
                   "label": "Total due",
-                  "amount": { "currency": "USD", "amount" : "60.00" }, // US$60.00
+                  "amount": { "currency": "USD", "value" : "60.00" }, // US$60.00
                 }
               ]
             }
@@ -579,7 +579,7 @@
       <pre class="idl">
 dictionary CurrencyAmount {
   required DOMString currency;
-  required DOMString amount;
+  required DOMString value;
 };
       </pre>
       <p>
@@ -594,7 +594,7 @@ dictionary CurrencyAmount {
           <code>"USD"</code> for US Dollars) however any string is considered valid and
           <dfn data-lt="user agents">user agents</dfn> MUST not attempt to validate this string.
         </dd>
-        <dt><code><dfn>amount</dfn></code></dt>
+        <dt><code><dfn>value</dfn></code></dt>
         <dd>
           A string containing the decimal monetary value. If a decimal separator is needed then the string
           MUST use a single U+002E FULL STOP character as the decimal separator. All other characters must
@@ -609,7 +609,7 @@ dictionary CurrencyAmount {
       <pre class="example highlight">
 {
   "currency": "USD",
-  "amount" : "55.00"
+  "value" : "55.00"
 }
       </pre>
     </section>
