@@ -17,10 +17,11 @@
                 {   name:       "Zach Koch",
                     company:    "Google" },
                 {   name:       "Richard Barnes",
-                    company:    "Mozilla Foundation" }
+                    company:    "Mozilla Foundation" },
+                {   name:       "Roy McElmurry",
+                    company:    "Facebook" },
           ],
 
-          useExperimentalStyles: true,
           license:      "w3c-software-doc",
 
           //previousMaturity: "FPWD",
@@ -32,6 +33,18 @@
           wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/83744/status",
 
           issueBase:    "https://github.com/w3c/browser-payment-api/issues/",
+          // additional defines to improve github integration
+          githubAPI:  "https://api.github.com/repos/w3c/browser-payment-api",
+          otherLinks: [{
+            key: "Version control",
+            data: [{
+              value: "Github Repository",
+              href: "https://github.com/w3c/browser-payment-api"
+            }, {
+              value: "Issues",
+              href: "https://github.com/w3c/browser-payment-api/issues"
+            }]
+          }],
 
           localBiblio:  {
               "PAYMENTREQUESTAPI": {
@@ -292,6 +305,14 @@
 
     <section class="appendix">
       <h2>Glossary</h2>
+
+      <div class="issue" data-number="43" title="Terminology across all Web Payments documents should be aligned">  
+        It has been suggested that all Web Payments specifications should use  
+        common terminology. There is a Web Payments Interest Group glossary that  
+        contains common terminology that could be integrated into this  
+        specification and automatically kept in sync via ReSpec's dynamic  
+        terminology import feature.  
+      </div>  
 
       <dl>
         <dt><dfn data-lt="payment method|payment methods">Payment Method</dfn></dt>

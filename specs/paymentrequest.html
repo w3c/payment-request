@@ -17,7 +17,9 @@
                 {   name:       "Zach Koch",
                     company:    "Google" },
                 {   name:       "Richard Barnes",
-                    company:    "Mozilla Foundation" }
+                    company:    "Mozilla Foundation" },
+                {   name:       "Roy McElmurry",
+                    company:    "Facebook" },
           ],
 
           useExperimentalStyles: true,
@@ -116,10 +118,10 @@
       <section id="goals">
         <h2>Goals</h2>
         <ul>
-          <li>Allow the user-agent to act as intermediary between merchants, users, and <a>payment
+          <li>Allow the user agent to act as intermediary between merchants, users, and <a>payment
           methods</a></li>
           <li>Standardize (to the extent that it makes sense) the communication flow between a
-          merchant, user-agent, and <a>payment method</a></li>
+          merchant, user agent, and <a>payment method</a></li>
           <li>Allow <a>payment methods</a> to bring more secure payment transactions to the web</li>
         </ul>
       </section>
@@ -135,11 +137,6 @@
     </section>
 
     <section id='conformance'>
-      <p>
-        As well as sections marked as non-normative, all authoring guidelines, diagrams, examples,
-        and notes in this specification are non-normative. Everything else in this specification is
-        normative.
-      </p>
       <p>
         This specification defines one class of products:
       </p>
@@ -177,12 +174,12 @@
       This specification relies on several other underlying specifications.
       </p>
       <dl>
-        <dt>Payment Request Document Architecture</dt>
+        <dt>Payment Request Architecture</dt>
         <dd>The terms <dfn data-lt="payment method|payment methods">Payment Method</dfn>,
         <dfn data-lt="payment app|payment apps">Payment App</dfn>, and <dfn>Payment Transaction
         Message Specification</dfn> are defined by the Payment Request Architecture document
         [[PAYMENTARCH]].</dd>
-        <dt>Payment Request Document Architecture</dt>
+        <dt>Payment Method Identifiers</dt>
         <dd>The term <dfn data-lt="payment method identifier|payment method identifiers">Payment
         Method Identifier</dfn> is defined by the Payment Method Identifiers specification
         [[!METHODIDENTIFIERS]].</dd>
@@ -244,7 +241,9 @@
 
       <p>
         A web page creates a <a><code>PaymentRequest</code></a> to make a payment request. This is
-        typically associated with the user activating a "Buy", "Purchase", or "Checkout" button.
+        typically associated with the user initiating a payment process 
+        (e.g., selecting a "Power Up" in an interactive game, pulling up to an automated kiosk in a parking structure,
+        or activating a "Buy", "Purchase", or "Checkout" button).
         The <a><code>PaymentRequest</code></a> allows the web page to exchange information with the
         <a>user agent</a> while the user is providing input before approving or denying a payment request.
       </p>
@@ -275,6 +274,14 @@
           list, the payment <code>details</code>, the payment <code>options</code>, and any <a>payment
           method</a> specific <code>data</code>.
         </p>
+        <div class="issue" data-number="40" title="How does a website pass additional (not payment method specific) data to the payment app?">
+          It is proposed that a conformance criteria for implementations of this API be 
+          that any data passed into the request is passed on to the payment app unaltered. 
+          This would allow extensions of the data schema such as the addition of 
+          properties that are not documented in this specification or known to implementors 
+          such as JSON-LD @context or similar to be passed between the website and 
+          payment app.
+        </div>
         <div class="note">
           <p>The <code>supportedMethods</code> sequence contains the <a>payment method identifiers</a>
           for the <a>payment methods</a> that the merchant web site accepts.</p>
@@ -486,11 +493,10 @@
       </section>
 
       <section>
-        <h2 id="state-transitions">State transitions</h2>
-        <div class="note">
+        <h2 id="state-transitions" class="informative">State transitions</h2>
           <p>The internal slot [[\state]] follows the following state transitions:</p>
-          <img src="state-transitions.svg" width="608" height="235">
-        </div>
+          <img alt="Transition diagram for internal slot state of a PaymentRequest object" 
+               src="state-transitions.svg" width="608" height="235">
       </section>
 
       <section>
@@ -967,6 +973,12 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
 
       </section>
     </section>
+
+    <p class="issue" data-number="53" title="Add section on internationalization">
+      The spec needs to clearly state how it will handle internationalization
+      issues (such as selection order for language via explicit preferences,
+      Accept-Language headers, etc.)
+    </p>
 
     <section>
       <h2>Algorithms</h2>
