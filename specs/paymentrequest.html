@@ -668,12 +668,12 @@ dictionary PaymentDetails {
           This sequence of <a><code>PaymentItem</code></a> dictionaries indicates what the payment
           request is for. The sequence must contain at least one <code>PaymentItem</code>. The last
           <code>PaymentItem</code> in the sequence represents the total amount of the payment
-          request. It is the responsibility of the calling code to ensure that the total amount is
-          the sum of the preceding items. The <a>user agent</a> MAY not validate that this is true.
+          request. The <a>user agent</a> MAY validate that the total amount is the sum of the
+          preceding items, but it is the responsibility of the calling code to ensure that.
         </dd>
         <dt><code>shippingOptions</code></dt>
         <dd>
-          A sequence containing the different shipping options that the use may choose from.
+          A sequence containing the different shipping options for the user to choose from.
           <p>If the sequence is empty, then this indicates that the merchant
           cannot ship to the current <a><code>shippingAddress</code></a>.</p>
           <p>If the sequence only contains one item, then this is the shipping option that
@@ -1097,13 +1097,13 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
         <p>
           The <a><code>PaymentRequest</code></a> interface allows a web page to call <code>abort</code>
           to tell the <a>user agent</a> to abort the payment request and to tear down any user interface that
-          might be shown. For example, a web page may choose to do this the goods they are selling are
+          might be shown. For example, a web page might choose to do this if the goods they are selling are
           only available for a limited amount of time. If the user does not accept the payment request
           within the allowed time period, then the request will be aborted.
         </p>
 
         <p>
-          A <a>user agent</a> may not always be able to abort a request. For example, if the <a>user agent</a>
+          A <a>user agent</a> might not always be able to abort a request. For example, if the <a>user agent</a>
           has delegated responsibility for the request to another app. To support this situation,
           the <a>user agent</a> must run the <dfn>User agent delegates payment request algorithm</dfn>.
           The algorithm MUST run the following steps:
