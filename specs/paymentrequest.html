@@ -658,8 +658,8 @@ dictionary PaymentDetails {
           This sequence of <a><code>PaymentItem</code></a> dictionaries indicates what the payment
           request is for. The sequence must contain at least one <code>PaymentItem</code>. The last
           <code>PaymentItem</code> in the sequence represents the total amount of the payment
-          request. It is the responsibility of the calling code to ensure that the total amount is
-          the sum of the preceding items. The <a>user agent</a> MAY not validate that this is true.
+          request. The <a>user agent</a> MAY validate that the total amount is the sum of the
+          preceding items, but it is the responsibility of the calling code to ensure that.
         </dd>
         <dt><code>shippingOptions</code></dt>
         <dd>
