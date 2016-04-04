@@ -641,7 +641,8 @@ dictionary CurrencyAmount {
       <h2>PaymentDetails dictionary</h2>
       <pre class="idl">
 dictionary PaymentDetails {
-  sequence&lt;PaymentItem&gt; items;
+  PaymentItem total;
+  sequence&lt;PaymentItem&gt;? items;
   sequence&lt;ShippingOption&gt; shippingOptions;
 };
       </pre>
@@ -655,17 +656,22 @@ dictionary PaymentDetails {
         The following fields are part of the <code>PaymentDetails</code> dictionary:
       </p>
       <dl>
+        <dt><code>total</code></dt>
+        <dd>
+          A <a><code>PaymentItem</code></a> dictionary that represents the total amount of the payment
+          request. It is the responsibility of the calling code to ensure that the total amount is
+          the sum of <a><code>PaymentItem</code></a> dictionaries in <code>items</code>. The <a>user agent</a>
+          MAY not validate that this is true.
+        </dd>
         <dt><code>items</code></dt>
         <dd>
-          This sequence of <a><code>PaymentItem</code></a> dictionaries indicates what the payment
-          request is for. The sequence must contain at least one <code>PaymentItem</code>. The last
-          <code>PaymentItem</code> in the sequence represents the total amount of the payment
-          request. It is the responsibility of the calling code to ensure that the total amount is
-          the sum of the preceding items. The <a>user agent</a> MAY not validate that this is true.
+          This optional sequence of <a><code>PaymentItem</code></a> dictionaries indicates what the payment
+          request is for. It may be used to enumerate the basket of goods or additional costs and discounts such
+          as shipping costs or discounts as a result of a voucher or coupon.
         </dd>
         <dt><code>shippingOptions</code></dt>
         <dd>
-          A sequence containing the different shipping options that the use may choose from.
+          A sequence containing the different shipping options that the user may choose from.
           <p>If the sequence is empty, then this indicates that the merchant
           cannot ship to the current <a><code>shippingAddress</code></a>.</p>
           <p>If the sequence only contains one item, then this is the shipping option that
@@ -736,13 +742,14 @@ dictionary PaymentOptions {
         and <a>payment app</a> about how to display and process the request.
       </p>
       <p>
-        All but the last <code>PaymentItem</code> should have a <code>type</code> of either <code>debit</code> or
-        <code>credit</code> indicating if the payer is being debited or credited as a result of this item.
-        For example, a sub-total for a goods purchase would be a debit whereas a discount would be a credit.
+        All <code>PaymentItem</code> dictionaries in the <code>items</code> sequence of <a><code>PaymentDetails</code></a>
+        must have a <code>type</code> of either <code>debit</code> or <code>credit</code> indicating if the payer
+        is being debited or credited as a result of this item. For example, a sub-total for a goods purchase would
+        be a debit whereas a discount would be a credit.
       </p>
       <p>
-        The type of the final <code>PaymentItem</code> indicates to the <a>user agent</a> and <a>Payment App</a>
-        the type of transaction that the payee is requesting.
+        The type of the <code>PaymentItem</code> that is the <code>total</code> element of <a>PaymentDetails</a>
+        indicates to the <a>Payment App</a> the type of transaction that the payee is requesting.
       </p>
       <p>The following types MUST be supported:</p>
       <dl>
