@@ -17,7 +17,9 @@
                 {   name:       "Zach Koch",
                     company:    "Google" },
                 {   name:       "Richard Barnes",
-                    company:    "Mozilla Foundation" }
+                    company:    "Mozilla Foundation" },
+                {   name:       "Roy McElmurry",
+                    company:    "Facebook" },
           ],
 
           useExperimentalStyles: true,
@@ -164,10 +166,11 @@
         and "user agent(s)" to refer to this product class.
         </aside>
       </dd>
+      </dl>
     </section>
 
     <section id="dependencies">
-      <h3>Dependencies</h3>
+      <h2>Dependencies</h2>
       <p>
       This specification relies on several other underlying specifications.
       </p>
@@ -346,6 +349,12 @@
           currently described in the specification.
         </div>
 
+        <div class="issue" data-number="47" title="Should a payment request be just data, or a programmable object?">
+          There is an open issue about whether the payment request should
+          be a programmable object or should be just pure data that can be
+          operated on by methods.
+        </div>
+
         <div class="issue" data-number="19" title="Should the API handle pre-auth, recurring payments, and similar scenarios">
           There is an open issue about whether the API should handle occasions when a site wants to request a payment
           method but not actually make a charge immediately. These may include identification validation, pre-auth
@@ -356,6 +365,19 @@
           There is an open issue about whether the merchant can influence order of presentation of
           payment apps to the user. There is a suggestion that we should support merchants specifying
           a preference and allow users to express a preference that overrides merchant preferences.
+        </div>
+
+        <div class="issue" data-number="48" title="Should list of accepted payment methods be strings or objects?">
+          There is an open issue about whether the list of supported payment
+          methods should be passed to the user agent as a simple sequence of
+          strings or as a more complex and flexible object structure.
+        </div>
+
+        <div class="issue" data-number="51" title="Should the payment API be more conversational or less conversational?">
+          There is an open issue regarding whether the current pattern of using
+          events for exchange of data between the user agent and the website is
+          the best design for this API. An alternative pattern has been
+          proposed in the issue thread.
         </div>
 
         <p>
@@ -439,6 +461,7 @@
           and accidentally lead to customers thinking they're performing
           actions like a one-time purchase, when they are in fact signing up
           for a subscription.
+        </p>
         <p>
           The <a><code>show</code></a> method MUST act as follows:
         </p>
@@ -537,7 +560,7 @@
             <td>[[\details]]</td>
             <td>
               The current <a><code>PaymentDetails</code></a> for the payment request initially
-              supplied to the constructor and then updated with calls to <a><code>updateWith</code></a>.</td>
+              supplied to the constructor and then updated with calls to <a><code>updateWith</code></a>.
             </td>
           </tr>
           <tr>
@@ -592,7 +615,7 @@ dictionary CurrencyAmount {
           <code>currency</code> is a string containing a currency identifier. The most common
           identifiers are three-letter alphabetic codes as defined by [[!ISO4217]] (for example,
           <code>"USD"</code> for US Dollars) however any string is considered valid and
-          <dfn data-lt="user agents">user agents</dfn> MUST not attempt to validate this string.
+          <a data-lt="user agents">user agents</a> MUST not attempt to validate this string.
         </dd>
         <dt><code><dfn>value</dfn></code></dt>
         <dd>
@@ -979,6 +1002,14 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
       Accept-Language headers, etc.)
     </p>
 
+
+    <p class="issue" data-number="55" title="Add section on security considerations">
+      The spec should indicate how data might be passed securely through the API using
+      mechanisms such as field level encryption and message signing. While these may not
+      be standardised a reference to the payment method specifications would be appropriate
+      as well as some examples of how those specifcations might implement secure messaging.
+    </p>
+
     <section>
       <h2>Algorithms</h2>
 
@@ -1062,6 +1093,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           only available for a limited amount of time. If the user does not accept the payment request
           within the allowed time period, then the request will be aborted.
         </p>
+
         <p>
           A <a>user agent</a> may not always be able to abort a request. For example, if the <a>user agent</a>
           has delegated responsibility for the request to another app. To support this situation,
@@ -1089,6 +1121,14 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           </li>
         </ol>
 
+        <p class="issue" data-number="39" title="How are web-based payment apps supported?">
+          The architecture document suggests that payment apps may take
+          numerous forms, including as web-based apps. This specification
+          should describe how the user-agent will pass the payment request
+          data and the complete signal to a web-based payment app and also how
+          it will receive the payment response from the payment app.
+        </p>
+
         <div class="issue" data-number="7" title="Should we support a delegated state for PaymentRequest?">
           <p>We believe there are <a>user agent</a> configurations that can cause the UI to get into a state
           where cancellation by the web page during user interaction is difficult. Users should still
@@ -1099,6 +1139,13 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           <a><code>abort</code></a> to account for the situation where this may fail in the <code>delegated</code>
           state.</p>
         </div>
+
+        <p class="issue" data-number="50" title="How are payment requests and responses passed between the browser and third-party native wallets?">
+          This specification should describe how the user agent will pass the 
+          payment request data and the complete signal to a native payment app 
+          and also how it will receive the payment response from the payment app.
+        </p>
+
       </section>
 
       <section>

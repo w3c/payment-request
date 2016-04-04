@@ -17,7 +17,9 @@
                 {   name:       "Zach Koch",
                     company:    "Google" },
                 {   name:       "Richard Barnes",
-                    company:    "Mozilla Foundation" }
+                    company:    "Mozilla Foundation" },
+                {   name:       "Roy McElmurry",
+                    company:    "Facebook" },
           ],
 
           useExperimentalStyles: true,
@@ -207,6 +209,13 @@
         security code of the card (sometimes known as the CVV, CVC, CVN, CVE or CID).</dd>
 		
       </dl>
+
+      <p class="issue" data-number="55" title="Should the messages support field-level encryption?">
+There is a requirement for payment apps to be able to return data that is
+hidden from the payee themselves (perhaps for PCI scope reasons) as they will
+pass it on to their payment service processor who can then decrypt it and use
+it.
+      </p>
 
       </section>
 
