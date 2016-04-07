@@ -48,7 +48,7 @@
           }],
 
           localBiblio:  {
-              "PAYMENTREQUESTAPI": {
+              "PAYMENT-REQUEST-API": {
                   title:    "Payment Request API"
               ,   href:     "https://www.w3.org/TR/payment-request/"
               ,   authors:  [
@@ -59,7 +59,7 @@
                   ]
               ,   status:   "WD"
               },
-              "METHODIDENTIFIERS": {
+              "METHOD-IDENTIFIERS": {
                   title:    "Payment Method Identifiers"
               ,   href:     "https://www.w3.org/TR/payment-method-id/"
               ,   authors:  [
@@ -70,7 +70,7 @@
                   ]
               ,   status:   "WD"
               },
-              "BASICCARDPAYMENTS": {
+              "BASIC-CARD-PAYMENTS": {
                   title:    "Basic Card Payment"
               ,   href:     "http://www.w3.org/TR/payment-method-basic-card/"
               ,   authors:  [
@@ -260,7 +260,7 @@
 
       <section>
         <h2>Payment Method Identifiers</h2>
-        <p>The Payment Method Identifiers [[METHODIDENTIFIERS]] specification defines the format of
+        <p>The Payment Method Identifiers [[METHOD-IDENTIFIERS]] specification defines the format of
           Payment Method Identifiers. </p>
 
 	      <div class="issue" data-number="10" title="Should well-known identifiers be used for ubiquitous payment methods">
@@ -274,7 +274,7 @@
       <section>
         <h2>Payment Request API</h2>
         <p>
-        The Payment Request API [[PAYMENTREQUESTAPI]] specification defines the API that makes a
+        The Payment Request API [[PAYMENT-REQUEST-API]] specification defines the API that makes a
         user agent the conduit for messages exchanged between web pages (or applications) and <a>payment apps</a>.
         The web page supplies a list of payment methods accepted by the merchant. The Payment Mediator
         matches those against payment methods supported by the user’s registered Payment Apps.
@@ -296,7 +296,7 @@
         to that method.</p>
 
 	      <p>We expect some message definitions to be shared amongst different
-        <a>payment apps</a>. One example is the [[BASICCARDPAYMENTS]], which defines a payment
+        <a>payment apps</a>. One example is the [[BASIC-CARD-PAYMENTS]], which defines a payment
 	      method identifier, method-specific request data, and method-specific response data
 	      for a basic card payment method. We expect this specification to be a model for other
 	      payment method specifications.</p>
