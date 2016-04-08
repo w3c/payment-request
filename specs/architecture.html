@@ -23,6 +23,7 @@
           ],
 
           license:      "w3c-software-doc",
+          "noRecTrack": true,
 
           //previousMaturity: "FPWD",
           //previousPublishDate:  "1977-03-15",
@@ -103,7 +104,7 @@
         App</a> to facilitate a payment transaction. This is expected
         to streamline checkout and help reduce shopping cart
         abandonment, as well as make it easier to use new payment methods on the Web. This document
-      	does not describe a complete architecture for end-to-end payments on the Web.</p>
+      	does not describe a complete architecture for end-to-end payments on the Web.
       </p>
 
       <p>This document does not address the full set of deliverables of the Web Payments Working Group.</p>
@@ -249,12 +250,10 @@
         the Payment Request Architecture. The arrows show normative references pointing from the referring
         document to the referenced document.
       </p>
-      <p>
-        <figure>
-          <img src="arch.svg" width=700 height=465>
-          <figcaption>Relationship among different specifications in the Payment Request system</figcaption>
-        </figure>
-      </p>
+      <figure>
+        <img src="arch.svg" width=700 height=465>
+        <figcaption>Relationship among different specifications in the Payment Request system</figcaption>
+      </figure>
 
       <section>
         <h2>Payment Method Identifiers</h2>
@@ -298,7 +297,6 @@
 	      method identifier, method-specific request data, and method-specific response data
 	      for a basic card payment method. We expect this specification to be a model for other
 	      payment method specifications.</p>
-        </p>
       </section>
 
       <section>
@@ -339,7 +337,7 @@
         <dt><dfn>Payment Mediator</dfn></dt>
         <dd>
           Software that matches payee-accepted payment methods and user-registered payment methods, and
-	        offers a choice to the user for selection.</dd>
+	        offers a choice to the user for selection.
         </dd>
         <dt><dfn>Payment Method Data</dfn></dt>
         <dd>
@@ -368,7 +366,7 @@
 
         <p>There is not a one-to-one mapping from the previous concepts to the current ones, as the modeling is fundamentally different. Here is how previous and current concepts relate:</p>
 
-      	<table border="1">
+      	<table>
       	  <tr>
       	    <th>Current</th>
       	    <th>Previous</th>

@@ -22,8 +22,8 @@
                     company:    "Facebook" },
           ],
 
-          useExperimentalStyles: true,
           license:      "w3c-software-doc",
+          "noRecTrack": true,
 
           //previousMaturity: "FPWD",
           //previousPublishDate:  "1977-03-15",
@@ -416,6 +416,8 @@
 
         <div class="issue" data-number="11" title="What is the format for payment method identifiers for distributed extensibility">
           <p>Should the format of the identifiers be URLs (e.g. http://example.com/paymentmethod) or reverse host name (e.g. com.example.paymentmethod) or some other extensible syntax?</p>
+          <p>If the identifier is a URL, should there be a resource that can be fetched from the URL?</p>
+          <p>Is there a need to describe the payment method at the URL or provide some other information?</p>
         </div>
 
         <div class="issue" data-number="10" title="Should well-known identifiers be used for ubiquitous payment methods">
@@ -426,11 +428,6 @@
           <p>A registration mechanism may exist to install the code for new payment methods into the user agent. This process
             would add support for a new payment method to the user agent. This mechanism should be defined in a separate specification.</p>
           <p>There is an initial <a href="https://github.com/WICG/paymentrequest/blob/gh-pages/docs/registration.md">outline making a proposal</a>.</p>
-        </div>
-
-        <div class="issue" data-number="11" title="What is the format for payment method identifiers for distributed extensibility">
-          <p>If the identifier is a URL, should there be a resource that can be fetched from the URL</p>
-          <p>Is there a need to describe the payment method at the URL or provide some other information?</p>
         </div>
     </section>
 

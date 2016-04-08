@@ -38,7 +38,7 @@
           localBiblio:  {
               "PAYMENTARCH": {
                   title:    "Payment Request Architecture"
-              ,   href:     "architecture.html"
+              ,   href:     "https://w3c.github.io/browser-payment-api/specs/architecture.html"
               ,   authors:  [
                       "Adrian Bateman"
                   ,   "Zach Koch"
@@ -48,7 +48,7 @@
               },
               "METHODIDENTIFIERS": {
                   title:    "Payment Method Identifiers"
-              ,   href:     "method-identifiers.html"
+              ,   href:     "https://w3c.github.io/browser-payment-api/specs/method-identifiers.html"
               ,   authors:  [
                       "Adrian Bateman"
                   ,   "Zach Koch"
@@ -166,10 +166,11 @@
         and "user agent(s)" to refer to this product class.
         </aside>
       </dd>
+      </dl>
     </section>
 
     <section id="dependencies">
-      <h3>Dependencies</h3>
+      <h2>Dependencies</h2>
       <p>
       This specification relies on several other underlying specifications.
       </p>
@@ -460,6 +461,7 @@
           and accidentally lead to customers thinking they're performing
           actions like a one-time purchase, when they are in fact signing up
           for a subscription.
+        </p>
         <p>
           The <a><code>show</code></a> method MUST act as follows:
         </p>
@@ -558,7 +560,7 @@
             <td>[[\details]]</td>
             <td>
               The current <a><code>PaymentDetails</code></a> for the payment request initially
-              supplied to the constructor and then updated with calls to <a><code>updateWith</code></a>.</td>
+              supplied to the constructor and then updated with calls to <a><code>updateWith</code></a>.
             </td>
           </tr>
           <tr>
@@ -603,6 +605,13 @@ dictionary CurrencyAmount {
   required DOMString value;
 };
       </pre>
+      <div class="issue" data-number="119" title="Should negative amounts be reflected using signed values?">  
+      The resolution of the WG per <a href="https://github.com/w3c/webpayments/issues/57"> Issue #57</a> defined  
+      a format for currencies and amounts that lacked support for negative values. The format below adds this  
+      capability in a way that is not common for financial messaging standards (using signed numbers). The
+      rationale for negative numbers is to support discounts. The group is still discussing whether functionality
+      to support discounts might be implemented in a different manner (e.g., via a transaction type).
+      </div>  
       <p>
         A <a><code>CurrencyAmount</code></a> dictionary is used to supply monetary amounts.
         The following fields MUST be supplied for a <a><code>CurrencyAmount</code></a> to be valid:
@@ -613,15 +622,16 @@ dictionary CurrencyAmount {
           <code>currency</code> is a string containing a currency identifier. The most common
           identifiers are three-letter alphabetic codes as defined by [[!ISO4217]] (for example,
           <code>"USD"</code> for US Dollars) however any string is considered valid and
-          <dfn data-lt="user agents">user agents</dfn> MUST not attempt to validate this string.
+          <a data-lt="user agents">user agents</a> MUST not attempt to validate this string.
         </dd>
         <dt><code><dfn>value</dfn></code></dt>
         <dd>
           A string containing the decimal monetary value. If a decimal separator is needed then the string
-          MUST use a single U+002E FULL STOP character as the decimal separator. All other characters must
+          MUST use a single U+002E FULL STOP character as the decimal separator. The string MUST begin  
+          with a single U+002D HYPHEN-MINUS character if the value is negative. All other characters must  
           be characters in the range U+0030 DIGIT ZERO (0) to U+0039 DIGIT NINE (9).
           <div class="note">
-            The string should match the regular expression <code>^[0-9]+(\.[0-9]+)?$</code>.
+            The string should match the regular expression <code>^-?[0-9]+(\.[0-9]+)?$</code>.
           </div>
         </dd>
       </dl>
@@ -658,12 +668,12 @@ dictionary PaymentDetails {
           This sequence of <a><code>PaymentItem</code></a> dictionaries indicates what the payment
           request is for. The sequence must contain at least one <code>PaymentItem</code>. The last
           <code>PaymentItem</code> in the sequence represents the total amount of the payment
-          request. It is the responsibility of the calling code to ensure that the total amount is
-          the sum of the preceding items. The <a>user agent</a> MAY not validate that this is true.
+          request. The <a>user agent</a> MAY validate that the total amount is the sum of the
+          preceding items, but it is the responsibility of the calling code to ensure that.
         </dd>
         <dt><code>shippingOptions</code></dt>
         <dd>
-          A sequence containing the different shipping options that the use may choose from.
+          A sequence containing the different shipping options for the user to choose from.
           <p>If the sequence is empty, then this indicates that the merchant
           cannot ship to the current <a><code>shippingAddress</code></a>.</p>
           <p>If the sequence only contains one item, then this is the shipping option that
@@ -1087,13 +1097,13 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
         <p>
           The <a><code>PaymentRequest</code></a> interface allows a web page to call <code>abort</code>
           to tell the <a>user agent</a> to abort the payment request and to tear down any user interface that
-          might be shown. For example, a web page may choose to do this the goods they are selling are
+          might be shown. For example, a web page might choose to do this if the goods they are selling are
           only available for a limited amount of time. If the user does not accept the payment request
           within the allowed time period, then the request will be aborted.
         </p>
 
         <p>
-          A <a>user agent</a> may not always be able to abort a request. For example, if the <a>user agent</a>
+          A <a>user agent</a> might not always be able to abort a request. For example, if the <a>user agent</a>
           has delegated responsibility for the request to another app. To support this situation,
           the <a>user agent</a> must run the <dfn>User agent delegates payment request algorithm</dfn>.
           The algorithm MUST run the following steps:
