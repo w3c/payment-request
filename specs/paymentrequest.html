@@ -605,6 +605,13 @@ dictionary CurrencyAmount {
   required DOMString value;
 };
       </pre>
+      <div class="issue" data-number="119" title="Should negative amounts be reflected using signed values?">  
+      The resolution of the WG per <a href="https://github.com/w3c/webpayments/issues/57"> Issue #57</a> defined  
+      a format for currencies and amounts that lacked support for negative values. The format below adds this  
+      capability in a way that is not common for financial messaging standards (using signed numbers). The
+      rationale for negative numbers is to support discounts. The group is still discussing whether functionality
+      to support discounts might be implemented in a different manner (e.g., via a transaction type).
+      </div>  
       <p>
         A <a><code>CurrencyAmount</code></a> dictionary is used to supply monetary amounts.
         The following fields MUST be supplied for a <a><code>CurrencyAmount</code></a> to be valid:
@@ -620,10 +627,11 @@ dictionary CurrencyAmount {
         <dt><code><dfn>value</dfn></code></dt>
         <dd>
           A string containing the decimal monetary value. If a decimal separator is needed then the string
-          MUST use a single U+002E FULL STOP character as the decimal separator. All other characters must
+          MUST use a single U+002E FULL STOP character as the decimal separator. The string MUST begin  
+          with a single U+002D HYPHEN-MINUS character if the value is negative. All other characters must  
           be characters in the range U+0030 DIGIT ZERO (0) to U+0039 DIGIT NINE (9).
           <div class="note">
-            The string should match the regular expression <code>^[0-9]+(\.[0-9]+)?$</code>.
+            The string should match the regular expression <code>^-?[0-9]+(\.[0-9]+)?$</code>.
           </div>
         </dd>
       </dl>
