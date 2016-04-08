@@ -110,7 +110,7 @@
     not yet selected an approach, which might be one documented in this specification or another as yet undocumented proposal.</div> 
 
     <section>
-      <h2>Option 1</h2>
+      <h2>Option 1a</h2>
       <p>This section describes an approach to payment method identifiers using URLs.</p>
 
       <section>
@@ -213,6 +213,133 @@
       </section>
     </section>
 
+    <section>
+      <h2>Option 1b</h2>
+      <p>
+        This section describes a way of expressing payment method identifiers
+        using machine-readable URLs that may be aliased to
+        developer-friendly short identifiers.
+      </p>
+
+      <section>
+        <h2>Identifier format</h2>
+        <p>
+          Payment method identifiers are
+          <a data-lt="absolute URL">absolute URLs</a> that may optionally be
+          aliased using short identifiers. For example,
+          <code>https://visa.com/payment-methods/VisaDebit</code> (URL) or
+          <code>VisaDebit</code> (short identifier).
+        </p>
+      </section>
+
+      <section>
+        <h2>Short Identifier Registry</h2>
+        <p>
+          A mapping file establishing short identifiers to payment method
+          identifier URLs can be found at
+          <code>https://w3.org/registries/web-payments/v1</code>.
+          To reduce the load on fetching this file, it is encouraged that
+          applications hard code the mappings.
+        </p>
+        <p class="issue">
+          Any short identifier registry that is not re-parsed every time
+          will require a message version identifier to be embedded in the
+          messages that use the short identifiers. The assumption here is
+          that there is some versioning mechanism that is used by payment
+          messages such that the payment apps and merchants know how to
+          process short identifiers.
+        </p>
+        <p class="issue">
+          The format of the document located at the short identifier registry
+          URL above still needs to be determined. Options include a plain
+          JSON document or a JSON-LD document. The mappings would be as simple
+          as: <code>"VisaDebit": "https://visa.com/payment-methods/VisaDebit"</code>.
+        </p>
+        <p class="issue">
+          It is assumed that once the short identifier registry file is created,
+          it is never updated. The Working Group may periodically release
+          <code>v2</code>, <code>v3</code>, etc. registry files.
+        </p>
+      </section>
+
+      <section>
+        <h2>Content at Payment Method Identifier URLs</h2>
+        <p>
+          Payment method identifier URLs that resolve to content:
+        </p>
+        <ol>
+          <li>MUST be served over HTTPS,</li>
+          <li>SHOULD support HTTP Content Negotiation,</li>
+          <li>SHOULD provide a human-readable document that describes the
+          payment method when <code>text/html</code> is requested, and</li>
+          <li>SHOULD provide a machine-readable document that describes the
+          payment method when <code>application/ld+json</code> is requested.
+          </li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>Identifier Equivalence</h2>
+        <p>When the PaymentRequest API is invoked, the web page provides a
+        list of identifiers for supported payment methods. The user agent
+        must compare these identifiers to those available to the user and
+        use this to filter what the user can select. To determine whether
+        two identifiers match, perform the following test:</p>
+        <ul>
+          <li>Let <em>A</em> be the first payment method identifier and
+          let <em>B</em> be the second payment method identifier.</li>
+          <li>If <em>A</em> or <em>B</em> is listed in the Short Identifier
+          Registry, replace the value with its corresponding
+          <a>absolute URL</a>.</li>
+          <li>Let <em>urlA</em> be the result from the <a>URL parser</a>
+          when parsing <em>A</em>.</li>
+          <li>Let <em>urlB</em> be the result from the <a>URL parser</a> when
+          parsing <em>B</em>.</li>
+          <li>The identifiers match if <em>urlA</em> <strong>equals</strong>
+          <em>urlB</em> using the <a>URL equivalence</a> test
+          (i.e. the test returns true).</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Dependencies</h2>
+        <p>This section relies on several other underlying specifications.</p>
+        <dl>
+          <dt>URL</dt>
+          <dd>The terms <em>URL</em>, <em>absolute URL</em>, <em>URL parser</em>, and <em>URL equivalence</em> are defined by [[!url-1-20141209]] <small><em>(or the editor's draft)</em></small>.</dd>
+        </dl>
+      </section>
+      <section class="informative">
+        <h2>Discussion topics</h2>
+        <p>The following observations are made about this option:</p>
+        <ul>
+          <li>
+            This option satisfies all requirements that Option 1 satisfies.
+          </li>
+          <li>
+            Advantages over Option 1a:
+            <ul>
+              <li>Relative URL and Base URL processing is avoided entirely
+              while ensuring that short identifiers can be used.</li>
+              <li>The Web Payments Working Group only has to maintain a
+              short identifier mapping file, not a complete payment method
+              identifier registry.</li>
+              <li>Hard coding and/or aggressive caching of the short identifier
+              mappings are encouraged as changes to the short identifiers
+              are disallowed after every major release.</li>
+              <li>Machine-readable information is encouraged to be published at
+              payment method identifier URLs but is not required.</li>
+            </ul>
+          </li>
+          <li>
+            Disadvantages wrt. Option 1a:
+            <ul>
+              <li>
+                None
+              </li>
+            </ul>
+        </ul>
+      </section>
+    </section>
     <section>
       <h2>Option 2</h2>
       <p>This section describes an approach to payment method identifiers using strings that might be reverse domain names.</p>

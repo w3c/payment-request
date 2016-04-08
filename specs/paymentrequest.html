@@ -297,17 +297,17 @@
                 {
                   "id": "basket",
                   "label": "Sub-total",
-                  "amount": { "currencyCode": "USD", "value" : "55.00" }, // US$55.00
+                  "amount": { "currency": "USD", "value" : "55.00" }, // US$55.00
                 },
                 {
                   "id": "tax",
                   "label": "Sales Tax",
-                  "amount": { "currencyCode": "USD", "value" : "5.00" }, // US$5.00
+                  "amount": { "currency": "USD", "value" : "5.00" }, // US$5.00
                 },
                 {
                   "id": "total",
                   "label": "Total due",
-                  "amount": { "currencyCode": "USD", "value" : "60.00" }, // US$60.00
+                  "amount": { "currency": "USD", "value" : "60.00" }, // US$60.00
                 }
               ]
             }
@@ -348,6 +348,12 @@
           currently described in the specification.
         </div>
 
+        <div class="issue" data-number="47" title="Should a payment request be just data, or a programmable object?">
+          There is an open issue about whether the payment request should
+          be a programmable object or should be just pure data that can be
+          operated on by methods.
+        </div>
+
         <div class="issue" data-number="19" title="Should the API handle pre-auth, recurring payments, and similar scenarios">
           There is an open issue about whether the API should handle occasions when a site wants to request a payment
           method but not actually make a charge immediately. These may include identification validation, pre-auth
@@ -358,6 +364,19 @@
           There is an open issue about whether the merchant can influence order of presentation of
           payment apps to the user. There is a suggestion that we should support merchants specifying
           a preference and allow users to express a preference that overrides merchant preferences.
+        </div>
+
+        <div class="issue" data-number="48" title="Should list of accepted payment methods be strings or objects?">
+          There is an open issue about whether the list of supported payment
+          methods should be passed to the user agent as a simple sequence of
+          strings or as a more complex and flexible object structure.
+        </div>
+
+        <div class="issue" data-number="51" title="Should the payment API be more conversational or less conversational?">
+          There is an open issue regarding whether the current pattern of using
+          events for exchange of data between the user agent and the website is
+          the best design for this API. An alternative pattern has been
+          proposed in the issue thread.
         </div>
 
         <p>
@@ -580,7 +599,7 @@
       <h2>CurrencyAmount</h2>
       <pre class="idl">
 dictionary CurrencyAmount {
-  required DOMString currencyCode;
+  required DOMString currency;
   required DOMString value;
 };
       </pre>
@@ -589,19 +608,20 @@ dictionary CurrencyAmount {
         The following fields MUST be supplied for a <a><code>CurrencyAmount</code></a> to be valid:
       </p>
       <dl>
-        <dt><code><dfn>currencyCode</dfn></code></dt>
+        <dt><code><dfn>currency</dfn></code></dt>
         <dd>
-          <code>currencyCode</code> is a string containing a three-letter alphabetic code for the
-          currency as defined by [[!ISO4217]]. For example, <code>"USD"</code> for US Dollars.
+          <code>currency</code> is a string containing a currency identifier. The most common
+          identifiers are three-letter alphabetic codes as defined by [[!ISO4217]] (for example,
+          <code>"USD"</code> for US Dollars) however any string is considered valid and
+          <dfn data-lt="user agents">user agents</dfn> MUST not attempt to validate this string.
         </dd>
         <dt><code><dfn>value</dfn></code></dt>
         <dd>
           A string containing the decimal monetary value. If a decimal separator is needed then the string
-          MUST use a single U+002E FULL STOP character as the decimal separator. The string MUST begin
-          with a single U+002D HYPHEN-MINUS character if the value is negative. All other characters must
+          MUST use a single U+002E FULL STOP character as the decimal separator. All other characters must
           be characters in the range U+0030 DIGIT ZERO (0) to U+0039 DIGIT NINE (9).
           <div class="note">
-            The string should match the regular expression <code>^-?[0-9]+(\.[0-9]+)?$</code>.
+            The string should match the regular expression <code>^[0-9]+(\.[0-9]+)?$</code>.
           </div>
         </dd>
       </dl>
@@ -609,7 +629,7 @@ dictionary CurrencyAmount {
       <p>The following example shows how to represent US$55.00.</p>
       <pre class="example highlight">
 {
-  "currencyCode": "USD",
+  "currency": "USD",
   "value" : "55.00"
 }
       </pre>
@@ -980,6 +1000,14 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
       Accept-Language headers, etc.)
     </p>
 
+
+    <p class="issue" data-number="55" title="Add section on security considerations">
+      The spec should indicate how data might be passed securely through the API using
+      mechanisms such as field level encryption and message signing. While these may not
+      be standardised a reference to the payment method specifications would be appropriate
+      as well as some examples of how those specifcations might implement secure messaging.
+    </p>
+
     <section>
       <h2>Algorithms</h2>
 
@@ -1063,6 +1091,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           only available for a limited amount of time. If the user does not accept the payment request
           within the allowed time period, then the request will be aborted.
         </p>
+
         <p>
           A <a>user agent</a> may not always be able to abort a request. For example, if the <a>user agent</a>
           has delegated responsibility for the request to another app. To support this situation,
@@ -1090,6 +1119,14 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           </li>
         </ol>
 
+        <p class="issue" data-number="39" title="How are web-based payment apps supported?">
+          The architecture document suggests that payment apps may take
+          numerous forms, including as web-based apps. This specification
+          should describe how the user-agent will pass the payment request
+          data and the complete signal to a web-based payment app and also how
+          it will receive the payment response from the payment app.
+        </p>
+
         <div class="issue" data-number="7" title="Should we support a delegated state for PaymentRequest?">
           <p>We believe there are <a>user agent</a> configurations that can cause the UI to get into a state
           where cancellation by the web page during user interaction is difficult. Users should still
@@ -1100,6 +1137,13 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           <a><code>abort</code></a> to account for the situation where this may fail in the <code>delegated</code>
           state.</p>
         </div>
+
+        <p class="issue" data-number="50" title="How are payment requests and responses passed between the browser and third-party native wallets?">
+          This specification should describe how the user agent will pass the 
+          payment request data and the complete signal to a native payment app 
+          and also how it will receive the payment response from the payment app.
+        </p>
+
       </section>
 
       <section>
