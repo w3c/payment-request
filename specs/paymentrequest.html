@@ -38,7 +38,7 @@
           localBiblio:  {
               "PAYMENTARCH": {
                   title:    "Payment Request Architecture"
-              ,   href:     "architecture.html"
+              ,   href:     "https://w3c.github.io/browser-payment-api/specs/architecture.html"
               ,   authors:  [
                       "Adrian Bateman"
                   ,   "Zach Koch"
@@ -48,7 +48,7 @@
               },
               "METHODIDENTIFIERS": {
                   title:    "Payment Method Identifiers"
-              ,   href:     "method-identifiers.html"
+              ,   href:     "https://w3c.github.io/browser-payment-api/specs/method-identifiers.html"
               ,   authors:  [
                       "Adrian Bateman"
                   ,   "Zach Koch"
@@ -1177,13 +1177,13 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
         <p>
           The <a><code>PaymentRequest</code></a> interface allows a web page to call <code>abort</code>
           to tell the <a>user agent</a> to abort the payment request and to tear down any user interface that
-          might be shown. For example, a web page may choose to do this the goods they are selling are
+          might be shown. For example, a web page might choose to do this if the goods they are selling are
           only available for a limited amount of time. If the user does not accept the payment request
           within the allowed time period, then the request will be aborted.
         </p>
 
         <p>
-          A <a>user agent</a> may not always be able to abort a request. For example, if the <a>user agent</a>
+          A <a>user agent</a> might not always be able to abort a request. For example, if the <a>user agent</a>
           has delegated responsibility for the request to another app. To support this situation,
           the <a>user agent</a> must run the <dfn>User agent delegates payment request algorithm</dfn>.
           The algorithm MUST run the following steps:
