@@ -770,8 +770,9 @@ dictionary PaymentOptions {
       <p>
         If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
         passed to the <a>PaymentRequest</a> constructor, then the <a>user agent</a> will populate the
-        <code>shippingAddress</code> field of the <a><code>PaymentRequest</code></a> object with
-        the user's selected shipping address.
+        <code>shippingAddress</code> field of the <a><code>PaymentRequest</code></a> and ultimately the
+        <a><code>PaymentResponse</code></a> object with the user's selected shipping address after
+        the user has accepted the payment.
       </p>
       <div class="issue" data-number="6" title="Write-up proposal for shipping address fields">
         The fields of the <a><code>ShippingAddress</code></a> interface are
@@ -820,6 +821,7 @@ dictionary PaymentOptions {
         interface PaymentResponse {
           readonly attribute DOMString methodName;
           readonly attribute object details;
+          readonly attribute ShippingAddress? shippingAddress;
 
           Promise&lt;void&gt; complete(boolean success);
         };
@@ -839,6 +841,12 @@ dictionary PaymentOptions {
       <dd>
         A <a>JSON-serializable object</a> that provides a <a>payment method</a> specific message used by the merchant to
         process the transaction and determine successful fund transfer.
+      </dd>
+      <dt><code><dfn>shippingAddress</dfn></code></dt>
+      <dd>
+        If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
+        passed to the <a>PaymentRequest</a> constructor, then <a><code>shippingAddress</code></a> will
+        be the full and final shipping address chosen by the user.
       </dd>
       </dl>
 
