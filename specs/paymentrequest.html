@@ -73,7 +73,7 @@
       <p>
         This specification describes a web API to allow merchants (i.e. web sites selling
         physical or digital goods) to easily accept payments from different payment methods with
-        minimal integration. User agents (e.g. browsers) will facilitate the payment flow between
+        minimal integration. Payment Mediators (e.g. browsers) will facilitate the payment flow between
         merchant and user.
       </p>
     </section>
@@ -100,11 +100,11 @@
         over and over again. Likewise, it is difficult and time consuming for developers to create good
         checkout flows that support various payment schemes.</p>
 
-        <p>This specification describes an API that allows <a>user agents</a> (e.g. browsers) to act
+        <p>This specification describes an API that allows <a>Payment Mediators</a> (e.g. browsers) to act
         as an intermediary between the three key parties in every transaction: the merchant (e.g. an
         online web store), the buyer (e.g. the user buying from the online web store), and the
         <a>Payment Method</a> (e.g. credit card). Information necessary to process and confirm a
-        transaction is passed between the <a>Payment Method</a> and the merchant via the <a>user agent</a>
+        transaction is passed between the <a>Payment Method</a> and the merchant via the <a>Payment Mediator</a>
         with the buyer confirming and authorizing as necessary across the flow.</p>
 
         <p>In addition to better, more consistent user experiences, this also enables web sites to take
@@ -118,10 +118,10 @@
       <section id="goals">
         <h2>Goals</h2>
         <ul>
-          <li>Allow the user agent to act as intermediary between merchants, users, and <a>payment
+          <li>Allow the <a>payment mediator</a> to act as intermediary between merchants, users, and <a>payment
           methods</a></li>
           <li>Standardize (to the extent that it makes sense) the communication flow between a
-          merchant, user agent, and <a>payment method</a></li>
+          merchant, <a>payment mediator</a>, and <a>payment method</a></li>
           <li>Allow <a>payment methods</a> to bring more secure payment transactions to the web</li>
         </ul>
       </section>
@@ -141,29 +141,29 @@
         This specification defines one class of products:
       </p>
       <dl>
-      <dt><dfn>Conforming user agent</dfn></dt>
+      <dt><dfn>Conforming payment mediator</dfn></dt>
       <dd>
         <p>
-        A <dfn data-lt="user agents">user agent</dfn> MUST behave as described in this specification
-        in order to be considered conformant. In this specification, <a>user agent</a> means a <em>Web
-        browser or other interactive user agent</em> as defined in [[!HTML5]].
+        A <dfn data-lt="payment mediators">payment mediator</dfn> MUST behave as described in this specification
+        in order to be considered conformant. In this specification, <a>payment mediator</a> means a <em>Web
+        browser or other cross-platform</em>.
         </p>
         <p>
-        User agents MAY implement algorithms given in this
+        <a>Payment mediator</a> MAY implement algorithms given in this
         specification in any way desired, so long as the end result is
         indistinguishable from the result that would be obtained by the
         specification's algorithms.
         </p>
         <p>
-        A conforming Payment Request API user agent MUST also be a
+        A conforming Payment Request API <a>payment mediator</a> MUST also be a
         <em>conforming implementation</em> of the IDL fragments
         of this specification, as described in the
         “Web IDL” specification. [[!WEBIDL]]
         </p>
 
         <aside class="note">
-        This specification uses both the terms "conforming user agent(s)"
-        and "user agent(s)" to refer to this product class.
+        This specification uses both the terms "conforming payment mediator(s)"
+        and "payment mediator(s)" to refer to this product class.
         </aside>
       </dd>
       </dl>
@@ -211,7 +211,7 @@
         </table>
         </dd>
         <dt>WebIDL</dt>
-        <dd>When this specification says to <dfn>throw</dfn> an error, the <a>user agent</a> must throw an
+        <dd>When this specification says to <dfn>throw</dfn> an error, the <a>payment mediator</a> must throw an
         error as described in [[!WEBIDL]]. When this occurs in a sub-algorithm, this results in
         termination of execution of the sub-algorithm and all ancestor algorithms until one is
         reached that explicitly describes procedures for catching exceptions.</dd>
@@ -242,11 +242,11 @@
 
       <p>
         A web page creates a <a><code>PaymentRequest</code></a> to make a payment request. This is
-        typically associated with the user initiating a payment process 
+        typically associated with the user initiating a payment process
         (e.g., selecting a "Power Up" in an interactive game, pulling up to an automated kiosk in a parking structure,
         or activating a "Buy", "Purchase", or "Checkout" button).
         The <a><code>PaymentRequest</code></a> allows the web page to exchange information with the
-        <a>user agent</a> while the user is providing input before approving or denying a payment request.
+        <a>payment mediator</a> while the user is providing input before approving or denying a payment request.
       </p>
 
       <p>The following example shows how to construct a <a><code>PaymentRequest</code></a> and begin the
@@ -276,11 +276,11 @@
           method</a> specific <code>data</code>.
         </p>
         <div class="issue" data-number="40" title="How does a website pass additional (not payment method specific) data to the payment app?">
-          It is proposed that a conformance criteria for implementations of this API be 
-          that any data passed into the request is passed on to the payment app unaltered. 
-          This would allow extensions of the data schema such as the addition of 
-          properties that are not documented in this specification or known to implementors 
-          such as JSON-LD @context or similar to be passed between the website and 
+          It is proposed that a conformance criteria for implementations of this API be
+          that any data passed into the request is passed on to the payment app unaltered.
+          This would allow extensions of the data schema such as the addition of
+          properties that are not documented in this specification or known to implementors
+          such as JSON-LD @context or similar to be passed between the website and
           payment app.
         </div>
         <div class="note">
@@ -369,13 +369,13 @@
 
         <div class="issue" data-number="48" title="Should list of accepted payment methods be strings or objects?">
           There is an open issue about whether the list of supported payment
-          methods should be passed to the user agent as a simple sequence of
+          methods should be passed to the <a>payment mediator</a> as a simple sequence of
           strings or as a more complex and flexible object structure.
         </div>
 
         <div class="issue" data-number="51" title="Should the payment API be more conversational or less conversational?">
           There is an open issue regarding whether the current pattern of using
-          events for exchange of data between the user agent and the website is
+          events for exchange of data between the <a>payment mediator</a> and the website is
           the best design for this API. An alternative pattern has been
           proposed in the issue thread.
         </div>
@@ -485,7 +485,7 @@
           </li>
           <li>
             Let <em>acceptedMethods</em> be the sequence of payment method identifiers <em>request</em>@[[\supportedMethods]]
-            with all identifiers removed that the <a>user agent</a> does not accept.
+            with all identifiers removed that the <a>payment mediator</a> does not accept.
           </li>
           <li>
             If the length of <em>acceptedMethods</em> is zero, then reject <em>acceptPromise</em> with a <a><code>NotSupportedError</code></a>.
@@ -516,7 +516,7 @@
       <section>
         <h2 id="state-transitions" class="informative">State transitions</h2>
           <p>The internal slot [[\state]] follows the following state transitions:</p>
-          <img alt="Transition diagram for internal slot state of a PaymentRequest object" 
+          <img alt="Transition diagram for internal slot state of a PaymentRequest object"
                src="state-transitions.svg" width="608" height="235">
       </section>
 
@@ -605,13 +605,13 @@ dictionary CurrencyAmount {
   required DOMString value;
 };
       </pre>
-      <div class="issue" data-number="119" title="Should negative amounts be reflected using signed values?">  
-      The resolution of the WG per <a href="https://github.com/w3c/webpayments/issues/57"> Issue #57</a> defined  
-      a format for currencies and amounts that lacked support for negative values. The format below adds this  
+      <div class="issue" data-number="119" title="Should negative amounts be reflected using signed values?">
+      The resolution of the WG per <a href="https://github.com/w3c/webpayments/issues/57"> Issue #57</a> defined
+      a format for currencies and amounts that lacked support for negative values. The format below adds this
       capability in a way that is not common for financial messaging standards (using signed numbers). The
       rationale for negative numbers is to support discounts. The group is still discussing whether functionality
       to support discounts might be implemented in a different manner (e.g., via a transaction type).
-      </div>  
+      </div>
       <p>
         A <a><code>CurrencyAmount</code></a> dictionary is used to supply monetary amounts.
         The following fields MUST be supplied for a <a><code>CurrencyAmount</code></a> to be valid:
@@ -622,13 +622,13 @@ dictionary CurrencyAmount {
           <code>currency</code> is a string containing a currency identifier. The most common
           identifiers are three-letter alphabetic codes as defined by [[!ISO4217]] (for example,
           <code>"USD"</code> for US Dollars) however any string is considered valid and
-          <a data-lt="user agents">user agents</a> MUST not attempt to validate this string.
+          <a>payment mediator</a>s MUST not attempt to validate this string.
         </dd>
         <dt><code><dfn>value</dfn></code></dt>
         <dd>
           A string containing the decimal monetary value. If a decimal separator is needed then the string
-          MUST use a single U+002E FULL STOP character as the decimal separator. The string MUST begin  
-          with a single U+002D HYPHEN-MINUS character if the value is negative. All other characters must  
+          MUST use a single U+002E FULL STOP character as the decimal separator. The string MUST begin
+          with a single U+002D HYPHEN-MINUS character if the value is negative. All other characters must
           be characters in the range U+0030 DIGIT ZERO (0) to U+0039 DIGIT NINE (9).
           <div class="note">
             The string should match the regular expression <code>^-?[0-9]+(\.[0-9]+)?$</code>.
@@ -668,7 +668,7 @@ dictionary PaymentDetails {
           This sequence of <a><code>PaymentItem</code></a> dictionaries indicates what the payment
           request is for. The sequence must contain at least one <code>PaymentItem</code>. The last
           <code>PaymentItem</code> in the sequence represents the total amount of the payment
-          request. The <a>user agent</a> MAY validate that the total amount is the sum of the
+          request. The <a>payment mediator</a> MAY validate that the total amount is the sum of the
           preceding items, but it is the responsibility of the calling code to ensure that.
         </dd>
         <dt><code>shippingOptions</code></dt>
@@ -706,7 +706,7 @@ dictionary PaymentOptions {
       <dl>
         <dt><code><dfn>requestShipping</dfn></code></dt>
         <dd>
-          This <em>boolean</em> value indicates whether the <a>user agent</a> should collect and return
+          This <em>boolean</em> value indicates whether the <a>payment mediator</a> should collect and return
           a shipping address as part of the payment request. For example, this would be set to
           <code>true</code> when physical goods need to be shipped by the merchant to the user.
           This would be set to <code>false</code> for an online-only electronic purchase transaction.
@@ -737,7 +737,7 @@ dictionary PaymentOptions {
         <dd>This is a string identifier used to reference this <code>PaymentItem</code>. It MUST be
         unique for a given <a><code>PaymentRequest</code></a>.</dd>
         <dt><code>label</code></dt>
-        <dd>This is a human-readable description of the item. The <a>user agent</a> may display
+        <dd>This is a human-readable description of the item. The <a>payment mediator</a> may display
         this to the user.</dd>
         <dt><code>amount</code></dt>
         <dd>
@@ -767,7 +767,7 @@ dictionary PaymentOptions {
       </pre>
       <p>
         If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
-        passed to the <a>PaymentRequest</a> constructor, then the <a>user agent</a> will populate the
+        passed to the <a>PaymentRequest</a> constructor, then the <a>payment mediator</a> will populate the
         <code>shippingAddress</code> field of the <a><code>PaymentRequest</code></a> object with
         the user's selected shipping address.
       </p>
@@ -777,7 +777,7 @@ dictionary PaymentOptions {
       </div>
       <div class="issue" data-number="1" title="Should the merchant be able to request your email and recipient phone number">
         There is an open question about what data beyond shipping address the merchant might be able
-        to request from the <a>user agent</a>. Is capturing email and recipient phone important to you?
+        to request from the <a>payment mediator</a>. Is capturing email and recipient phone important to you?
       </div>
     </section>
 
@@ -803,7 +803,7 @@ dictionary PaymentOptions {
         <dd>This is a string identifier used to reference this <code>ShippingOption</code>. It MUST be
         unique for a given <a><code>PaymentRequest</code></a>.</dd>
         <dt><code>label</code></dt>
-        <dd>This is a human-readable description of the item. The <a>user agent</a> SHOULD use this
+        <dd>This is a human-readable description of the item. The <a>payment mediator</a> SHOULD use this
         string to display the shipping option to the user.</dd>
         <dt><code>amount</code></dt>
         <dd>
@@ -930,7 +930,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
         the details of the payment request in response to a user interaction.</p>
         <p>If the web page wishes to update the payment request then it should call <a><code>updateWith</code></a>
         and provide a promise that will resolve with a <a><code>PaymentDetails</code></a>
-        dictionary containing changed values that the <a>user agent</a> SHOULD present to the user.</p>
+        dictionary containing changed values that the <a>payment mediator</a> SHOULD present to the user.</p>
         <p>The PaymentRequestUpdateEvent constructor MUST set the internal slot [[\waitForUpdate]]
         to <em>false</em>.</p>
         <p>The <code><dfn>updateWith</dfn></code> method MUST act as follows:</p>
@@ -955,15 +955,15 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           <li>Set [[\waitForUpdate]] to <em>true</em>.</li>
           <li>Set <em>target</em>@[[\updating]] to <em>true</em>.</li>
           <li>
-            The <a>user agent</a> SHOULD disable the user interface that allows the user to accept
+            The <a>payment mediator</a> SHOULD disable the user interface that allows the user to accept
             the payment request. This is to ensure that the payment is not accepted until the web page
             has made changes required by the change. The web page MUST settle the promise <code>d</code>
             to indicate that the payment request is valid again.
-            <p>The <a>user agent</a> SHOULD disable any part of the user interface that could cause
+            <p>The <a>payment mediator</a> SHOULD disable any part of the user interface that could cause
             another update event to be fired. Only one update may be processed at a time.</p>
             <div class="issue" title="Consider adding a timeout to the updating flag in case page doesn't resolve promise from updateWith">
               We should consider adding a timeout mechanism so that if the page never resolves
-              the promise within a reasonable amount of time then the user agent behaves as if
+              the promise within a reasonable amount of time then the <a>payment mediator</a> behaves as if
               the promise was rejected.
             </div>
           </li>
@@ -995,8 +995,8 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           <li>Set [[\waitForUpdate]] to <em>false</em>.</li>
           <li>Set <em>target</em>@[[\updating]] to <em>false</em>.</li>
           <li>
-            The <a>user agent</a> should update the user interface based on any changed values
-            in <em>target</em>. The user agent SHOULD re-enable user interface elements that might
+            The <a>payment mediator</a> should update the user interface based on any changed values
+            in <em>target</em>. The <a>payment mediator</a> SHOULD re-enable user interface elements that might
             have been disabled in the steps above if appropriate.
           </li>
         </ol>
@@ -1022,7 +1022,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
       <h2>Algorithms</h2>
 
       <p>When the internal slot [[\state]] of a <a><code>PaymentRequest</code></a> object is set to
-      <em>interactive</em>, the <a>user agent</a> will trigger the following algorithms based
+      <em>interactive</em>, the <a>payment mediator</a> will trigger the following algorithms based
       on user interaction.</p>
 
       <section>
@@ -1080,7 +1080,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           </li>
           <li>
             If the <em>request</em>@[[\state]] is not set to <em>interactive</em>,
-            then terminate this algorithm and take no further action. The <a>user agent</a> user interface
+            then terminate this algorithm and take no further action. The <a>payment mediator</a> user interface
             should ensure that this never occurs.
           </li>
           <li>Let <em>event</em> be a new <a><code>PaymentRequestUpdateEvent</code></a>.</li>
@@ -1092,20 +1092,20 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
       </section>
 
       <section>
-        <h2>User agent delegates payment request algorithm</h2>
+        <h2>Payment mediator delegates payment request algorithm</h2>
 
         <p>
           The <a><code>PaymentRequest</code></a> interface allows a web page to call <code>abort</code>
-          to tell the <a>user agent</a> to abort the payment request and to tear down any user interface that
+          to tell the <a>payment mediator</a> to abort the payment request and to tear down any user interface that
           might be shown. For example, a web page might choose to do this if the goods they are selling are
           only available for a limited amount of time. If the user does not accept the payment request
           within the allowed time period, then the request will be aborted.
         </p>
 
         <p>
-          A <a>user agent</a> might not always be able to abort a request. For example, if the <a>user agent</a>
+          A <a>payment mediator</a> might not always be able to abort a request. For example, if the <a>payment mediator</a>
           has delegated responsibility for the request to another app. To support this situation,
-          the <a>user agent</a> must run the <dfn>User agent delegates payment request algorithm</dfn>.
+          the <a>payment mediator</a> must run the <dfn>Payment mediator delegates payment request algorithm</dfn>.
           The algorithm MUST run the following steps:
         </p>
 
@@ -1116,12 +1116,12 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           </li>
           <li>
             If the <em>request</em>@[[\updating]] is <em>true</em>, then terminate this
-            algorithm and take no further action. The <a>user agent</a> user interface should ensure
+            algorithm and take no further action. The <a>payment mediator</a> user interface should ensure
             that this never occurs.
           </li>
           <li>
             If the <em>request</em>@[[\state]] is not <em>interactive</em>, then terminate this
-            algorithm and take no further action. The <a>user agent</a> user interface should ensure
+            algorithm and take no further action. The <a>payment mediator</a> user interface should ensure
             that this never occurs.
           </li>
           <li>
@@ -1138,19 +1138,19 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
         </p>
 
         <div class="issue" data-number="7" title="Should we support a delegated state for PaymentRequest?">
-          <p>We believe there are <a>user agent</a> configurations that can cause the UI to get into a state
+          <p>We believe there are <a>payment mediator</a> configurations that can cause the UI to get into a state
           where cancellation by the web page during user interaction is difficult. Users should still
           be able to cancel the payment but script will not be able to. We need to investigate in more
           detail the consequences of this and whether it is really needed.</p>
-          <p>If we specify <code>delegated</code> then it isn't necessary for all <a>user agents</a> to be
+          <p>If we specify <code>delegated</code> then it isn't necessary for all <a>payment mediators</a> to be
           able to move to this state but it would be necessary for all payment flows that wish to call
           <a><code>abort</code></a> to account for the situation where this may fail in the <code>delegated</code>
           state.</p>
         </div>
 
         <p class="issue" data-number="50" title="How are payment requests and responses passed between the browser and third-party native wallets?">
-          This specification should describe how the user agent will pass the 
-          payment request data and the complete signal to a native payment app 
+          This specification should describe how the <a>payment mediator</a> will pass the
+          payment request data and the complete signal to a native payment app
           and also how it will receive the payment response from the payment app.
         </p>
 
@@ -1170,13 +1170,13 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           </li>
           <li>
             If the <em>request</em>@[[\updating]] is <em>true</em>, then terminate this
-            algorithm and take no further action. The <a>user agent</a> user interface should ensure
+            algorithm and take no further action. The <a>payment mediator</a> user interface should ensure
             that this never occurs.
           </li>
           <li>
             If <em>request</em>@[[\state]] is not <em>interactive</em> and
             the not <code>delegated</code>, then terminate this algorithm and take no further action.
-            The <a>user agent</a> user interface should ensure that this never occurs.
+            The <a>payment mediator</a> user interface should ensure that this never occurs.
           </li>
           <li>
             If the <code>requestShipping</code> value of <em>request</em>@[[\options]]
