@@ -229,7 +229,7 @@
           Promise&lt;PaymentResponse&gt; show();
           void abort();
 
-          readonly attribute ShippingAddress? shippingAddress;
+          readonly attribute PartialShippingAddress? partialShippingAddress;
           readonly attribute DOMString? shippingOption;
 
           /* Supports "shippingaddresschange" event */
@@ -242,7 +242,7 @@
 
       <p>
         A web page creates a <a><code>PaymentRequest</code></a> to make a payment request. This is
-        typically associated with the user initiating a payment process 
+        typically associated with the user initiating a payment process
         (e.g., selecting a "Power Up" in an interactive game, pulling up to an automated kiosk in a parking structure,
         or activating a "Buy", "Purchase", or "Checkout" button).
         The <a><code>PaymentRequest</code></a> allows the web page to exchange information with the
@@ -276,11 +276,11 @@
           method</a> specific <code>data</code>.
         </p>
         <div class="issue" data-number="40" title="How does a website pass additional (not payment method specific) data to the payment app?">
-          It is proposed that a conformance criteria for implementations of this API be 
-          that any data passed into the request is passed on to the payment app unaltered. 
-          This would allow extensions of the data schema such as the addition of 
-          properties that are not documented in this specification or known to implementors 
-          such as JSON-LD @context or similar to be passed between the website and 
+          It is proposed that a conformance criteria for implementations of this API be
+          that any data passed into the request is passed on to the payment app unaltered.
+          This would allow extensions of the data schema such as the addition of
+          properties that are not documented in this specification or known to implementors
+          such as JSON-LD @context or similar to be passed between the website and
           payment app.
         </div>
         <div class="note">
@@ -429,7 +429,7 @@
           <li>Store <code>data</code> into <em>request</em>@[[\data]].</li>
           <li>Set the value <em>request</em>@[[\state]] to <em>created</em>.</li>
           <li>
-            Set the value of the <a><code>shippingAddress</code></a> attribute on <em>request</em> to <em>null</em>.
+            Set the value of the <a><code>partialShippingAddress</code></a> attribute on <em>request</em> to <em>null</em>.
           </li>
           <li>
             Set the value of the <a><code>shippingOption</code></a> attribute on <em>request</em> to <em>null</em>.
@@ -516,16 +516,20 @@
       <section>
         <h2 id="state-transitions" class="informative">State transitions</h2>
           <p>The internal slot [[\state]] follows the following state transitions:</p>
-          <img alt="Transition diagram for internal slot state of a PaymentRequest object" 
+          <img alt="Transition diagram for internal slot state of a PaymentRequest object"
                src="state-transitions.svg" width="608" height="235">
       </section>
 
       <section>
-        <h2>shippingAddress</h2>
+        <h2>partialShippingAddress</h2>
         <p>
-          <code>shippingAddress</code> is populated when the user provides a shipping
-          address. It is <em>null</em> by default.
+          <code>partialShippingAddress</code> is populated when the user provides a shipping
+          address before payment has been approved. It is <em>null</em> by default.
           When a user provides a shipping address, the <a>shipping address changed algorithm</a> runs.
+          A <code>PartialShippingAddress</code> should provide minimal information to identify potential shipping
+          options. For instance, in the United States, the state and postal code would be specific
+          enough to determine shipping options, but would not leak sensitive user information
+          to the client before the user has approved a payment.
         </p>
         <p>
           <code><dfn>onshippingaddresschange</dfn></code> is an <code>EventHandler</code> for an
@@ -605,13 +609,13 @@ dictionary CurrencyAmount {
   required DOMString value;
 };
       </pre>
-      <div class="issue" data-number="119" title="Should negative amounts be reflected using signed values?">  
-      The resolution of the WG per <a href="https://github.com/w3c/webpayments/issues/57"> Issue #57</a> defined  
-      a format for currencies and amounts that lacked support for negative values. The format below adds this  
+      <div class="issue" data-number="119" title="Should negative amounts be reflected using signed values?">
+      The resolution of the WG per <a href="https://github.com/w3c/webpayments/issues/57"> Issue #57</a> defined
+      a format for currencies and amounts that lacked support for negative values. The format below adds this
       capability in a way that is not common for financial messaging standards (using signed numbers). The
       rationale for negative numbers is to support discounts. The group is still discussing whether functionality
       to support discounts might be implemented in a different manner (e.g., via a transaction type).
-      </div>  
+      </div>
       <p>
         A <a><code>CurrencyAmount</code></a> dictionary is used to supply monetary amounts.
         The following fields MUST be supplied for a <a><code>CurrencyAmount</code></a> to be valid:
@@ -627,8 +631,8 @@ dictionary CurrencyAmount {
         <dt><code><dfn>value</dfn></code></dt>
         <dd>
           A string containing the decimal monetary value. If a decimal separator is needed then the string
-          MUST use a single U+002E FULL STOP character as the decimal separator. The string MUST begin  
-          with a single U+002D HYPHEN-MINUS character if the value is negative. All other characters must  
+          MUST use a single U+002E FULL STOP character as the decimal separator. The string MUST begin
+          with a single U+002D HYPHEN-MINUS character if the value is negative. All other characters must
           be characters in the range U+0030 DIGIT ZERO (0) to U+0039 DIGIT NINE (9).
           <div class="note">
             The string should match the regular expression <code>^-?[0-9]+(\.[0-9]+)?$</code>.
@@ -768,8 +772,8 @@ dictionary PaymentOptions {
       <p>
         If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
         passed to the <a>PaymentRequest</a> constructor, then the <a>user agent</a> will populate the
-        <code>shippingAddress</code> field of the <a><code>PaymentRequest</code></a> object with
-        the user's selected shipping address.
+        <code>shippingAddress</code> field of the <a><code>PaymentResponse</code></a> object with
+        the user's selected shipping address after the user has accepted the payment.
       </p>
       <div class="issue" data-number="6" title="Write-up proposal for shipping address fields">
         The fields of the <a><code>ShippingAddress</code></a> interface are
@@ -778,6 +782,25 @@ dictionary PaymentOptions {
       <div class="issue" data-number="1" title="Should the merchant be able to request your email and recipient phone number">
         There is an open question about what data beyond shipping address the merchant might be able
         to request from the <a>user agent</a>. Is capturing email and recipient phone important to you?
+      </div>
+    </section>
+
+    <section>
+      <h2>PartialShippingAddress interface</h2>
+      <pre class="idl">
+        interface PartialShippingAddress {
+          /* [...] fields TBC */
+        };
+      </pre>
+      <p>
+        If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
+        passed to the <a>PaymentRequest</a> constructor, then the <a>user agent</a> will populate the
+        <code>partialShippingAddress</code> field of the <a><code>PaymentRequest</code></a> object with
+        the user's selected shipping address.
+      </p>
+      <div class="issue" data-number="6" title="Write-up proposal for shipping address fields">
+        The fields of the <a><code>PartialShippingAddress</code></a> interface are
+        yet to be defined, but they are a minimal subset of the fields of <a><code>ShippingAddress</code></a>.
       </div>
     </section>
 
@@ -818,6 +841,7 @@ dictionary PaymentOptions {
         interface PaymentResponse {
           readonly attribute DOMString methodName;
           readonly attribute object details;
+          readonly attribute ShippingAddress? shippingAddress;
 
           Promise&lt;void&gt; complete(boolean success);
         };
@@ -837,6 +861,12 @@ dictionary PaymentOptions {
       <dd>
         A <a>JSON-serializable object</a> that provides a <a>payment method</a> specific message used by the merchant to
         process the transaction and determine successful fund transfer.
+      </dd>
+      <dt><code><dfn>shippingAddress</dfn></code></dt>
+      <dd>
+        If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
+        passed to the <a>PaymentRequest</a> constructor, then <a><code>shippingAddress</code></a> will
+        be the full and final shipping address chosen by the user.
       </dd>
       </dl>
 
@@ -1149,8 +1179,8 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
         </div>
 
         <p class="issue" data-number="50" title="How are payment requests and responses passed between the browser and third-party native wallets?">
-          This specification should describe how the user agent will pass the 
-          payment request data and the complete signal to a native payment app 
+          This specification should describe how the user agent will pass the
+          payment request data and the complete signal to a native payment app
           and also how it will receive the payment response from the payment app.
         </p>
 
