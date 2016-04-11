@@ -58,7 +58,7 @@
     <section id='abstract'>
       <p>
         The Payment Request API [[!PAYMENTREQUESTAPI]] requires that merchants supply a list
-        identifiers for supported payment methods. This document defines those identifier
+        of identifiers for supported payment methods. This document defines those identifier
         strings and how they are created.
       </p>
     </section>
@@ -76,7 +76,7 @@
         <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a>.
       </p>
     </section>
-    
+
     <section class='informative'>
       <h2>Introduction</h2>
         <p>
@@ -93,7 +93,7 @@
       <p>There are a set of requirements that the payment method identifiers are designed to support:</p>
       <ol>
         <li id="req1">It must be possible for the Working Group to mint a payment method identifier for any payment method.</li>
-        <li id="req2">It must be possible for the anyone to mint a payment method identifier for a payment method under their control.</li>
+        <li id="req2">It must be possible for anyone to mint a payment method identifier for a payment method under their control.</li>
         <li id="req3">It should be possible to use a standard short string to identify common payment methods.</li>
         <li id="req4">It must be possible for someone minting a non-standard identifier to make it globally unique in a cost-effective manner.</li>
       </ol>
@@ -104,10 +104,10 @@
       <p>
         The <dfn>Payment Method Identifier</dfn> is a string that uniquely identifies a payment method that a user can use to complete a transaction. For example, Visa, MasterCard, and American Express are payment methods used in some countries.
       </p>
-    </section>    
+    </section>
 
     <div class="note">This document currently specifies multiple alternate options for payment method identifiers. The Working Group has
-    not yet selected an approach, which might be one documented in this specification or another as yet undocumented proposal.</div> 
+    not yet selected an approach. The chosen approach might be one documented in this specification or another as yet undocumented proposal.</div>
 
     <section>
       <h2>Option 1a</h2>
@@ -201,7 +201,7 @@
               <li>Developers may find it confusing to us a URL if it isn't intended to point to a resource.</li>
               <li>Overloading the same string to mean an identifier in some cases and a resource location in others is undesirable. The intent of a URL is to load or locate a resource and may only be done sometimes with this proposal. A URL might mistakenly be crafted
               as an identifier but later lead to attempts to load it that weren't anticipated (by potentially large numbers of users).</li>
-              <li>Experience with XML namespaces suggests that optional downloading resources from identifiers tends to encourage
+              <li>Experience with XML namespaces suggests that optionally downloading resources from identifiers tends to encourage
               user agents to hard code common identifiers for performance reasons potentially leading to a closed or unbalanced
               system.</li>
             </ul>
@@ -305,7 +305,7 @@
         <p>This section relies on several other underlying specifications.</p>
         <dl>
           <dt>URL</dt>
-          <dd>The terms <em>URL</em>, <em>absolute URL</em>, <em>URL parser</em>, and <em>URL equivalence</em> are defined by [[!url-1-20141209]] <small><em>(or the editor's draft)</em></small>.</dd>
+          <dd>The terms <a>URL</a>, <a>absolute URL</a>, <a>URL parser</a>, and <a>URL equivalence</a> are defined by [[!url-1-20141209]] <small><em>(or the editor's draft)</em></small>.</dd>
         </dl>
       </section>
       <section class="informative">
