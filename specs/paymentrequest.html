@@ -731,6 +731,16 @@ dictionary PaymentOptions {
         A sequence of one or more <code>PaymentItem</code> dictionaries is included in the <a><code>PaymentDetails</code></a>
         dictionary to indicate the what the payment request is for and the value asked for.
       </p>
+
+      <p class="issue" data-number="49" title="Should the payment request contain line item details?">
+        There is a concern among small and large retailers that specifying
+        line item details and potentially forwarding that information to
+        payment processors is problematic. Many have noted that they do not want
+        that information leaked outside of their customer-merchant environment.
+        Does introducing this line-item list create an issue w/ the "private"
+        customer-merchant environment?
+      </p>
+
       <p>
         The following fields MUST be included in a <code>PaymentItem</code> for it to be valid:
       </p>
