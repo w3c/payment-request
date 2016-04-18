@@ -43,16 +43,18 @@
                       "Adrian Bateman"
                   ,   "Zach Koch"
                   ,   "Richard Barnes"
+                  ,   "Roy McElmurry"
                   ]
               ,   status:   "ED"
               },
               "METHODIDENTIFIERS": {
                   title:    "Payment Method Identifiers"
-              ,   href:     "https://w3c.github.io/browser-payment-api/specs/method-identifiers.html"
+              ,   href:     "https://www.w3.org/TR/payment-method-id/"
               ,   authors:  [
                       "Adrian Bateman"
                   ,   "Zach Koch"
                   ,   "Richard Barnes"
+                  ,   "Roy McElmurry"
                   ]
               ,   status:   "ED"
               }
@@ -73,7 +75,7 @@
       <p>
         This specification describes a web API to allow merchants (i.e. web sites selling
         physical or digital goods) to easily accept payments from different payment methods with
-        minimal integration. User agents (e.g. browsers) will facilitate the payment flow between
+        minimal integration. User agents (e.g., browsers) will facilitate the payment flow between
         merchant and user.
       </p>
     </section>
@@ -100,15 +102,15 @@
         over and over again. Likewise, it is difficult and time consuming for developers to create good
         checkout flows that support various payment schemes.</p>
 
-        <p>This specification describes an API that allows <a>user agents</a> (e.g. browsers) to act
-        as an intermediary between the three key parties in every transaction: the merchant (e.g. an
-        online web store), the buyer (e.g. the user buying from the online web store), and the
-        <a>Payment Method</a> (e.g. credit card). Information necessary to process and confirm a
+        <p>This specification describes an API that allows <a>user agents</a> (e.g., browsers) to act
+        as an intermediary between the three key parties in every transaction: the merchant (e.g., an
+        online web store), the buyer (e.g., the user buying from the online web store), and the
+        <a>Payment Method</a> (e.g., credit card). Information necessary to process and confirm a
         transaction is passed between the <a>Payment Method</a> and the merchant via the <a>user agent</a>
         with the buyer confirming and authorizing as necessary across the flow.</p>
 
         <p>In addition to better, more consistent user experiences, this also enables web sites to take
-        advantage of more secure payment schemes (e.g. tokenization and system-level authentication)
+        advantage of more secure payment schemes (e.g., tokenization and system-level authentication)
         that are not possible with standard JavaScript libraries. This has the potential to reduce
         liability for the merchant and helps protect sensitive user information.</p>
 
