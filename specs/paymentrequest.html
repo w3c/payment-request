@@ -500,11 +500,14 @@
       <section>
         <h2>abort()</h2>
         <p>The <code><dfn>abort</dfn></code> method may be called if the web page wishes to abort the payment
-        request after the <a><code>show</code></a> method has been called and before the <em>request</em>@[[\acceptPromise]]
+        <em>request</em> after the <a><code>show</code></a> method has been called and before the <em>request</em>@[[\acceptPromise]]
         has been resolved.</p>
 
         <p>The <a><code>abort</code></a> method MUST act as follows:</p>
         <ol>
+          <li>
+            Let <em>request</em> be the <a><code>PaymentRequest</code></a> object on which the method is called..
+          </li>
           <li>If the value of <em>request</em>@[[\state]] is not <em>interactive</em> then
           <a>throw</a> an <a><code>InvalidStateError</code></a>.</li>
           <li>Set the value of the internal slot <em>request</em>@[[\state]] to <em>closed</em>.</li>
