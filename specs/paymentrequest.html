@@ -767,19 +767,51 @@ dictionary PaymentOptions {
       <h2>ShippingAddress interface</h2>
       <pre class="idl">
         interface ShippingAddress {
-          /* [...] fields TBC */
+          readonly attribute DOMString regionCode;
+          readonly attribute sequence<DOMString> addressLine;
+          readonly attribute DOMString administrativeArea;
+          readonly attribute DOMString locality;
+          readonly attribute DOMString dependentLocality;
+          readonly attribute DOMString postalCode;
+          readonly attribute DOMString sortingCode;
+          readonly attribute DOMString languageCode;
+          readonly attribute DOMString organization;
+          readonly attribute DOMString recipient;
         };
       </pre>
+      <dl>
+        <dt><code>regionCode</code></dt>
+        <dd>This is the CLDR (Common Locale Data Repository) region code. For example, US, GB, CN, or JP.</dd>
+        <dt><code>addressLine</code></dt>
+        <dd>This is the most specific part of the address. It can include, for example, a street
+            name, a house number, apartment number, a rural delivery route, descriptive
+            instructions, or a post office box number.</dd>
+        <dt><code>administrativeArea</code></dt>
+        <dd>This is the top level administrative subdivision of the country. For example, this can
+            be a state, a province, an oblast, or a prefecture.</dd>
+        <dt><code>locality</code></dt>
+        <dd>This is the city/town portion of the address.</dd>
+        <dt><code>dependentLocality</code></dt>
+        <dd>This is the dependent locality or sublocality. For example, used for neighborhoods,
+            boroughs, districts, or UK dependent localities.</dd>
+        <dt><code>postalCode</code></dt>
+        <dd>This is the postal code or ZIP code, also known as PIN code in India.</dd>
+        <dt><code>sortingCode</code></dt>
+        <dd>This is the sorting code as used in, for example, France.</dd>
+        <dt><code>languageCode</code></dt>
+        <dd>This is the BCP-47 language code for the address. It's used to determine the field
+            separators and the order of fields when formatting the address for display.</dd>
+        <dt><code>organization</code></dt>
+        <dd>This is the organization, firm, company, or institution at this address.</dd>
+        <dt><code>recipient</code></dt>
+        <dd>This is the name of the recipient or contact person.</dd>
+      </dl>
       <p>
         If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
         passed to the <a>PaymentRequest</a> constructor, then the <a>user agent</a> will populate the
         <code>shippingAddress</code> field of the <a><code>PaymentRequest</code></a> object with
         the user's selected shipping address.
       </p>
-      <div class="issue" data-number="6" title="Write-up proposal for shipping address fields">
-        The fields of the <a><code>ShippingAddress</code></a> interface are
-        yet to be defined.
-      </div>
       <div class="issue" data-number="1" title="Should the merchant be able to request your email and recipient phone number">
         There is an open question about what data beyond shipping address the merchant might be able
         to request from the <a>user agent</a>. Is capturing email and recipient phone important to you?
