@@ -178,8 +178,33 @@
       <h2>Payment Method Specific Data for the PaymentRequest constructor</h2>
       <p>This section describes payment method specific data that is supplied as part of the <code>data</code>
       argument to the PaymentRequest constructor.</p>
-      <p>There is no payment method specific data used by the PaymentRequest constructor when processing
-      Basic Card Payment methods.</p>
+      <p>The PaymentRequest constructor can optionally take a BaseRequest object to indicate where generally optional fields in the BasicCardResponse
+	  must be returned for this instance</p>
+	  
+	  
+	  <section>
+      <h2>BaseRequestData</h2>
+      <pre class="idl">
+        dictionary BaseRequestData {
+          sequence<DOMString> requiredFields;
+        };
+      </pre>
+
+      <p>
+        The <code>BasicRequestData</code> dictionary contains the following fields:
+      </p>
+
+      <dl>
+        <dt><dfn><code>requiredFields</code></dfn></dt>
+        <dd>The <code>requiredFields</code> field contains the list of fields that the Payment App must attempt to return, if this requirements cannot be met, e.g. the payment instrument does not support that field, an empty field must be returned to indicate this</dd>
+      </dl>
+
+      </section>
+	  
+	<div class="issue" title="Should BasicRequest be moved into PaymentRequestAPI">
+      This type should be generic to any PaymentRequest and should be moved to the PaymentRequest API as a base type
+    </div>
+	
     </section>
 
     <section id="response">
@@ -191,10 +216,10 @@
       <h2>BasicCardResponse</h2>
       <pre class="idl">
         dictionary BasicCardResponse {
-          required DOMString cardholderName;
+          DOMString cardholderName;
           required DOMString cardNumber;
-          required DOMString expiryMonth;
-          required DOMString expiryYear;
+          DOMString expiryMonth;
+          DOMString expiryYear;
 		  DOMString cardSecurityCode;
 		  
           BillingAddress? billingAddress;
