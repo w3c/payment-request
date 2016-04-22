@@ -357,12 +357,6 @@
           for a deposit, pre-auth for a later payment, making recurring payments, and more.
         </div>
 
-        <div class="issue" data-number="23" title="Can the merchant influence order of presentation of payment apps to the user">
-          There is an open issue about whether the merchant can influence order of presentation of
-          payment apps to the user. There is a suggestion that we should support merchants specifying
-          a preference and allow users to express a preference that overrides merchant preferences.
-        </div>
-
         <div class="issue" data-number="48" title="Should list of accepted payment methods be strings or objects?">
           There is an open issue about whether the list of supported payment
           methods should be passed to the user agent as a simple sequence of
@@ -419,7 +413,15 @@
             <a>throw</a> a <a><code>TypeError</code></a>.
           </li>
           <li>Let <em>request</em> be a new <a><code>PaymentRequest</code></a>.</li>
-          <li>Store <code>supportedMethods</code> into <em>request</em>@[[\supportedMethods]].</li>
+          <li>
+            Store <code>supportedMethods</code> into <em>request</em>@[[\supportedMethods]].
+            <p>
+              The <code>supportedMethods</code> supplied to the <a><code>PaymentRequest</code></a> constructor
+              SHOULD be in the order of preference of the caller. Implementations MAY show payment methods
+              in this order if possible but SHOULD prioritize the preference of the user when presenting
+              payment methods.
+            </p>
+          </li>
           <li>Store <code>details</code> into <em>request</em>@[[\details]].</li>
           <li>Store <code>options</code> into <em>request</em>@[[\options]].</li>
           <li>Store <code>data</code> into <em>request</em>@[[\data]].</li>
