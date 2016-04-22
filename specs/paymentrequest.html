@@ -1031,14 +1031,6 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
       Accept-Language headers, etc.)
     </p>
 
-
-    <p class="issue" data-number="55" title="Add section on security considerations">
-      The spec should indicate how data might be passed securely through the API using
-      mechanisms such as field level encryption and message signing. While these may not
-      be standardised a reference to the payment method specifications would be appropriate
-      as well as some examples of how those specifcations might implement secure messaging.
-    </p>
-
     <section>
       <h2>Algorithms</h2>
 
@@ -1232,6 +1224,19 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
       </section>
     </section>
 
+    <section class='informative'>
+      <h2>Security Considerations</h2>
+      <p class="ednote">
+        This section is a placeholder to record security considerations as we gather them through working
+        group discussion.
+      </p>
+        The <a><code>PaymentRequest</code></a> API does not directly support encryption of data fields.
+        Individual <a>payment methods</a> may choose to include support for encrypted data but it is not
+        mandatory that all <a>payment methods</a> support this.
+      </p>
+    </section>
+
+    <hr>
     <div class="issue" data-number="20" title="Ensure references are up-to-date">
       The references in the spec need to be up-to-date.
     </div>
