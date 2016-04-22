@@ -351,12 +351,6 @@
           currently described in the specification.
         </div>
 
-        <div class="issue" data-number="47" title="Should a payment request be just data, or a programmable object?">
-          There is an open issue about whether the payment request should
-          be a programmable object or should be just pure data that can be
-          operated on by methods.
-        </div>
-
         <div class="issue" data-number="19" title="Should the API handle pre-auth, recurring payments, and similar scenarios">
           There is an open issue about whether the API should handle occasions when a site wants to request a payment
           method but not actually make a charge immediately. These may include identification validation, pre-auth
@@ -453,16 +447,6 @@
           payment request. The <code>show</code> method will return a <a>Promise</a> that will be resolved when the
           <a>user accepts the payment request</a>. Some kind of user interface will be presented to the user to facilitate the
           payment request after the <code>show</code> method returns.
-        </p>
-
-        <p class="issue" data-number="56" title="Should a website be able to provide a label for the 'Buy' or 'Checkout' button displayed in the payment app?">
-          It may help users understand what they are accepting if the web site
-          is able to label the "accept" button. For example, if a user is about
-          to "Buy" something, "Reserve" something, "Subscribe" to something,
-          etc. That said, this may create payment interface/experience issues
-          and accidentally lead to customers thinking they're performing
-          actions like a one-time purchase, when they are in fact signing up
-          for a subscription.
         </p>
         <p>
           The <a><code>show</code></a> method MUST act as follows:
