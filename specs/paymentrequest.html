@@ -351,22 +351,10 @@
           currently described in the specification.
         </div>
 
-        <div class="issue" data-number="47" title="Should a payment request be just data, or a programmable object?">
-          There is an open issue about whether the payment request should
-          be a programmable object or should be just pure data that can be
-          operated on by methods.
-        </div>
-
         <div class="issue" data-number="19" title="Should the API handle pre-auth, recurring payments, and similar scenarios">
           There is an open issue about whether the API should handle occasions when a site wants to request a payment
           method but not actually make a charge immediately. These may include identification validation, pre-auth
           for a deposit, pre-auth for a later payment, making recurring payments, and more.
-        </div>
-
-        <div class="issue" data-number="23" title="Can the merchant influence order of presentation of payment apps to the user">
-          There is an open issue about whether the merchant can influence order of presentation of
-          payment apps to the user. There is a suggestion that we should support merchants specifying
-          a preference and allow users to express a preference that overrides merchant preferences.
         </div>
 
         <div class="issue" data-number="48" title="Should list of accepted payment methods be strings or objects?">
@@ -425,7 +413,15 @@
             <a>throw</a> a <a><code>TypeError</code></a>.
           </li>
           <li>Let <em>request</em> be a new <a><code>PaymentRequest</code></a>.</li>
-          <li>Store <code>supportedMethods</code> into <em>request</em>@[[\supportedMethods]].</li>
+          <li>
+            Store <code>supportedMethods</code> into <em>request</em>@[[\supportedMethods]].
+            <p>
+              The <code>supportedMethods</code> supplied to the <a><code>PaymentRequest</code></a> constructor
+              SHOULD be in the order of preference of the caller. Implementations MAY show payment methods
+              in this order if possible but SHOULD prioritize the preference of the user when presenting
+              payment methods.
+            </p>
+          </li>
           <li>Store <code>details</code> into <em>request</em>@[[\details]].</li>
           <li>Store <code>options</code> into <em>request</em>@[[\options]].</li>
           <li>Store <code>data</code> into <em>request</em>@[[\data]].</li>
@@ -453,16 +449,6 @@
           payment request. The <code>show</code> method will return a <a>Promise</a> that will be resolved when the
           <a>user accepts the payment request</a>. Some kind of user interface will be presented to the user to facilitate the
           payment request after the <code>show</code> method returns.
-        </p>
-
-        <p class="issue" data-number="56" title="Should a website be able to provide a label for the 'Buy' or 'Checkout' button displayed in the payment app?">
-          It may help users understand what they are accepting if the web site
-          is able to label the "accept" button. For example, if a user is about
-          to "Buy" something, "Reserve" something, "Subscribe" to something,
-          etc. That said, this may create payment interface/experience issues
-          and accidentally lead to customers thinking they're performing
-          actions like a one-time purchase, when they are in fact signing up
-          for a subscription.
         </p>
         <p>
           The <a><code>show</code></a> method MUST act as follows:
@@ -502,14 +488,17 @@
       <section>
         <h2>abort()</h2>
         <p>The <code><dfn>abort</dfn></code> method may be called if the web page wishes to abort the payment
-        request after the <a><code>show</code></a> method has been called and before the [[\acceptPromise]]
+        <em>request</em> after the <a><code>show</code></a> method has been called and before the <em>request</em>@[[\acceptPromise]]
         has been resolved.</p>
 
         <p>The <a><code>abort</code></a> method MUST act as follows:</p>
         <ol>
-          <li>If the value of [[\state]] is not <em>interactive</em> then
+          <li>
+            Let <em>request</em> be the <a><code>PaymentRequest</code></a> object on which the method is called..
+          </li>
+          <li>If the value of <em>request</em>@[[\state]] is not <em>interactive</em> then
           <a>throw</a> an <a><code>InvalidStateError</code></a>.</li>
-          <li>Set the value of the internal slot [[\state]] to <em>closed</em>.</li>
+          <li>Set the value of the internal slot <em>request</em>@[[\state]] to <em>closed</em>.</li>
           <li>Return from the method and asynchronously perform the remaining steps.</li>
           <li>Abort the current user interaction and close down any remaining user interface</li>
         </ol>
@@ -712,7 +701,7 @@ dictionary PaymentOptions {
           a shipping address as part of the payment request. For example, this would be set to
           <code>true</code> when physical goods need to be shipped by the merchant to the user.
           This would be set to <code>false</code> for an online-only electronic purchase transaction.
-          If this value is not supplied then the the <a><code>PaymentRequest</code></a> behaves as
+          If this value is not supplied then the <a><code>PaymentRequest</code></a> behaves as
           if a value of <code>false</code> had been supplied.
         </dd>
       </dl>
@@ -764,19 +753,51 @@ dictionary PaymentOptions {
       <h2>ShippingAddress interface</h2>
       <pre class="idl">
         interface ShippingAddress {
-          /* [...] fields TBC */
+          readonly attribute DOMString regionCode;
+          readonly attribute sequence<DOMString> addressLine;
+          readonly attribute DOMString administrativeArea;
+          readonly attribute DOMString locality;
+          readonly attribute DOMString dependentLocality;
+          readonly attribute DOMString postalCode;
+          readonly attribute DOMString sortingCode;
+          readonly attribute DOMString languageCode;
+          readonly attribute DOMString organization;
+          readonly attribute DOMString recipient;
         };
       </pre>
+      <dl>
+        <dt><code>regionCode</code></dt>
+        <dd>This is the CLDR (Common Locale Data Repository) region code. For example, US, GB, CN, or JP.</dd>
+        <dt><code>addressLine</code></dt>
+        <dd>This is the most specific part of the address. It can include, for example, a street
+            name, a house number, apartment number, a rural delivery route, descriptive
+            instructions, or a post office box number.</dd>
+        <dt><code>administrativeArea</code></dt>
+        <dd>This is the top level administrative subdivision of the country. For example, this can
+            be a state, a province, an oblast, or a prefecture.</dd>
+        <dt><code>locality</code></dt>
+        <dd>This is the city/town portion of the address.</dd>
+        <dt><code>dependentLocality</code></dt>
+        <dd>This is the dependent locality or sublocality. For example, used for neighborhoods,
+            boroughs, districts, or UK dependent localities.</dd>
+        <dt><code>postalCode</code></dt>
+        <dd>This is the postal code or ZIP code, also known as PIN code in India.</dd>
+        <dt><code>sortingCode</code></dt>
+        <dd>This is the sorting code as used in, for example, France.</dd>
+        <dt><code>languageCode</code></dt>
+        <dd>This is the BCP-47 language code for the address. It's used to determine the field
+            separators and the order of fields when formatting the address for display.</dd>
+        <dt><code>organization</code></dt>
+        <dd>This is the organization, firm, company, or institution at this address.</dd>
+        <dt><code>recipient</code></dt>
+        <dd>This is the name of the recipient or contact person.</dd>
+      </dl>
       <p>
         If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
         passed to the <a>PaymentRequest</a> constructor, then the <a>user agent</a> will populate the
         <code>shippingAddress</code> field of the <a><code>PaymentRequest</code></a> object with
         the user's selected shipping address.
       </p>
-      <div class="issue" data-number="6" title="Write-up proposal for shipping address fields">
-        The fields of the <a><code>ShippingAddress</code></a> interface are
-        yet to be defined.
-      </div>
       <div class="issue" data-number="1" title="Should the merchant be able to request your email and recipient phone number">
         There is an open question about what data beyond shipping address the merchant might be able
         to request from the <a>user agent</a>. Is capturing email and recipient phone important to you?
@@ -1012,14 +1033,6 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
       Accept-Language headers, etc.)
     </p>
 
-
-    <p class="issue" data-number="55" title="Add section on security considerations">
-      The spec should indicate how data might be passed securely through the API using
-      mechanisms such as field level encryption and message signing. While these may not
-      be standardised a reference to the payment method specifications would be appropriate
-      as well as some examples of how those specifcations might implement secure messaging.
-    </p>
-
     <section>
       <h2>Algorithms</h2>
 
@@ -1177,7 +1190,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           </li>
           <li>
             If <em>request</em>@[[\state]] is not <em>interactive</em> and
-            the not <code>delegated</code>, then terminate this algorithm and take no further action.
+            not <code>delegated</code>, then terminate this algorithm and take no further action.
             The <a>user agent</a> user interface should ensure that this never occurs.
           </li>
           <li>
@@ -1213,6 +1226,19 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
       </section>
     </section>
 
+    <section class='informative'>
+      <h2>Security Considerations</h2>
+      <p class="ednote">
+        This section is a placeholder to record security considerations as we gather them through working
+        group discussion.
+      </p>
+        The <a><code>PaymentRequest</code></a> API does not directly support encryption of data fields.
+        Individual <a>payment methods</a> may choose to include support for encrypted data but it is not
+        mandatory that all <a>payment methods</a> support this.
+      </p>
+    </section>
+
+    <hr>
     <div class="issue" data-number="20" title="Ensure references are up-to-date">
       The references in the spec need to be up-to-date.
     </div>
