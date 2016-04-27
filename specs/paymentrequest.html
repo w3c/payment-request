@@ -711,7 +711,6 @@ dictionary PaymentOptions {
       <h2>PaymentItem dictionary</h2>
       <pre class="idl">
         dictionary PaymentItem {
-          required DOMString id;
           required DOMString label;
           required CurrencyAmount amount;
         };
@@ -724,9 +723,6 @@ dictionary PaymentOptions {
         The following fields MUST be included in a <code>PaymentItem</code> for it to be valid:
       </p>
       <dl>
-        <dt><code>id</code></dt>
-        <dd>This is a string identifier used to reference this <code>PaymentItem</code>. It MUST be
-        unique for a given <a><code>PaymentRequest</code></a>.</dd>
         <dt><code>label</code></dt>
         <dd>This is a human-readable description of the item. The <a>user agent</a> may display
         this to the user.</dd>
