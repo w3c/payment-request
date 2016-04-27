@@ -844,7 +844,7 @@ dictionary PaymentOptions {
           readonly attribute DOMString methodName;
           readonly attribute object details;
 
-          Promise&lt;void&gt; complete(PaymentComplete result = "");
+          Promise&lt;void&gt; complete(optional PaymentComplete result = "");
         };
       </pre>
 
