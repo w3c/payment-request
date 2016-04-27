@@ -838,11 +838,13 @@ dictionary PaymentOptions {
     <section>
       <h2>PaymentResponse interface</h2>
       <pre class="idl">
+        enum PaymentComplete { "success", "fail", "" };
+
         interface PaymentResponse {
           readonly attribute DOMString methodName;
           readonly attribute object details;
 
-          Promise&lt;void&gt; complete(boolean success);
+          Promise&lt;void&gt; complete(PaymentComplete result = "");
         };
       </pre>
 
@@ -866,16 +868,24 @@ dictionary PaymentOptions {
       <section>
         <h2>complete()</h2>
         <p>The <code><dfn>complete</dfn></code> method must be called after the user has accepted the payment
-        request and the [[\acceptPromise]] has been resolved. The <code>complete</code> method
-        takes a boolean argument that indicates the payment was successfully processed if <code>true</code> and
-        that processing failed if <code>false</code>. Calling the <code>complete</code> method tells the user
-        agent that the user interaction is over (and should cause any remaining user interface to be closed).</p>
-
-        <div class="issue" data-number="17" title="complete() should take a string argument not boolean">
-          There is an open issue about what values can be supplied to complete. These may depend on the
-          payment method selected and should then be defined in Payment Transaction Message specifications
-          such as the Basic Card Payment document.
-        </div>
+        request and the [[\acceptPromise]] has been resolved. Calling the <code>complete</code> method tells
+        the user agent that the user interaction is over (and should cause any remaining user interface to be
+        closed).</p>
+        <p>The <code>complete</code> method takes a string argument from the <code><dfn>PaymentComplete</dfn></code>
+        enum (<code>result</code>). These values are used to influence the user experience provided by the user agent
+        when the user interface is dismissed. The value of <code>result</code> has the following meaning:</p>
+        <dl>
+          <dt><dfn id="dom-paymentcomplete-success"><code>"success"</code></dfn></dt>
+          <dd>Indicates the payment was successfully processed. The user agent MAY display UI indicating
+          success.</dd>
+          <dt><dfn id="dom-paymentcomplete-fail"><code>"fail"</code></dfn></dt>
+          <dd>Indicates that processing of the payment failed. The user agent MAY display UI indicating
+          failure.</dd>
+          <dt><dfn id="dom-paymentcomplete-"><code>""</code></dfn></dt>
+          <dd>The web page did not indicate success or failure and the user agent SHOULD NOT display
+          UI indicating success or failure. This is the default value if the web page does not
+          supply a value for <code>result</code>.</dd>
+        </dl>
 
         <p>The <a><code>complete</code></a> method MUST act as follows:</p>
         <ol>
@@ -885,11 +895,8 @@ dictionary PaymentOptions {
           </li>
           <li>Set the value of the internal slot [[\completeCalled]] to <em>true</em>.</li>
           <li>Return <em>promise</em> and asynchronously perform the remaining steps.</li>
-          <li>
-            Pass the value of <code>success</code> to the <a>Payment App</a> that accepted the
-            payment request.
-          </li>
-          <li>Close down any remaining user interface.</li>
+          <li>Close down any remaining user interface. The user agent MAY use the value <code>result</code>
+          to influence the user experience.</li>
           <li>Resolve <em>promise</em> with <code>undefined</code>.</li>
         </ol>
 
