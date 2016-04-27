@@ -640,7 +640,8 @@ dictionary CurrencyAmount {
       <h2>PaymentDetails dictionary</h2>
       <pre class="idl">
 dictionary PaymentDetails {
-  sequence&lt;PaymentItem&gt; items;
+  PaymentItem total;
+  sequence&lt;PaymentItem&gt; displayItems;
   sequence&lt;ShippingOption&gt; shippingOptions;
 };
       </pre>
@@ -654,13 +655,18 @@ dictionary PaymentDetails {
         The following fields are part of the <code>PaymentDetails</code> dictionary:
       </p>
       <dl>
-        <dt><code>items</code></dt>
+        <dt><code>total</code></dt>
         <dd>
-          This sequence of <a><code>PaymentItem</code></a> dictionaries indicates what the payment
-          request is for. The sequence must contain at least one <code>PaymentItem</code>. The last
-          <code>PaymentItem</code> in the sequence represents the total amount of the payment
-          request. The <a>user agent</a> MAY validate that the total amount is the sum of the
-          preceding items, but it is the responsibility of the calling code to ensure that.
+          This <a><code>PaymentItem</code></a> contains the total amount of the payment request.
+        </dd>
+        <dt><code>displayItems</code></dt>
+        <dd>
+          This sequence of <a><code>PaymentItem</code></a> dictionaries contains line items
+          for the payment request that the user agent MAY display. For example, it might include
+          details of products or breakdown of tax and shipping. It is optional to provide this
+          information.
+          <p>The <a>user agent</a> MAY validate that the <code>total</code> amount is the
+          sum of these items, but it is the responsibility of the calling code to ensure that.</p>
         </dd>
         <dt><code>shippingOptions</code></dt>
         <dd>
