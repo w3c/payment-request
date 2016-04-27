@@ -746,7 +746,7 @@ dictionary PaymentOptions {
       <pre class="idl">
         interface ShippingAddress {
           readonly attribute DOMString regionCode;
-          readonly attribute sequence<DOMString> addressLine;
+          readonly attribute sequence&lt;DOMString&gt; addressLine;
           readonly attribute DOMString administrativeArea;
           readonly attribute DOMString locality;
           readonly attribute DOMString dependentLocality;
@@ -834,7 +834,7 @@ dictionary PaymentOptions {
           readonly attribute DOMString methodName;
           readonly attribute object details;
 
-          Promise&lt;void&gt; complete(boolean success);
+          Promise&lt;void&gt; complete();
         };
       </pre>
 
@@ -858,9 +858,7 @@ dictionary PaymentOptions {
       <section>
         <h2>complete()</h2>
         <p>The <code><dfn>complete</dfn></code> method must be called after the user has accepted the payment
-        request and the [[\acceptPromise]] has been resolved. The <code>complete</code> method
-        takes a boolean argument that indicates the payment was successfully processed if <code>true</code> and
-        that processing failed if <code>false</code>. Calling the <code>complete</code> method tells the user
+        request and the [[\acceptPromise]] has been resolved. Calling the <code>complete</code> method tells the user
         agent that the user interaction is over (and should cause any remaining user interface to be closed).</p>
 
         <div class="issue" data-number="17" title="complete() should take a string argument not boolean">
@@ -877,10 +875,6 @@ dictionary PaymentOptions {
           </li>
           <li>Set the value of the internal slot [[\completeCalled]] to <em>true</em>.</li>
           <li>Return <em>promise</em> and asynchronously perform the remaining steps.</li>
-          <li>
-            Pass the value of <code>success</code> to the <a>Payment App</a> that accepted the
-            payment request.
-          </li>
           <li>Close down any remaining user interface.</li>
           <li>Resolve <em>promise</em> with <code>undefined</code>.</li>
         </ol>
