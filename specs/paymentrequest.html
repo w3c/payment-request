@@ -226,7 +226,7 @@
     <section>
       <h2>PaymentRequest interface</h2>
       <pre class="idl">
-        [Constructor(sequence&lt;DOMString&gt; supportedMethods, PaymentDetails details, optional PaymentOptions options, optional object data)]
+        [Constructor(sequence&lt;PaymentMethodData&gt; methodData, PaymentDetails details, optional PaymentOptions options)]
         interface PaymentRequest : EventTarget {
           Promise&lt;PaymentResponse&gt; show();
           void abort();
@@ -255,7 +255,7 @@
       user interaction:</p>
 
       <pre class="example highlight">
-        var payment = new PaymentRequest(supportedMethods, details, options, data);
+        var payment = new PaymentRequest(methodData, details, options);
         payment.addEventListener("shippingaddresschange", function (changeEvent) {
             // Process shipping address change
         });
@@ -273,9 +273,9 @@
       <section>
         <h2>PaymentRequest constructor</h2>
         <p>
-          The <a><code>PaymentRequest</code></a> is constructed using the supplied <code>supportedMethods</code>
-          list, the payment <code>details</code>, the payment <code>options</code>, and any <a>payment
-          method</a> specific <code>data</code>.
+          The <a><code>PaymentRequest</code></a> is constructed using the supplied <code>methodData</code>
+          list including any <a>payment method</a> specific <code>data</code>, the payment <code>details</code>,
+          and the payment <code>options</code>.
         </p>
         <div class="issue" data-number="40" title="How does a website pass additional (not payment method specific) data to the payment app?">
           It is proposed that a conformance criteria for implementations of this API be 
@@ -286,10 +286,21 @@
           payment app.
         </div>
         <div class="note">
-          <p>The <code>supportedMethods</code> sequence contains the <a>payment method identifiers</a>
-          for the <a>payment methods</a> that the merchant web site accepts.</p>
+          <p>The <code>methodData</code> sequence contains <a><code>PaymentMethodData</code></a> dictionaries
+          containing the <a>payment method identifiers</a> for the <a>payment methods</a> that the web site accepts
+          and any associated <a>payment method</a> specific data.</p>
           <pre class="example highlight">
-            ["visa", "bitcoin", "bobpay.com"]
+            [
+              {
+                supportedMethods: ["visa","bitcoin"]
+              },
+              {
+                supportedMethods: ["bobpay.com"],
+                data: {
+                  "merchantIdentifier": "XXXX",
+                  "bobPaySpecificField": true
+              }
+            ]
           </pre>
 
           <p>The <code>details</code> object contains information about the transaction that the
@@ -324,24 +335,10 @@
               "requestShipping": true
             }
           </pre>
-
-          <p><code>data</code> is a <a>JSON-serializable object</a> that provides optional information that might
-          be needed by the supported <a>payment methods</a>.</p>
-          <pre class="example highlight">
-            {
-              "bobpay.com": {
-                  "merchantIdentifier": "XXXX",
-                  "bobPaySpecificField": true
-              },
-              "bitcoin": {
-                  "address": "XXXX"
-              }
-            }
-          </pre>
         </div>
 
         <div class="issue" data-number="15" title="Combine API parameters into a single request object + options">
-          There is an open issue about whether <code>supportedMethods</code>, <code>details</code>, and <code>data</code>
+          There is an open issue about whether <code>methodData</code>, <code>details</code>, and <code>data</code>
           should be combined into a single object.
         </div>
 
@@ -375,8 +372,12 @@
         </p>
         <ol>
           <li>
-            If the length of the <code>supportedMethods</code> sequence is zero, then <a>throw</a>
+            If the length of the <code>methodData</code> sequence is zero, then <a>throw</a>
             a <a><code>TypeError</code></a>.
+          </li>
+          <li>
+            For each <a><code>PaymentMethodData</code></a> dictionary, if the length of the
+            <code>supportedMethods</code> sequence is zero, then <a>throw</a> a <a><code>TypeError</code></a>.
           </li>
           <li>
             If the <a>global object</a> of the script calling the constructor is
@@ -402,21 +403,14 @@
             than zero, then <a>throw</a> a <a><code>TypeError</code></a>.
           </li>
           <li>
-            If <code>data</code> is not a <a>JSON-serializable object</a>, then <a>throw</a> a <a><code>TypeError</code></a>.
-          </li>
-          <li>
-            If the name of any top level field of <code>data</code> does not match one of the <a>payment method identifiers</a>
-            in <code>supportedMethods</code>, then <a>throw</a> a <a><code>TypeError</code></a>.
-          </li>
-          <li>
-            If the value of any top level field is not a <a>JSON-serializable object</a>, then
-            <a>throw</a> a <a><code>TypeError</code></a>.
+            For each <a><code>PaymentMethodData</code></a> in <code>methodData</code>, if the <code>data</code> field
+            is supplied but is not a <a>JSON-serializable object</a>, then <a>throw</a> a <a><code>TypeError</code></a>.
           </li>
           <li>Let <em>request</em> be a new <a><code>PaymentRequest</code></a>.</li>
           <li>
-            Store <code>supportedMethods</code> into <em>request</em>@[[\supportedMethods]].
+            Store <code>methodData</code> into <em>request</em>@[[\methodData]].
             <p>
-              The <code>supportedMethods</code> supplied to the <a><code>PaymentRequest</code></a> constructor
+              The <code>methodData</code> supplied to the <a><code>PaymentRequest</code></a> constructor
               SHOULD be in the order of preference of the caller. Implementations MAY show payment methods
               in this order if possible but SHOULD prioritize the preference of the user when presenting
               payment methods.
@@ -424,7 +418,6 @@
           </li>
           <li>Store <code>details</code> into <em>request</em>@[[\details]].</li>
           <li>Store <code>options</code> into <em>request</em>@[[\options]].</li>
-          <li>Store <code>data</code> into <em>request</em>@[[\data]].</li>
           <li>Set the value <em>request</em>@[[\state]] to <em>created</em>.</li>
           <li>
             Set the value of the <a><code>shippingAddress</code></a> attribute on <em>request</em> to <em>null</em>.
@@ -472,11 +465,16 @@
             Return <em>acceptPromise</em> and asynchronously perform the remaining steps.
           </li>
           <li>
-            Let <em>acceptedMethods</em> be the sequence of payment method identifiers <em>request</em>@[[\supportedMethods]]
-            with all identifiers removed that the <a>user agent</a> does not accept.
+            Let <em>supportedMethods</em> be the union of all the <code>supportedMethods</code> sequences from each
+            <a><code>PaymentMethodData</code> in the <em>request</em>@[[\methodData]] sequence.
           </li>
           <li>
-            If the length of <em>acceptedMethods</em> is zero, then reject <em>acceptPromise</em> with a <a><code>NotSupportedError</code></a>.
+            Let <em>acceptedMethods</em> be <em>supportedMethods</em> with all identifiers removed that the
+            <a>user agent</a> does not accept.
+          </li>
+          <li>
+            If the length of <em>acceptedMethods</em> is zero, then reject <em>acceptPromise</em> with a
+            <a><code>NotSupportedError</code></a>.
           </li>
           <li>
             Show a user interface to allow the user to interact with the payment request process. The <em>acceptPromise</em> will
@@ -544,8 +542,8 @@
         <table>
           <tr><th>Internal Slot</th><th>Description (<em>non-normative</em>)</th></tr>
           <tr>
-            <td>[[\supportedMethods]]</td>
-            <td>The <code>supportMethods</code> supplied to the constructor.</td>
+            <td>[[\methodData]]</td>
+            <td>The <code>methodData</code> supplied to the constructor.</td>
           </tr>
           <tr>
             <td>[[\details]]</td>
@@ -557,13 +555,6 @@
           <tr>
             <td>[[\options]]</td>
             <td>The <a><code>PaymentOptions</code></a> supplied to the constructor.</td>
-          </tr>
-          <tr>
-            <td>[[\data]]</td>
-            <td>
-              The payment method specific <code>data</code> supplied to the constructor used
-              by a <a>Payment App</a> to influence the app's behavior.
-            </td>
           </tr>
           <tr>
             <td>[[\state]]</td>
@@ -586,6 +577,29 @@
         </table>
       </section>
 
+    </section>
+
+    <section>
+      <h2>PaymentMethodData dictionary</h2>
+      <pre class="idl">
+        dictionary PaymentMethodData {
+          required sequence&lt;DOMString&gt; supportedMethods;
+          object data;
+        };
+      </pre>
+      <p>
+        A <a><code>PaymentMethodData</code></a> dictionary is used to indicate a set of supported <a>payment
+        methods</a> and any associated <a>payment method</a> specific data for those methods.
+      </p>
+      <p>The following fields are part of the <a><code>PaymentMethodData</code></a> dictionary:</p>
+      <dl>
+        <dt><code>supportedMethods</code></dt>
+        <dd><code>supportedMethods</code> is a required sequence of strings containing <a>payment method identifiers</a> for
+        <a>payment methods</a> that the merchant web site accepts.</dd>
+        <dt><code>data</code></dt>
+        <dd><code>data</code> is a <a>JSON-serializable object</a> that provides optional information that
+        might be needed by the supported payment methods.</dd>
+      </dl>
     </section>
 
     <section>
