@@ -264,7 +264,7 @@
           // Process paymentResponse
           // paymentResponse.methodName contains the selected payment method
           // paymentResponse.details contains a payment method specific response
-          paymentResponse.complete(true);
+          paymentResponse.complete("success");
         }).catch(function(err) {
           console.error("Uh oh, something bad happened", err.message);
         });
@@ -297,8 +297,8 @@
               {
                 supportedMethods: ["bobpay.com"],
                 data: {
-                  "merchantIdentifier": "XXXX",
-                  "bobPaySpecificField": true
+                  merchantIdentifier: "XXXX",
+                  bobPaySpecificField: true
               }
             ]
           </pre>
@@ -307,23 +307,20 @@
           user is being asked to complete such as the line items in an order.</p>
           <pre class="example highlight">
             {
-              "items": [
+              displayItems: [
                 {
-                  "id": "basket",
-                  "label": "Sub-total",
-                  "amount": { "currency": "USD", "value" : "55.00" }, // US$55.00
+                  label: "Sub-total",
+                  amount: { currency: "USD", value : "55.00" }, // US$55.00
                 },
                 {
-                  "id": "tax",
-                  "label": "Sales Tax",
-                  "amount": { "currency": "USD", "value" : "5.00" }, // US$5.00
-                },
-                {
-                  "id": "total",
-                  "label": "Total due",
-                  "amount": { "currency": "USD", "value" : "60.00" }, // US$60.00
+                  label: "Sales Tax",
+                  amount: { currency: "USD", value : "5.00" }, // US$5.00
                 }
-              ]
+              ],
+              total:  {
+                label: "Total due",
+                amount: { currency: "USD", value : "60.00" }, // US$60.00
+              }
             }
           </pre>
 
@@ -332,7 +329,7 @@
 
           <pre class="example highlight">
             {
-              "requestShipping": true
+              requestShipping: true
             }
           </pre>
         </div>
