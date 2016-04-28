@@ -390,10 +390,6 @@
             </div>
           </li>
           <li>
-            If <code>details</code> does not contain a sequence of <code>items</code> with length greater
-            than zero, then <a>throw</a> a <a><code>TypeError</code></a>.
-          </li>
-          <li>
             For each <a><code>PaymentMethodData</code></a> in <code>methodData</code>, if the <code>data</code> field
             is supplied but is not a <a>JSON-serializable object</a>, then <a>throw</a> a <a><code>TypeError</code></a>.
           </li>
@@ -683,11 +679,6 @@ dictionary PaymentDetails {
           of this option without running the <a>shipping option changed algorithm</a>.</p>
         </dd>
       </dl>
-
-      <div class="issue" data-number="18" title="Constructor should not include &quot;total&quot; in list of items">
-        There is an open issue about whether the <code>items</code> sequence should special-case the last
-        item in the sequence to represent the total.
-      </div>
     </section>
 
     <section>
@@ -1006,8 +997,12 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           <a><code>PaymentDetails</code></a> dictionary, then:
             <ol>
               <li>
-                If <code>details</code> contains an <code>items</code> value, then copy
-                this value to the <code>items</code> field of <em>target</em>@[[\details]].
+                If <code>details</code> contains a <code>total</code> value, then copy
+                this value to the <code>total</code> field of <em>target</em>@[[\details]].
+              </li>
+              <li>
+                If <code>details</code> contains a <code>displayItems</code> value, then copy
+                this value to the <code>displayItems</code> field of <em>target</em>@[[\details]].
               </li>
               <li>
                 If <code>details</code> contains a <code>shippingOptions</code> sequence, then
