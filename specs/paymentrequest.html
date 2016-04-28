@@ -766,7 +766,7 @@ dictionary PaymentOptions {
       <pre class="idl">
         interface ShippingAddress {
           readonly attribute DOMString regionCode;
-          readonly attribute sequence<DOMString> addressLine;
+          readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
           readonly attribute DOMString administrativeArea;
           readonly attribute DOMString locality;
           readonly attribute DOMString dependentLocality;
