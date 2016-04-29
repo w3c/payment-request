@@ -1249,10 +1249,29 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
         This section is a placeholder to record security considerations as we gather them through working
         group discussion.
       </p>
-        The <a><code>PaymentRequest</code></a> API does not directly support encryption of data fields.
-        Individual <a>payment methods</a> may choose to include support for encrypted data but it is not
-        mandatory that all <a>payment methods</a> support this.
+      <section>
+        <h2>Encryption of data fields</h2>
+        <p>
+          The <a><code>PaymentRequest</code></a> API does not directly support encryption of data fields.
+          Individual <a>payment methods</a> may choose to include support for encrypted data but it is not
+          mandatory that all <a>payment methods</a> support this.
+        </p>
+      </section>
+    </section>
+
+    <section class='informative'>
+      <h2>Privacy Considerations</h2>
+      <p class="ednote">
+        This section is a placeholder to record privacy considerations as we gather them through working
+        group discussion.
       </p>
+      <section>
+        <h2>Exposing user information</h2>
+        <p>
+          The <a>user agent</a> should never share information about the user to the web page
+          (such as the shipping address) without user consent.
+        </p>
+      </section>
     </section>
 
     <hr>
