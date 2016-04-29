@@ -25,8 +25,8 @@
           useExperimentalStyles: true,
           license:      "w3c-software-doc",
 
-          //previousMaturity: "FPWD",
-          //previousPublishDate:  "1977-03-15",
+          previousMaturity: "FPWD",
+          previousPublishDate:  "2016-04-21",
 
           wg:           "Web Payments Working Group",
           wgURI:        "https://www.w3.org/Payments/WG/",
@@ -226,7 +226,7 @@
     <section>
       <h2>PaymentRequest interface</h2>
       <pre class="idl">
-        [Constructor(sequence&lt;DOMString&gt; supportedMethods, PaymentDetails details, optional PaymentOptions options, optional object data)]
+        [Constructor(sequence&lt;PaymentMethodData&gt; methodData, PaymentDetails details, optional PaymentOptions options)]
         interface PaymentRequest : EventTarget {
           Promise&lt;PaymentResponse&gt; show();
           void abort();
@@ -255,7 +255,7 @@
       user interaction:</p>
 
       <pre class="example highlight">
-        var payment = new PaymentRequest(supportedMethods, details, options, data);
+        var payment = new PaymentRequest(methodData, details, options);
         payment.addEventListener("shippingaddresschange", function (changeEvent) {
             // Process shipping address change
         });
@@ -264,7 +264,7 @@
           // Process paymentResponse
           // paymentResponse.methodName contains the selected payment method
           // paymentResponse.details contains a payment method specific response
-          paymentResponse.complete(true);
+          paymentResponse.complete("success");
         }).catch(function(err) {
           console.error("Uh oh, something bad happened", err.message);
         });
@@ -273,9 +273,9 @@
       <section>
         <h2>PaymentRequest constructor</h2>
         <p>
-          The <a><code>PaymentRequest</code></a> is constructed using the supplied <code>supportedMethods</code>
-          list, the payment <code>details</code>, the payment <code>options</code>, and any <a>payment
-          method</a> specific <code>data</code>.
+          The <a><code>PaymentRequest</code></a> is constructed using the supplied <code>methodData</code>
+          list including any <a>payment method</a> specific <code>data</code>, the payment <code>details</code>,
+          and the payment <code>options</code>.
         </p>
         <div class="issue" data-number="40" title="How does a website pass additional (not payment method specific) data to the payment app?">
           It is proposed that a conformance criteria for implementations of this API be 
@@ -286,33 +286,41 @@
           payment app.
         </div>
         <div class="note">
-          <p>The <code>supportedMethods</code> sequence contains the <a>payment method identifiers</a>
-          for the <a>payment methods</a> that the merchant web site accepts.</p>
+          <p>The <code>methodData</code> sequence contains <a><code>PaymentMethodData</code></a> dictionaries
+          containing the <a>payment method identifiers</a> for the <a>payment methods</a> that the web site accepts
+          and any associated <a>payment method</a> specific data.</p>
           <pre class="example highlight">
-            ["visa", "bitcoin", "bobpay.com"]
+            [
+              {
+                supportedMethods: ["visa","bitcoin"]
+              },
+              {
+                supportedMethods: ["bobpay.com"],
+                data: {
+                  merchantIdentifier: "XXXX",
+                  bobPaySpecificField: true
+              }
+            ]
           </pre>
 
           <p>The <code>details</code> object contains information about the transaction that the
           user is being asked to complete such as the line items in an order.</p>
           <pre class="example highlight">
             {
-              "items": [
+              displayItems: [
                 {
-                  "id": "basket",
-                  "label": "Sub-total",
-                  "amount": { "currency": "USD", "value" : "55.00" }, // US$55.00
+                  label: "Sub-total",
+                  amount: { currency: "USD", value : "55.00" }, // US$55.00
                 },
                 {
-                  "id": "tax",
-                  "label": "Sales Tax",
-                  "amount": { "currency": "USD", "value" : "5.00" }, // US$5.00
-                },
-                {
-                  "id": "total",
-                  "label": "Total due",
-                  "amount": { "currency": "USD", "value" : "60.00" }, // US$60.00
+                  label: "Sales Tax",
+                  amount: { currency: "USD", value : "5.00" }, // US$5.00
                 }
-              ]
+              ],
+              total:  {
+                label: "Total due",
+                amount: { currency: "USD", value : "60.00" }, // US$60.00
+              }
             }
           </pre>
 
@@ -321,27 +329,13 @@
 
           <pre class="example highlight">
             {
-              "requestShipping": true
-            }
-          </pre>
-
-          <p><code>data</code> is a <a>JSON-serializable object</a> that provides optional information that might
-          be needed by the supported <a>payment methods</a>.</p>
-          <pre class="example highlight">
-            {
-              "bobpay.com": {
-                  "merchantIdentifier": "XXXX",
-                  "bobPaySpecificField": true
-              },
-              "bitcoin": {
-                  "address": "XXXX"
-              }
+              requestShipping: true
             }
           </pre>
         </div>
 
         <div class="issue" data-number="15" title="Combine API parameters into a single request object + options">
-          There is an open issue about whether <code>supportedMethods</code>, <code>details</code>, and <code>data</code>
+          There is an open issue about whether <code>methodData</code>, <code>details</code>, and <code>data</code>
           should be combined into a single object.
         </div>
 
@@ -357,12 +351,6 @@
           for a deposit, pre-auth for a later payment, making recurring payments, and more.
         </div>
 
-        <div class="issue" data-number="48" title="Should list of accepted payment methods be strings or objects?">
-          There is an open issue about whether the list of supported payment
-          methods should be passed to the user agent as a simple sequence of
-          strings or as a more complex and flexible object structure.
-        </div>
-
         <div class="issue" data-number="51" title="Should the payment API be more conversational or less conversational?">
           There is an open issue regarding whether the current pattern of using
           events for exchange of data between the user agent and the website is
@@ -375,8 +363,12 @@
         </p>
         <ol>
           <li>
-            If the length of the <code>supportedMethods</code> sequence is zero, then <a>throw</a>
+            If the length of the <code>methodData</code> sequence is zero, then <a>throw</a>
             a <a><code>TypeError</code></a>.
+          </li>
+          <li>
+            For each <a><code>PaymentMethodData</code></a> dictionary, if the length of the
+            <code>supportedMethods</code> sequence is zero, then <a>throw</a> a <a><code>TypeError</code></a>.
           </li>
           <li>
             If the <a>global object</a> of the script calling the constructor is
@@ -398,25 +390,14 @@
             </div>
           </li>
           <li>
-            If <code>details</code> does not contain a sequence of <code>items</code> with length greater
-            than zero, then <a>throw</a> a <a><code>TypeError</code></a>.
-          </li>
-          <li>
-            If <code>data</code> is not a <a>JSON-serializable object</a>, then <a>throw</a> a <a><code>TypeError</code></a>.
-          </li>
-          <li>
-            If the name of any top level field of <code>data</code> does not match one of the <a>payment method identifiers</a>
-            in <code>supportedMethods</code>, then <a>throw</a> a <a><code>TypeError</code></a>.
-          </li>
-          <li>
-            If the value of any top level field is not a <a>JSON-serializable object</a>, then
-            <a>throw</a> a <a><code>TypeError</code></a>.
+            For each <a><code>PaymentMethodData</code></a> in <code>methodData</code>, if the <code>data</code> field
+            is supplied but is not a <a>JSON-serializable object</a>, then <a>throw</a> a <a><code>TypeError</code></a>.
           </li>
           <li>Let <em>request</em> be a new <a><code>PaymentRequest</code></a>.</li>
           <li>
-            Store <code>supportedMethods</code> into <em>request</em>@[[\supportedMethods]].
+            Store <code>methodData</code> into <em>request</em>@[[\methodData]].
             <p>
-              The <code>supportedMethods</code> supplied to the <a><code>PaymentRequest</code></a> constructor
+              The <code>methodData</code> supplied to the <a><code>PaymentRequest</code></a> constructor
               SHOULD be in the order of preference of the caller. Implementations MAY show payment methods
               in this order if possible but SHOULD prioritize the preference of the user when presenting
               payment methods.
@@ -424,7 +405,6 @@
           </li>
           <li>Store <code>details</code> into <em>request</em>@[[\details]].</li>
           <li>Store <code>options</code> into <em>request</em>@[[\options]].</li>
-          <li>Store <code>data</code> into <em>request</em>@[[\data]].</li>
           <li>Set the value <em>request</em>@[[\state]] to <em>created</em>.</li>
           <li>
             Set the value of the <a><code>shippingAddress</code></a> attribute on <em>request</em> to <em>null</em>.
@@ -472,11 +452,16 @@
             Return <em>acceptPromise</em> and asynchronously perform the remaining steps.
           </li>
           <li>
-            Let <em>acceptedMethods</em> be the sequence of payment method identifiers <em>request</em>@[[\supportedMethods]]
-            with all identifiers removed that the <a>user agent</a> does not accept.
+            Let <em>supportedMethods</em> be the union of all the <code>supportedMethods</code> sequences from each
+            <a><code>PaymentMethodData</code></a> in the <em>request</em>@[[\methodData]] sequence.
           </li>
           <li>
-            If the length of <em>acceptedMethods</em> is zero, then reject <em>acceptPromise</em> with a <a><code>NotSupportedError</code></a>.
+            Let <em>acceptedMethods</em> be <em>supportedMethods</em> with all identifiers removed that the
+            <a>user agent</a> does not accept.
+          </li>
+          <li>
+            If the length of <em>acceptedMethods</em> is zero, then reject <em>acceptPromise</em> with a
+            <a><code>NotSupportedError</code></a>.
           </li>
           <li>
             Show a user interface to allow the user to interact with the payment request process. The <em>acceptPromise</em> will
@@ -544,8 +529,8 @@
         <table>
           <tr><th>Internal Slot</th><th>Description (<em>non-normative</em>)</th></tr>
           <tr>
-            <td>[[\supportedMethods]]</td>
-            <td>The <code>supportMethods</code> supplied to the constructor.</td>
+            <td>[[\methodData]]</td>
+            <td>The <code>methodData</code> supplied to the constructor.</td>
           </tr>
           <tr>
             <td>[[\details]]</td>
@@ -557,13 +542,6 @@
           <tr>
             <td>[[\options]]</td>
             <td>The <a><code>PaymentOptions</code></a> supplied to the constructor.</td>
-          </tr>
-          <tr>
-            <td>[[\data]]</td>
-            <td>
-              The payment method specific <code>data</code> supplied to the constructor used
-              by a <a>Payment App</a> to influence the app's behavior.
-            </td>
           </tr>
           <tr>
             <td>[[\state]]</td>
@@ -586,6 +564,29 @@
         </table>
       </section>
 
+    </section>
+
+    <section>
+      <h2>PaymentMethodData dictionary</h2>
+      <pre class="idl">
+        dictionary PaymentMethodData {
+          required sequence&lt;DOMString&gt; supportedMethods;
+          object data;
+        };
+      </pre>
+      <p>
+        A <a><code>PaymentMethodData</code></a> dictionary is used to indicate a set of supported <a>payment
+        methods</a> and any associated <a>payment method</a> specific data for those methods.
+      </p>
+      <p>The following fields are part of the <a><code>PaymentMethodData</code></a> dictionary:</p>
+      <dl>
+        <dt><code>supportedMethods</code></dt>
+        <dd><code>supportedMethods</code> is a required sequence of strings containing <a>payment method identifiers</a> for
+        <a>payment methods</a> that the merchant web site accepts.</dd>
+        <dt><code>data</code></dt>
+        <dd><code>data</code> is a <a>JSON-serializable object</a> that provides optional information that
+        might be needed by the supported payment methods.</dd>
+      </dl>
     </section>
 
     <section>
@@ -640,7 +641,8 @@ dictionary CurrencyAmount {
       <h2>PaymentDetails dictionary</h2>
       <pre class="idl">
 dictionary PaymentDetails {
-  sequence&lt;PaymentItem&gt; items;
+  PaymentItem total;
+  sequence&lt;PaymentItem&gt; displayItems;
   sequence&lt;ShippingOption&gt; shippingOptions;
 };
       </pre>
@@ -654,13 +656,18 @@ dictionary PaymentDetails {
         The following fields are part of the <code>PaymentDetails</code> dictionary:
       </p>
       <dl>
-        <dt><code>items</code></dt>
+        <dt><code>total</code></dt>
         <dd>
-          This sequence of <a><code>PaymentItem</code></a> dictionaries indicates what the payment
-          request is for. The sequence must contain at least one <code>PaymentItem</code>. The last
-          <code>PaymentItem</code> in the sequence represents the total amount of the payment
-          request. The <a>user agent</a> MAY validate that the total amount is the sum of the
-          preceding items, but it is the responsibility of the calling code to ensure that.
+          This <a><code>PaymentItem</code></a> contains the total amount of the payment request.
+        </dd>
+        <dt><code>displayItems</code></dt>
+        <dd>
+          This sequence of <a><code>PaymentItem</code></a> dictionaries contains line items
+          for the payment request that the user agent MAY display. For example, it might include
+          details of products or breakdown of tax and shipping. It is optional to provide this
+          information.
+          <p>The <a>user agent</a> MAY validate that the <code>total</code> amount is the
+          sum of these items, but it is the responsibility of the calling code to ensure that.</p>
         </dd>
         <dt><code>shippingOptions</code></dt>
         <dd>
@@ -670,13 +677,11 @@ dictionary PaymentDetails {
           <p>If the sequence only contains one item, then this is the shipping option that
           will be used and <a><code>shippingOption</code></a> will be set to the <code>id</code>
           of this option without running the <a>shipping option changed algorithm</a>.</p>
+          <p>The <code>shippingOptions</code> field is only used if the <a><code>PaymentRequest</code></a> was
+          constructed with <a><code>PaymentOptions</code></a> <code>requestShipping</code>
+          set to <code>true</code>.</p>
         </dd>
       </dl>
-
-      <div class="issue" data-number="18" title="Constructor should not include &quot;total&quot; in list of items">
-        There is an open issue about whether the <code>items</code> sequence should special-case the last
-        item in the sequence to represent the total.
-      </div>
     </section>
 
     <section>
@@ -711,7 +716,6 @@ dictionary PaymentOptions {
       <h2>PaymentItem dictionary</h2>
       <pre class="idl">
         dictionary PaymentItem {
-          required DOMString id;
           required DOMString label;
           required CurrencyAmount amount;
         };
@@ -724,9 +728,6 @@ dictionary PaymentOptions {
         The following fields MUST be included in a <code>PaymentItem</code> for it to be valid:
       </p>
       <dl>
-        <dt><code>id</code></dt>
-        <dd>This is a string identifier used to reference this <code>PaymentItem</code>. It MUST be
-        unique for a given <a><code>PaymentRequest</code></a>.</dd>
         <dt><code>label</code></dt>
         <dd>This is a human-readable description of the item. The <a>user agent</a> may display
         this to the user.</dd>
@@ -741,10 +742,6 @@ dictionary PaymentOptions {
             There is an open issue about whether it should be possible to provide a different amounts depending
             upon the payment method.
           </div>
-          <div class="issue" data-number="14" title="Handling non-decimal currencies">
-            There is an open issue about whether and how to handle
-            <a href="https://en.wikipedia.org/wiki/Non-decimal_currency">non-decimal currencies</a>.
-          </div>
         </dd>
       </dl>
     </section>
@@ -754,7 +751,7 @@ dictionary PaymentOptions {
       <pre class="idl">
         interface ShippingAddress {
           readonly attribute DOMString regionCode;
-          readonly attribute sequence<DOMString> addressLine;
+          readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
           readonly attribute DOMString administrativeArea;
           readonly attribute DOMString locality;
           readonly attribute DOMString dependentLocality;
@@ -795,8 +792,9 @@ dictionary PaymentOptions {
       <p>
         If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
         passed to the <a>PaymentRequest</a> constructor, then the <a>user agent</a> will populate the
-        <code>shippingAddress</code> field of the <a><code>PaymentRequest</code></a> object with
-        the user's selected shipping address.
+        <code>shippingAddress</code> field of the <a><code>PaymentRequest</code></a> and ultimately the
+        <a><code>PaymentResponse</code></a> object with the user's selected shipping address after
+        the user has accepted the payment.
       </p>
       <div class="issue" data-number="1" title="Should the merchant be able to request your email and recipient phone number">
         There is an open question about what data beyond shipping address the merchant might be able
@@ -838,11 +836,14 @@ dictionary PaymentOptions {
     <section>
       <h2>PaymentResponse interface</h2>
       <pre class="idl">
+        enum PaymentComplete { "success", "fail", "" };
+
         interface PaymentResponse {
           readonly attribute DOMString methodName;
           readonly attribute object details;
+          readonly attribute ShippingAddress? shippingAddress;
 
-          Promise&lt;void&gt; complete(boolean success);
+          Promise&lt;void&gt; complete(optional PaymentComplete result = "");
         };
       </pre>
 
@@ -859,23 +860,38 @@ dictionary PaymentOptions {
       <dt><code><dfn>details</dfn></code></dt>
       <dd>
         A <a>JSON-serializable object</a> that provides a <a>payment method</a> specific message used by the merchant to
-        process the transaction and determine successful fund transfer.
+        process the transaction and determine successful fund transfer. This data is returned by the <a>payment app</a>
+        that satisfies the payment request.
+      </dd>
+      <dt><code><dfn>shippingAddress</dfn></code></dt>
+      <dd>
+        If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
+        passed to the <a>PaymentRequest</a> constructor, then <a><code>shippingAddress</code></a> will
+        be the full and final shipping address chosen by the user.
       </dd>
       </dl>
 
       <section>
         <h2>complete()</h2>
         <p>The <code><dfn>complete</dfn></code> method must be called after the user has accepted the payment
-        request and the [[\acceptPromise]] has been resolved. The <code>complete</code> method
-        takes a boolean argument that indicates the payment was successfully processed if <code>true</code> and
-        that processing failed if <code>false</code>. Calling the <code>complete</code> method tells the user
-        agent that the user interaction is over (and should cause any remaining user interface to be closed).</p>
-
-        <div class="issue" data-number="17" title="complete() should take a string argument not boolean">
-          There is an open issue about what values can be supplied to complete. These may depend on the
-          payment method selected and should then be defined in Payment Transaction Message specifications
-          such as the Basic Card Payment document.
-        </div>
+        request and the [[\acceptPromise]] has been resolved. Calling the <code>complete</code> method tells
+        the user agent that the user interaction is over (and should cause any remaining user interface to be
+        closed).</p>
+        <p>The <code>complete</code> method takes a string argument from the <code><dfn>PaymentComplete</dfn></code>
+        enum (<code>result</code>). These values are used to influence the user experience provided by the user agent
+        when the user interface is dismissed. The value of <code>result</code> has the following meaning:</p>
+        <dl>
+          <dt><dfn id="dom-paymentcomplete-success"><code>"success"</code></dfn></dt>
+          <dd>Indicates the payment was successfully processed. The user agent MAY display UI indicating
+          success.</dd>
+          <dt><dfn id="dom-paymentcomplete-fail"><code>"fail"</code></dfn></dt>
+          <dd>Indicates that processing of the payment failed. The user agent MAY display UI indicating
+          failure.</dd>
+          <dt><dfn id="dom-paymentcomplete-"><code>""</code></dfn></dt>
+          <dd>The web page did not indicate success or failure and the user agent SHOULD NOT display
+          UI indicating success or failure. This is the default value if the web page does not
+          supply a value for <code>result</code>.</dd>
+        </dl>
 
         <p>The <a><code>complete</code></a> method MUST act as follows:</p>
         <ol>
@@ -885,11 +901,8 @@ dictionary PaymentOptions {
           </li>
           <li>Set the value of the internal slot [[\completeCalled]] to <em>true</em>.</li>
           <li>Return <em>promise</em> and asynchronously perform the remaining steps.</li>
-          <li>
-            Pass the value of <code>success</code> to the <a>Payment App</a> that accepted the
-            payment request.
-          </li>
-          <li>Close down any remaining user interface.</li>
+          <li>Close down any remaining user interface. The user agent MAY use the value <code>result</code>
+          to influence the user experience.</li>
           <li>Resolve <em>promise</em> with <code>undefined</code>.</li>
         </ol>
 
@@ -996,8 +1009,12 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           <a><code>PaymentDetails</code></a> dictionary, then:
             <ol>
               <li>
-                If <code>details</code> contains an <code>items</code> value, then copy
-                this value to the <code>items</code> field of <em>target</em>@[[\details]].
+                If <code>details</code> contains a <code>total</code> value, then copy
+                this value to the <code>total</code> field of <em>target</em>@[[\details]].
+              </li>
+              <li>
+                If <code>details</code> contains a <code>displayItems</code> value, then copy
+                this value to the <code>displayItems</code> field of <em>target</em>@[[\details]].
               </li>
               <li>
                 If <code>details</code> contains a <code>shippingOptions</code> sequence, then
