@@ -677,6 +677,9 @@ dictionary PaymentDetails {
           <p>If the sequence only contains one item, then this is the shipping option that
           will be used and <a><code>shippingOption</code></a> will be set to the <code>id</code>
           of this option without running the <a>shipping option changed algorithm</a>.</p>
+          <p>The <code>shippingOptions</code> field is only used if the <a><code>PaymentRequest</code></a> was
+          constructed with <a><code>PaymentOptions</code></a> <code>requestShipping</code>
+          set to <code>true</code>.</p>
         </dd>
       </dl>
     </section>
