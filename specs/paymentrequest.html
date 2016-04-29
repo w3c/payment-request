@@ -693,6 +693,8 @@ dictionary PaymentDetails {
       <h2>PaymentOptions dictionary</h2>
       <pre class="idl">
 dictionary PaymentOptions {
+  boolean requestPayerEmail = false;
+  boolean requestPayerPhone = false;
   boolean requestShipping = false;
 };
       </pre>
@@ -705,14 +707,24 @@ dictionary PaymentOptions {
         The following fields MAY be passed to the <a><code>PaymentRequest</code></a> constructor:
       </p>
       <dl>
+        <dt><code><dfn>requestPayerEmail</dfn></code></dt>
+        <dd>
+          This <em>boolean</em> value indicates whether the <a>user agent</a> should collect and return
+          the payer's email address as part of the payment request. For example, this would be set to
+          <code>true</code> to allow a merchant to email a receipt.
+        </dd>
+        <dt><code><dfn>requestPayerPhone</dfn></code></dt>
+        <dd>
+          This <em>boolean</em> value indicates whether the <a>user agent</a> should collect and return
+          the payer's phone number as part of the payment request. For example, this would be set to
+          <code>true</code> to allow a merchant to phone a customer with a billing enquiry.
+        </dd>
         <dt><code><dfn>requestShipping</dfn></code></dt>
         <dd>
           This <em>boolean</em> value indicates whether the <a>user agent</a> should collect and return
           a shipping address as part of the payment request. For example, this would be set to
           <code>true</code> when physical goods need to be shipped by the merchant to the user.
           This would be set to <code>false</code> for an online-only electronic purchase transaction.
-          If this value is not supplied then the <a><code>PaymentRequest</code></a> behaves as
-          if a value of <code>false</code> had been supplied.
         </dd>
       </dl>
     </section>
@@ -765,6 +777,7 @@ dictionary PaymentOptions {
           readonly attribute DOMString languageCode;
           readonly attribute DOMString organization;
           readonly attribute DOMString recipient;
+          readonly attribute DOMString phone;
         };
       </pre>
       <dl>
@@ -793,6 +806,8 @@ dictionary PaymentOptions {
         <dd>This is the organization, firm, company, or institution at this address.</dd>
         <dt><code>recipient</code></dt>
         <dd>This is the name of the recipient or contact person.</dd>
+        <dt><code>phone</code></dt>
+        <dd>This is the phone number of the recipient or contact person.</dd>
       </dl>
       <p>
         If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
@@ -847,6 +862,8 @@ dictionary PaymentOptions {
           readonly attribute DOMString methodName;
           readonly attribute object details;
           readonly attribute ShippingAddress? shippingAddress;
+          readonly attribute DOMString? payerEmail;
+          readonly attribute DOMString? payerPhone;
 
           Promise&lt;void&gt; complete(optional PaymentComplete result = "");
         };
@@ -873,6 +890,18 @@ dictionary PaymentOptions {
         If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
         passed to the <a>PaymentRequest</a> constructor, then <a><code>shippingAddress</code></a> will
         be the full and final shipping address chosen by the user.
+      </dd>
+      <dt><code><dfn>payerEmail</dfn></code></dt>
+      <dd>
+        If the <a>requestPayerEmail</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
+        passed to the <a>PaymentRequest</a> constructor, then <a><code>payerEmail</code></a> will
+        be the email address chosen by the user.
+      </dd>
+      <dt><code><dfn>payerPhone</dfn></code></dt>
+      <dd>
+        If the <a>requestPayerPhone</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
+        passed to the <a>PaymentRequest</a> constructor, then <a><code>payerPhone</code></a> will
+        be the phone number chosen by the user.
       </dd>
       </dl>
 
@@ -1236,6 +1265,21 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
             containing the <a>payment method</a> specific message used by the merchant to process
             the transaction. The format of this response will be defined by a <a>Payment Transaction
             Message Specification</a>.
+          </li>
+          <li>
+            If the <code>requestShipping</code> value of <em>request</em>@[[\options]]
+            is <code>true</code>, then copy the <code>shippingAddress</code> attribute of
+            <em>request</em> to the <code>shippingAddress</code> attribute of <em>response</em>.
+          </li>
+          <li>
+            If the <code>requestPayerEmail</code> value of <em>request</em>@[[\options]]
+            is <code>true</code>, then set the <code>payerEmail</code> attribute of
+            <em>response</em> to the payer's email address selected by the user.
+          </li>
+          <li>
+            If the <code>requestPayerPhone</code> value of <em>request</em>@[[\options]]
+            is <code>true</code>, then set the <code>payerPhone</code> attribute of
+            <em>response</em> to the payer's phone number selected by the user.
           </li>
           <li>
             Set <em>response</em>@[[\completeCalled]] to <em>false</em>.
