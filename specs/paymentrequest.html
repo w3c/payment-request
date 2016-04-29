@@ -390,8 +390,12 @@
             </div>
           </li>
           <li>
-            If <code>details</code> does not contain a sequence of <code>items</code> with length greater
-            than zero, then <a>throw</a> a <a><code>TypeError</code></a>.
+            If <code>details</code> does not contain a value for <code>total</code>, then throw a
+            <a><code>TypeError</code></a>.
+          </li>
+          <li>
+            If the first character of <code>details.total.amount.value</code> is U+002D HYPHEN-MINUS, then throw a
+            <a><code>TypeError</code></a>. <code>total</code> MUST be a non-negative amount.
           </li>
           <li>
             For each <a><code>PaymentMethodData</code></a> in <code>methodData</code>, if the <code>data</code> field
