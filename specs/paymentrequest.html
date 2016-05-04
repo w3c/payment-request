@@ -426,6 +426,13 @@
             length of 1, then set <a><code>shippingOption</code></a> to the <code>id</code> of
             the only <a><code>ShippingOption</code></a> in the sequence.
           </li>
+          <li>
+            If <code>details</code> contains a <code>shippingOptions</code> sequence with a
+            length greater than 1, and if any <a><code>ShippingOption</code></a> in the sequence
+            has the <code>selected</code> field set to <code>true</code>, then set
+            <a><code>shippingOption</code></a> to the <code>id</code> of the last <a><code>ShippingOption</code></a>
+            in the sequence with <code>selected</code> set to <code>true</code>.
+          </li>
           <li>Set the value <em>request</em>@[[\updating]] to <em>false</em>.</li>
           <li>Return <em>request</em>.</li>
         </ol>
@@ -715,9 +722,21 @@ dictionary PaymentDetails {
           <p>If the sequence only contains one item, then this is the shipping option that
           will be used and <a><code>shippingOption</code></a> will be set to the <code>id</code>
           of this option without running the <a>shipping option changed algorithm</a>.</p>
+          <p>If an item in the sequence has the <code>selected</code> field set to <code>true</code>,
+          then this is the shipping option that will be used by default and <a><code>shippingOption</code></a>
+          will be set to the <code>id</code> of this option without running the <a>shipping option changed
+          algorithm</a>. Authors SHOULD NOT set <code>selected</code> to <code>true</code> on more than
+          one item. If more than one item in the sequence has <code>selected</code> set to <code>true</code>,
+          then <a>user agents</a> MUST select the last one in the sequence.</p>
           <p>The <code>shippingOptions</code> field is only used if the <a><code>PaymentRequest</code></a> was
           constructed with <a><code>PaymentOptions</code></a> <code>requestShipping</code>
           set to <code>true</code>.</p>
+          <p class="note">
+            If the sequence contains only one item or if the sequence has an item with the <code>selected</code>
+            field set to <code>true</code>, then authors SHOULD ensure that the <code>total</code> field includes
+            the cost of the shipping option. This is because no <a><code>shippingoptionchange</code></a> event
+            will be fired for this option unless the user selects an alternative option first.
+          </p>
         </dd>
       </dl>
     </section>
@@ -862,6 +881,7 @@ dictionary PaymentOptions {
           required string id;
           required string label;
           required CurrencyAmount amount;
+          boolean selected = false;
         };
       </pre>
       <p>
@@ -883,6 +903,9 @@ dictionary PaymentOptions {
         <dd>
           A <a><code>CurrencyAmount</code></a> containing the monetary amount for the item.
         </dd>
+        <dt><code>selected</code></dt>
+        <dd>This is set to <code>true</code> to indicate that this is the default selected <a>ShippingOption</a>
+        in a sequence. <a>User agents</a> SHOULD display this option by default in the user interface.</dd>
       </dl>
     </section>
 
@@ -1095,6 +1118,13 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
                 If <code>details</code> contains a <code>shippingOptions</code> sequence with a
                 length of 1, then set <em>newOption</em> to the <code>id</code> of the only
                 <a><code>ShippingOption</code></a> in the sequence.
+              </li>
+              <li>
+                If <code>details</code> contains a <code>shippingOptions</code> sequence with a
+                length greater than 1, and if any <a><code>ShippingOption</code></a> in the sequence
+                has the <code>selected</code> field set to <code>true</code>, then set
+                <em>newOption</em> to the <code>id</code> of the last <a><code>ShippingOption</code></a>
+                in the sequence with <code>selected</code> set to <code>true</code>.
               </li>
               <li>
                 Set the value of <a><code>shippingOption</code></a> on <em>target</em> to
