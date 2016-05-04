@@ -216,7 +216,8 @@
         <dd>When this specification says to <dfn>throw</dfn> an error, the <a>user agent</a> must throw an
         error as described in [[!WEBIDL]]. When this occurs in a sub-algorithm, this results in
         termination of execution of the sub-algorithm and all ancestor algorithms until one is
-        reached that explicitly describes procedures for catching exceptions.</dd>
+        reached that explicitly describes procedures for catching exceptions.
+        <p>The term <dfn>extended attribute</dfn> is defined by [[!WEBIDL]].</dd>
         <dt>Secure Contexts</dt>
         <dd>The term <dfn>secure context</dfn> is defined by the Secure Contexts specification
         [[!POWERFUL-FEATURES]].</dd>
@@ -226,7 +227,8 @@
     <section>
       <h2>PaymentRequest interface</h2>
       <pre class="idl">
-        [Constructor(sequence&lt;PaymentMethodData&gt; methodData, PaymentDetails details, optional PaymentOptions options)]
+        [Constructor(sequence&lt;PaymentMethodData&gt; methodData, PaymentDetails details, optional PaymentOptions options),
+        SecureContext]
         interface PaymentRequest : EventTarget {
           Promise&lt;PaymentResponse&gt; show();
           void abort();
@@ -249,6 +251,11 @@
         or activating a "Buy", "Purchase", or "Checkout" button).
         The <a><code>PaymentRequest</code></a> allows the web page to exchange information with the
         <a>user agent</a> while the user is providing input before approving or denying a payment request.
+      </p>
+
+      <p class="note">
+        The <code>[SecureContext]</code> <a>extended attribute</a> means that the <a><code>PaymentRequest</code></a>
+        is only exposed within a <a>secure context</a> and won't be accessible elsewhere.
       </p>
 
       <p>The following example shows how to construct a <a><code>PaymentRequest</code></a> and begin the
@@ -369,13 +376,6 @@
           <li>
             For each <a><code>PaymentMethodData</code></a> dictionary, if the length of the
             <code>supportedMethods</code> sequence is zero, then <a>throw</a> a <a><code>TypeError</code></a>.
-          </li>
-          <li>
-            If the <a>global object</a> of the script calling the constructor is
-            not considered a <a>secure context</a>, then <a>throw</a> a <a><code>SecurityError</code></a>.
-            <div class="issue" data-number="22" title="Spec should use [SecureContext] once that is defined in Web IDL">
-              Using [SecureContext] in Web IDL will allow us to eliminate this prose.
-            </div>
           </li>
           <li>
             If the <a>browsing context</a> of the script calling the constructor is
