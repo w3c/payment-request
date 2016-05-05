@@ -207,6 +207,7 @@
         <p><dfn>DOMException</dfn> and the following DOMException types from [[!DOM4]] are used:</p>
         <table>
         <tr><th>Type</th><th>Message (optional)</th></tr>
+        <tr><td><code><dfn>AbortError</dfn></code></td><td>The payment request was aborted</td></tr>
         <tr><td><code><dfn>InvalidStateError</dfn></code></td><td>The object is in an invalid state</td></tr>
         <tr><td><code><dfn>NotSupportedError</dfn></code></td><td>The payment method was not supported</td></tr>
         <tr><td><code><dfn>SecurityError</dfn></code></td><td>The operation is only supported in a secure context</td></tr>
@@ -494,6 +495,7 @@
           <li>Set the value of the internal slot <em>request</em>@[[\state]] to <em>closed</em>.</li>
           <li>Return from the method and asynchronously perform the remaining steps.</li>
           <li>Abort the current user interaction and close down any remaining user interface</li>
+          <li>Reject the promise <em>request</em>@[[\acceptPromise]] with an <a><code>AbortError</code></a>.</li>
         </ol>
       </section>
 
