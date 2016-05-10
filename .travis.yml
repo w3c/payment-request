@@ -1,0 +1,18 @@
+language: node_js
+sudo: false
+branches:
+  only:
+  - gh-pages
+env:
+  global:
+  - DECISION=""
+  - secure: "<encypted token TOKEN_PAYMENT_REQUEST>"
+  - secure: "<encypted token TOKEN_PAYMENT_METHOD_ID>"
+  - secure: "<encypted token TOKEN_PAYMENT_METHOD_BASIC_CARD>"
+script:
+- echo "ok"
+after_success:
+- SPECS=`git diff-tree --no-commit-id --name-only -r ${TRAVIS_COMMIT} | grep '^specs' | cut -d'/' -f 2 | sort | uniq | xargs``'`
+- test "${SPECS#*payment-request}" != "$SPECS" && curl "https://labs.w3.org/echidna/api/request" --data "url=http://w3c.github.io/browser-payment-api/specs/payment-request/W3CTRMANIFEST" --data "decision=$DECISION" --data "token=$TOKEN_PAYMENT_REQUEST"
+- test "${SPECS#*payment-method-id}" != "$SPECS" && curl "https://labs.w3.org/echidna/api/request" --data "url=http://w3c.github.io/browser-payment-api/specs/payment-method-id/W3CTRMANIFEST" --data "decision=$DECISION" --data "token=$TOKEN_PAYMENT_METHOD_ID"
+- test "${SPECS#*payment-method-basic-card}" != "$SPECS" && curl "https://labs.w3.org/echidna/api/request" --data "url=http://w3c.github.io/browser-payment-api/specs/payment-method-basic-card/W3CTRMANIFEST" --data "decision=$DECISION" --data "token=$TOKEN_PAYMENT_METHOD_BASIC_CARD"
