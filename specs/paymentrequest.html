@@ -935,8 +935,9 @@ dictionary PaymentOptions {
           </li>
           <li>Set the value of the internal slot [[\completeCalled]] to <em>true</em>.</li>
           <li>Return <em>promise</em> and asynchronously perform the remaining steps.</li>
-          <li>Close down any remaining user interface. The user agent MAY use the value <code>result</code>
-          to influence the user experience.</li>
+          <li>Close down any remaining user interface. The <a>user agent</a> MAY use the value <code>result</code>
+          to influence the user experience. <a>User agents</a> SHOULD treat unrecognized <code>result</code>
+          values as the value <code>""</code>.</li>
           <li>Resolve <em>promise</em> with <code>undefined</code>.</li>
         </ol>
 
