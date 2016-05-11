@@ -232,7 +232,7 @@
         SecureContext]
         interface PaymentRequest : EventTarget {
           Promise&lt;PaymentResponse&gt; show();
-          void abort();
+          Promise&lt;void&gt; abort();
 
           readonly attribute PaymentAddress? shippingAddress;
           readonly attribute DOMString? shippingOption;
@@ -481,9 +481,36 @@
 
       <section>
         <h2>abort()</h2>
-        <p>The <code><dfn>abort</dfn></code> method may be called if the web page wishes to abort the payment
-        <em>request</em> after the <a><code>show</code></a> method has been called and before the <em>request</em>@[[\acceptPromise]]
-        has been resolved.</p>
+
+        <p>
+          The <code><dfn>abort</dfn></code> method may be called if the web page wishes to tell the
+          <a>user agent</a> to abort the payment <em>request</em> and to tear down any user interface that
+          might be shown. <code>abort</code> can only be called after the <a><code>show</code></a> method
+          has been called and before the <em>request</em>@[[\acceptPromise]] has been resolved.
+          For example, a web page might choose to do this if the goods they are selling are
+          only available for a limited amount of time. If the user does not accept the payment request
+          within the allowed time period, then the request will be aborted.
+        </p>
+
+        <p>
+          A <a>user agent</a> might not always be able to abort a request. For example, if the <a>user agent</a>
+          has delegated responsibility for the request to another app. In this situation, <code>abort</code> will
+          reject the returned <a>Promise</a>.
+        </p>
+
+        <p class="issue" data-number="39" title="How are web-based payment apps supported?">
+          The architecture document suggests that payment apps may take
+          numerous forms, including as web-based apps. This specification
+          should describe how the user-agent will pass the payment request
+          data and the complete signal to a web-based payment app and also how
+          it will receive the payment response from the payment app.
+        </p>
+
+        <p class="issue" data-number="50" title="How are payment requests and responses passed between the browser and third-party native wallets?">
+          This specification should describe how the user agent will pass the 
+          payment request data and the complete signal to a native payment app 
+          and also how it will receive the payment response from the payment app.
+        </p>
 
         <p>The <a><code>abort</code></a> method MUST act as follows:</p>
         <ol>
@@ -492,10 +519,14 @@
           </li>
           <li>If the value of <em>request</em>@[[\state]] is not <em>interactive</em> then
           <a>throw</a> an <a><code>InvalidStateError</code></a>.</li>
+          <li>Let <em>promise</em> be a new <a>Promise</a>.</li>
+          <li>Return <em>promise</em> and asynchronously perform the remaining steps.</li>
+          <li>Try to abort the current user interaction and close down any remaining user interface.</li>
+          <li>If it is not possible to abort the current user interaction, then reject <em>promise</em>
+          with <a><code>InvalidStateError</code></a> and abort this algorithm.</li>
           <li>Set the value of the internal slot <em>request</em>@[[\state]] to <em>closed</em>.</li>
-          <li>Return from the method and asynchronously perform the remaining steps.</li>
-          <li>Abort the current user interaction and close down any remaining user interface</li>
           <li>Reject the promise <em>request</em>@[[\acceptPromise]] with an <a><code>AbortError</code></a>.</li>
+          <li>Resolve <em>promise</em> with <code>undefined</code>.</li>
         </ol>
       </section>
 
@@ -503,7 +534,7 @@
         <h2 id="state-transitions" class="informative">State transitions</h2>
           <p>The internal slot [[\state]] follows the following state transitions:</p>
           <img alt="Transition diagram for internal slot state of a PaymentRequest object" 
-               src="state-transitions.svg" width="608" height="235">
+               src="state-transitions.svg" width="518" height="125">
       </section>
 
       <section>
@@ -1163,71 +1194,6 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
       </section>
 
       <section>
-        <h2>User agent delegates payment request algorithm</h2>
-
-        <p>
-          The <a><code>PaymentRequest</code></a> interface allows a web page to call <code>abort</code>
-          to tell the <a>user agent</a> to abort the payment request and to tear down any user interface that
-          might be shown. For example, a web page might choose to do this if the goods they are selling are
-          only available for a limited amount of time. If the user does not accept the payment request
-          within the allowed time period, then the request will be aborted.
-        </p>
-
-        <p>
-          A <a>user agent</a> might not always be able to abort a request. For example, if the <a>user agent</a>
-          has delegated responsibility for the request to another app. To support this situation,
-          the <a>user agent</a> must run the <dfn>User agent delegates payment request algorithm</dfn>.
-          The algorithm MUST run the following steps:
-        </p>
-
-        <ol>
-          <li>
-            Let <em>request</em> be the <a><code>PaymentRequest</code></a> object that the user is
-            interacting with.
-          </li>
-          <li>
-            If the <em>request</em>@[[\updating]] is <em>true</em>, then terminate this
-            algorithm and take no further action. The <a>user agent</a> user interface should ensure
-            that this never occurs.
-          </li>
-          <li>
-            If the <em>request</em>@[[\state]] is not <em>interactive</em>, then terminate this
-            algorithm and take no further action. The <a>user agent</a> user interface should ensure
-            that this never occurs.
-          </li>
-          <li>
-            Set <em>request</em>@[[\state]] to <em>delegated</em>.
-          </li>
-        </ol>
-
-        <p class="issue" data-number="39" title="How are web-based payment apps supported?">
-          The architecture document suggests that payment apps may take
-          numerous forms, including as web-based apps. This specification
-          should describe how the user-agent will pass the payment request
-          data and the complete signal to a web-based payment app and also how
-          it will receive the payment response from the payment app.
-        </p>
-
-        <div class="issue" data-number="7" title="Should we support a delegated state for PaymentRequest?">
-          <p>We believe there are <a>user agent</a> configurations that can cause the UI to get into a state
-          where cancellation by the web page during user interaction is difficult. Users should still
-          be able to cancel the payment but script will not be able to. We need to investigate in more
-          detail the consequences of this and whether it is really needed.</p>
-          <p>If we specify <code>delegated</code> then it isn't necessary for all <a>user agents</a> to be
-          able to move to this state but it would be necessary for all payment flows that wish to call
-          <a><code>abort</code></a> to account for the situation where this may fail in the <code>delegated</code>
-          state.</p>
-        </div>
-
-        <p class="issue" data-number="50" title="How are payment requests and responses passed between the browser and third-party native wallets?">
-          This specification should describe how the user agent will pass the 
-          payment request data and the complete signal to a native payment app 
-          and also how it will receive the payment response from the payment app.
-        </p>
-
-      </section>
-
-      <section>
         <h2>User accepts the payment request algorithm</h2>
         <p>
           The <dfn data-lt="user accepts the payment request">user accepts the payment request
@@ -1245,8 +1211,8 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
             that this never occurs.
           </li>
           <li>
-            If <em>request</em>@[[\state]] is not <em>interactive</em> and
-            not <code>delegated</code>, then terminate this algorithm and take no further action.
+            If <em>request</em>@[[\state]] is not <em>interactive</em>, then terminate this
+            algorithm and take no further action.
             The <a>user agent</a> user interface should ensure that this never occurs.
           </li>
           <li>
