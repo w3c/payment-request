@@ -234,7 +234,7 @@
           Promise&lt;PaymentResponse&gt; show();
           void abort();
 
-          readonly attribute ShippingAddress? shippingAddress;
+          readonly attribute PaymentAddress? shippingAddress;
           readonly attribute DOMString? shippingOption;
 
           /* Supports "shippingaddresschange" event */
@@ -766,9 +766,9 @@ dictionary PaymentOptions {
     </section>
 
     <section>
-      <h2>ShippingAddress interface</h2>
+      <h2>PaymentAddress interface</h2>
       <pre class="idl">
-        interface ShippingAddress {
+        interface PaymentAddress {
           readonly attribute DOMString regionCode;
           readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
           readonly attribute DOMString administrativeArea;
@@ -863,7 +863,7 @@ dictionary PaymentOptions {
         interface PaymentResponse {
           readonly attribute DOMString methodName;
           readonly attribute object details;
-          readonly attribute ShippingAddress? shippingAddress;
+          readonly attribute PaymentAddress? shippingAddress;
           readonly attribute DOMString? payerEmail;
           readonly attribute DOMString? payerPhone;
 
