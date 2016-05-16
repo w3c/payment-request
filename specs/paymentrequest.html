@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Payment Request API</title>reg
+    <title>Payment Request API</title>
     <meta charset='utf-8'>
     <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
             async class='remove'></script>
@@ -9,7 +9,6 @@
       var respecConfig = {
           shortName:  "payment-request",
           edDraftURI:   "https://w3c.github.io/browser-payment-api/paymentrequest.html",
-
           specStatus: "ED",
           editors: [
                 {   name:       "Adrian Bateman",
@@ -21,20 +20,15 @@
                 {   name:       "Roy McElmurry",
                     company:    "Facebook" },
           ],
-
           useExperimentalStyles: true,
           license:      "w3c-software-doc",
-
           previousMaturity: "FPWD",
           previousPublishDate:  "2016-04-21",
-
           wg:           "Web Payments Working Group",
           wgURI:        "https://www.w3.org/Payments/WG/",
           wgPublicList: "public-payments-wg",
           wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/83744/status",
-
           issueBase:    "https://github.com/w3c/browser-payment-api/issues/",
-
           localBiblio:  {
               "PAYMENT-ARCH": {
                   title:    "Payment Request Architecture"
@@ -769,10 +763,10 @@ dictionary PaymentOptions {
       <h2>ShippingAddress interface</h2>
       <pre class="idl">
         interface ShippingAddress {
-          readonly attribute DOMString country;
+          readonly attribute DOMString regionCode;
           readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
-          readonly attribute DOMString region;
-          readonly attribute DOMString city;
+          readonly attribute DOMString administrativeArea;
+          readonly attribute DOMString locality;
           readonly attribute DOMString dependentLocality;
           readonly attribute DOMString postalCode;
           readonly attribute DOMString sortingCode;
@@ -784,19 +778,19 @@ dictionary PaymentOptions {
         };
       </pre>
       <dl>
-        <dt><code>country</code></dt>
+        <dt><code>regionCode</code></dt>
         <dd>This is the CLDR (Common Locale Data Repository) region code. For example, US, GB, CN, or JP.</dd>
         <dt><code>addressLine</code></dt>
         <dd>This is the most specific part of the address. It can include, for example, a street
             name, a house number, apartment number, a rural delivery route, descriptive
             instructions, or a post office box number.</dd>
-        <dt><code>region</code></dt>
+        <dt><code>administrativeArea</code></dt>
         <dd>This is the top level administrative subdivision of the country. For example, this can
             be a state, a province, an oblast, or a prefecture.</dd>
-        <dt><code>city</code></dt>
+        <dt><code>locality</code></dt>
         <dd>This is the city/town portion of the address.</dd>
         <dt><code>dependentLocality</code></dt>
-        <dd>This is the dependent locality or sublocality within a city. For example, used for neighborhoods,
+        <dd>This is the dependent locality or sublocality. For example, used for neighborhoods,
             boroughs, districts, or UK dependent localities.</dd>
         <dt><code>postalCode</code></dt>
         <dd>This is the postal code or ZIP code, also known as PIN code in India.</dd>
