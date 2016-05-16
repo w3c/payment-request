@@ -779,6 +779,7 @@ dictionary PaymentOptions {
           readonly attribute DOMString languageCode;
           readonly attribute DOMString organization;
           readonly attribute DOMString recipient;
+          readonly attribute DOMString careOf;
           readonly attribute DOMString phone;
         };
       </pre>
@@ -808,6 +809,9 @@ dictionary PaymentOptions {
         <dd>This is the organization, firm, company, or institution at this address.</dd>
         <dt><code>recipient</code></dt>
         <dd>This is the name of the recipient or contact person.</dd>
+        <dt><code>careOf</code></dt>
+        <dd>This is the name of an intermediary party or entity responsible for transferring 
+            packages between the postal service and the recipient.</dd>
         <dt><code>phone</code></dt>
         <dd>This is the phone number of the recipient or contact person.</dd>
       </dl>
