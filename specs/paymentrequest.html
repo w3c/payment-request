@@ -207,6 +207,7 @@
         <p><dfn>DOMException</dfn> and the following DOMException types from [[!DOM4]] are used:</p>
         <table>
         <tr><th>Type</th><th>Message (optional)</th></tr>
+        <tr><td><code><dfn>AbortError</dfn></code></td><td>The payment request was aborted</td></tr>
         <tr><td><code><dfn>InvalidStateError</dfn></code></td><td>The object is in an invalid state</td></tr>
         <tr><td><code><dfn>NotSupportedError</dfn></code></td><td>The payment method was not supported</td></tr>
         <tr><td><code><dfn>SecurityError</dfn></code></td><td>The operation is only supported in a secure context</td></tr>
@@ -216,7 +217,8 @@
         <dd>When this specification says to <dfn>throw</dfn> an error, the <a>user agent</a> must throw an
         error as described in [[!WEBIDL]]. When this occurs in a sub-algorithm, this results in
         termination of execution of the sub-algorithm and all ancestor algorithms until one is
-        reached that explicitly describes procedures for catching exceptions.</dd>
+        reached that explicitly describes procedures for catching exceptions.
+        <p>The term <dfn>extended attribute</dfn> is defined by [[!WEBIDL]].</p></dd>
         <dt>Secure Contexts</dt>
         <dd>The term <dfn>secure context</dfn> is defined by the Secure Contexts specification
         [[!POWERFUL-FEATURES]].</dd>
@@ -226,7 +228,8 @@
     <section>
       <h2>PaymentRequest interface</h2>
       <pre class="idl">
-        [Constructor(sequence&lt;PaymentMethodData&gt; methodData, PaymentDetails details, optional PaymentOptions options)]
+        [Constructor(sequence&lt;PaymentMethodData&gt; methodData, PaymentDetails details, optional PaymentOptions options),
+        SecureContext]
         interface PaymentRequest : EventTarget {
           Promise&lt;PaymentResponse&gt; show();
           void abort();
@@ -249,6 +252,11 @@
         or activating a "Buy", "Purchase", or "Checkout" button).
         The <a><code>PaymentRequest</code></a> allows the web page to exchange information with the
         <a>user agent</a> while the user is providing input before approving or denying a payment request.
+      </p>
+
+      <p class="note">
+        The <code>[SecureContext]</code> <a>extended attribute</a> means that the <a><code>PaymentRequest</code></a>
+        is only exposed within a <a>secure context</a> and won't be accessible elsewhere.
       </p>
 
       <p>The following example shows how to construct a <a><code>PaymentRequest</code></a> and begin the
@@ -371,13 +379,6 @@
             <code>supportedMethods</code> sequence is zero, then <a>throw</a> a <a><code>TypeError</code></a>.
           </li>
           <li>
-            If the <a>global object</a> of the script calling the constructor is
-            not considered a <a>secure context</a>, then <a>throw</a> a <a><code>SecurityError</code></a>.
-            <div class="issue" data-number="22" title="Spec should use [SecureContext] once that is defined in Web IDL">
-              Using [SecureContext] in Web IDL will allow us to eliminate this prose.
-            </div>
-          </li>
-          <li>
             If the <a>browsing context</a> of the script calling the constructor is
             not a <a>top-level browsing context</a>, then <a>throw</a> a <a><code>SecurityError</code></a>.
             <div class="issue" data-number="2"
@@ -494,6 +495,7 @@
           <li>Set the value of the internal slot <em>request</em>@[[\state]] to <em>closed</em>.</li>
           <li>Return from the method and asynchronously perform the remaining steps.</li>
           <li>Abort the current user interaction and close down any remaining user interface</li>
+          <li>Reject the promise <em>request</em>@[[\acceptPromise]] with an <a><code>AbortError</code></a>.</li>
         </ol>
       </section>
 
@@ -693,6 +695,8 @@ dictionary PaymentDetails {
       <h2>PaymentOptions dictionary</h2>
       <pre class="idl">
 dictionary PaymentOptions {
+  boolean requestPayerEmail = false;
+  boolean requestPayerPhone = false;
   boolean requestShipping = false;
 };
       </pre>
@@ -705,14 +709,24 @@ dictionary PaymentOptions {
         The following fields MAY be passed to the <a><code>PaymentRequest</code></a> constructor:
       </p>
       <dl>
+        <dt><code><dfn>requestPayerEmail</dfn></code></dt>
+        <dd>
+          This <em>boolean</em> value indicates whether the <a>user agent</a> should collect and return
+          the payer's email address as part of the payment request. For example, this would be set to
+          <code>true</code> to allow a merchant to email a receipt.
+        </dd>
+        <dt><code><dfn>requestPayerPhone</dfn></code></dt>
+        <dd>
+          This <em>boolean</em> value indicates whether the <a>user agent</a> should collect and return
+          the payer's phone number as part of the payment request. For example, this would be set to
+          <code>true</code> to allow a merchant to phone a customer with a billing enquiry.
+        </dd>
         <dt><code><dfn>requestShipping</dfn></code></dt>
         <dd>
           This <em>boolean</em> value indicates whether the <a>user agent</a> should collect and return
           a shipping address as part of the payment request. For example, this would be set to
           <code>true</code> when physical goods need to be shipped by the merchant to the user.
           This would be set to <code>false</code> for an online-only electronic purchase transaction.
-          If this value is not supplied then the <a><code>PaymentRequest</code></a> behaves as
-          if a value of <code>false</code> had been supplied.
         </dd>
       </dl>
     </section>
@@ -765,6 +779,7 @@ dictionary PaymentOptions {
           readonly attribute DOMString languageCode;
           readonly attribute DOMString organization;
           readonly attribute DOMString recipient;
+          readonly attribute DOMString phone;
         };
       </pre>
       <dl>
@@ -793,6 +808,8 @@ dictionary PaymentOptions {
         <dd>This is the organization, firm, company, or institution at this address.</dd>
         <dt><code>recipient</code></dt>
         <dd>This is the name of the recipient or contact person.</dd>
+        <dt><code>phone</code></dt>
+        <dd>This is the phone number of the recipient or contact person.</dd>
       </dl>
       <p>
         If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
@@ -847,6 +864,8 @@ dictionary PaymentOptions {
           readonly attribute DOMString methodName;
           readonly attribute object details;
           readonly attribute ShippingAddress? shippingAddress;
+          readonly attribute DOMString? payerEmail;
+          readonly attribute DOMString? payerPhone;
 
           Promise&lt;void&gt; complete(optional PaymentComplete result = "");
         };
@@ -873,6 +892,18 @@ dictionary PaymentOptions {
         If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
         passed to the <a>PaymentRequest</a> constructor, then <a><code>shippingAddress</code></a> will
         be the full and final shipping address chosen by the user.
+      </dd>
+      <dt><code><dfn>payerEmail</dfn></code></dt>
+      <dd>
+        If the <a>requestPayerEmail</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
+        passed to the <a>PaymentRequest</a> constructor, then <a><code>payerEmail</code></a> will
+        be the email address chosen by the user.
+      </dd>
+      <dt><code><dfn>payerPhone</dfn></code></dt>
+      <dd>
+        If the <a>requestPayerPhone</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
+        passed to the <a>PaymentRequest</a> constructor, then <a><code>payerPhone</code></a> will
+        be the phone number chosen by the user.
       </dd>
       </dl>
 
@@ -906,8 +937,9 @@ dictionary PaymentOptions {
           </li>
           <li>Set the value of the internal slot [[\completeCalled]] to <em>true</em>.</li>
           <li>Return <em>promise</em> and asynchronously perform the remaining steps.</li>
-          <li>Close down any remaining user interface. The user agent MAY use the value <code>result</code>
-          to influence the user experience.</li>
+          <li>Close down any remaining user interface. The <a>user agent</a> MAY use the value <code>result</code>
+          to influence the user experience. <a>User agents</a> SHOULD treat unrecognized <code>result</code>
+          values as the value <code>""</code>.</li>
           <li>Resolve <em>promise</em> with <code>undefined</code>.</li>
         </ol>
 
@@ -1236,6 +1268,21 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
             containing the <a>payment method</a> specific message used by the merchant to process
             the transaction. The format of this response will be defined by a <a>Payment Transaction
             Message Specification</a>.
+          </li>
+          <li>
+            If the <code>requestShipping</code> value of <em>request</em>@[[\options]]
+            is <code>true</code>, then copy the <code>shippingAddress</code> attribute of
+            <em>request</em> to the <code>shippingAddress</code> attribute of <em>response</em>.
+          </li>
+          <li>
+            If the <code>requestPayerEmail</code> value of <em>request</em>@[[\options]]
+            is <code>true</code>, then set the <code>payerEmail</code> attribute of
+            <em>response</em> to the payer's email address selected by the user.
+          </li>
+          <li>
+            If the <code>requestPayerPhone</code> value of <em>request</em>@[[\options]]
+            is <code>true</code>, then set the <code>payerPhone</code> attribute of
+            <em>response</em> to the payer's phone number selected by the user.
           </li>
           <li>
             Set <em>response</em>@[[\completeCalled]] to <em>false</em>.
