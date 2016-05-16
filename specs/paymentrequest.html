@@ -769,33 +769,34 @@ dictionary PaymentOptions {
       <h2>ShippingAddress interface</h2>
       <pre class="idl">
         interface ShippingAddress {
-          readonly attribute DOMString regionCode;
+          readonly attribute DOMString country;
           readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
-          readonly attribute DOMString administrativeArea;
-          readonly attribute DOMString locality;
+          readonly attribute DOMString region;
+          readonly attribute DOMString city;
           readonly attribute DOMString dependentLocality;
           readonly attribute DOMString postalCode;
           readonly attribute DOMString sortingCode;
           readonly attribute DOMString languageCode;
           readonly attribute DOMString organization;
           readonly attribute DOMString recipient;
+          readonly attribute DOMString careOf;
           readonly attribute DOMString phone;
         };
       </pre>
       <dl>
-        <dt><code>regionCode</code></dt>
+        <dt><code>country</code></dt>
         <dd>This is the CLDR (Common Locale Data Repository) region code. For example, US, GB, CN, or JP.</dd>
         <dt><code>addressLine</code></dt>
         <dd>This is the most specific part of the address. It can include, for example, a street
             name, a house number, apartment number, a rural delivery route, descriptive
             instructions, or a post office box number.</dd>
-        <dt><code>administrativeArea</code></dt>
+        <dt><code>region</code></dt>
         <dd>This is the top level administrative subdivision of the country. For example, this can
             be a state, a province, an oblast, or a prefecture.</dd>
-        <dt><code>locality</code></dt>
+        <dt><code>city</code></dt>
         <dd>This is the city/town portion of the address.</dd>
         <dt><code>dependentLocality</code></dt>
-        <dd>This is the dependent locality or sublocality. For example, used for neighborhoods,
+        <dd>This is the dependent locality or sublocality within a city. For example, used for neighborhoods,
             boroughs, districts, or UK dependent localities.</dd>
         <dt><code>postalCode</code></dt>
         <dd>This is the postal code or ZIP code, also known as PIN code in India.</dd>
@@ -808,6 +809,9 @@ dictionary PaymentOptions {
         <dd>This is the organization, firm, company, or institution at this address.</dd>
         <dt><code>recipient</code></dt>
         <dd>This is the name of the recipient or contact person.</dd>
+        <dt><code>careOf</code></dt>
+        <dd>This is the name of an intermediary party or entity responsible for transferring 
+            packages between the postal service and the recipient.</dd>
         <dt><code>phone</code></dt>
         <dd>This is the phone number of the recipient or contact person.</dd>
       </dl>
