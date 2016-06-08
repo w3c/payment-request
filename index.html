@@ -291,10 +291,10 @@
       and the payment <code>options</code>.
     </p>
     <div class="issue" data-number="40" title="How does a website pass additional (not payment method specific) data to the payment app?">
-      It is proposed that a conformance criteria for implementations of this API be
+      It is proposed that a conformance criterion for implementations of this API be
       that any data passed into the request is passed on to the payment app unaltered.
       This would allow extensions of the data schema such as the addition of
-      properties that are not documented in this specification or known to implementors
+      properties that are not documented in this specification or known to implementers
       such as JSON-LD @context or similar to be passed between the website and
       payment app.
     </div>
@@ -660,7 +660,7 @@ dictionary PaymentCurrencyAmount {
     </dd>
     <dt><code><dfn>value</dfn></code></dt>
     <dd>
-      A string containing the decimal monetary value. If a decimal separator is needed then the string
+      A string containing the decimal monetary value. If a decimal separator is needed, then the string
       MUST use a single U+002E FULL STOP character as the decimal separator. The string MUST begin
       with a single U+002D HYPHEN-MINUS character if the value is negative. All other characters must
       be characters in the range U+0030 DIGIT ZERO (0) to U+0039 DIGIT NINE (9).
@@ -709,7 +709,7 @@ dictionary PaymentDetails {
     <dt><code>displayItems</code></dt>
     <dd>
       This sequence of <a><code>PaymentItem</code></a> dictionaries contains line items
-      for the payment request that the user agent MAY display. For example, it might include
+      for the payment request that the <a>user agent</a> MAY display. For example, it might include
       details of products or breakdown of tax and shipping. It is optional to provide this
       information.
       <p>The <a>user agent</a> MAY validate that the <code>total</code> amount is the
@@ -880,7 +880,7 @@ dictionary PaymentOptions {
 </section>
 
 <section>
-      <h2>PaymentShippingOption interface</h2>
+      <h2>PaymentShippingOption dictionary</h2>
       <pre class="idl">
         dictionary PaymentShippingOption {
           required string id;
@@ -970,20 +970,20 @@ dictionary PaymentOptions {
     <h2>complete()</h2>
     <p>The <code><dfn>complete</dfn></code> method must be called after the user has accepted the payment
       request and the [[\acceptPromise]] has been resolved. Calling the <code>complete</code> method tells
-      the user agent that the user interaction is over (and should cause any remaining user interface to be
+      the <a>user agent</a> that the user interaction is over (and should cause any remaining user interface to be
       closed).</p>
     <p>The <code>complete</code> method takes a string argument from the <code><dfn>PaymentComplete</dfn></code>
-      enum (<code>result</code>). These values are used to influence the user experience provided by the user agent
+      enum (<code>result</code>). These values are used to influence the user experience provided by the <a>user agent</a>
       when the user interface is dismissed. The value of <code>result</code> has the following meaning:</p>
     <dl>
       <dt><dfn id="dom-paymentcomplete-success"><code>"success"</code></dfn></dt>
-      <dd>Indicates the payment was successfully processed. The user agent MAY display UI indicating
+      <dd>Indicates the payment was successfully processed. The <a>user agent</a> MAY display UI indicating
         success.</dd>
       <dt><dfn id="dom-paymentcomplete-fail"><code>"fail"</code></dfn></dt>
-      <dd>Indicates that processing of the payment failed. The user agent MAY display UI indicating
+      <dd>Indicates that processing of the payment failed. The <a>user agent</a> MAY display UI indicating
         failure.</dd>
       <dt><dfn id="dom-paymentcomplete-"><code>""</code></dfn></dt>
-      <dd>The web page did not indicate success or failure and the user agent SHOULD NOT display
+      <dd>The web page did not indicate success or failure and the <a>user agent</a> SHOULD NOT display
         UI indicating success or failure. This is the default value if the web page does not
         supply a value for <code>result</code>.</dd>
     </dl>
