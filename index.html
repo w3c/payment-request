@@ -432,13 +432,8 @@
         Set the value of the <a><code>shippingOption</code></a> attribute on <em>request</em> to <em>null</em>.
       </li>
       <li>
-        If <code>details</code> contains a <code>shippingOptions</code> sequence with a
-        length of 1, then set <a><code>shippingOption</code></a> to the <code>id</code> of
-            the only <a><code>PaymentShippingOption</code></a> in the sequence.
-      </li>
-      <li>
-        If <code>details</code> contains a <code>shippingOptions</code> sequence with a
-            length greater than 1, and if any <a><code>PaymentShippingOption</code></a> in the sequence
+        If <code>details</code> contains a <code>shippingOptions</code> sequence and
+        if any <a><code>PaymentShippingOption</code></a> in the sequence
         has the <code>selected</code> field set to <code>true</code>, then set
         <a><code>shippingOption</code></a> to the <code>id</code> of the last <a><code>ShippingOption</code></a>
         in the sequence with <code>selected</code> set to <code>true</code>.
@@ -730,9 +725,6 @@ dictionary PaymentDetails {
       A sequence containing the different shipping options for the user to choose from.
       <p>If the sequence is empty, then this indicates that the merchant
         cannot ship to the current <a><code>shippingAddress</code></a>.</p>
-      <p>If the sequence only contains one item, then this is the shipping option that
-        will be used and <a><code>shippingOption</code></a> will be set to the <code>id</code>
-        of this option without running the <a>shipping option changed algorithm</a>.</p>
       <p>If an item in the sequence has the <code>selected</code> field set to <code>true</code>,
         then this is the shipping option that will be used by default and <a><code>shippingOption</code></a>
         will be set to the <code>id</code> of this option without running the <a>shipping option changed
@@ -743,7 +735,7 @@ dictionary PaymentDetails {
         constructed with <a><code>PaymentOptions</code></a> <code>requestShipping</code>
         set to <code>true</code>.</p>
       <p class="note">
-        If the sequence contains only one item or if the sequence has an item with the <code>selected</code>
+        If the sequence has an item with the <code>selected</code>
         field set to <code>true</code>, then authors SHOULD ensure that the <code>total</code> field includes
         the cost of the shipping option. This is because no <a><code>shippingoptionchange</code></a> event
         will be fired for this option unless the user selects an alternative option first.
@@ -1198,13 +1190,8 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
               </li>
               <li>Let <em>newOption</em> be <em>null</em>.</li>
               <li>
-                If <code>details</code> contains a <code>shippingOptions</code> sequence with a
-                length of 1, then set <em>newOption</em> to the <code>id</code> of the only
-                <a><code>ShippingOption</code></a> in the sequence.
-              </li>
-              <li>
-                If <code>details</code> contains a <code>shippingOptions</code> sequence with a
-                length greater than 1, and if any <a><code>ShippingOption</code></a> in the sequence
+                If <code>details</code> contains a <code>shippingOptions</code> sequence
+                and if any <a><code>ShippingOption</code></a> in the sequence
                 has the <code>selected</code> field set to <code>true</code>, then set
                 <em>newOption</em> to the <code>id</code> of the last <a><code>ShippingOption</code></a>
                 in the sequence with <code>selected</code> set to <code>true</code>.
