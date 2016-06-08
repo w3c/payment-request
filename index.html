@@ -1065,92 +1065,112 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
       dictionary containing changed values that the <a>user agent</a> SHOULD present to the user.</p>
     <p>The <a>PaymentRequestUpdateEvent</a> constructor MUST set the internal slot [[\waitForUpdate]]
       to <em>false</em>.</p>
-    <p>The <code><dfn>updateWith</dfn></code> method MUST act as follows:</p>
-    <ol>
-      <li>
-        Let <em>target</em> be the <a><code>PaymentRequest</code></a> object that is the target of
-        the event.
-      </li>
-      <li>If the <a>dispatch flag</a> is unset, then <a>throw</a> an <a><code>InvalidStateError</code></a>.</li>
-      <li>
-        If [[\waitForUpdate]] is <em>true</em>, then <a>throw</a> an <a><code>InvalidStateError</code></a>.
-      </li>
-      <li>
-        If <em>target</em>@[[\state]] is not <em>interactive</em>, then <a>throw</a> an
-        <a><code>InvalidStateError</code></a>.
-      </li>
-      <li>
-        If <em>target</em>@[[\updating]] is <em>true</em>, then <a>throw</a>
-        an <a><code>InvalidStateError</code></a>.
-      </li>
-      <li>Set the <a>stop propagation flag</a> and <a>stop immediate propagation flag</a>.</li>
-      <li>Set [[\waitForUpdate]] to <em>true</em>.</li>
-      <li>Set <em>target</em>@[[\updating]] to <em>true</em>.</li>
-      <li>
-        The <a>user agent</a> SHOULD disable the user interface that allows the user to accept
-        the payment request. This is to ensure that the payment is not accepted until the web page
-        has made changes required by the change. The web page MUST settle the promise <code>d</code>
-        to indicate that the payment request is valid again.
-        <p>The <a>user agent</a> SHOULD disable any part of the user interface that could cause
-          another update event to be fired. Only one update may be processed at a time.</p>
-        <div class="issue" title="Consider adding a timeout to the updating flag in case page doesn't resolve promise from updateWith">
-          We should consider adding a timeout mechanism so that if the page never resolves
-          the promise within a reasonable amount of time then the user agent behaves as if
-          the promise was rejected.
-        </div>
-      </li>
-      <li>Return from the method and asynchronously perform the remaining steps.</li>
-      <li>Wait until <code>d</code> settles.</li>
-      <li>If <code>d</code> is resolved with <code>details</code> and <code>details</code> is a
-        <a><code>PaymentDetails</code></a> dictionary, then:
-        <ol>
-          <li>
-            If <code>details</code> contains a <code>total</code> value and the first character of
-            <code>total.amount.value</code> is NOT U+002D HYPHEN-MINUS, then copy
-            <code>total</code> value to the <code>total</code> field of <em>target</em>@[[\details]]
-            (<code>total</code> MUST be a non-negative amount).
-          </li>
-          <li>
-            If <code>details</code> contains a <code>displayItems</code> value, then copy
-            this value to the <code>displayItems</code> field of <em>target</em>@[[\details]].
-          </li>
-          <li>
-            If <code>details</code> contains a <code>shippingOptions</code> sequence, then:
-            <ol>
-              <li>
-                Copy the <code>shippingOptions</code> sequence from <code>details</code> to the
-                <code>shippingOptions</code> field of <em>target</em>@[[\details]].
-              </li>
-              <li>Let <em>newOption</em> be <em>null</em>.</li>
-              <li>
-                If <code>details</code> contains a <code>shippingOptions</code> sequence with a
-                length of 1, then set <em>newOption</em> to the <code>id</code> of the only
-                <a><code>ShippingOption</code></a> in the sequence.
-              </li>
-              <li>
-                If <code>details</code> contains a <code>shippingOptions</code> sequence with a
-                length greater than 1, and if any <a><code>ShippingOption</code></a> in the sequence
-                has the <code>selected</code> field set to <code>true</code>, then set
-                <em>newOption</em> to the <code>id</code> of the last <a><code>ShippingOption</code></a>
-                in the sequence with <code>selected</code> set to <code>true</code>.
-              </li>
-              <li>
-                Set the value of <a><code>shippingOption</code></a> on <em>target</em> to
-                <em>newOption</em>.
-              </li>
-            </ol>
-          </li>
-        </ol>
-      </li>
-      <li>Set [[\waitForUpdate]] to <em>false</em>.</li>
-      <li>Set <em>target</em>@[[\updating]] to <em>false</em>.</li>
-      <li>
-        The <a>user agent</a> should update the user interface based on any changed values
-        in <em>target</em>. The user agent SHOULD re-enable user interface elements that might
-        have been disabled in the steps above if appropriate.
-      </li>
-    </ol>
 
+    <section>
+      <h2>updateWith()</h2>
+      <p>The <code><dfn>updateWith</dfn></code> method MUST act as follows:</p>
+      <ol>
+        <li>
+          Let <em>target</em> be the <a><code>PaymentRequest</code></a> object that is the target of
+          the event.
+        </li>
+        <li>If the <a>dispatch flag</a> is unset, then <a>throw</a> an <a><code>InvalidStateError</code></a>.</li>
+        <li>
+          If [[\waitForUpdate]] is <em>true</em>, then <a>throw</a> an <a><code>InvalidStateError</code></a>.
+        </li>
+        <li>
+          If <em>target</em>@[[\state]] is not <em>interactive</em>, then <a>throw</a> an
+          <a><code>InvalidStateError</code></a>.
+        </li>
+        <li>
+          If <em>target</em>@[[\updating]] is <em>true</em>, then <a>throw</a>
+          an <a><code>InvalidStateError</code></a>.
+        </li>
+        <li>Set the <a>stop propagation flag</a> and <a>stop immediate propagation flag</a>.</li>
+        <li>Set [[\waitForUpdate]] to <em>true</em>.</li>
+        <li>Set <em>target</em>@[[\updating]] to <em>true</em>.</li>
+        <li>
+          The <a>user agent</a> SHOULD disable the user interface that allows the user to accept
+          the payment request. This is to ensure that the payment is not accepted until the web page
+          has made changes required by the change. The web page MUST settle the promise <code>d</code>
+          to indicate that the payment request is valid again.
+          <p>The <a>user agent</a> SHOULD disable any part of the user interface that could cause
+            another update event to be fired. Only one update may be processed at a time.</p>
+          <div class="issue" title="Consider adding a timeout to the updating flag in case page doesn't resolve promise from updateWith">
+            We should consider adding a timeout mechanism so that if the page never resolves
+            the promise within a reasonable amount of time then the user agent behaves as if
+            the promise was rejected.
+          </div>
+        </li>
+        <li>Return from the method and asynchronously perform the remaining steps.</li>
+        <li>Wait until <code>d</code> settles.</li>
+        <li>If <code>d</code> is rejected, then:
+          <ol>
+            <li>Abort the current user interaction and close down any remaining user interface.</li>
+            <li>Set the value of the internal slot <em>target</em>@[[\state]] to <em>closed</em>.</li>
+            <li>Reject the promise <em>target</em>@[[\acceptPromise]] with an <a><code>AbortError</code></a>.</li>
+            <li>Abort this algorithm.</li>
+          </ol>
+          <div class="note">
+            If the promise <code>d</code> is rejected then this is a fatal error for the payment request.
+            This would potentially leave the payment request in an inconsistent state since the web page
+            hasn't successfully handled the change event. Consequently, if <code>d</code> is rejected then
+            the payment request is aborted.
+            <p>
+              <a>User agents</a> MAY show an error message to the user when this occurs.
+            </p>
+          </div>
+        </li>
+        <li>If <code>d</code> is resolved with <code>details</code> and <code>details</code> is a
+          <a><code>PaymentDetails</code></a> dictionary, then:
+          <ol>
+            <li>
+              If <code>details</code> contains a <code>total</code> value and the first character of
+              <code>total.amount.value</code> is NOT U+002D HYPHEN-MINUS, then copy
+              <code>total</code> value to the <code>total</code> field of <em>target</em>@[[\details]]
+              (<code>total</code> MUST be a non-negative amount).
+            </li>
+            <li>
+              If <code>details</code> contains a <code>displayItems</code> value, then copy
+              this value to the <code>displayItems</code> field of <em>target</em>@[[\details]].
+            </li>
+            <li>
+              If <code>details</code> contains a <code>shippingOptions</code> sequence, then:
+              <ol>
+                <li>
+                  Copy the <code>shippingOptions</code> sequence from <code>details</code> to the
+                  <code>shippingOptions</code> field of <em>target</em>@[[\details]].
+                </li>
+                <li>Let <em>newOption</em> be <em>null</em>.</li>
+                <li>
+                  If <code>details</code> contains a <code>shippingOptions</code> sequence with a
+                  length of 1, then set <em>newOption</em> to the <code>id</code> of the only
+                  <a><code>ShippingOption</code></a> in the sequence.
+                </li>
+                <li>
+                  If <code>details</code> contains a <code>shippingOptions</code> sequence with a
+                  length greater than 1, and if any <a><code>ShippingOption</code></a> in the sequence
+                  has the <code>selected</code> field set to <code>true</code>, then set
+                  <em>newOption</em> to the <code>id</code> of the last <a><code>ShippingOption</code></a>
+                  in the sequence with <code>selected</code> set to <code>true</code>.
+                </li>
+                <li>
+                  Set the value of <a><code>shippingOption</code></a> on <em>target</em> to
+                  <em>newOption</em>.
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+        <li>Set [[\waitForUpdate]] to <em>false</em>.</li>
+        <li>Set <em>target</em>@[[\updating]] to <em>false</em>.</li>
+        <li>
+          The <a>user agent</a> should update the user interface based on any changed values
+          in <em>target</em>. The user agent SHOULD re-enable user interface elements that might
+          have been disabled in the steps above if appropriate.
+        </li>
+      </ol>
+    </section>
   </section>
 </section>
 
