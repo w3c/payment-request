@@ -715,9 +715,6 @@ dictionary PaymentDetails {
       A sequence containing the different shipping options for the user to choose from.
       <p>If the sequence is empty, then this indicates that the merchant
         cannot ship to the current <a><code>shippingAddress</code></a>.</p>
-      <p>If the sequence only contains one item, then this is the shipping option that
-        will be used and <a><code>shippingOption</code></a> will be set to the <code>id</code>
-        of this option without running the <a>shipping option changed algorithm</a>.</p>
       <p>If an item in the sequence has the <code>selected</code> field set to <code>true</code>,
         then this is the shipping option that will be used by default and <a><code>shippingOption</code></a>
         will be set to the <code>id</code> of this option without running the <a>shipping option changed
@@ -728,7 +725,7 @@ dictionary PaymentDetails {
         constructed with <a><code>PaymentOptions</code></a> <code>requestShipping</code>
         set to <code>true</code>.</p>
       <p class="note">
-        If the sequence contains only one item or if the sequence has an item with the <code>selected</code>
+        If the sequence has an item with the <code>selected</code>
         field set to <code>true</code>, then authors SHOULD ensure that the <code>total</code> field includes
         the cost of the shipping option. This is because no <a><code>shippingoptionchange</code></a> event
         will be fired for this option unless the user selects an alternative option first.
