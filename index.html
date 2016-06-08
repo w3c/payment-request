@@ -400,8 +400,17 @@
         <a><code>TypeError</code></a>. <code>total</code> MUST be a non-negative amount.
       </li>
       <li>
+        If a <a>payment method identifier</a> appears more than once in the <code>methodData</code>
+        or <code>details.modififiers</code> sequences, then <a>throw</a> a <a><code>TypeError</code></a>.
+      </li>
+      <li>
         For each <a><code>PaymentMethodData</code></a> in <code>methodData</code>, if the <code>data</code> field
         is supplied but is not a <a>JSON-serializable object</a>, then <a>throw</a> a <a><code>TypeError</code></a>.
+      </li>
+      <li>
+        For each <a><code>PaymentDetailsModifier</code></a> in <code>details.modifiers</code>, if the <code>total</code> field
+        is supplied and the first character of <code>total.amount.value</code> is U+002D HYPHEN-MINUS, then throw a
+        <a><code>TypeError</code></a>. <code>total</code> MUST be a non-negative amount.
       </li>
       <li>Let <em>request</em> be a new <a><code>PaymentRequest</code></a>.</li>
       <li>
@@ -686,6 +695,7 @@ dictionary PaymentDetails {
   PaymentItem total;
   sequence&lt;PaymentItem&gt; displayItems;
   sequence&lt;PaymentShippingOption&gt; shippingOptions;
+  sequence&lt;PaymentDetailsModifier&gt; modifiers;
 };
       </pre>
 
@@ -737,6 +747,57 @@ dictionary PaymentDetails {
         field set to <code>true</code>, then authors SHOULD ensure that the <code>total</code> field includes
         the cost of the shipping option. This is because no <a><code>shippingoptionchange</code></a> event
         will be fired for this option unless the user selects an alternative option first.
+      </p>
+    </dd>
+    <dt><code>modifiers</code></dt>
+    <dd>
+      This sequence of <a><code>PaymentDetailsModifier</code></a> dictionaries contains modifiers
+      for particular payment method identifiers. For example, it allows you to adjust the total
+      amount based on payment method.
+    </dd>
+  </dl>
+</section>
+
+<section>
+  <h2>PaymentDetailsModifier dictionary</h2>
+  <pre class="idl">
+    dictionary PaymentDetailsModifier {
+      required sequence&lt;DOMString&gt; supportedMethods;
+      PaymentItem total;
+      sequence&lt;PaymentItem&gt; additionalDisplayItems;
+    };
+  </pre>
+
+  <p>
+    The <code><dfn>PaymentDetailsModifier</dfn></code> dictionary provides details that modify the
+    <a><code>PaymentDetails</code></a> based on <a>payment method identifier</a>. It contains the
+    following fields:
+  </p>
+
+  <dl>
+    <dt><code>supportedMethods</code></dt>
+    <dd>
+      The <code>supportedMethods</code> field contains a sequence of <a>payment method identifiers</a>.
+      The remaining fields in the <a><code>PaymentDetailsModifier</code></a> apply only if the user selects
+      a <a>payment method</a> included in this sequence.
+    </dd>
+    <dt><code>total</code></dt>
+    <dd>
+      This <a><code>PaymentItem</code></a> value overrides the <code>total</code> field in the
+      <a><code>PaymentDetails</code></a> dictionary for the <a>payment method identifiers</a>
+      in the <code>supportedMethods</code> field.
+    </dd>
+    <dt><code>additionalDisplayItems</code></dt>
+    <dd>
+      This sequence of <a><code>PaymentItem</code></a> dictionaries provides additional display
+      items that are appended to the <code>displayItems</code> field in the <a><code>PaymentDetails</code></a>
+      dictionary for the <a>payment method identifiers</a> in the <code>supportedMethods</code>
+      field. This field is commonly used to add a discount or surcharge line item indicating the
+      reason for the different <code>total</code> amount for the selected <a>payment method</a>
+      that the user agent MAY display.
+      <p>
+      The user agent MAY validate that the <code>total</code> amount is the sum of the <code>displayItems</code>
+      and the <code>additionalDisplayItems</code>, but it is the responsibility of the calling code to ensure that.
       </p>
     </dd>
   </dl>
@@ -921,6 +982,7 @@ dictionary PaymentOptions {
 
         interface PaymentResponse {
           readonly attribute DOMString methodName;
+          readonly attribute PaymentCurrencyAmount totalAmount;
           readonly attribute object details;
           readonly attribute PaymentAddress? shippingAddress;
           readonly attribute DOMString? payerEmail;
@@ -938,6 +1000,15 @@ dictionary PaymentOptions {
     <dt><code><dfn>methodName</dfn></code></dt>
     <dd>
       The <a>payment method identifier</a> for the <a>payment method</a> that the user selected
+      to fulfil the transaction.
+    </dd>
+    <dt><code>totalAmount</code></dt>
+    <dd>
+      This is the <code>amount</code> value from the <a><code>PaymentItem</code></a> representing
+      the payment request total. This will either be the <code>total.amount</code> value from
+      the <a><code>PaymentDetails</code></a> dictionary for the payment request or it will
+      be the <code>total.amount</code> value from a <a><code>PaymentDetailsModifier</code></a>
+      matching the <a>payment method identifier</a> for the <a>payment method</a> that the user selected
       to fulfil the transaction.
     </dd>
     <dt><code><dfn>details</dfn></code></dt>
@@ -1115,6 +1186,10 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
             this value to the <code>displayItems</code> field of <em>target</em>@[[\details]].
           </li>
           <li>
+            If <code>details</code> contains a <code>modifiers</code> value, then copy
+            this value to the <code>modifiers</code> field of <em>target</em>@[[\details]].
+          </li>
+          <li>
             If <code>details</code> contains a <code>shippingOptions</code> sequence, then:
             <ol>
               <li>
@@ -1268,6 +1343,18 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
       <li>
         Set the <code>methodName</code> attribute value of <em>response</em> to the <a>payment method identifier</a>
         for the <a>payment method</a> that the user selected to accept the payment.
+      </li>
+      <li>
+        Let <em>amount</em> be the <code>total.amount</code> value from <em>request</em>@[[\details]].
+      </li>
+      <li>
+        If there is a <a><code>PaymentDetailsModifier</code></a> <em>modifier</em> in the <code>modifiers</code> sequence
+        in <em>request</em>@[[\details]] that matches the <a>payment method identifier</a> for the
+        <a>payment method</a> that the user selected to accept the payment, then let <em>amount</em>
+        be the <code>total.amount</code> value from <em>modifier</em>.
+      </li>
+      <li>
+        Set the <code>totalAmount</code> attribute value of <em>response</em> to <em>amount</em>.
       </li>
       <li>
         Set the <code>details</code> attribute value of <em>response</em> to a <a>JSON-serializable object</a>
