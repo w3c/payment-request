@@ -254,6 +254,11 @@
     <a>user agent</a> while the user is providing input before approving or denying a payment request.
   </p>
 
+      <p>
+        The <code>shippingAddress</code> and <dfn><code>shippingOption</code></dfn> attributes
+        are populated during processing if the <a><code>requestShipping</code></a> flag is set.
+      </p>
+
   <p class="note">
     The <code>[SecureContext]</code> <a>extended attribute</a> means that the <a><code>PaymentRequest</code></a>
     is only exposed within a <a>secure context</a> and won't be accessible elsewhere.
@@ -420,11 +425,11 @@
       <li>
         If <code>details</code> contains a <code>shippingOptions</code> sequence with a
         length of 1, then set <a><code>shippingOption</code></a> to the <code>id</code> of
-        the only <a><code>ShippingOption</code></a> in the sequence.
+            the only <a><code>PaymentShippingOption</code></a> in the sequence.
       </li>
       <li>
         If <code>details</code> contains a <code>shippingOptions</code> sequence with a
-        length greater than 1, and if any <a><code>ShippingOption</code></a> in the sequence
+            length greater than 1, and if any <a><code>PaymentShippingOption</code></a> in the sequence
         has the <code>selected</code> field set to <code>true</code>, then set
         <a><code>shippingOption</code></a> to the <code>id</code> of the last <a><code>ShippingOption</code></a>
         in the sequence with <code>selected</code> set to <code>true</code>.
@@ -634,16 +639,16 @@
 </section>
 
 <section>
-  <h2>CurrencyAmount</h2>
+      <h2>PaymentCurrencyAmount</h2>
       <pre class="idl">
-dictionary CurrencyAmount {
+dictionary PaymentCurrencyAmount {
   required DOMString currency;
   required DOMString value;
 };
       </pre>
   <p>
-    A <a><code>CurrencyAmount</code></a> dictionary is used to supply monetary amounts.
-    The following fields MUST be supplied for a <a><code>CurrencyAmount</code></a> to be valid:
+        A <a><code>PaymentCurrencyAmount</code></a> dictionary is used to supply monetary amounts.
+        The following fields MUST be supplied for a <a><code>PaymentCurrencyAmount</code></a> to be valid:
   </p>
   <dl>
     <dt><code><dfn>currency</dfn></code></dt>
@@ -680,7 +685,7 @@ dictionary CurrencyAmount {
 dictionary PaymentDetails {
   PaymentItem total;
   sequence&lt;PaymentItem&gt; displayItems;
-  sequence&lt;ShippingOption&gt; shippingOptions;
+  sequence&lt;PaymentShippingOption&gt; shippingOptions;
 };
       </pre>
 
@@ -782,7 +787,7 @@ dictionary PaymentOptions {
       <pre class="idl">
         dictionary PaymentItem {
           required DOMString label;
-          required CurrencyAmount amount;
+          required PaymentCurrencyAmount amount;
         };
       </pre>
   <p>
@@ -798,7 +803,7 @@ dictionary PaymentOptions {
       this to the user.</dd>
     <dt><code>amount</code></dt>
     <dd>
-      A <a><code>CurrencyAmount</code></a> containing the monetary amount for the item.
+          A <a><code>PaymentCurrencyAmount</code></a> containing the monetary amount for the item.
       <div class="issue" data-number="3" title="Should it be possible to provide amounts in more than one currency">
         There is an open issue about whether it should be possible to provide a <code>PaymentItem</code>
         with amounts in more than once currency.
@@ -875,17 +880,17 @@ dictionary PaymentOptions {
 </section>
 
 <section>
-  <h2>ShippingOption interface</h2>
+      <h2>PaymentShippingOption interface</h2>
       <pre class="idl">
-        dictionary ShippingOption {
+        dictionary PaymentShippingOption {
           required string id;
           required string label;
-          required CurrencyAmount amount;
+          required PaymentCurrencyAmount amount;
           boolean selected = false;
         };
       </pre>
   <p>
-    The <a>ShippingOption</a> dictionary has fields describing a shipping option. A web page can
+        The <a>PaymentShippingOption</a> dictionary has fields describing a shipping option. A web page can
     provide the user with one or more shipping options by calling the <a>updateWith</a>
     method in response to a change event.
   </p>
@@ -894,17 +899,17 @@ dictionary PaymentOptions {
   </p>
   <dl>
     <dt><code>id</code></dt>
-    <dd>This is a string identifier used to reference this <code>ShippingOption</code>. It MUST be
+        <dd>This is a string identifier used to reference this <code>PaymentShippingOption</code>. It MUST be
       unique for a given <a><code>PaymentRequest</code></a>.</dd>
     <dt><code>label</code></dt>
     <dd>This is a human-readable description of the item. The <a>user agent</a> SHOULD use this
       string to display the shipping option to the user.</dd>
     <dt><code>amount</code></dt>
     <dd>
-      A <a><code>CurrencyAmount</code></a> containing the monetary amount for the item.
+          A <a><code>PaymentCurrencyAmount</code></a> containing the monetary amount for the item.
     </dd>
     <dt><code>selected</code></dt>
-    <dd>This is set to <code>true</code> to indicate that this is the default selected <a>ShippingOption</a>
+        <dd>This is set to <code>true</code> to indicate that this is the default selected <a>PaymentShippingOption</a>
       in a sequence. <a>User agents</a> SHOULD display this option by default in the user interface.</dd>
   </dl>
 </section>
@@ -1194,7 +1199,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
       <li>Let <em>name</em> be <code><dfn>shippingoptionchange</dfn></code>.</li>
       <li>
         Set the <a><code>shippingOption</code></a> attribute on <em>request</em> to the
-        <code>id</code> string of the <a><code>ShippingOption</code></a> provided by the user.
+            <code>id</code> string of the <a><code>PaymentShippingOption</code></a> provided by the user.
       </li>
       <li>
         Run the <a>PaymentRequest updated algorithm</a> with <em>request</em> and <em>name</em>.
