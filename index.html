@@ -290,14 +290,6 @@
       list including any <a>payment method</a> specific <code>data</code>, the payment <code>details</code>,
       and the payment <code>options</code>.
     </p>
-    <div class="issue" data-number="40" title="How does a website pass additional (not payment method specific) data to the payment app?">
-      It is proposed that a conformance criterion for implementations of this API be
-      that any data passed into the request is passed on to the payment app unaltered.
-      This would allow extensions of the data schema such as the addition of
-      properties that are not documented in this specification or known to implementers
-      such as JSON-LD @context or similar to be passed between the website and
-      payment app.
-    </div>
     <div class="note">
       <p>The <code>methodData</code> sequence contains <a><code>PaymentMethodData</code></a> dictionaries
         containing the <a>payment method identifiers</a> for the <a>payment methods</a> that the web site accepts
@@ -352,12 +344,6 @@
     <div class="issue" data-number="15" title="Combine API parameters into a single request object + options">
       There is an open issue about whether <code>methodData</code>, <code>details</code>, and <code>data</code>
       should be combined into a single object.
-    </div>
-
-    <div class="issue" data-number="19" title="Should the API handle pre-auth, recurring payments, and similar scenarios">
-      There is an open issue about whether the API should handle occasions when a site wants to request a payment
-      method but not actually make a charge immediately. These may include identification validation, pre-auth
-      for a deposit, pre-auth for a later payment, making recurring payments, and more.
     </div>
 
     <div class="issue" data-number="51" title="Should the payment API be more conversational or less conversational?">
@@ -926,10 +912,6 @@ dictionary PaymentOptions {
     <a><code>PaymentResponse</code></a> object with the user's selected shipping address after
     the user has accepted the payment.
   </p>
-  <div class="issue" data-number="1" title="Should the merchant be able to request your email and recipient phone number">
-    There is an open question about what data beyond shipping address the merchant might be able
-    to request from the <a>user agent</a>. Is capturing email and recipient phone important to you?
-  </div>
 </section>
 
 <section>
