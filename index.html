@@ -958,6 +958,7 @@ dictionary PaymentOptions {
           readonly attribute PaymentCurrencyAmount totalAmount;
           readonly attribute object details;
           readonly attribute PaymentAddress? shippingAddress;
+          readonly attribute DOMString?      shippingOption;
           readonly attribute DOMString? payerEmail;
           readonly attribute DOMString? payerPhone;
 
@@ -995,6 +996,12 @@ dictionary PaymentOptions {
       If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
       passed to the <a>PaymentRequest</a> constructor, then <a><code>shippingAddress</code></a> will
       be the full and final shipping address chosen by the user.
+    </dd>
+    <dt><code>shippingOption</code></dt>
+    <dd>
+      If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
+      passed to the <a>PaymentRequest</a> constructor, then <a><code>shippingOption</code></a> will
+      be the <code>id</code> attribute of the selected shipping option.
     </dd>
     <dt><code><dfn>payerEmail</dfn></code></dt>
     <dd>
@@ -1354,6 +1361,11 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
         If the <code>requestShipping</code> value of <em>request</em>@[[\options]]
         is <code>true</code>, then copy the <code>shippingAddress</code> attribute of
         <em>request</em> to the <code>shippingAddress</code> attribute of <em>response</em>.
+      </li>
+      <li>
+        If the <code>requestShipping</code> value of <em>request</em>@[[\options]]
+        is <code>true</code>, then copy the <code>shippingOption</code> attribute of
+        <em>request</em> to the <code>shippingOption</code> attribute of <em>response</em>.
       </li>
       <li>
         If the <code>requestPayerEmail</code> value of <em>request</em>@[[\options]]
