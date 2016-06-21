@@ -917,8 +917,8 @@ dictionary PaymentOptions {
       <h2>PaymentShippingOption dictionary</h2>
       <pre class="idl">
         dictionary PaymentShippingOption {
-          required string id;
-          required string label;
+          required DOMString id;
+          required DOMString label;
           required PaymentCurrencyAmount amount;
           boolean selected = false;
         };
