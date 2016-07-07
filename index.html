@@ -273,6 +273,11 @@
             // Process shipping address change
         });
 
+        payment.addEventListener("processingpayment", function (processingEvent) {
+            // Use processingEvent.app, processingEvent.requestId in such a way
+            // that recovery from incomplete payments is possible.
+        });
+
         payment.show().then(function(paymentResponse) {
           // Process paymentResponse
           // paymentResponse.methodName contains the selected payment method
@@ -1085,6 +1090,11 @@ dictionary PaymentOptions {
         <td><a>PaymentRequestUpdateEvent</a></td>
         <td>The user chooses a new shipping option.</td>
       </tr>
+      <tr>
+        <td><code>processingpayment</code></td>
+        <td>PaymentProcessingEvent</td>
+        <td>A payment app has been selected that will cause an exchange of currency.</td>
+      </tr>
     </table>
   </section>
 
@@ -1212,6 +1222,29 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
       </ol>
     </section>
   </section>
+  <section>
+    <h2>PaymentProcessingEvent</h2>
+        <pre class="idl">
+        [Constructor(DOMString type, optional PaymentProcessingEventInit eventInitDict)]
+        interface PaymentProcessingEvent : Event {
+        };
+
+        dictionary PaymentProcessingEvent : EventInit {
+          readonly attribute DOMString appName;
+          readonly attribute DOMString requestId;
+        };
+        </pre>
+    <p class="issue" title="Specification on means to query PaymentApp for payment status">
+      The appName and requestId provided in PaymentProcessingEvent are in anticipation of
+      Payment Apps that process payment exposing funnctionality that allows for
+      querying on the completion status of a payment.</p>
+    <p>The <code>PaymentProcessingEvent</code> enables the payee to store uniquely
+      identifying information such that it is possible to query the selected Payment App
+      about the status of an attempted payment.</p>
+    <p>It is recommended that the payee persistently store this information for use
+      in the event of an unexpected failure during payment processing.</p>
+  </section>
+
 </section>
 
 <p class="issue" data-number="53" title="Add section on internationalization">
@@ -1301,6 +1334,22 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
       to pay. It MUST run the following steps:
     </p>
     <ol>
+      <li>
+        Let <em>processing event</em> be a new <a><code>PaymentProcessingEvent</code></a>.
+      </li>
+      <li>
+        Set the <code>appName</code> attribute value of <em>processing event</em> to the identifier
+        for the <a>payment app</a> that the user selected to accept the payment.
+      </li>
+      <li>
+        Set the <code>requestId</code> attribute value of <em>processing event</em> to the identifier
+        provided by the <a>payment app</a>.
+      </li>
+      <li>
+        Send the <code>PaymentProcessingEvent</code> event and wait for successful completion of this
+        message. This happens stictly before transfering control to the <em>Payment App</em>
+        for processing.
+      </li>
       <li>
         Let <em>request</em> be the <a><code>PaymentRequest</code></a> object that the user is
         interacting with.
