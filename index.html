@@ -341,18 +341,6 @@
           </pre>
     </div>
 
-    <div class="issue" data-number="15" title="Combine API parameters into a single request object + options">
-      There is an open issue about whether <code>methodData</code>, <code>details</code>, and <code>data</code>
-      should be combined into a single object.
-    </div>
-
-    <div class="issue" data-number="51" title="Should the payment API be more conversational or less conversational?">
-      There is an open issue regarding whether the current pattern of using
-      events for exchange of data between the user agent and the website is
-      the best design for this API. An alternative pattern has been
-      proposed in the issue thread.
-    </div>
-
     <p>
       The <a><code>PaymentRequest</code></a> constructor MUST act as follows:
     </p>
@@ -494,20 +482,6 @@
       A <a>user agent</a> might not always be able to abort a request. For example, if the <a>user agent</a>
       has delegated responsibility for the request to another app. In this situation, <code>abort</code> will
       reject the returned <a>Promise</a>.
-    </p>
-
-    <p class="issue" data-number="39" title="How are web-based payment apps supported?">
-      The architecture document suggests that payment apps may take
-      numerous forms, including as web-based apps. This specification
-      should describe how the user-agent will pass the payment request
-      data and the complete signal to a web-based payment app and also how
-      it will receive the payment response from the payment app.
-    </p>
-
-    <p class="issue" data-number="50" title="How are payment requests and responses passed between the browser and third-party native wallets?">
-      This specification should describe how the user agent will pass the
-      payment request data and the complete signal to a native payment app
-      and also how it will receive the payment response from the payment app.
     </p>
 
     <p>The <a><code>abort</code></a> method MUST act as follows:</p>
@@ -845,10 +819,6 @@ dictionary PaymentOptions {
       <div class="issue" data-number="3" title="Should it be possible to provide amounts in more than one currency">
         There is an open issue about whether it should be possible to provide a <code>PaymentItem</code>
         with amounts in more than once currency.
-      </div>
-      <div class="issue" data-number="4" title="Should it be possible to vary amounts depending on payment method">
-        There is an open issue about whether it should be possible to provide a different amounts depending
-        upon the payment method.
       </div>
     </dd>
   </dl>
@@ -1213,12 +1183,6 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
     </section>
   </section>
 </section>
-
-<p class="issue" data-number="53" title="Add section on internationalization">
-  The spec needs to clearly state how it will handle internationalization
-  issues (such as selection order for language via explicit preferences,
-  Accept-Language headers, etc.)
-</p>
 
 <section>
   <h2>Algorithms</h2>
