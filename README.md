@@ -1,6 +1,6 @@
+# Web Payments - Payment Request API
+## A Payment API for Browsers
 
-# Payment API for Browsers
+This repository contains a draft specification from the [W3C Web Payments Working Group](https://www.w3.org/Payments/WG/).
 
-This is the repository contains drafts from the [W3C Web Payments Working Group](https://www.w3.org/Payments/WG/) for a browser API to make payments.
-
-An index of documents available is at https://w3c.github.io/browser-payment-api/.
+The editor's draft is available at: https://w3c.github.io/browser-payment-api/

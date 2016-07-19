@@ -54,7 +54,7 @@
 			<title>Sheet.8</title>
 			<desc>Payment Request API</desc>
 			<rect x="0" y="346.938" width="99.3667" height="118.125" class="st3"/>
-			<svg viewBox="0 0 22.48 26.16" clip="rect(7.61327 7.61332 7.61327 7.61332)" height="133.352" overflow="hidden"
+			<svg viewBox="0 0 22.48 26.16" height="133.352" overflow="hidden"
 					preserveAspectRatio="none" width="114.593" x="-7.61332" y="339.324">
 				<defs>
 					<path id="mfid101"
@@ -126,7 +126,7 @@
 			<title>Sheet.9</title>
 			<desc>Payment Method Identifier Definition</desc>
 			<rect x="0" y="346.938" width="99.3667" height="118.125" class="st3"/>
-			<svg viewBox="0 0 22.48 26.16" clip="rect(7.61327 7.61332 7.61327 7.61332)" height="133.352" overflow="hidden"
+			<svg viewBox="0 0 22.48 26.16" height="133.352" overflow="hidden"
 					preserveAspectRatio="none" width="114.593" x="-7.61332" y="339.324">
 				<defs>
 					<path id="mfid111"
@@ -198,7 +198,7 @@
 			<title>Sheet.10</title>
 			<desc>Payment Method Registration API</desc>
 			<rect x="0" y="346.938" width="99.3667" height="118.125" class="st3"/>
-			<svg viewBox="0 0 22.48 26.16" clip="rect(7.61327 7.61332 7.61327 7.61332)" height="133.352" overflow="hidden"
+			<svg viewBox="0 0 22.48 26.16" height="133.352" overflow="hidden"
 					preserveAspectRatio="none" width="114.593" x="-7.61332" y="339.324">
 				<defs>
 					<path id="mfid121"
@@ -284,7 +284,7 @@
 			<title>Sheet.49</title>
 			<desc>Credit Card data format</desc>
 			<rect x="0" y="346.938" width="99.3667" height="118.125" class="st3"/>
-			<svg viewBox="0 0 22.48 26.16" clip="rect(7.61327 7.61332 7.61327 7.61332)" height="133.352" overflow="hidden"
+			<svg viewBox="0 0 22.48 26.16" height="133.352" overflow="hidden"
 					preserveAspectRatio="none" width="114.593" x="-7.61332" y="339.324">
 				<defs>
 					<path id="mfid131"
@@ -360,7 +360,7 @@
 			<title>Sheet.68</title>
 			<desc>Payment Method Registration API</desc>
 			<rect x="0" y="346.938" width="99.3667" height="118.125" class="st3"/>
-			<svg viewBox="0 0 22.48 26.16" clip="rect(7.61327 7.61332 7.61327 7.61332)" height="133.352" overflow="hidden"
+			<svg viewBox="0 0 22.48 26.16" height="133.352" overflow="hidden"
 					preserveAspectRatio="none" width="114.593" x="-7.61332" y="339.324">
 				<defs>
 					<path id="mfid141"

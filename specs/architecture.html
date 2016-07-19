@@ -17,11 +17,13 @@
                 {   name:       "Zach Koch",
                     company:    "Google" },
                 {   name:       "Richard Barnes",
-                    company:    "Mozilla Foundation" }
+                    company:    "Mozilla Foundation" },
+                {   name:       "Roy McElmurry",
+                    company:    "Facebook" },
           ],
 
-          useExperimentalStyles: true,
           license:      "w3c-software-doc",
+          "noRecTrack": true,
 
           //previousMaturity: "FPWD",
           //previousPublishDate:  "1977-03-15",
@@ -32,37 +34,52 @@
           wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/83744/status",
 
           issueBase:    "https://github.com/w3c/browser-payment-api/issues/",
+          // additional defines to improve github integration
+          githubAPI:  "https://api.github.com/repos/w3c/browser-payment-api",
+          otherLinks: [{
+            key: "Version control",
+            data: [{
+              value: "Github Repository",
+              href: "https://github.com/w3c/browser-payment-api"
+            }, {
+              value: "Issues",
+              href: "https://github.com/w3c/browser-payment-api/issues"
+            }]
+          }],
 
           localBiblio:  {
-              "PAYMENTREQUESTAPI": {
+              "PAYMENT-REQUEST-API": {
                   title:    "Payment Request API"
-              ,   href:     "paymentrequest.html"
+              ,   href:     "https://www.w3.org/TR/payment-request/"
               ,   authors:  [
                       "Adrian Bateman"
                   ,   "Zach Koch"
                   ,   "Richard Barnes"
+                  ,   "Roy McElmurry"
                   ]
-              ,   status:   "ED"
+              ,   status:   "WD"
               },
-              "METHODIDENTIFIERS": {
+              "METHOD-IDENTIFIERS": {
                   title:    "Payment Method Identifiers"
-              ,   href:     "method-identifiers.html"
+              ,   href:     "https://www.w3.org/TR/payment-method-id/"
               ,   authors:  [
                       "Adrian Bateman"
                   ,   "Zach Koch"
                   ,   "Richard Barnes"
+                  ,   "Roy McElmurry"
                   ]
-              ,   status:   "ED"
+              ,   status:   "WD"
               },
-              "BASICCARDPAYMENTS": {
+              "BASIC-CARD-PAYMENTS": {
                   title:    "Basic Card Payment"
-              ,   href:     "basic-card-payment.html"
+              ,   href:     "http://www.w3.org/TR/payment-method-basic-card/"
               ,   authors:  [
                       "Adrian Bateman"
                   ,   "Zach Koch"
                   ,   "Richard Barnes"
+                  ,   "Roy McElmurry"
                   ]
-              ,   status:   "ED"
+              ,   status:   "WD"
               }
           }
       };
@@ -83,14 +100,14 @@
       <p>The group is chartered to develop multiple technologies. The current document describes a set of
     	technologies &mdash;the Payment Request Architecture&mdash; that, together,
     	provide merchants with a consistent way to request payment information
-    	from the user, aided by a browser or other user agent.</p>
+    	from the user, aided by a user agent.</p>
 
       <p>The focus of the Payment Request Architecture is to provide
         an abstract interface between a web page and a <a>Payment
         App</a> to facilitate a payment transaction. This is expected
         to streamline checkout and help reduce shopping cart
         abandonment, as well as make it easier to use new payment methods on the Web. This document
-      	does not describe a complete architecture for end-to-end payments on the Web.</p>
+      	does not describe a complete architecture for end-to-end payments on the Web.
       </p>
 
       <p>This document does not address the full set of deliverables of the Web Payments Working Group.</p>
@@ -123,9 +140,9 @@
       <ul>
       	<li> At the end of shopping on a merchant site, the user pushes the “buy” button.</li>
       	<li>The merchant site calls the payment API with purchase amount, currency, accepted payment methods (e.g., Visa, Paypal, Bitcoin), and any custom data for those payment methods.</li>
-      	<li>The browser (or other user agent) determines the intersection of merchant-accepted payment methods and user-registered payment methods. The merchant can (optionally) use the API to capture shipping information through the same user experience.</li>
+      	<li>The user agent determines the intersection of merchant-accepted payment methods and user-registered payment methods. The merchant can (optionally) use the API to capture shipping information through the same user experience.</li>
       	<li>The user selects a payment app to pay, and carries out any app-supported activities as needed, such as authentication.</li>
-      	<li>Assuming the payment is authorized, the payment app returns payment method-specific data through the browser to the merchant site.</li>
+      	<li>Assuming the payment is authorized, the payment app returns payment method-specific data through the user agent to the merchant site.</li>
       	<li>Depending on the payment method, this data will either enable the merchant to be paid, or signal that the merchant has already been paid.</li>
       </ul>
     </section>
@@ -149,7 +166,7 @@
 	
       	<p>A Payment App is software used to pay. Banks, merchants,
       	mobile operators, and anyone else who wants to will make
-      	these available. Browsers are also likely to act as basic
+      	these available. User agents are also likely to act as basic
       	payment apps, storing some information on behalf of the
       	user, as they already do today with passwords. We expect
       	payment apps will increase security and privacy by giving
@@ -188,6 +205,14 @@
       	Host, as an execution environment for the app, and the
       	Payment Mediator, that mediates all interactions between the
       	Payment App and other components.</p>
+
+        <p class="issue" data-number="38" title="How are payment apps shared between different browser brands?">
+        When a user registers a new payment instrument, how is that payment
+        instrument shared between different browser brands? For example, if I
+        register a Visa debit card issued by my bank in Google Chrome on my
+        laptop, when I go to purchase something using my mobile phone, is
+        that same debit card available to me via my Firefox web browser
+        (assuming I've authenticated in some way with both browsers)?</p>
       </section>
 
       <section>
@@ -214,7 +239,7 @@
       	  <li> It passes payment request data to the payer's selected Payment App.</li>
       	</ul>
 
-      	<p>We expect that browsers will primarily act as payment mediators in this architecture.</p>
+      	<p>We expect that user agents will primarily act as payment mediators in this architecture.</p>
       </section>
     </section>
 
@@ -223,21 +248,19 @@
 
       <p>The Payment Request Architecture organizes the above concepts into several component specifications
 	      so that they can be discussed and moved forward independently. The
-        <a href="#payment-method-identifiers">Payment Method Identifiers</a> specification the only
+        <a href="#payment-method-identifiers">Payment Method Identifiers</a> specification is the only
         common dependency. The following diagram shows the references between different specifications that describe
         the Payment Request Architecture. The arrows show normative references pointing from the referring
         document to the referenced document.
       </p>
-      <p>
-        <figure>
-          <img src="arch.svg" width=700 height=465>
-          <figcaption>Relationship among different specifications in the Payment Request system</figcaption>
-        </figure>
-      </p>
+      <figure>
+        <img src="arch.svg" width=700 height=465>
+        <figcaption>Relationship among different specifications in the Payment Request system</figcaption>
+      </figure>
 
       <section>
         <h2>Payment Method Identifiers</h2>
-        <p>The Payment Method Identifiers [[METHODIDENTIFIERS]] specification defines the format of
+        <p>The Payment Method Identifiers [[METHOD-IDENTIFIERS]] specification defines the format of
           Payment Method Identifiers. </p>
 
 	      <div class="issue" data-number="10" title="Should well-known identifiers be used for ubiquitous payment methods">
@@ -251,7 +274,7 @@
       <section>
         <h2>Payment Request API</h2>
         <p>
-        The Payment Request API [[PAYMENTREQUESTAPI]] specification defines the API that makes a
+        The Payment Request API [[PAYMENT-REQUEST-API]] specification defines the API that makes a
         user agent the conduit for messages exchanged between web pages (or applications) and <a>payment apps</a>.
         The web page supplies a list of payment methods accepted by the merchant. The Payment Mediator
         matches those against payment methods supported by the user’s registered Payment Apps.
@@ -273,11 +296,10 @@
         to that method.</p>
 
 	      <p>We expect some message definitions to be shared amongst different
-        <a>payment apps</a>. One example is the [[BASICCARDPAYMENTS]], which defines a payment
+        <a>payment apps</a>. One example is the [[BASIC-CARD-PAYMENTS]], which defines a payment
 	      method identifier, method-specific request data, and method-specific response data
 	      for a basic card payment method. We expect this specification to be a model for other
 	      payment method specifications.</p>
-        </p>
       </section>
 
       <section>
@@ -292,6 +314,14 @@
 
     <section class="appendix">
       <h2>Glossary</h2>
+
+      <div class="issue" data-number="43" title="Terminology across all Web Payments documents should be aligned">  
+        It has been suggested that all Web Payments specifications should use  
+        common terminology. There is a Web Payments Interest Group glossary that  
+        contains common terminology that could be integrated into this  
+        specification and automatically kept in sync via ReSpec's dynamic  
+        terminology import feature.  
+      </div>  
 
       <dl>
         <dt><dfn data-lt="payment method|payment methods">Payment Method</dfn></dt>
@@ -310,7 +340,7 @@
         <dt><dfn>Payment Mediator</dfn></dt>
         <dd>
           Software that matches payee-accepted payment methods and user-registered payment methods, and
-	        offers a choice to the user for selection.</dd>
+	        offers a choice to the user for selection.
         </dd>
         <dt><dfn>Payment Method Data</dfn></dt>
         <dd>
@@ -327,7 +357,7 @@
         <ul>
         	<li>
         	  In the physical world it is not practical for users to have multiple wallets. On the Web this is
-            possible and for there to be a copies of the same payment method data in more than one wallet.</li>
+            possible and for there to be copies of the same payment method data in more than one wallet.</li>
         	<li> In the physical world the process of deciding how to pay is not done by the wallet, it is done by
            the user. On the Web the process of selection can be facilitated by digital algorithms that are capable
             of processing complex data and relationships to assist the user in deciding how to pay.</li>
@@ -339,7 +369,7 @@
 
         <p>There is not a one-to-one mapping from the previous concepts to the current ones, as the modeling is fundamentally different. Here is how previous and current concepts relate:</p>
 
-      	<table border="1">
+      	<table>
       	  <tr>
       	    <th>Current</th>
       	    <th>Previous</th>
@@ -348,7 +378,8 @@
       	  <tr>
       	    <td>Payment App</td>
       	    <td>Digital Wallet, Payment Instrument </td>
-      	    <td>A piece of software to pay</td>
+      	    <td>An application, registered by the payer, that supports processing payment 
+      	    requests and returning payment responses for one or more payment methods.</td>
       	  </tr>
       	  <tr>
       	    <td>Payment Method</td>
@@ -358,7 +389,7 @@
       	  <tr>
       	    <td>Payment Mediator</td>
       	    <td>Digital Wallet, Payment Instrument</td>
-      	    <td>A piece of software that coordinates messages between Web apps and Payment apps</td>
+      	    <td>A piece of software that coordinates messages between sellers and Payment apps.</td>
       	  </tr>
       	</table>
       </section>
