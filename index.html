@@ -846,6 +846,7 @@ dictionary PaymentOptions {
 <section>
   <h2>PaymentAddress interface</h2>
       <pre class="idl">
+        [SecureContext]
         interface PaymentAddress {
           readonly attribute DOMString country;
           readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
@@ -942,6 +943,7 @@ dictionary PaymentOptions {
       <pre class="idl">
         enum PaymentComplete { "success", "fail", "" };
 
+        [SecureContext]
         interface PaymentResponse {
           readonly attribute DOMString methodName;
           readonly attribute object details;
@@ -1080,7 +1082,7 @@ dictionary PaymentOptions {
   <section>
     <h2>PaymentRequestUpdateEvent</h2>
         <pre class="idl">
-[Constructor(DOMString type, optional PaymentRequestUpdateEventInit eventInitDict)]
+[Constructor(DOMString type, optional PaymentRequestUpdateEventInit eventInitDict),SecureContext]
 interface PaymentRequestUpdateEvent : Event {
   void updateWith(Promise&lt;PaymentDetails&gt; d);
 };
