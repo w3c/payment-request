@@ -423,7 +423,13 @@
         Set the value of the <a><code>shippingOption</code></a> attribute on <em>request</em> to <em>null</em>.
       </li>
       <li>
-        If <code>details</code> contains a <code>shippingOptions</code> sequence and
+        If the <code>details.shippingOptions</code> sequence contains multiple
+        <a><code>PaymentShippingOption</code></a> objects that have the same <code>id</code>,
+        then set the <code>shippingOptions</code> field of <em>request</em>@[[\details]]
+        to an empty sequence.
+      </li>
+      <li>
+        If <em>request</em>@[[\details]] contains a <code>shippingOptions</code> sequence and
         if any <a><code>PaymentShippingOption</code></a> in the sequence
         has the <code>selected</code> field set to <code>true</code>, then set
         <a><code>shippingOption</code></a> to the <code>id</code> of the last <a><code>ShippingOption</code></a>
@@ -1172,13 +1178,17 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
               If <code>details</code> contains a <code>shippingOptions</code> sequence, then:
               <ol>
                 <li>
-                  Copy the <code>shippingOptions</code> sequence from <code>details</code> to the
+                  If the <code>details.shippingOptions</code> sequence contains multiple
+                  <a><code>PaymentShippingOption</code></a> objects that have the same <code>id</code>,
+                  then set the <code>shippingOptions</code> field of <em>request</em>@[[\details]]
+                  to an empty sequence.
+                  Otherwise copy the <code>shippingOptions</code> sequence from <code>details</code> to the
                   <code>shippingOptions</code> field of <em>target</em>@[[\details]].
                 </li>
                 <li>Let <em>newOption</em> be <em>null</em>.</li>
                 <li>
-                If <code>details</code> contains a <code>shippingOptions</code> sequence
-                and if any <a><code>ShippingOption</code></a> in the sequence
+                  If <em>target</em>@[[\details]] contains a <code>shippingOptions</code> sequence
+                  and if any <a><code>ShippingOption</code></a> in the sequence
                   has the <code>selected</code> field set to <code>true</code>, then set
                   <em>newOption</em> to the <code>id</code> of the last <a><code>ShippingOption</code></a>
                   in the sequence with <code>selected</code> set to <code>true</code>.
