@@ -653,7 +653,7 @@ dictionary PaymentCurrencyAmount {
       with a single U+002D HYPHEN-MINUS character if the value is negative. All other characters must
       be characters in the range U+0030 DIGIT ZERO (0) to U+0039 DIGIT NINE (9).
       <div class="note">
-        The string should match the regular expression <code>^-?[0-9]+(\.[0-9]+)?$</code>.
+        The string matches the regular expression <code>^-?[0-9]+(\.[0-9]+)?$</code>.
       </div>
     </dd>
   </dl>
@@ -720,7 +720,7 @@ dictionary PaymentDetails {
         set to <code>true</code>.</p>
       <p class="note">
         If the sequence has an item with the <code>selected</code>
-        field set to <code>true</code>, then authors SHOULD ensure that the <code>total</code> field includes
+        field set to <code>true</code>, then authors are responsible for ensuring that the <code>total</code> field includes
         the cost of the shipping option. This is because no <a><code>shippingoptionchange</code></a> event
         will be fired for this option unless the user selects an alternative option first.
       </p>
@@ -1032,7 +1032,7 @@ dictionary PaymentOptions {
     <div class="note">
       <p>After the payment request has been accepted and the <a><code>PaymentResponse</code></a> returned to
       the page but before the page calls <a><code>complete</code></a> the payment request user interface remains in a pending
-      state. At this point the user interface should not offer a cancel command because acceptance of the
+      state. At this point the user interface ought not offer a cancel command because acceptance of the
       payment request has been returned. However, if something goes wrong and the page never calls <a><code>complete</code></a>
       then the user interface is blocked.</p>
       <p>For this reason, implementations may choose to impose a timeout for the page to call <a><code>complete</code></a>.
@@ -1173,7 +1173,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
             hasn't successfully handled the change event. Consequently, if <code>d</code> is rejected then
             the payment request is aborted.
             <p>
-              <a>User agents</a> MAY show an error message to the user when this occurs.
+              <a>User agents</a> might show an error message to the user when this occurs.
             </p>
           </div>
         </li>
