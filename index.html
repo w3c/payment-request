@@ -387,6 +387,10 @@
         <a><code>TypeError</code></a>.
       </li>
       <li>
+        If <code>details</code> contains a value for <code>error</code>, then throw a
+        <a><code>TypeError</code></a>.
+      </li>
+      <li>
         If the first character of <code>details.total.amount.value</code> is U+002D HYPHEN-MINUS, then throw a
         <a><code>TypeError</code></a>. <code>total</code> MUST be a non-negative amount.
       </li>
@@ -675,6 +679,7 @@ dictionary PaymentDetails {
   sequence&lt;PaymentItem&gt; displayItems;
   sequence&lt;PaymentShippingOption&gt; shippingOptions;
   sequence&lt;PaymentDetailsModifier&gt; modifiers;
+  DOMString error;
 };
       </pre>
 
@@ -730,6 +735,15 @@ dictionary PaymentDetails {
       This sequence of <a><code>PaymentDetailsModifier</code></a> dictionaries contains modifiers
       for particular payment method identifiers. For example, it allows you to adjust the total
       amount based on payment method.
+    </dd>
+    <dt><code>error</code></dt>
+    <dd>
+      When the payment request is updated using <a><code>updateWith</code></a>, the <code>PaymentDetails</code>
+      can contain a message in the <code>error</code> field that will be displayed to the user. For example,
+      this might commonly be used to explain why good cannot be shipped to the chosen shipping address.
+      <p>
+        The <code>error</code> field cannot be passed to the <a><code>PaymentRequest</code></a> constructor.
+        Doing so will cause a <a><code>TypeError</code></a> to be thrown. 
     </dd>
   </dl>
 </section>
@@ -1218,6 +1232,10 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
                   <em>newOption</em>.
                 </li>
               </ol>
+            </li>
+            <li>
+            If <code>details</code> contains an <code>error</code> value, then the <a>user agent</a> should
+            update the user interface to display the error message contained in <code>error</code>.
             </li>
           </ol>
         </li>
