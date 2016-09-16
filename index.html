@@ -1237,8 +1237,18 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
               field of <em>target</em>@[[\details]].
             </li>
             <li>
-            If <code>details</code> contains a <code>modifiers</code> value, then copy
-            this value to the <code>modifiers</code> field of <em>target</em>@[[\details]].
+              If <code>details</code> contains a <code>modifiers</code> value, then:
+              <ol>
+                <li>Let <em>modifiers</em> be the sequence <code>details.modifiers</code>.</li>
+                <li>For each <a><code>PaymentDetailsModifier</code></a> in <em>modifiers</em>, if the
+                  <code>total</code> field is supplied and is not a <a>valid decimal monetary value</a>,
+                  then set <em>modifiers</em> to an empty sequence.</li>
+                <li>For each <a><code>PaymentDetailsModifier</code></a> in <em>modifiers</em>, if the
+                  <code>additionalDisplayItems</code> sequence contains any <a><code>PaymentItem</code></a>
+                  objects with an <code>amount</code> that is not a <a>valid decimal monetary value</a>,
+                  then set <em>modifiers</em> to an empty sequence.</li>
+                <li>Copy <em>modifiers</em> to the <code>modifiers</code> field of <em>target</em>@[[\details]].</li> 
+              </ol> 
           </li>
           <li>
               If <code>details</code> contains a <code>shippingOptions</code> sequence, then:
