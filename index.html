@@ -395,10 +395,6 @@
         <a><code>TypeError</code></a>. <code>total</code> MUST be a non-negative amount.
       </li>
       <li>
-        If a <a>payment method identifier</a> appears more than once in the <code>methodData</code>
-        or <code>details.modifiers</code> sequences, then <a>throw</a> a <a><code>TypeError</code></a>.
-      </li>
-      <li>
         For each <a><code>PaymentMethodData</code></a> in <code>methodData</code>, if the <code>data</code> field
         is supplied but is not a <a>JSON-serializable object</a>, then <a>throw</a> a <a><code>TypeError</code></a>.
       </li>
@@ -755,6 +751,7 @@ dictionary PaymentDetails {
       required sequence&lt;DOMString&gt; supportedMethods;
       PaymentItem total;
       sequence&lt;PaymentItem&gt; additionalDisplayItems;
+      object data;
     };
   </pre>
 
@@ -790,6 +787,9 @@ dictionary PaymentDetails {
       and the <code>additionalDisplayItems</code>, but it is the responsibility of the calling code to ensure that.
       </p>
     </dd>
+    <dt><code>data</code></dt>
+    <dd><code>data</code> is a <a>JSON-serializable object</a> that provides optional information that
+      might be needed by the supported payment methods.</dd>
   </dl>
 </section>
 
