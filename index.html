@@ -854,6 +854,7 @@ dictionary PaymentOptions {
       <pre class="idl">
         [SecureContext]
         interface PaymentAddress {
+          serializer = { attribute };
           readonly attribute DOMString country;
           readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
           readonly attribute DOMString region;
@@ -951,6 +952,8 @@ dictionary PaymentOptions {
 
         [SecureContext]
         interface PaymentResponse {
+          serializer = { attribute };
+
           readonly attribute DOMString methodName;
           readonly attribute object details;
           readonly attribute PaymentAddress? shippingAddress;
