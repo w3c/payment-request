@@ -405,10 +405,6 @@
         <a><code>TypeError</code></a>.
       </li>
       <li>
-        If a <a>payment method identifier</a> appears more than once in the <code>methodData</code>
-        or <code>details.modifiers</code> sequences, then <a>throw</a> a <a><code>TypeError</code></a>.
-      </li>
-      <li>
         If <code>details</code> contains a value for <code>error</code>, then throw a
         <a><code>TypeError</code></a>.
       </li>
@@ -1227,14 +1223,18 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           <a><code>PaymentDetails</code></a> dictionary, then:
           <ol>
             <li>
-              If <code>details</code> contains a <code>total</code> value and the first character of
+              If <code>details</code> contains a <code>total</code> value and <code>total.amount.value</code>
+              is a <a>valid decimal monetary value</a> and the first character of
               <code>total.amount.value</code> is NOT U+002D HYPHEN-MINUS, then copy
               <code>total</code> value to the <code>total</code> field of <em>target</em>@[[\details]]
               (<code>total</code> MUST be a non-negative amount).
             </li>
             <li>
-              If <code>details</code> contains a <code>displayItems</code> value, then copy
-              this value to the <code>displayItems</code> field of <em>target</em>@[[\details]].
+              If <code>details</code> contains a <code>displayItems</code> value and every
+              <a><code>PaymentItem</code></a> in the <code>displayItems</code> has an
+              <code>amount.value</code> containing a <a>valid decimal monetary value</a>,
+              then copy <code>details.displayItems</code> to the <code>displayItems</code>
+              field of <em>target</em>@[[\details]].
             </li>
             <li>
             If <code>details</code> contains a <code>modifiers</code> value, then copy
@@ -1245,7 +1245,9 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
               <ol>
                 <li>
                   If the <code>details.shippingOptions</code> sequence contains multiple
-                  <a><code>PaymentShippingOption</code></a> objects that have the same <code>id</code>,
+                  <a><code>PaymentShippingOption</code></a> objects that have the same <code>id</code>
+                  or if any <a><code>PaymentShippingOption</code></a> has an <code>amount.value</code>
+                  that is not a <a>valid decimal monetary value</a>,
                   then set the <code>shippingOptions</code> field of <em>request</em>@[[\details]]
                   to an empty sequence.
                   Otherwise copy the <code>shippingOptions</code> sequence from <code>details</code> to the
