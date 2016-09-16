@@ -36,17 +36,6 @@
       issueBase:    "https://github.com/w3c/browser-payment-api/issues/",
 
       localBiblio:  {
-        "PAYMENT-ARCH": {
-          title:    "Payment Request Architecture"
-          ,   href:     "https://w3c.github.io/browser-payment-api/specs/architecture.html"
-          ,   authors:  [
-            "Adrian Bateman"
-            ,   "Zach Koch"
-            ,   "Richard Barnes"
-            ,   "Roy McElmurry"
-          ]
-          ,   status:   "ED"
-        },
         "METHOD-IDENTIFIERS": {
           title:    "Payment Method Identifiers"
           ,   href:     "https://www.w3.org/TR/payment-method-id/"
@@ -122,17 +111,15 @@
   <p>This specification describes an API that allows <a>user agents</a> (e.g., browsers) to act
     as an intermediary between the three key parties in every transaction: the merchant (e.g., an
     online web store), the buyer (e.g., the user buying from the online web store), and the
-    <a>Payment Method</a> (e.g., credit card). Information necessary to process and confirm a
-    transaction is passed between the <a>Payment Method</a> and the merchant via the <a>user agent</a>
-    with the buyer confirming and authorizing as necessary across the flow.</p>
+    <dfn data-lt="payment method|payment methods">Payment Method</dfn> (e.g., credit card). Information
+    necessary to process and confirm a transaction is passed between the <a>Payment Method</a> and the
+    merchant via the <a>user agent</a>  with the buyer confirming and authorizing as necessary across
+    the flow.</p>
 
   <p>In addition to better, more consistent user experiences, this also enables web sites to take
     advantage of more secure payment schemes (e.g., tokenization and system-level authentication)
     that are not possible with standard JavaScript libraries. This has the potential to reduce
     liability for the merchant and helps protect sensitive user information.</p>
-
-  <p>The API described in this document forms part of the Payment Request system described in
-    the Payment Request Architecture [[PAYMENT-ARCH]] document.</p>
 
   <section id="goals">
     <h2>Goals</h2>
@@ -194,11 +181,6 @@
     This specification relies on several other underlying specifications.
   </p>
   <dl>
-    <dt>Payment Request Architecture</dt>
-    <dd>The terms <dfn data-lt="payment method|payment methods">Payment Method</dfn>,
-      <dfn data-lt="payment app|payment apps">Payment App</dfn>, and <dfn>Payment Transaction
-        Message Specification</dfn> are defined by the Payment Request Architecture document
-      [[PAYMENT-ARCH]].</dd>
     <dt>Payment Method Identifiers</dt>
     <dd>The term <dfn data-lt="payment method identifier|payment method identifiers">Payment
       Method Identifier</dfn> is defined by the Payment Method Identifiers specification
@@ -1020,8 +1002,8 @@ dictionary PaymentOptions {
     <dt><code><dfn>details</dfn></code></dt>
     <dd>
       A <a>JSON-serializable object</a> that provides a <a>payment method</a> specific message used by the merchant to
-      process the transaction and determine successful fund transfer. This data is returned by the <a>payment app</a>
-      that satisfies the payment request.
+      process the transaction and determine successful fund transfer. This data is returned by the <a>payment method</a>
+      specific code that satisfies the payment request.
     </dd>
     <dt><code><dfn>shippingAddress</dfn></code></dt>
     <dd>
@@ -1410,8 +1392,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
       <li>
         Set the <code>details</code> attribute value of <em>response</em> to a <a>JSON-serializable object</a>
         containing the <a>payment method</a> specific message used by the merchant to process
-        the transaction. The format of this response will be defined by a <a>Payment Transaction
-        Message Specification</a>.
+        the transaction. The format of this response will be defined for each <a>payment method</a>.
       </li>
       <li>
         If the <code>requestShipping</code> value of <em>request</em>@[[\options]]
