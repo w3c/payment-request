@@ -1253,15 +1253,18 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           <li>
               If <code>details</code> contains a <code>shippingOptions</code> sequence, then:
               <ol>
+                <li>Let <em>shippingOptions</em> be the sequence <code>details.shippingOptions</code>.</li>
                 <li>
-                  If the <code>details.shippingOptions</code> sequence contains multiple
-                  <a><code>PaymentShippingOption</code></a> objects that have the same <code>id</code>
-                  or if any <a><code>PaymentShippingOption</code></a> has an <code>amount.value</code>
-                  that is not a <a>valid decimal monetary value</a>,
-                  then set the <code>shippingOptions</code> field of <em>request</em>@[[\details]]
-                  to an empty sequence.
-                  Otherwise copy the <code>shippingOptions</code> sequence from <code>details</code> to the
-                  <code>shippingOptions</code> field of <em>target</em>@[[\details]].
+                  If the <em>shippingOptions</em> sequence contains multiple
+                  <a><code>PaymentShippingOption</code></a> objects that have the same <code>id</code>,
+                  then set <em>shippingOptions</em> to the empty sequence.</li>
+                <li>
+                  If the <em>shippingOptions</em> sequence contains a <a><code>PaymentShippingOption</code></a>
+                  that has an <code>amount.value</code> that is not a <a>valid decimal monetary value</a>,
+                  then set <em>shippingOptions</em> to the empty sequence.</li>
+                <li>
+                  Copy <em>shippingOptions</em> to the <code>shippingOptions</code> field of
+                  <em>target</em>@[[\details]].
                 </li>
                 <li>Let <em>newOption</em> be <em>null</em>.</li>
                 <li>
