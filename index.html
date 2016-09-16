@@ -1029,6 +1029,17 @@ dictionary PaymentOptions {
         supply a value for <code>result</code>.</dd>
     </dl>
 
+    <div class="note">
+      <p>After the payment request has been accepted and the <a><code>PaymentResponse</code></a> returned to
+      the page but before the page calls <a><code>complete</code></a> the payment request user interface remains in a pending
+      state. At this point the user interface should not offer a cancel command because acceptance of the
+      payment request has been returned. However, if something goes wrong and the page never calls <a><code>complete</code></a>
+      then the user interface is blocked.</p>
+      <p>For this reason, implementations may choose to impose a timeout for the page to call <a><code>complete</code></a>.
+      If the timeout expires then the implementation will behave as if <a><code>complete</code></a> was called with no
+      arguments.</p>
+    </div>
+
     <p>The <a><code>complete</code></a> method MUST act as follows:</p>
     <ol>
       <li>Let <em>promise</em> be a new <a>Promise</a>.</li>
@@ -1137,14 +1148,18 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           to indicate that the payment request is valid again.
           <p>The <a>user agent</a> SHOULD disable any part of the user interface that could cause
             another update event to be fired. Only one update may be processed at a time.</p>
-          <div class="issue" title="Consider adding a timeout to the updating flag in case page doesn't resolve promise from updateWith">
-            We should consider adding a timeout mechanism so that if the page never resolves
-            the promise within a reasonable amount of time then the user agent behaves as if
-            the promise was rejected.
-          </div>
         </li>
         <li>Return from the method and asynchronously perform the remaining steps.</li>
-        <li>Wait until <code>d</code> settles.</li>
+        <li>
+          Wait until <code>d</code> settles.
+          <div class="note">
+            If <code>d</code> never settles then the payment request is blocked. Users should always be able
+            to cancel a payment request. Implementations may choose to implement a timeout for pending updates
+            if <code>d</code> doesn't settle in a reasonable amount of time. If an implementation
+            chooses to implement a timeout, <code>d</code> should be rejected when the timeout expires.
+            Such a timeout is a fatal error for the payment request.
+          </div>
+        </li>
         <li>If <code>d</code> is rejected, then:
           <ol>
             <li>Abort the current user interaction and close down any remaining user interface.</li>
