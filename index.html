@@ -152,7 +152,7 @@
       <p>
         A <dfn data-lt="user agents">user agent</dfn> MUST behave as described in this specification
         in order to be considered conformant. In this specification, <a>user agent</a> means a <em>Web
-        browser or other interactive user agent</em> as defined in [[!HTML5]].
+        browser or other interactive user agent</em> as defined in [[!HTML51]].
       </p>
       <p>
         User agents MAY implement algorithms given in this
@@ -185,10 +185,11 @@
     <dd>The term <dfn data-lt="payment method identifier|payment method identifiers">Payment
       Method Identifier</dfn> is defined by the Payment Method Identifiers specification
       [[!METHOD-IDENTIFIERS]].</dd>
-    <dt>HTML5</dt>
+    <dt>HTML 5.1</dt>
     <dd>The terms <dfn>global object</dfn>,
-      <dfn>queue a task</dfn>, <dfn>browsing context</dfn>, and
-      <dfn>top-level browsing context</dfn> are defined by [[!HTML5]].</dd>
+      <dfn>boolean attribute</dfn>, <dfn>reflect</dfn>, <dfn>iframe</dfn>,
+      <dfn>queue a task</dfn>, <dfn>browsing context</dfn>, <dfn>nested browsing context</dfn>, and
+      <dfn>top-level browsing context</dfn> are defined by [[!HTML51]].</dd>
     <dt>ECMA-262 6th Edition, The ECMAScript 2015 Language Specification</dt>
     <dd>
       The terms <dfn>Promise</dfn>, <dfn>internal slot</dfn>, <dfn><code>TypeError</code></dfn>, <dfn>JSON.stringify</dfn>, and <dfn>JSON.parse</dfn> are
@@ -354,15 +355,9 @@
       </li>
       <li>
         If the <a>browsing context</a> of the script calling the constructor is
-        not a <a>top-level browsing context</a>, then <a>throw</a> a <a><code>SecurityError</code></a>.
-        <div class="issue" data-number="2"
-             title="Should the Payment Request API only be available in a top-level browsing context? ">
-          <p>There is an open issue about requiring
-            a top-level browsing context for using <code>PaymentRequest</code>. Requiring one
-            is a mitigation for a user being tricked into thinking a trusted site is asking for
-            payment when in fact an untrusted iframe is asking for payment. The problem is some iframes may
-            have a legitimate reason to request payment.</p>
-        </div>
+        a <a>nested browsing context</a> whose origin is different from the <a>top-level browsing context</a>'s
+        origin and the nested browsing context is not <a>allowed to make payment requests</a>, then <a>throw</a>
+        a <a><code>SecurityError</code></a>.
       </li>
       <li>
         If <code>details</code> does not contain a value for <code>total</code>, then throw a
@@ -1108,6 +1103,38 @@ dictionary PaymentOptions {
     </table>
   </section>
 
+</section>
+
+<section>
+  <h2>PaymentRequest and iframes</h2>
+  <p>
+    There are some circumstances where a cross-origin <a>iframe</a> wants to make a payment
+    request. A cross-origin iframe needs explicit permission from the embedding page to invoke
+    the payment request API.
+  </p>
+  <p>
+    The <a>HTMLIFrameElement</a> is extended with an <dfn><code>allowpaymentrequest</code></dfn>
+    content attribue. <a><code>allowpaymentrequest</code></a> is a <a>boolean attribute</a>.
+    When specified, it indicates that scripts in the iframe element's browsing context are
+    <dfn>allowed to make payment requests</dfn> (if it's not blocked for other reasons, e.g.
+    there is another ancestor iframe without this attribute set).
+  </p>
+  <section>
+    <h2>HTMLIFrameElement extension</h2>
+    <p>The iframe DOM interface is extended as follows:</p>
+    <pre class="idl">
+      partial interface HTMLIFrameElement {
+          attribute boolean allowPaymentRequest;
+      };
+    </pre>
+    <dl>
+      <dt><code>allowPaymentRequest</code></dt>
+      <dd>
+        The <code>allowPaymentRequest</code> IDL attribute MUST <a>reflect</a> the
+        <a><code>allowpaymentrequest</code></a> content attribute.
+      </dd>
+    </dl>
+  </section>
 </section>
 
 <section>
