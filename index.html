@@ -234,6 +234,7 @@
 
           readonly attribute PaymentAddress? shippingAddress;
           readonly attribute DOMString? shippingOption;
+          readonly attribute PaymentShippingType? shippingType;
 
           /* Supports "shippingaddresschange" event */
           attribute EventHandler onshippingaddresschange;
@@ -253,7 +254,8 @@
   </p>
 
       <p>
-        The <code>shippingAddress</code> and <dfn><code>shippingOption</code></dfn> attributes
+        The <code>shippingAddress</code>, <dfn><code>shippingOption</code></dfn>,
+        and <code>shippingType</code> attributes
         are populated during processing if the <a><code>requestShipping</code></a> flag is set.
       </p>
 
@@ -420,6 +422,20 @@
       </li>
       <li>
         Set the value of the <a><code>shippingOption</code></a> attribute on <em>request</em> to <em>null</em>.
+      </li>
+      <li>
+        Set the value of the <a><code>shippingType</code></a> attribute on <em>request</em> to <em>null</em>.
+      </li>
+      <li>
+        If <code>options.requestShipping</code> is set to <code>true</code>, then set the value of the
+        <a><code>shippingType</code></a> attribute on <em>request</em> to <code>options.shippingType</code>.
+        If <code>options.shippingType</code> is not a valid <a><code>PaymentShippingType</code></a> value
+        then set the <a><code>shippingType</code></a> attribute on <em>request</em> to <code>"shipping"</code>.
+        <div class="note">
+            This behavior allows a page to detect if it supplied an unsupported shipping type. This will be
+            important if new shipping types are added to a future version of this specification but a page is
+            run in a <a>user agent</a> supporting an earlier version.
+        </div> 
       </li>
       <li>
         If the <code>details.shippingOptions</code> sequence contains multiple
@@ -809,11 +825,19 @@ dictionary PaymentDetails {
 <section>
   <h2>PaymentOptions dictionary</h2>
       <pre class="idl">
-dictionary PaymentOptions {
-  boolean requestPayerEmail = false;
-  boolean requestPayerPhone = false;
-  boolean requestShipping = false;
-};
+        enum PaymentShippingType {
+          "shipping",
+          "delivery",
+          "pickup"
+        };
+
+        dictionary PaymentOptions {
+          boolean requestPayerName = false;
+          boolean requestPayerEmail = false;
+          boolean requestPayerPhone = false;
+          boolean requestShipping = false;
+          PaymentShippingType shippingType = "shipping";
+        };
       </pre>
 
   <p>
@@ -824,6 +848,12 @@ dictionary PaymentOptions {
     The following fields MAY be passed to the <a><code>PaymentRequest</code></a> constructor:
   </p>
   <dl>
+    <dt><code><dfn>requestPayerName</dfn></code></dt>
+    <dd>
+      This <em>boolean</em> value indicates whether the <a>user agent</a> should collect and return
+      the payer's name as part of the payment request. For example, this would be set to
+      <code>true</code> to allow a merchant to make a booking in the payer's name.
+    </dd>
     <dt><code><dfn>requestPayerEmail</dfn></code></dt>
     <dd>
       This <em>boolean</em> value indicates whether the <a>user agent</a> should collect and return
@@ -843,6 +873,26 @@ dictionary PaymentOptions {
       <code>true</code> when physical goods need to be shipped by the merchant to the user.
       This would be set to <code>false</code> for an online-only electronic purchase transaction.
     </dd>
+    <dt><code><dfn>shippingType</dfn></code></dt>
+    <dd>
+      Some transactions require an address for delivery but the term "shipping" isn't appropriate.
+      For example, "pizza delivery" not "pizza shipping" and "laundry pickup" not "laundry shipping".
+      If <code>requestShipping</code> is set to <code>true</code>, then the <code>shippingType</code>
+      field may be used to influence the way the <a>user agent</a> presents the user interface for
+      gathering the shipping address.
+      <p>The <code>PaymentShippingType</code> supports the following values:</p>
+      <dl>
+        <dt><code>shipping</code></dt>
+        <dd>This is the default and refers to the address being collected as the destination for shipping.</dd>
+        <dt><code>delivery</code></dt>
+        <dd>This refers to the address being collected as being used for delivery. This is commonly
+        faster than shipping. For example, it might be used for food delivery.</dd>
+        <dt><code>pickup</code></dt>
+        <dd>This refers to the address being collected as part of a service pickup. For example,
+        this could be the address for laundry pickup.</dd>
+      </dl>
+      <p>The <code>shippingType</code> field only affects the user interface for the payment request.</p> 
+    </dd>
   </dl>
 </section>
 
@@ -852,6 +902,7 @@ dictionary PaymentOptions {
         dictionary PaymentItem {
           required DOMString label;
           required PaymentCurrencyAmount amount;
+          boolean pending = false;
         };
       </pre>
   <p>
@@ -868,6 +919,13 @@ dictionary PaymentOptions {
     <dt><code>amount</code></dt>
     <dd>
       A <a><code>PaymentCurrencyAmount</code></a> containing the monetary amount for the item.
+    </dd>
+    <dt><code>pending</code></dt>
+    <dd>
+      When set to <code>true</code> this flag means that the <code>amount</code> field is not final.
+      This is commonly used to show items such as shipping or tax amounts that depend upon
+      selection of shipping address or shipping option. <a>User agents</a> MAY indicate pending
+      fields in the user interface for the payment request. 
     </dd>
   </dl>
 </section>
@@ -979,6 +1037,7 @@ dictionary PaymentOptions {
           readonly attribute object details;
           readonly attribute PaymentAddress? shippingAddress;
           readonly attribute DOMString?      shippingOption;
+          readonly attribute DOMString? payerName;
           readonly attribute DOMString? payerEmail;
           readonly attribute DOMString? payerPhone;
 
@@ -1013,6 +1072,12 @@ dictionary PaymentOptions {
       If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
       passed to the <a>PaymentRequest</a> constructor, then <a><code>shippingOption</code></a> will
       be the <code>id</code> attribute of the selected shipping option.
+    </dd>
+    <dt><code><dfn>payerName</dfn></code></dt>
+    <dd>
+      If the <a>requestPayerName</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
+      passed to the <a>PaymentRequest</a> constructor, then <a><code>payerName</code></a> will
+      be the name provided by the user.
     </dd>
     <dt><code><dfn>payerEmail</dfn></code></dt>
     <dd>
@@ -1427,6 +1492,11 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
         If the <code>requestShipping</code> value of <em>request</em>@[[\options]]
         is <code>true</code>, then copy the <code>shippingOption</code> attribute of
         <em>request</em> to the <code>shippingOption</code> attribute of <em>response</em>.
+      </li>
+      <li>
+        If the <code>requestPayerName</code> value of <em>request</em>@[[\options]]
+        is <code>true</code>, then set the <code>payerName</code> attribute of
+        <em>response</em> to the payer's name provided by the user.
       </li>
       <li>
         If the <code>requestPayerEmail</code> value of <em>request</em>@[[\options]]
