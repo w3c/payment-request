@@ -83,8 +83,6 @@
   <p>
     The working group maintains <a href="https://github.com/w3c/browser-payment-api/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20-label%3A%22Priority%3A%20Postponed%22%20">a
     list of all bug reports that the group has not yet addressed</a>.
-    This draft highlights some of the pending issues that are still to be discussed in the working
-    group. No decision has been taken on the outcome of these issues including whether they are valid.
     Pull requests with proposed specification text for outstanding issues are strongly encouraged.
   </p>
   <p>
@@ -869,11 +867,7 @@ dictionary PaymentOptions {
       this to the user.</dd>
     <dt><code>amount</code></dt>
     <dd>
-          A <a><code>PaymentCurrencyAmount</code></a> containing the monetary amount for the item.
-      <div class="issue" data-number="3" title="Should it be possible to provide amounts in more than one currency">
-        There is an open issue about whether it should be possible to provide a <code>PaymentItem</code>
-        with amounts in more than once currency.
-      </div>
+      A <a><code>PaymentCurrencyAmount</code></a> containing the monetary amount for the item.
     </dd>
   </dl>
 </section>
@@ -1080,11 +1074,6 @@ dictionary PaymentOptions {
         values as the value <code>""</code>.</li>
       <li>Resolve <em>promise</em> with <code>undefined</code>.</li>
     </ol>
-
-    <div class="issue" data-number="5" title="Should the web page be able to provide status information before calling complete()">
-      There is an open issue about whether there should be a way for a merchant to keep the user
-      informed about the progress of a transaction after the user approves the payment request.
-    </div>
   </section>
 
   <section>
