@@ -634,10 +634,11 @@
 <section>
       <h2>PaymentCurrencyAmount</h2>
       <pre class="idl">
-dictionary PaymentCurrencyAmount {
-  required DOMString currency;
-  required DOMString value;
-};
+        dictionary PaymentCurrencyAmount {
+          required DOMString currency;
+          required DOMString value;
+          DOMString currencySystem = "urn:iso:std:iso:4217";
+        };
       </pre>
   <p>
         A <a><code>PaymentCurrencyAmount</code></a> dictionary is used to supply monetary amounts.
@@ -646,13 +647,20 @@ dictionary PaymentCurrencyAmount {
     The following fields are required:
   </p>
   <dl>
-    <dt><code><dfn>currency</dfn></code></dt>
+    <dt><code>currencySystem</code></dt>
     <dd>
-      <code>currency</code> is a string containing a currency identifier. The most common
-      identifiers are three-letter alphabetic codes as defined by [[ISO4217]] (for example,
-      <code>"USD"</code> for US Dollars) however any string is considered valid.
+      <code>currencySystem</code> is a URL that indicates the currency system that the
+      <code>currency</code> identifier belongs to. By default, the value is
+      <code>urn:iso:std:iso:4217</code> indicating that <code>currency</code>
+      is defined by [[ISO4217]] (for example, <code>USD</code> for US Dollars).
     </dd>
-    <dt><code><dfn>value</dfn></code></dt>
+    <dt><code>currency</code></dt>
+    <dd>
+      <code>currency</code> is a string containing a currency identifier. The
+      value of <code>currency</code> can be any string that is valid within
+      the currency system indicated by <code>currencySystem</code>.
+    </dd>
+    <dt><code>value</code></dt>
     <dd>
       A <a>valid decimal monetary value</a> containing a monetary amount. A string is a <dfn>valid
       decimal monetary value</dfn> if it consists of the following components in the given order:
