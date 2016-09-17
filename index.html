@@ -810,6 +810,7 @@ dictionary PaymentDetails {
   <h2>PaymentOptions dictionary</h2>
       <pre class="idl">
 dictionary PaymentOptions {
+  boolean requestPayerName = false;
   boolean requestPayerEmail = false;
   boolean requestPayerPhone = false;
   boolean requestShipping = false;
@@ -824,6 +825,12 @@ dictionary PaymentOptions {
     The following fields MAY be passed to the <a><code>PaymentRequest</code></a> constructor:
   </p>
   <dl>
+    <dt><code><dfn>requestPayerName</dfn></code></dt>
+    <dd>
+      This <em>boolean</em> value indicates whether the <a>user agent</a> should collect and return
+      the payer's name as part of the payment request. For example, this would be set to
+      <code>true</code> to allow a merchant to make a booking in the payer's name.
+    </dd>
     <dt><code><dfn>requestPayerEmail</dfn></code></dt>
     <dd>
       This <em>boolean</em> value indicates whether the <a>user agent</a> should collect and return
@@ -979,6 +986,7 @@ dictionary PaymentOptions {
           readonly attribute object details;
           readonly attribute PaymentAddress? shippingAddress;
           readonly attribute DOMString?      shippingOption;
+          readonly attribute DOMString? payerName;
           readonly attribute DOMString? payerEmail;
           readonly attribute DOMString? payerPhone;
 
@@ -1013,6 +1021,12 @@ dictionary PaymentOptions {
       If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
       passed to the <a>PaymentRequest</a> constructor, then <a><code>shippingOption</code></a> will
       be the <code>id</code> attribute of the selected shipping option.
+    </dd>
+    <dt><code><dfn>payerName</dfn></code></dt>
+    <dd>
+      If the <a>requestPayerName</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
+      passed to the <a>PaymentRequest</a> constructor, then <a><code>payerName</code></a> will
+      be the name provided by the user.
     </dd>
     <dt><code><dfn>payerEmail</dfn></code></dt>
     <dd>
@@ -1427,6 +1441,11 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
         If the <code>requestShipping</code> value of <em>request</em>@[[\options]]
         is <code>true</code>, then copy the <code>shippingOption</code> attribute of
         <em>request</em> to the <code>shippingOption</code> attribute of <em>response</em>.
+      </li>
+      <li>
+        If the <code>requestPayerName</code> value of <em>request</em>@[[\options]]
+        is <code>true</code>, then set the <code>payerName</code> attribute of
+        <em>response</em> to the payer's name provided by the user.
       </li>
       <li>
         If the <code>requestPayerEmail</code> value of <em>request</em>@[[\options]]
