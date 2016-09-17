@@ -859,6 +859,7 @@ dictionary PaymentOptions {
         dictionary PaymentItem {
           required DOMString label;
           required PaymentCurrencyAmount amount;
+          boolean pending = false;
         };
       </pre>
   <p>
@@ -875,6 +876,13 @@ dictionary PaymentOptions {
     <dt><code>amount</code></dt>
     <dd>
       A <a><code>PaymentCurrencyAmount</code></a> containing the monetary amount for the item.
+    </dd>
+    <dt><code>pending</code></dt>
+    <dd>
+      When set to <code>true</code> this flag means that the <code>amount</code> field is not final.
+      This is commonly used to show items such as shipping or tax amounts that depend upon
+      selection of shipping address or shipping option. <a>User agents</a> MAY indicate pending
+      fields in the user interface for the payment request. 
     </dd>
   </dl>
 </section>
