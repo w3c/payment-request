@@ -1544,11 +1544,17 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
     group discussion.
   </p>
   <section>
-    <h2>Exposing user information</h2>
+    <h3>Exposing user information</h3>
     <p>
       The <a>user agent</a> should never share information about the user to the web page
       (such as the shipping address) without user consent.
     </p>
+  </section>
+  <section>
+    <h3>Incognito Mode</h3>
+    <ul>
+      <li>This API should remain available in a browser's "incognito mode".</li>
+      <li>Browsers that offer "persistent permission" features for sharing user payment information automatically with merchants should ignore those settings in icognito mode and require explicit user consent.</li>
   </section>
 </section>
 
