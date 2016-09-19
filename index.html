@@ -1095,9 +1095,9 @@ dictionary PaymentDetails {
 
   <section>
     <h2>complete()</h2>
-    <p>The <code><dfn>complete</dfn></code> method must be called after the user has accepted the payment
+    <p>The <code><dfn>complete</dfn></code> method is called after the user has accepted the payment
       request and the [[\acceptPromise]] has been resolved. Calling the <code>complete</code> method tells
-      the <a>user agent</a> that the user interaction is over (and should cause any remaining user interface to be
+      the <a>user agent</a> that the user interaction is over (and SHOULD cause any remaining user interface to be
       closed).</p>
     <p>The <code>complete</code> method takes a string argument from the <code><dfn>PaymentComplete</dfn></code>
       enum (<code>result</code>). These values are used to influence the user experience provided by the <a>user agent</a>
