@@ -1147,7 +1147,6 @@ dictionary PaymentDetails {
         If the value of the internal slot [[\completeCalled]] is <em>true</em>, then <a>throw</a> an <a><code>InvalidStateError</code></a>.
       </li>
       <li>Set the value of the internal slot [[\completeCalled]] to <em>true</em>.</li>
-      <li>Set the value of <code>status</code> to the appropriate <code>PaymentComplete</code>.</li>
       <li>Return <em>promise</em> and asynchronously perform the remaining steps.</li>
       <li>Close down any remaining user interface. The <a>user agent</a> MAY use the value <code>result</code>
         to influence the user experience. <a>User agents</a> SHOULD treat unrecognized <code>result</code>
