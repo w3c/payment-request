@@ -21,7 +21,7 @@
       ],
 
       license:      "w3c-software-doc",
-      lint:	        true,
+      lint:            true,
 
       previousMaturity: "WD",
       previousPublishDate:  "2016-07-05",
@@ -134,58 +134,7 @@
     </section>
   </section>
 </section>
-
-<section id="dependencies">
-  <h2>Dependencies</h2>
-  <p>
-    This specification relies on several other underlying specifications.
-  </p>
-  <dl>
-    <dt>Payment Method Identifiers</dt>
-    <dd>The term <dfn data-lt="payment method identifier|payment method identifiers">Payment
-      Method Identifier</dfn> is defined by the Payment Method Identifiers specification
-      [[!METHOD-IDENTIFIERS]].</dd>
-    <dt>HTML 5.1</dt>
-    <dd>The terms <dfn>global object</dfn>,
-      <dfn>boolean attribute</dfn>, <dfn>reflect</dfn>, <dfn>iframe</dfn>,
-      <dfn>queue a task</dfn>, <dfn>browsing context</dfn>, <dfn>nested browsing context</dfn>, and
-      <dfn>top-level browsing context</dfn> are defined by [[!HTML51]].</dd>
-    <dt>ECMA-262 6th Edition, The ECMAScript 2015 Language Specification</dt>
-    <dd>
-      The terms <dfn>Promise</dfn>, <dfn>internal slot</dfn>, <dfn><code>TypeError</code></dfn>, <dfn>JSON.stringify</dfn>, and <dfn>JSON.parse</dfn> are
-      defined by [[!ECMA-262-2015]].
-      <p>This document uses the format <em>object</em>@[[\slotname]] to mean the internal slot [[\slotname]]
-        of the object <em>object</em>.</p>
-      <p>The term <dfn>JSON-serializable object</dfn> used in this specification means an object that can
-        be serialized to a string using <a>JSON.stringify</a> and later deserialized back to an object
-        using <a>JSON.parse</a> with no loss of data.</p>
-    </dd>
-    <dt>DOM4</dt>
-    <dd>
-      The <code><dfn>Event</dfn></code> type and the terms <dfn>fire an event</dfn>, <dfn>dispatch flag</dfn>,
-      <dfn>stop propagation flag</dfn>, and <dfn>stop immediate propagation flag</dfn> are defined by [[!DOM4]].
-      <p><dfn>DOMException</dfn> and the following DOMException types from [[!DOM4]] are used:</p>
-      <table>
-        <tr><th>Type</th><th>Message (optional)</th></tr>
-        <tr><td><code><dfn>AbortError</dfn></code></td><td>The payment request was aborted</td></tr>
-        <tr><td><code><dfn>InvalidStateError</dfn></code></td><td>The object is in an invalid state</td></tr>
-        <tr><td><code><dfn>NotSupportedError</dfn></code></td><td>The payment method was not supported</td></tr>
-        <tr><td><code><dfn>SecurityError</dfn></code></td><td>The operation is only supported in a secure context</td></tr>
-      </table>
-    </dd>
-    <dt>WebIDL</dt>
-    <dd>When this specification says to <dfn>throw</dfn> an error, the <a>user agent</a> must throw an
-      error as described in [[!WEBIDL-2]]. When this occurs in a sub-algorithm, this results in
-      termination of execution of the sub-algorithm and all ancestor algorithms until one is
-      reached that explicitly describes procedures for catching exceptions.
-      <p>The term <dfn>extended attribute</dfn> is defined by [[!WEBIDL-2]].</p></dd>
-    <dt>Secure Contexts</dt>
-    <dd>The term <dfn>secure context</dfn> is defined by the Secure Contexts specification
-      [[SECURE-CONTEXTS]].</dd>
-  </dl>
-</section>
-
-<section>
+<section data-dfn-for="PaymentRequest">
   <h2><code>PaymentRequest</code> interface</h2>
   <pre class="idl">
     [Constructor(sequence&lt;PaymentMethodData&gt; methodData, PaymentDetails details, optional PaymentOptions options),
@@ -207,19 +156,19 @@
   </pre>
 
   <p>
-    A web page creates a <a><code>PaymentRequest</code></a> to make a payment request. This is
+    A web page creates a <dfn>PaymentRequest</dfn> to make a payment request. This is
     typically associated with the user initiating a payment process
     (e.g., selecting a "Power Up" in an interactive game, pulling up to an automated kiosk in a parking structure,
     or activating a "Buy", "Purchase", or "Checkout" button).
-    The <a><code>PaymentRequest</code></a> allows the web page to exchange information with the
+    The <a>PaymentRequest</a> allows the web page to exchange information with the
     <a>user agent</a> while the user is providing input before approving or denying a payment request.
   </p>
 
-      <p>
-        The <code>shippingAddress</code>, <dfn><code>shippingOption</code></dfn>,
-        and <code>shippingType</code> attributes
-        are populated during processing if the <a><code>requestShipping</code></a> flag is set.
-      </p>
+  <p>
+    The <a>shippingAddress</a>, <a>shippingOption</a>,
+    and <a>shippingType</a> attributes
+    are populated during processing if the <a><code>requestShipping</code></a> flag is set.
+  </p>
 
   <p class="note">
     The <code>[SecureContext]</code> <a>extended attribute</a> means that the <a><code>PaymentRequest</code></a>
@@ -1524,6 +1473,55 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
       limit the calls to the API to prevent too many repeated calls.
     </p>
   </section>
+</section>
+<section id="dependencies">
+  <h2>Dependencies</h2>
+  <p>
+    This specification relies on several other underlying specifications.
+  </p>
+  <dl>
+    <dt>Payment Method Identifiers</dt>
+    <dd>The term <dfn data-lt="payment method identifier|payment method identifiers">Payment
+      Method Identifier</dfn> is defined by the Payment Method Identifiers specification
+      [[!METHOD-IDENTIFIERS]].</dd>
+    <dt>HTML 5.1</dt>
+    <dd>The terms <dfn>global object</dfn>,
+      <dfn>boolean attribute</dfn>, <dfn>reflect</dfn>, <dfn>iframe</dfn>,
+      <dfn>queue a task</dfn>, <dfn>browsing context</dfn>, <dfn>nested browsing context</dfn>, and
+      <dfn>top-level browsing context</dfn> are defined by [[!HTML51]].</dd>
+    <dt>ECMA-262 6th Edition, The ECMAScript 2015 Language Specification</dt>
+    <dd>
+      The terms <dfn>Promise</dfn>, <dfn>internal slot</dfn>, <dfn><code>TypeError</code></dfn>, <dfn>JSON.stringify</dfn>, and <dfn>JSON.parse</dfn> are
+      defined by [[!ECMA-262-2015]].
+      <p>This document uses the format <em>object</em>@[[\slotname]] to mean the internal slot [[\slotname]]
+        of the object <em>object</em>.</p>
+      <p>The term <dfn>JSON-serializable object</dfn> used in this specification means an object that can
+        be serialized to a string using <a>JSON.stringify</a> and later deserialized back to an object
+        using <a>JSON.parse</a> with no loss of data.</p>
+    </dd>
+    <dt>DOM4</dt>
+    <dd>
+      The <code><dfn>Event</dfn></code> type and the terms <dfn>fire an event</dfn>, <dfn>dispatch flag</dfn>,
+      <dfn>stop propagation flag</dfn>, and <dfn>stop immediate propagation flag</dfn> are defined by [[!DOM4]].
+      <p><dfn>DOMException</dfn> and the following DOMException types from [[!DOM4]] are used:</p>
+      <table>
+        <tr><th>Type</th><th>Message (optional)</th></tr>
+        <tr><td><code><dfn>AbortError</dfn></code></td><td>The payment request was aborted</td></tr>
+        <tr><td><code><dfn>InvalidStateError</dfn></code></td><td>The object is in an invalid state</td></tr>
+        <tr><td><code><dfn>NotSupportedError</dfn></code></td><td>The payment method was not supported</td></tr>
+        <tr><td><code><dfn>SecurityError</dfn></code></td><td>The operation is only supported in a secure context</td></tr>
+      </table>
+    </dd>
+    <dt>WebIDL</dt>
+    <dd>When this specification says to <dfn>throw</dfn> an error, the <a>user agent</a> must throw an
+      error as described in [[!WEBIDL-2]]. When this occurs in a sub-algorithm, this results in
+      termination of execution of the sub-algorithm and all ancestor algorithms until one is
+      reached that explicitly describes procedures for catching exceptions.
+      <p>The term <dfn>extended attribute</dfn> is defined by [[!WEBIDL-2]].</p></dd>
+    <dt>Secure Contexts</dt>
+    <dd>The term <dfn>secure context</dfn> is defined by the Secure Contexts specification
+      [[SECURE-CONTEXTS]].</dd>
+  </dl>
 </section>
 <section id="conformance">
   <p>
