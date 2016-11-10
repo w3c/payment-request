@@ -135,39 +135,6 @@
   </section>
 </section>
 
-<section id='conformance'>
-  <p>
-    This specification defines one class of products:
-  </p>
-  <dl>
-    <dt><dfn>Conforming user agent</dfn></dt>
-    <dd>
-      <p>
-        A <dfn data-lt="user agents">user agent</dfn> MUST behave as described in this specification
-        in order to be considered conformant. In this specification, <a>user agent</a> means a <em>Web
-        browser or other interactive user agent</em> as defined in [[!HTML51]].
-      </p>
-      <p>
-        User agents MAY implement algorithms given in this
-        specification in any way desired, so long as the end result is
-        indistinguishable from the result that would be obtained by the
-        specification's algorithms.
-      </p>
-      <p>
-        A conforming Payment Request API user agent MUST also be a
-        <em>conforming implementation</em> of the IDL fragments
-        of this specification, as described in the
-        “Web IDL” specification. [[!WEBIDL-2]]
-      </p>
-
-      <aside class="note">
-        This specification uses both the terms "conforming user agent(s)"
-        and "user agent(s)" to refer to this product class.
-      </aside>
-    </dd>
-  </dl>
-</section>
-
 <section id="dependencies">
   <h2>Dependencies</h2>
   <p>
@@ -1558,6 +1525,16 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
     </p>
   </section>
 </section>
-
+<section id="conformance">
+  <p>
+    There is only one class of product that can claim conformance to this
+    specification: a <dfn data-lt="user agents">user agent</dfn>.
+  </p>
+  <p class="note">
+    Although this specification is primarily targeted at web browsers, it
+    is feasible that other software could also implement this specification
+    in a conforming manner.
+  </p>
+</section>
 </body>
 </html>
