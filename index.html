@@ -186,25 +186,25 @@
 </section>
 
 <section>
-  <h2>PaymentRequest interface</h2>
-      <pre class="idl">
-        [Constructor(sequence&lt;PaymentMethodData&gt; methodData, PaymentDetails details, optional PaymentOptions options),
-        SecureContext]
-        interface PaymentRequest : EventTarget {
-          Promise&lt;PaymentResponse&gt; show();
-          Promise&lt;void&gt; abort();
+  <h2><code>PaymentRequest</code> interface</h2>
+  <pre class="idl">
+    [Constructor(sequence&lt;PaymentMethodData&gt; methodData, PaymentDetails details, optional PaymentOptions options),
+    SecureContext]
+    interface PaymentRequest : EventTarget {
+      Promise&lt;PaymentResponse&gt; show();
+      Promise&lt;void&gt; abort();
 
-          readonly attribute PaymentAddress? shippingAddress;
-          readonly attribute DOMString? shippingOption;
-          readonly attribute PaymentShippingType? shippingType;
+      readonly attribute PaymentAddress? shippingAddress;
+      readonly attribute DOMString? shippingOption;
+      readonly attribute PaymentShippingType? shippingType;
 
-          /* Supports "shippingaddresschange" event */
-          attribute EventHandler onshippingaddresschange;
+      /* Supports "shippingaddresschange" event */
+      attribute EventHandler onshippingaddresschange;
 
-          /* Supports "shippingoptionchange" event */
-          attribute EventHandler onshippingoptionchange;
-        };
-      </pre>
+      /* Supports "shippingoptionchange" event */
+      attribute EventHandler onshippingoptionchange;
+    };
+  </pre>
 
   <p>
     A web page creates a <a><code>PaymentRequest</code></a> to make a payment request. This is
