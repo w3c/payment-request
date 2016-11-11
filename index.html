@@ -165,47 +165,48 @@
   </p>
 
   <p>
-    The <a>shippingAddress</a>, <a>shippingOption</a>,
-    and <a>shippingType</a> attributes
-    are populated during processing if the <a><code>requestShipping</code></a> flag is set.
+    The <a data-lt="PaymentRequest.shippingAddress">shippingAddress</a>,
+    <a data-lt="PaymentRequest.shippingOption">shippingOption</a>,
+    and <a data-lt="PaymentRequest.shippingType">shippingType</a> attributes
+    are populated during processing if the <a data-lt="PaymentOptions.requestShipping">requestShipping</a> flag is set.
   </p>
 
   <p class="note">
-    The <code>[SecureContext]</code> <a>extended attribute</a> means that the <a><code>PaymentRequest</code></a>
+    The <code>[SecureContext]</code> <a>extended attribute</a> means that the <a>PaymentRequest</a>
     is only exposed within a <a>secure context</a> and won't be accessible elsewhere.
   </p>
 
-  <p>The following example shows how to construct a <a><code>PaymentRequest</code></a> and begin the
+  <p>The following example shows how to construct a <a>PaymentRequest</a> and begin the
     user interaction:</p>
 
-      <pre class="example highlight">
-        var payment = new PaymentRequest(methodData, details, options);
-        payment.addEventListener("shippingaddresschange", function (changeEvent) {
-            // Process shipping address change
-        });
+  <pre class="example">
+    var payment = new PaymentRequest(methodData, details, options);
+    payment.addEventListener("shippingaddresschange", function (changeEvent) {
+        // Process shipping address change
+    });
 
-        payment.show().then(function(paymentResponse) {
-          // Process paymentResponse
-          // paymentResponse.methodName contains the selected payment method
-          // paymentResponse.details contains a payment method specific response
-          paymentResponse.complete("success");
-        }).catch(function(err) {
-          console.error("Uh oh, something bad happened", err.message);
-        });
-      </pre>
+    payment.show().then(function(paymentResponse) {
+      // Process paymentResponse
+      // paymentResponse.methodName contains the selected payment method
+      // paymentResponse.details contains a payment method specific response
+      paymentResponse.complete("success");
+    }).catch(function(err) {
+      console.error("Uh oh, something bad happened", err.message);
+    });
+  </pre>
 
   <section>
-    <h2>PaymentRequest constructor</h2>
+    <h2>Constructor</h2>
     <p>
-      The <a><code>PaymentRequest</code></a> is constructed using the supplied <code>methodData</code>
+      The <a>PaymentRequest</a> is constructed using the supplied <code>methodData</code>
       list including any <a>payment method</a> specific <code>data</code>, the payment <code>details</code>,
       and the payment <code>options</code>.
     </p>
     <div class="note">
-      <p>The <code>methodData</code> sequence contains <a><code>PaymentMethodData</code></a> dictionaries
+      <p>The <code>methodData</code> sequence contains <a>PaymentMethodData</a> dictionaries
         containing the <a>payment method identifiers</a> for the <a>payment methods</a> that the web site accepts
         and any associated <a>payment method</a> specific data.</p>
-          <pre class="example highlight">
+          <pre class="example">
             [
               {
                 supportedMethods: ["visa","bitcoin"]
@@ -222,7 +223,7 @@
 
       <p>The <code>details</code> object contains information about the transaction that the
         user is being asked to complete such as the line items in an order.</p>
-          <pre class="example highlight">
+          <pre class="example">
             {
               displayItems: [
                 {
@@ -245,7 +246,7 @@
       <p>The <code>options</code> object contains information about what options the web page
         wishes to use from the payment request system.</p>
 
-          <pre class="example highlight">
+          <pre class="example">
             {
               requestShipping: true
             }
@@ -253,73 +254,73 @@
     </div>
 
     <p>
-      The <a><code>PaymentRequest</code></a> constructor MUST act as follows:
+      The <a>PaymentRequest</a> constructor MUST act as follows:
     </p>
     <ol>
       <li>
         If the length of the <code>methodData</code> sequence is zero, then <a>throw</a>
-        a <a><code>TypeError</code></a>.
+        a <a>TypeError</a>.
       </li>
       <li>
-        For each <a><code>PaymentMethodData</code></a> dictionary, if the length of the
-        <code>supportedMethods</code> sequence is zero, then <a>throw</a> a <a><code>TypeError</code></a>.
+        For each <a>PaymentMethodData</a> dictionary, if the length of the
+        <code>supportedMethods</code> sequence is zero, then <a>throw</a> a <a>TypeError</a>.
       </li>
       <li>
         If the <a>browsing context</a> of the script calling the constructor is
         a <a>nested browsing context</a> whose origin is different from the <a>top-level browsing context</a>'s
         origin and the nested browsing context is not <a>allowed to make payment requests</a>, then <a>throw</a>
-        a <a><code>SecurityError</code></a>.
+        a <a>SecurityError</a>.
       </li>
       <li>
         If <code>details</code> does not contain a value for <code>total</code>, then throw a
-        <a><code>TypeError</code></a>.
+        <a>TypeError</a>.
       </li>
       <li>
         If <code>details.total.amount.value</code> is not a <a>valid decimal monetary value</a>, then throw a
-        <a><code>TypeError</code></a>.
+        <a>TypeError</a>.
       </li>
       <li>
         If the first character of <code>details.total.amount.value</code> is U+002D HYPHEN-MINUS, then throw a
-        <a><code>TypeError</code></a>. <code>total</code> MUST be a non-negative amount.
+        <a>TypeError</a>. <code>total</code> MUST be a non-negative amount.
       </li>
       <li>
-        If the <code>details.displayItems</code> sequence contains any <a><code>PaymentItem</code></a>
+        If the <code>details.displayItems</code> sequence contains any <a>PaymentItem</a>
         objects with an <code>amount</code> that is not a <a>valid decimal monetary value</a>, then throw a
-        <a><code>TypeError</code></a>.
+        <a>TypeError</a>.
       </li>
       <li>
-        If the <code>details.shippingOptions</code> sequence contains any <a><code>PaymentShippingOption</code></a>
+        If the <code>details.shippingOptions</code> sequence contains any <a>PaymentShippingOption</a>
         objects with an <code>amount</code> that is not a <a>valid decimal monetary value</a>, then throw a
-        <a><code>TypeError</code></a>.
+        <a>TypeError</a>.
       </li>
       <li>
         If <code>details</code> contains a value for <code>error</code>, then throw a
-        <a><code>TypeError</code></a>.
+        <a>TypeError</a>.
       </li>
       <li>
-        For each <a><code>PaymentMethodData</code></a> in <code>methodData</code>, if the <code>data</code> field
-        is supplied but is not a <a>JSON-serializable object</a>, then <a>throw</a> a <a><code>TypeError</code></a>.
+        For each <a>PaymentMethodData</a> in <code>methodData</code>, if the <code>data</code> field
+        is supplied but is not a <a>JSON-serializable object</a>, then <a>throw</a> a <a>TypeError</a>.
       </li>
       <li>
-        For each <a><code>PaymentDetailsModifier</code></a> in <code>details.modifiers</code>, if the <code>total</code> field
-        is supplied and is not a <a>valid decimal monetary value</a>, then throw a <a><code>TypeError</code></a>.
+        For each <a>PaymentDetailsModifier</a> in <code>details.modifiers</code>, if the <code>total</code> field
+        is supplied and is not a <a>valid decimal monetary value</a>, then throw a <a>TypeError</a>.
       </li>
       <li>
-        For each <a><code>PaymentDetailsModifier</code></a> in <code>details.modifiers</code>, if the <code>total</code> field
+        For each <a>PaymentDetailsModifier</a> in <code>details.modifiers</code>, if the <code>total</code> field
         is supplied and the first character of <code>total.amount.value</code> is U+002D HYPHEN-MINUS, then throw a
-        <a><code>TypeError</code></a>. <code>total</code> MUST be a non-negative amount.
+        <a>TypeError</a>. <code>total</code> MUST be a non-negative amount.
       </li>
       <li>
-        For each <a><code>PaymentDetailsModifier</code></a> in <code>details.modifiers</code>, if the
-        <code>additionalDisplayItems</code> sequence contains any <a><code>PaymentItem</code></a>
+        For each <a>PaymentDetailsModifier</a> in <code>details.modifiers</code>, if the
+        <code>additionalDisplayItems</code> sequence contains any <a>PaymentItem</a>
         objects with an <code>amount</code> that is not a <a>valid decimal monetary value</a>, then throw a
-        <a><code>TypeError</code></a>.
+        <a>TypeError</a>.
       </li>
-      <li>Let <em>request</em> be a new <a><code>PaymentRequest</code></a>.</li>
+      <li>Let <em>request</em> be a new <a>PaymentRequest</a>.</li>
       <li>
         Store <code>methodData</code> into <em>request</em>@[[\methodData]].
         <p>
-          The <code>methodData</code> supplied to the <a><code>PaymentRequest</code></a> constructor
+          The <code>methodData</code> supplied to the <a>PaymentRequest</a> constructor
           SHOULD be in the order of preference of the caller. Implementations MAY show payment methods
           in this order if possible but SHOULD prioritize the preference of the user when presenting
           payment methods.
@@ -329,19 +330,19 @@
       <li>Store <code>options</code> into <em>request</em>@[[\options]].</li>
       <li>Set the value <em>request</em>@[[\state]] to <em>created</em>.</li>
       <li>
-        Set the value of the <a><code>shippingAddress</code></a> attribute on <em>request</em> to <em>null</em>.
+        Set the value of the <a data-lt="PaymentRequest.shippingAddress">shippingAddress</a> attribute on <em>request</em> to <em>null</em>.
       </li>
       <li>
-        Set the value of the <a><code>shippingOption</code></a> attribute on <em>request</em> to <em>null</em>.
+        Set the value of the <a data-lt="PaymentRequest.shippingOption">shippingOption</a> attribute on <em>request</em> to <em>null</em>.
       </li>
       <li>
-        Set the value of the <a><code>shippingType</code></a> attribute on <em>request</em> to <em>null</em>.
+        Set the value of the <a data-lt="PaymentRequest.shippingType">shippingType</a> attribute on <em>request</em> to <em>null</em>.
       </li>
       <li>
         If <code>options.requestShipping</code> is set to <code>true</code>, then set the value of the
-        <a><code>shippingType</code></a> attribute on <em>request</em> to <code>options.shippingType</code>.
-        If <code>options.shippingType</code> is not a valid <a><code>PaymentShippingType</code></a> value
-        then set the <a><code>shippingType</code></a> attribute on <em>request</em> to <code>"shipping"</code>.
+        <a data-lt="PaymentRequest.shippingType">shippingType</a> attribute on <em>request</em> to <code>options.shippingType</code>.
+        If <code>options.shippingType</code> is not a valid <a>PaymentShippingType</a> value
+        then set the <a data-lt="PaymentRequest.shippingType">shippingType</a> attribute on <em>request</em> to <code>"shipping"</code>.
         <div class="note">
             This behavior allows a page to detect if it supplied an unsupported shipping type. This will be
             important if new shipping types are added to a future version of this specification but a page is
@@ -350,15 +351,15 @@
       </li>
       <li>
         If the <code>details.shippingOptions</code> sequence contains multiple
-        <a><code>PaymentShippingOption</code></a> objects that have the same <code>id</code>,
-        then set the <code>shippingOptions</code> field of <em>request</em>@[[\details]]
+        <a>PaymentShippingOption</a> objects that have the same <code>id</code>,
+        then set the <a data-lt="PaymentDetails.shippingOptions">shippingOptions</a> field of <em>request</em>@[[\details]]
         to an empty sequence.
       </li>
       <li>
         If <em>request</em>@[[\details]] contains a <code>shippingOptions</code> sequence and
-        if any <a><code>PaymentShippingOption</code></a> in the sequence
+        if any <a>PaymentShippingOption</a> in the sequence
         has the <code>selected</code> field set to <code>true</code>, then set
-        <a><code>shippingOption</code></a> to the <code>id</code> of the last <a><code>ShippingOption</code></a>
+        <a data-lt="PaymentRequest.shippingOption">shippingOption</a> to the <code>id</code> of the last <a>PaymentShippingOption</a>
         in the sequence with <code>selected</code> set to <code>true</code>.
       </li>
       <li>Set the value <em>request</em>@[[\updating]] to <em>false</em>.</li>
@@ -366,23 +367,23 @@
     </ol>
   </section>
 
-  <section>
-    <h2>show()</h2>
+  <section data-dfn-for="PaymentRequest">
+    <h2><code>show()</code> method</h2>
     <p>
-      The <code><dfn>show</dfn></code> method is called when the page wants to begin user interaction for the
+      The <dfn>show</dfn> method is called when the page wants to begin user interaction for the
       payment request. The <code>show</code> method returns a <a>Promise</a> that will be resolved when the
       <a>user accepts the payment request</a>. Some kind of user interface will be presented to the user to facilitate the
       payment request after the <code>show</code> method returns.
     </p>
     <p>
-      The <a><code>show</code></a> method MUST act as follows:
+      The <a data-lt="PaymentRequest.show">show</a> method MUST act as follows:
     </p>
     <ol>
       <li>
-        Let <em>request</em> be the <a><code>PaymentRequest</code></a> object on which the method is called.
+        Let <em>request</em> be the <a>PaymentRequest</a> object on which the method is called.
       </li>
       <li>If the value of <em>request</em>@[[\state]] is not <em>created</em> then
-        <a>throw</a> an <a><code>InvalidStateError</code></a>.</li>
+        <a>throw</a> an <a>InvalidStateError</a>.</li>
       <li>
         Set the value of <em>request</em>@[[\state]] to <em>interactive</em>.
       </li>
@@ -397,7 +398,7 @@
       </li>
       <li>
         Let <em>supportedMethods</em> be the union of all the <code>supportedMethods</code> sequences from each
-        <a><code>PaymentMethodData</code></a> in the <em>request</em>@[[\methodData]] sequence.
+        <a>PaymentMethodData</a> in the <em>request</em>@[[\methodData]] sequence.
       </li>
       <li>
         Let <em>acceptedMethods</em> be <em>supportedMethods</em> with all identifiers removed that the
@@ -405,7 +406,7 @@
       </li>
       <li>
         If the length of <em>acceptedMethods</em> is zero, then reject <em>acceptPromise</em> with a
-        <a><code>NotSupportedError</code></a>.
+        <a>NotSupportedError</a>.
       </li>
       <li>
         Show a user interface to allow the user to interact with the payment request process. The <em>acceptPromise</em> will
@@ -414,13 +415,13 @@
     </ol>
   </section>
 
-  <section>
-    <h2>abort()</h2>
+  <section data-dfn-for="PaymentRequest">
+    <h2><code>abort()</code> method</h2>
 
     <p>
-      The <code><dfn>abort</dfn></code> method may be called if the web page wishes to tell the
+      The <dfn>abort</dfn> method may be called if the web page wishes to tell the
       <a>user agent</a> to abort the payment <em>request</em> and to tear down any user interface that
-      might be shown. <code>abort</code> can only be called after the <a><code>show</code></a> method
+      might be shown. <code>abort</code> can only be called after the <a data-lt="PaymentRequest.show">show</a> method
       has been called and before the <em>request</em>@[[\acceptPromise]] has been resolved.
       For example, a web page might choose to do this if the goods they are selling are
       only available for a limited amount of time. If the user does not accept the payment request
@@ -433,20 +434,20 @@
       reject the returned <a>Promise</a>.
     </p>
 
-    <p>The <a><code>abort</code></a> method MUST act as follows:</p>
+    <p>The <a data-lt="PaymentRequest.abort">abort</a> method MUST act as follows:</p>
     <ol>
       <li>
-        Let <em>request</em> be the <a><code>PaymentRequest</code></a> object on which the method is called.
+        Let <em>request</em> be the <a>PaymentRequest</a> object on which the method is called.
       </li>
       <li>If the value of <em>request</em>@[[\state]] is not <em>interactive</em> then
-        <a>throw</a> an <a><code>InvalidStateError</code></a>.</li>
+        <a>throw</a> an <a>InvalidStateError</a>.</li>
       <li>Let <em>promise</em> be a new <a>Promise</a>.</li>
       <li>Return <em>promise</em> and asynchronously perform the remaining steps.</li>
       <li>Try to abort the current user interaction and close down any remaining user interface.</li>
       <li>If it is not possible to abort the current user interaction, then reject <em>promise</em>
-        with <a><code>InvalidStateError</code></a> and abort this algorithm.</li>
+        with <a>InvalidStateError</a> and abort this algorithm.</li>
       <li>Set the value of the internal slot <em>request</em>@[[\state]] to <em>closed</em>.</li>
-      <li>Reject the promise <em>request</em>@[[\acceptPromise]] with an <a><code>AbortError</code></a>.</li>
+      <li>Reject the promise <em>request</em>@[[\acceptPromise]] with an <a>AbortError</a>.</li>
       <li>Resolve <em>promise</em> with <code>undefined</code>.</li>
     </ol>
   </section>
@@ -458,35 +459,35 @@
          src="images/state-transitions.svg" width="518" height="125">
   </section>
 
-  <section>
-    <h2>shippingAddress</h2>
+  <section data-dfn-for="PaymentRequest">
+    <h2><code>shippingAddress</code> attribute</h2>
     <p>
-      <code>shippingAddress</code> is populated when the user provides a shipping
+      <dfn>shippingAddress</dfn> is populated when the user provides a shipping
       address. It is <em>null</em> by default.
       When a user provides a shipping address, the <a>shipping address changed algorithm</a> runs.
     </p>
     <p>
-      <code><dfn>onshippingaddresschange</dfn></code> is an <code>EventHandler</code> for an
+      <dfn>onshippingaddresschange</dfn> is an <code>EventHandler</code> for an
       <code>Event</code> named <code>shippingaddresschange</code>.
     </p>
   </section>
 
-  <section>
-    <h2>shippingOption</h2>
+  <section data-dfn-for="PaymentRequest">
+    <h2><code>shippingOption</code> attribute</h2>
     <p>
-      <code>shippingOption</code> is populated when the user chooses a shipping
+      <dfn>shippingOption</dfn> is populated when the user chooses a shipping
       option. It is <em>null</em> by default.
       When a user chooses a shipping option, the <a>shipping option changed algorithm</a> runs.
     </p>
     <p>
-      <code><dfn>onshippingoptionchange</dfn></code> is an <code>EventHandler</code> for an
+      <dfn>onshippingoptionchange</dfn> is an <code>EventHandler</code> for an
       <code>Event</code> named <code>shippingoptionchange</code>.
     </p>
   </section>
 
   <section>
     <h2>Internal Slots</h2>
-    <p>Instances of <a><code>PaymentRequest</code></a> are created with the internal slots in
+    <p>Instances of <a>PaymentRequest</a> are created with the internal slots in
       the following table:</p>
     <table>
       <tr><th>Internal Slot</th><th>Description (<em>non-normative</em>)</th></tr>
@@ -497,13 +498,13 @@
       <tr>
         <td>[[\details]]</td>
         <td>
-          The current <a><code>PaymentDetails</code></a> for the payment request initially
-          supplied to the constructor and then updated with calls to <a><code>updateWith</code></a>.
+          The current <a>PaymentDetails</a> for the payment request initially
+          supplied to the constructor and then updated with calls to <a data-lt="PaymentRequestUpdateEvent.updateWith">updateWith</a>.
         </td>
       </tr>
       <tr>
         <td>[[\options]]</td>
-        <td>The <a><code>PaymentOptions</code></a> supplied to the constructor.</td>
+        <td>The <a>PaymentOptions</a> supplied to the constructor.</td>
       </tr>
       <tr>
         <td>[[\state]]</td>
@@ -512,14 +513,14 @@
       <tr>
         <td>[[\updating]]</td>
         <td>
-          <em>true</em> is there is a pending <a><code>updateWith</code></a> call to update
+          <em>true</em> is there is a pending <a data-lt="PaymentRequestUpdateEvent.updateWith">updateWith</a> call to update
           the payment request and <em>false</em> otherwise.
         </td>
       </tr>
       <tr>
         <td>[[\acceptPromise]]</td>
         <td>
-          The pending <a>Promise</a> created during <a><code>show</code></a> that will be
+          The pending <a>Promise</a> created during <a data-lt="PaymentRequest.show">show</a> that will be
           resolved if the user accepts the payment request.
         </td>
       </tr>
@@ -528,31 +529,31 @@
 
 </section>
 
-<section>
-  <h2>PaymentMethodData dictionary</h2>
-      <pre class="idl">
-        dictionary PaymentMethodData {
-          required sequence&lt;DOMString&gt; supportedMethods;
-          object data;
-        };
-      </pre>
+<section data-dfn-for="PaymentMethodData">
+  <h2><code>PaymentMethodData</code> dictionary</h2>
+  <pre class="idl">
+    dictionary PaymentMethodData {
+      required sequence&lt;DOMString&gt; supportedMethods;
+      object data;
+    };
+  </pre>
   <p>
-    A <a><code>PaymentMethodData</code></a> dictionary is used to indicate a set of supported <a>payment
+    A <dfn>PaymentMethodData</dfn> dictionary is used to indicate a set of supported <a>payment
     methods</a> and any associated <a>payment method</a> specific data for those methods.
   </p>
-  <p>The following fields are part of the <a><code>PaymentMethodData</code></a> dictionary:</p>
+  <p>The following fields are part of the <a>PaymentMethodData</a> dictionary:</p>
   <dl>
-    <dt><code>supportedMethods</code></dt>
-    <dd><code>supportedMethods</code> is a required sequence of strings containing <a>payment method identifiers</a> for
+    <dt><dfn>supportedMethods</dfn></dt>
+    <dd><a data-lt="PaymentMethodData.supportedMethods">supportedMethods</a> is a required sequence of strings containing <a>payment method identifiers</a> for
       <a>payment methods</a> that the merchant web site accepts.</dd>
-    <dt><code>data</code></dt>
-    <dd><code>data</code> is a <a>JSON-serializable object</a> that provides optional information that
+    <dt><dfn>data</dfn></dt>
+    <dd><a data-lt="PaymentMethodData.data">data</a> is a <a>JSON-serializable object</a> that provides optional information that
       might be needed by the supported payment methods.</dd>
   </dl>
 </section>
 
-<section>
-      <h2>PaymentCurrencyAmount</h2>
+<section data-dfn-for="PaymentCurrencyAmount">
+      <h2><code>PaymentCurrencyAmount</code> dictionary</h2>
       <pre class="idl">
         dictionary PaymentCurrencyAmount {
           required DOMString currency;
@@ -561,26 +562,26 @@
         };
       </pre>
   <p>
-        A <a><code>PaymentCurrencyAmount</code></a> dictionary is used to supply monetary amounts.
+        A <dfn>PaymentCurrencyAmount</dfn> dictionary is used to supply monetary amounts.
   </p>
   <p>
     The following fields are required:
   </p>
   <dl>
-    <dt><code>currencySystem</code></dt>
+    <dt><dfn>currencySystem</dfn></dt>
     <dd>
-      <code>currencySystem</code> is a URL that indicates the currency system that the
-      <code>currency</code> identifier belongs to. By default, the value is
+      A URL that indicates the currency system that the
+      <a data-lt="PaymentCurrencyAmount.currency">currency</a> identifier belongs to. By default, the value is
       <code>urn:iso:std:iso:4217</code> indicating that <code>currency</code>
       is defined by [[ISO4217]] (for example, <code>USD</code> for US Dollars).
     </dd>
-    <dt><code>currency</code></dt>
+    <dt><dfn>currency</dfn></dt>
     <dd>
-      <code>currency</code> is a string containing a currency identifier. The
+      A string containing a currency identifier. The
       value of <code>currency</code> can be any string that is valid within
       the currency system indicated by <code>currencySystem</code>.
     </dd>
-    <dt><code>value</code></dt>
+    <dt><dfn>value</dfn></dt>
     <dd>
       A <a>valid decimal monetary value</a> containing a monetary amount. A string is a <dfn>valid
       decimal monetary value</dfn> if it consists of the following components in the given order:
@@ -599,7 +600,7 @@
   </dl>
 
   <p>The following example shows how to represent US$55.00.</p>
-      <pre class="example highlight">
+      <pre class="example">
 {
   "currency": "USD",
   "value" : "55.00"
@@ -607,85 +608,85 @@
       </pre>
 </section>
 
-<section>
-  <h2>PaymentDetails dictionary</h2>
-      <pre class="idl">
-dictionary PaymentDetails {
-  PaymentItem total;
-  sequence&lt;PaymentItem&gt; displayItems;
-  sequence&lt;PaymentShippingOption&gt; shippingOptions;
-  sequence&lt;PaymentDetailsModifier&gt; modifiers;
-  DOMString error;
-};
-      </pre>
+<section data-dfn-for="PaymentDetails">
+  <h2><code>PaymentDetails</code> dictionary</h2>
+  <pre class="idl">
+  dictionary PaymentDetails {
+    PaymentItem total;
+    sequence&lt;PaymentItem&gt; displayItems;
+    sequence&lt;PaymentShippingOption&gt; shippingOptions;
+    sequence&lt;PaymentDetailsModifier&gt; modifiers;
+    DOMString error;
+  };
+  </pre>
 
   <p>
-    The <code><dfn>PaymentDetails</dfn></code> dictionary is passed to the <a><code>PaymentRequest</code></a>
+    The <dfn>PaymentDetails</dfn> dictionary is passed to the <a>PaymentRequest</a>
     constructor and provides information about the requested transaction. The <code>PaymentDetails</code>
-    dictionary is also used to update the payment request using <a><code>updateWith</code></a>.
+    dictionary is also used to update the payment request using <a data-lt="PaymentRequestUpdateEvent.updateWith">updateWith</a>.
   </p>
   <p>
     The following fields are part of the <code>PaymentDetails</code> dictionary:
   </p>
   <dl>
-    <dt><code>total</code></dt>
+    <dt><dfn>total</dfn></dt>
     <dd>
-      This <a><code>PaymentItem</code></a> contains the total amount of the payment request.
+      This <a>PaymentItem</a> contains the total amount of the payment request.
       <p>
         <code>total</code> MUST be a non-negative value. This means that the <code>total.amount.value</code>
         field MUST NOT begin with a U+002D HYPHEN-MINUS character.
       </p>
     </dd>
-    <dt><code>displayItems</code></dt>
+    <dt><dfn>displayItems</dfn></dt>
     <dd>
-      This sequence of <a><code>PaymentItem</code></a> dictionaries contains line items
+      This sequence of <a>PaymentItem</a> dictionaries contains line items
       for the payment request that the <a>user agent</a> MAY display. For example, it might include
       details of products or breakdown of tax and shipping. It is optional to provide this
       information.
       <p>The <a>user agent</a> MAY validate that the <code>total</code> amount is the
         sum of these items, but it is the responsibility of the calling code to ensure that.</p>
     </dd>
-    <dt><code>shippingOptions</code></dt>
+    <dt><dfn>shippingOptions</dfn></dt>
     <dd>
       A sequence containing the different shipping options for the user to choose from.
       <p>If the sequence is empty, then this indicates that the merchant
-        cannot ship to the current <a><code>shippingAddress</code></a>.</p>
+        cannot ship to the current <a data-lt="PaymentRequest.shippingAddress">shippingAddress</a>.</p>
       <p>If an item in the sequence has the <code>selected</code> field set to <code>true</code>,
-        then this is the shipping option that will be used by default and <a><code>shippingOption</code></a>
+        then this is the shipping option that will be used by default and <a data-lt="PaymentRequest.shippingOption">shippingOption</a>
         will be set to the <code>id</code> of this option without running the <a>shipping option changed
           algorithm</a>. Authors SHOULD NOT set <code>selected</code> to <code>true</code> on more than
         one item. If more than one item in the sequence has <code>selected</code> set to <code>true</code>,
         then <a>user agents</a> MUST select the last one in the sequence.</p>
-      <p>The <code>shippingOptions</code> field is only used if the <a><code>PaymentRequest</code></a> was
-        constructed with <a><code>PaymentOptions</code></a> <code>requestShipping</code>
+      <p>The <code>shippingOptions</code> field is only used if the <a>PaymentRequest</a> was
+        constructed with <a>PaymentOptions</a> <code>requestShipping</code>
         set to <code>true</code>.</p>
       <p class="note">
         If the sequence has an item with the <code>selected</code>
         field set to <code>true</code>, then authors are responsible for ensuring that the <code>total</code> field includes
-        the cost of the shipping option. This is because no <a><code>shippingoptionchange</code></a> event
+        the cost of the shipping option. This is because no <a>shippingoptionchange</a> event
         will be fired for this option unless the user selects an alternative option first.
       </p>
     </dd>
-    <dt><code>modifiers</code></dt>
+    <dt><dfn>modifiers</dfn></dt>
     <dd>
-      This sequence of <a><code>PaymentDetailsModifier</code></a> dictionaries contains modifiers
+      This sequence of <a>PaymentDetailsModifier</a> dictionaries contains modifiers
       for particular payment method identifiers. For example, it allows you to adjust the total
       amount based on payment method.
     </dd>
     <dt><code>error</code></dt>
     <dd>
-      When the payment request is updated using <a><code>updateWith</code></a>, the <code>PaymentDetails</code>
+      When the payment request is updated using <a data-lt="PaymentRequestUpdateEvent.updateWith">updateWith</a>, the <code>PaymentDetails</code>
       can contain a message in the <code>error</code> field that will be displayed to the user. For example,
       this might commonly be used to explain why goods cannot be shipped to the chosen shipping address.
       <p>
-        The <code>error</code> field cannot be passed to the <a><code>PaymentRequest</code></a> constructor.
-        Doing so will cause a <a><code>TypeError</code></a> to be thrown. 
+        The <code>error</code> field cannot be passed to the <a>PaymentRequest</a> constructor.
+        Doing so will cause a <a>TypeError</a> to be thrown.
     </dd>
   </dl>
 </section>
 
-<section>
-  <h2>PaymentDetailsModifier dictionary</h2>
+<section data-dfn-for="PaymentDetailsModifier">
+  <h2><code>PaymentDetailsModifier</code> dictionary</h2>
   <pre class="idl">
     dictionary PaymentDetailsModifier {
       required sequence&lt;DOMString&gt; supportedMethods;
@@ -696,28 +697,28 @@ dictionary PaymentDetails {
   </pre>
 
   <p>
-    The <code><dfn>PaymentDetailsModifier</dfn></code> dictionary provides details that modify the
-    <a><code>PaymentDetails</code></a> based on <a>payment method identifier</a>. It contains the
+    The <dfn>PaymentDetailsModifier</dfn> dictionary provides details that modify the
+    <a>PaymentDetails</a> based on <a>payment method identifier</a>. It contains the
     following fields:
   </p>
 
   <dl>
-    <dt><code>supportedMethods</code></dt>
+    <dt><dfn>supportedMethods</dfn></dt>
     <dd>
-      The <code>supportedMethods</code> field contains a sequence of <a>payment method identifiers</a>.
-      The remaining fields in the <a><code>PaymentDetailsModifier</code></a> apply only if the user selects
+      The <a data-lt="PaymentDetailsModifier.supportedMethods">supportedMethods</a> field contains a sequence of <a>payment method identifiers</a>.
+      The remaining fields in the <a>PaymentDetailsModifier</a> apply only if the user selects
       a <a>payment method</a> included in this sequence.
     </dd>
-    <dt><code>total</code></dt>
+    <dt><dfn>total</dfn></dt>
     <dd>
-      This <a><code>PaymentItem</code></a> value overrides the <code>total</code> field in the
-      <a><code>PaymentDetails</code></a> dictionary for the <a>payment method identifiers</a>
+      This <a>PaymentItem</a> value overrides the <code>total</code> field in the
+      <a>PaymentDetails</a> dictionary for the <a>payment method identifiers</a>
       in the <code>supportedMethods</code> field.
     </dd>
-    <dt><code>additionalDisplayItems</code></dt>
+    <dt><dfn>additionalDisplayItems</dfn></dt>
     <dd>
-      This sequence of <a><code>PaymentItem</code></a> dictionaries provides additional display
-      items that are appended to the <code>displayItems</code> field in the <a><code>PaymentDetails</code></a>
+      This sequence of <a>PaymentItem</a> dictionaries provides additional display
+      items that are appended to the <code>displayItems</code> field in the <a>PaymentDetails</a>
       dictionary for the <a>payment method identifiers</a> in the <code>supportedMethods</code>
       field. This field is commonly used to add a discount or surcharge line item indicating the
       reason for the different <code>total</code> amount for the selected <a>payment method</a>
@@ -733,8 +734,8 @@ dictionary PaymentDetails {
   </dl>
 </section>
 
-<section>
-  <h2>PaymentOptions dictionary</h2>
+<section data-dfn-for="PaymentOptions">
+  <h2><code>PaymentOptions</code> dictionary</h2>
       <pre class="idl">
         enum PaymentShippingType {
           "shipping",
@@ -752,39 +753,39 @@ dictionary PaymentDetails {
       </pre>
 
   <p>
-    The <code><dfn>PaymentOptions</dfn></code> dictionary is passed to the <a><code>PaymentRequest</code></a>
+    The <dfn>PaymentOptions</dfn> dictionary is passed to the <a>PaymentRequest</a>
     constructor and provides information about the options desired for the payment request.
   </p>
   <p>
-    The following fields MAY be passed to the <a><code>PaymentRequest</code></a> constructor:
+    The following fields MAY be passed to the <a>PaymentRequest</a> constructor:
   </p>
   <dl>
-    <dt><code><dfn>requestPayerName</dfn></code></dt>
+    <dt><dfn>requestPayerName</dfn></dt>
     <dd>
       This <em>boolean</em> value indicates whether the <a>user agent</a> should collect and return
       the payer's name as part of the payment request. For example, this would be set to
       <code>true</code> to allow a merchant to make a booking in the payer's name.
     </dd>
-    <dt><code><dfn>requestPayerEmail</dfn></code></dt>
+    <dt><dfn>requestPayerEmail</dfn></dt>
     <dd>
       This <em>boolean</em> value indicates whether the <a>user agent</a> should collect and return
       the payer's email address as part of the payment request. For example, this would be set to
       <code>true</code> to allow a merchant to email a receipt.
     </dd>
-    <dt><code><dfn>requestPayerPhone</dfn></code></dt>
+    <dt><dfn>requestPayerPhone</dfn></dt>
     <dd>
       This <em>boolean</em> value indicates whether the <a>user agent</a> should collect and return
       the payer's phone number as part of the payment request. For example, this would be set to
       <code>true</code> to allow a merchant to phone a customer with a billing enquiry.
     </dd>
-    <dt><code><dfn>requestShipping</dfn></code></dt>
+    <dt><dfn>requestShipping</dfn></dt>
     <dd>
       This <em>boolean</em> value indicates whether the <a>user agent</a> should collect and return
       a shipping address as part of the payment request. For example, this would be set to
       <code>true</code> when physical goods need to be shipped by the merchant to the user.
       This would be set to <code>false</code> for an online-only electronic purchase transaction.
     </dd>
-    <dt><code><dfn>shippingType</dfn></code></dt>
+    <dt><dfn>shippingType</dfn></dt>
     <dd>
       Some transactions require an address for delivery but the term "shipping" isn't appropriate.
       For example, "pizza delivery" not "pizza shipping" and "laundry pickup" not "laundry shipping".
@@ -807,31 +808,31 @@ dictionary PaymentDetails {
   </dl>
 </section>
 
-<section>
-  <h2>PaymentItem dictionary</h2>
-      <pre class="idl">
-        dictionary PaymentItem {
-          required DOMString label;
-          required PaymentCurrencyAmount amount;
-          boolean pending = false;
-        };
-      </pre>
+<section data-dfn-for="PaymentItem">
+  <h2><code>PaymentItem</code> dictionary</h2>
+  <pre class="idl">
+    dictionary PaymentItem {
+      required DOMString label;
+      required PaymentCurrencyAmount amount;
+      boolean pending = false;
+    };
+  </pre>
   <p>
-    A sequence of one or more <code>PaymentItem</code> dictionaries is included in the <a><code>PaymentDetails</code></a>
+    A sequence of one or more <code>PaymentItem</code> dictionaries is included in the <a>PaymentDetails</a>
     dictionary to indicate what the payment request is for and the value asked for.
   </p>
   <p>
     The following fields are required:
   </p>
   <dl>
-    <dt><code>label</code></dt>
+    <dt><dfn>label</dfn></dt>
     <dd>This is a human-readable description of the item. The <a>user agent</a> may display
       this to the user.</dd>
-    <dt><code>amount</code></dt>
+    <dt><dfn>amount</dfn></dt>
     <dd>
-      A <a><code>PaymentCurrencyAmount</code></a> containing the monetary amount for the item.
+      A <a>PaymentCurrencyAmount</a> containing the monetary amount for the item.
     </dd>
-    <dt><code>pending</code></dt>
+    <dt><dfn>pending</dfn></dt>
     <dd>
       When set to <code>true</code> this flag means that the <code>amount</code> field is not final.
       This is commonly used to show items such as shipping or tax amounts that depend upon
@@ -841,78 +842,78 @@ dictionary PaymentDetails {
   </dl>
 </section>
 
-<section>
-  <h2>PaymentAddress interface</h2>
-      <pre class="idl">
-        [SecureContext]
-        interface PaymentAddress {
-          serializer = { attribute };
-          readonly attribute DOMString country;
-          readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
-          readonly attribute DOMString region;
-          readonly attribute DOMString city;
-          readonly attribute DOMString dependentLocality;
-          readonly attribute DOMString postalCode;
-          readonly attribute DOMString sortingCode;
-          readonly attribute DOMString languageCode;
-          readonly attribute DOMString organization;
-          readonly attribute DOMString recipient;
-          readonly attribute DOMString phone;
-        };
-      </pre>
+<section data-dfn-for="PaymentAddress">
+  <h2><code>PaymentAddress</code> interface</h2>
+  <pre class="idl">
+    [SecureContext]
+    interface PaymentAddress {
+      serializer = { attribute };
+      readonly attribute DOMString country;
+      readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
+      readonly attribute DOMString region;
+      readonly attribute DOMString city;
+      readonly attribute DOMString dependentLocality;
+      readonly attribute DOMString postalCode;
+      readonly attribute DOMString sortingCode;
+      readonly attribute DOMString languageCode;
+      readonly attribute DOMString organization;
+      readonly attribute DOMString recipient;
+      readonly attribute DOMString phone;
+    };
+  </pre>
   <dl>
-    <dt><code>country</code></dt>
+    <dt><dfn>country</dfn></dt>
     <dd>This is the [[CLDR]] (Common Locale Data Repository) region code. For example, US, GB, CN, or JP.</dd>
-    <dt><code>addressLine</code></dt>
+    <dt><dfn>addressLine</dfn></dt>
     <dd>This is the most specific part of the address. It can include, for example, a street
       name, a house number, apartment number, a rural delivery route, descriptive
       instructions, or a post office box number.</dd>
-    <dt><code>region</code></dt>
+    <dt><dfn>region</dfn></dt>
     <dd>This is the top level administrative subdivision of the country. For example, this can
       be a state, a province, an oblast, or a prefecture.</dd>
-    <dt><code>city</code></dt>
+    <dt><dfn>city</dfn></dt>
     <dd>This is the city/town portion of the address.</dd>
-    <dt><code>dependentLocality</code></dt>
+    <dt><dfn>dependentLocality</dfn></dt>
     <dd>This is the dependent locality or sublocality within a city. For example, used for neighborhoods,
       boroughs, districts, or UK dependent localities.</dd>
-    <dt><code>postalCode</code></dt>
+    <dt><dfn>postalCode</dfn></dt>
     <dd>This is the postal code or ZIP code, also known as PIN code in India.</dd>
-    <dt><code>sortingCode</code></dt>
+    <dt><dfn>sortingCode</dfn></dt>
     <dd>This is the sorting code as used in, for example, France.</dd>
-    <dt><code>languageCode</code></dt>
+    <dt><dfn>languageCode</dfn></dt>
     <dd>This is the BCP-47 language code for the address. It's used to determine the field
       separators and the order of fields when formatting the address for display.</dd>
-    <dt><code>organization</code></dt>
+    <dt><dfn>organization</dfn></dt>
     <dd>This is the organization, firm, company, or institution at this address.</dd>
-    <dt><code>recipient</code></dt>
+    <dt><dfn>recipient</dfn></dt>
     <dd>This is the name of the recipient or contact person. This field may, under certain
       circumstances, contain multiline information. For example, it might contain "care of"
       information.</dd>
-    <dt><code>phone</code></dt>
+    <dt><dfn>phone</dfn></dt>
     <dd>This is the phone number of the recipient or contact person.</dd>
   </dl>
   <p>
-    If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
+    If the <a data-lt="PaymentOptions.requestShipping">requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
     passed to the <a>PaymentRequest</a> constructor, then the <a>user agent</a> will populate the
-    <code>shippingAddress</code> field of the <a><code>PaymentRequest</code></a> and ultimately the
-    <a><code>PaymentResponse</code></a> object with the user's selected shipping address after
+    <code>shippingAddress</code> field of the <a>PaymentRequest</a> and ultimately the
+    <a>PaymentResponse</a> object with the user's selected shipping address after
     the user has accepted the payment.
   </p>
 </section>
 
-<section>
-      <h2>PaymentShippingOption dictionary</h2>
-      <pre class="idl">
-        dictionary PaymentShippingOption {
-          required DOMString id;
-          required DOMString label;
-          required PaymentCurrencyAmount amount;
-          boolean selected = false;
-        };
-      </pre>
+<section data-dfn-for="PaymentShippingOption">
+  <h2><code>PaymentShippingOption</code> dictionary</h2>
+  <pre class="idl">
+    dictionary PaymentShippingOption {
+      required DOMString id;
+      required DOMString label;
+      required PaymentCurrencyAmount amount;
+      boolean selected = false;
+    };
+  </pre>
   <p>
         The <a>PaymentShippingOption</a> dictionary has fields describing a shipping option. A web page can
-    provide the user with one or more shipping options by calling the <a>updateWith</a>
+    provide the user with one or more shipping options by calling the <a data-lt="PaymentRequestUpdateEvent.updateWith">updateWith</a>
     method in response to a change event.
   </p>
   <p>
@@ -921,13 +922,13 @@ dictionary PaymentDetails {
   <dl>
     <dt><code>id</code></dt>
         <dd>This is a string identifier used to reference this <code>PaymentShippingOption</code>. It MUST be
-      unique for a given <a><code>PaymentRequest</code></a>.</dd>
+      unique for a given <a>PaymentRequest</a>.</dd>
     <dt><code>label</code></dt>
     <dd>This is a human-readable description of the item. The <a>user agent</a> SHOULD use this
       string to display the shipping option to the user.</dd>
     <dt><code>amount</code></dt>
     <dd>
-          A <a><code>PaymentCurrencyAmount</code></a> containing the monetary amount for the item.
+          A <a>PaymentCurrencyAmount</a> containing the monetary amount for the item.
     </dd>
     <dt><code>selected</code></dt>
         <dd>This is set to <code>true</code> to indicate that this is the default selected <a>PaymentShippingOption</a>
@@ -935,89 +936,89 @@ dictionary PaymentDetails {
   </dl>
 </section>
 
-<section>
-  <h2>PaymentResponse interface</h2>
-      <pre class="idl">
-        enum PaymentComplete { "success", "fail", "" };
+<section data-dfn-for="PaymentResponse">
+  <h2><code>PaymentResponse</code> interface</h2>
+  <pre class="idl">
+    enum PaymentComplete { "success", "fail", "" };
 
-        [SecureContext]
-        interface PaymentResponse {
-          serializer = { attribute };
+    [SecureContext]
+    interface PaymentResponse {
+      serializer = { attribute };
 
-          readonly attribute DOMString methodName;
-          readonly attribute object details;
-          readonly attribute PaymentAddress? shippingAddress;
-          readonly attribute DOMString?      shippingOption;
-          readonly attribute DOMString? payerName;
-          readonly attribute DOMString? payerEmail;
-          readonly attribute DOMString? payerPhone;
+      readonly attribute DOMString methodName;
+      readonly attribute object details;
+      readonly attribute PaymentAddress? shippingAddress;
+      readonly attribute DOMString?      shippingOption;
+      readonly attribute DOMString? payerName;
+      readonly attribute DOMString? payerEmail;
+      readonly attribute DOMString? payerPhone;
 
-          Promise&lt;void&gt; complete(optional PaymentComplete result = "");
-        };
-      </pre>
+      Promise&lt;void&gt; complete(optional PaymentComplete result = "");
+    };
+  </pre>
 
   <p>
-    A <code><dfn>PaymentResponse</dfn></code> is returned when a user has selected a payment method and
+    A <dfn>PaymentResponse</dfn> is returned when a user has selected a payment method and
     approved a payment request. It contains the following fields:
   </p>
   <dl>
-    <dt><code><dfn>methodName</dfn></code></dt>
+    <dt><dfn>methodName</dfn></dt>
     <dd>
       The <a>payment method identifier</a> for the <a>payment method</a> that the user selected
       to fulfil the transaction.
     </dd>
-    <dt><code><dfn>details</dfn></code></dt>
+    <dt><dfn>details</dfn></dt>
     <dd>
       A <a>JSON-serializable object</a> that provides a <a>payment method</a> specific message used by the merchant to
       process the transaction and determine successful fund transfer. This data is returned by the <a>payment method</a>
       specific code that satisfies the payment request.
     </dd>
-    <dt><code><dfn>shippingAddress</dfn></code></dt>
+    <dt><dfn>shippingAddress</dfn></dt>
     <dd>
-      If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
-      passed to the <a>PaymentRequest</a> constructor, then <a><code>shippingAddress</code></a> will
+      If the <a data-lt="PaymentOptions.requestShipping">requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
+      passed to the <a>PaymentRequest</a> constructor, then <a data-lt="PaymentRequest.shippingAddress">shippingAddress</a> will
       be the full and final shipping address chosen by the user.
     </dd>
-    <dt><code>shippingOption</code></dt>
+    <dt><dfn>shippingOption</dfn></dt>
     <dd>
-      If the <a>requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
-      passed to the <a>PaymentRequest</a> constructor, then <a><code>shippingOption</code></a> will
+      If the <a data-lt="PaymentOptions.requestShipping">requestShipping</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
+      passed to the <a>PaymentRequest</a> constructor, then <a data-lt="PaymentRequest.shippingOption">shippingOption</a> will
       be the <code>id</code> attribute of the selected shipping option.
     </dd>
-    <dt><code><dfn>payerName</dfn></code></dt>
+    <dt><dfn>payerName</dfn></dt>
     <dd>
-      If the <a>requestPayerName</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
-      passed to the <a>PaymentRequest</a> constructor, then <a><code>payerName</code></a> will
+      If the <a data-lt="PaymentOptions.requestPayerName">requestPayerName</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
+      passed to the <a>PaymentRequest</a> constructor, then <a data-lt="PaymentResponse.payerName">payerName</a> will
       be the name provided by the user.
     </dd>
-    <dt><code><dfn>payerEmail</dfn></code></dt>
+    <dt><dfn>payerEmail</dfn></dt>
     <dd>
-      If the <a>requestPayerEmail</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
-      passed to the <a>PaymentRequest</a> constructor, then <a><code>payerEmail</code></a> will
+      If the <a data-lt="PaymentOptions.requestPayerEmail">requestPayerEmail</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
+      passed to the <a>PaymentRequest</a> constructor, then <a data-lt="PaymentResponse.payerEmail">payerEmail</a> will
       be the email address chosen by the user.
     </dd>
-    <dt><code><dfn>payerPhone</dfn></code></dt>
+    <dt><dfn>payerPhone</dfn></dt>
     <dd>
-      If the <a>requestPayerPhone</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
-      passed to the <a>PaymentRequest</a> constructor, then <a><code>payerPhone</code></a> will
+      If the <a data-lt="PaymentOptions.requestPayerPhone">requestPayerPhone</a> flag was set to <code>true</code> in the <a>PaymentOptions</a>
+      passed to the <a>PaymentRequest</a> constructor, then <a data-lt="PaymentResponse.payerPhone">payerPhone</a> will
       be the phone number chosen by the user.
     </dd>
   </dl>
 
-  <section>
-    <h2>complete()</h2>
-    <p>The <code><dfn>complete</dfn></code> method is called after the user has accepted the payment
+  <section data-dfn-for="PaymentResponse">
+    <h2><code>complete()</code> method</h2>
+    <p>The <dfn>complete</dfn> method is called after the user has accepted the payment
       request and the [[\acceptPromise]] has been resolved. Calling the <code>complete</code> method tells
       the <a>user agent</a> that the user interaction is over (and SHOULD cause any remaining user interface to be
       closed).</p>
-    <p>The <code>complete</code> method takes a string argument from the <code><dfn>PaymentComplete</dfn></code>
+    <p>The <code>complete</code> method takes a string argument from the <dfn>PaymentComplete</dfn>
       enum (<code>result</code>). These values are used to influence the user experience provided by the <a>user agent</a>
       when the user interface is dismissed. The value of <code>result</code> has the following meaning:</p>
-    <dl>
-      <dt><dfn id="dom-paymentcomplete-success"><code>"success"</code></dfn></dt>
+    <dl data-dfn-for="PaymentComplete">
+      <dt>"<dfn>success</dfn>"</dt>
       <dd>Indicates the payment was successfully processed. The <a>user agent</a> MAY display UI indicating
         success.</dd>
-      <dt><dfn id="dom-paymentcomplete-fail"><code>"fail"</code></dfn></dt>
+      <dt>"<dfn>fail</dfn>"</dt>
       <dd>Indicates that processing of the payment failed. The <a>user agent</a> MAY display UI indicating
         failure.</dd>
       <dt><dfn id="dom-paymentcomplete-"><code>""</code></dfn></dt>
@@ -1027,21 +1028,21 @@ dictionary PaymentDetails {
     </dl>
 
     <div class="note">
-      <p>After the payment request has been accepted and the <a><code>PaymentResponse</code></a> returned to
-      the page but before the page calls <a><code>complete</code></a> the payment request user interface remains in a pending
+      <p>After the payment request has been accepted and the <a>PaymentResponse</a> returned to
+      the page but before the page calls <a data-lt="PaymentResponse.complete">complete</a> the payment request user interface remains in a pending
       state. At this point the user interface ought not offer a cancel command because acceptance of the
-      payment request has been returned. However, if something goes wrong and the page never calls <a><code>complete</code></a>
+      payment request has been returned. However, if something goes wrong and the page never calls <a data-lt="PaymentResponse.complete">complete</a>
       then the user interface is blocked.</p>
-      <p>For this reason, implementations may choose to impose a timeout for the page to call <a><code>complete</code></a>.
-      If the timeout expires then the implementation will behave as if <a><code>complete</code></a> was called with no
+      <p>For this reason, implementations may choose to impose a timeout for the page to call <a data-lt="PaymentResponse.complete">complete</a>.
+      If the timeout expires then the implementation will behave as if <a data-lt="PaymentResponse.complete">complete</a> was called with no
       arguments.</p>
     </div>
 
-    <p>The <a><code>complete</code></a> method MUST act as follows:</p>
+    <p>The <a data-lt="PaymentResponse.complete">complete</a> method MUST act as follows:</p>
     <ol>
       <li>Let <em>promise</em> be a new <a>Promise</a>.</li>
       <li>
-        If the value of the internal slot [[\completeCalled]] is <em>true</em>, then <a>throw</a> an <a><code>InvalidStateError</code></a>.
+        If the value of the internal slot [[\completeCalled]] is <em>true</em>, then <a>throw</a> an <a>InvalidStateError</a>.
       </li>
       <li>Set the value of the internal slot [[\completeCalled]] to <em>true</em>.</li>
       <li>Return <em>promise</em> and asynchronously perform the remaining steps.</li>
@@ -1054,14 +1055,14 @@ dictionary PaymentDetails {
 
   <section>
     <h2>Internal Slots</h2>
-    <p>Instances of <a><code>PaymentResponse</code></a> are created with the internal slots in
+    <p>Instances of <a>PaymentResponse</a> are created with the internal slots in
       the following table:</p>
     <table>
       <tr><th>Internal Slot</th><th>Description (<em>non-normative</em>)</th></tr>
       <tr>
         <td>[[\completeCalled]]</td>
         <td>
-          <em>true</em> if the <a><code>complete</code></a> method has been called and <em>false</em>
+          <em>true</em> if the <a data-lt="PaymentResponse.complete">complete</a> method has been called and <em>false</em>
           otherwise.
         </td>
       </tr>
@@ -1079,13 +1080,13 @@ dictionary PaymentDetails {
   </p>
   <p>
     The <a>HTMLIFrameElement</a> is extended with an <dfn><code>allowpaymentrequest</code></dfn>
-    content attribute. <a><code>allowpaymentrequest</code></a> is a <a>boolean attribute</a>.
+    content attribute. <a>allowpaymentrequest</a> is a <a>boolean attribute</a>.
     When specified, it indicates that scripts in the iframe element's browsing context are
     <dfn>allowed to make payment requests</dfn> (if it's not blocked for other reasons, e.g.,
     there is another ancestor iframe without this attribute set).
   </p>
-  <section>
-    <h2>HTMLIFrameElement extension</h2>
+  <section data-dfn-for="HTMLIFrameElement">
+    <h2><code>HTMLIFrameElement</code> extension</h2>
     <p>The iframe DOM interface is extended as follows:</p>
     <pre class="idl">
       partial interface HTMLIFrameElement {
@@ -1096,7 +1097,7 @@ dictionary PaymentDetails {
       <dt><code>allowPaymentRequest</code></dt>
       <dd>
         The <code>allowPaymentRequest</code> IDL attribute MUST <a>reflect</a> the
-        <a><code>allowpaymentrequest</code></a> content attribute.
+        <a>allowpaymentrequest</a> content attribute.
       </dd>
     </dl>
   </section>
@@ -1123,44 +1124,44 @@ dictionary PaymentDetails {
     </table>
   </section>
 
-  <section>
-    <h2>PaymentRequestUpdateEvent</h2>
-        <pre class="idl">
-[Constructor(DOMString type, optional PaymentRequestUpdateEventInit eventInitDict),SecureContext]
-interface PaymentRequestUpdateEvent : Event {
-  void updateWith(Promise&lt;PaymentDetails&gt; d);
-};
+  <section data-dfn-for="PaymentRequestUpdateEvent">
+    <h2><code>PaymentRequestUpdateEvent</code> interface</h2>
+    <pre class="idl">
+      [Constructor(DOMString type, optional PaymentRequestUpdateEventInit eventInitDict),SecureContext]
+      interface PaymentRequestUpdateEvent : Event {
+        void updateWith(Promise&lt;PaymentDetails&gt; d);
+      };
 
-dictionary PaymentRequestUpdateEventInit : EventInit {
-};
-        </pre>
-    <p>The <a><code>PaymentRequestUpdateEvent</code></a> enables the web page to update
+      dictionary PaymentRequestUpdateEventInit : EventInit {
+      };
+    </pre>
+    <p>The <a>PaymentRequestUpdateEvent</a> enables the web page to update
       the details of the payment request in response to a user interaction.</p>
-    <p>If the web page wishes to update the payment request then it should call <a><code>updateWith</code></a>
-      and provide a promise that will resolve with a <a><code>PaymentDetails</code></a>
+    <p>If the web page wishes to update the payment request then it should call <a data-lt="PaymentRequestUpdateEvent.updateWith">updateWith</a>
+      and provide a promise that will resolve with a <a>PaymentDetails</a>
       dictionary containing changed values that the <a>user agent</a> SHOULD present to the user.</p>
     <p>The <a>PaymentRequestUpdateEvent</a> constructor MUST set the internal slot [[\waitForUpdate]]
       to <em>false</em>.</p>
 
     <section>
-      <h2>updateWith()</h2>
-      <p>The <code><dfn>updateWith</dfn></code> method MUST act as follows:</p>
+      <h2><code>updateWith()</code> method</h2>
+      <p>The <dfn>updateWith</dfn> method MUST act as follows:</p>
       <ol>
         <li>
-          Let <em>target</em> be the <a><code>PaymentRequest</code></a> object that is the target of
+          Let <em>target</em> be the <a>PaymentRequest</a> object that is the target of
           the event.
         </li>
-        <li>If the <a>dispatch flag</a> is unset, then <a>throw</a> an <a><code>InvalidStateError</code></a>.</li>
+        <li>If the <a>dispatch flag</a> is unset, then <a>throw</a> an <a>InvalidStateError</a>.</li>
         <li>
-          If [[\waitForUpdate]] is <em>true</em>, then <a>throw</a> an <a><code>InvalidStateError</code></a>.
+          If [[\waitForUpdate]] is <em>true</em>, then <a>throw</a> an <a>InvalidStateError</a>.
         </li>
         <li>
           If <em>target</em>@[[\state]] is not <em>interactive</em>, then <a>throw</a> an
-          <a><code>InvalidStateError</code></a>.
+          <a>InvalidStateError</a>.
         </li>
         <li>
           If <em>target</em>@[[\updating]] is <em>true</em>, then <a>throw</a>
-          an <a><code>InvalidStateError</code></a>.
+          an <a>InvalidStateError</a>.
         </li>
         <li>Set the <a>stop propagation flag</a> and <a>stop immediate propagation flag</a>.</li>
         <li>Set [[\waitForUpdate]] to <em>true</em>.</li>
@@ -1188,7 +1189,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           <ol>
             <li>Abort the current user interaction and close down any remaining user interface.</li>
             <li>Set the value of the internal slot <em>target</em>@[[\state]] to <em>closed</em>.</li>
-            <li>Reject the promise <em>target</em>@[[\acceptPromise]] with an <a><code>AbortError</code></a>.</li>
+            <li>Reject the promise <em>target</em>@[[\acceptPromise]] with an <a>AbortError</a>.</li>
             <li>Abort this algorithm.</li>
           </ol>
           <div class="note">
@@ -1202,7 +1203,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
           </div>
         </li>
         <li>If <code>d</code> is resolved with <code>details</code> and <code>details</code> is a
-          <a><code>PaymentDetails</code></a> dictionary, then:
+          <a>PaymentDetails</a> dictionary, then:
           <ol>
             <li>
               If <code>details</code> contains a <code>total</code> value and <code>total.amount.value</code>
@@ -1213,7 +1214,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
             </li>
             <li>
               If <code>details</code> contains a <code>displayItems</code> value and every
-              <a><code>PaymentItem</code></a> in the <code>displayItems</code> has an
+              <a>PaymentItem</a> in the <code>displayItems</code> has an
               <code>amount.value</code> containing a <a>valid decimal monetary value</a>,
               then copy <code>details.displayItems</code> to the <code>displayItems</code>
               field of <em>target</em>@[[\details]].
@@ -1222,11 +1223,11 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
               If <code>details</code> contains a <code>modifiers</code> value, then:
               <ol>
                 <li>Let <em>modifiers</em> be the sequence <code>details.modifiers</code>.</li>
-                <li>For each <a><code>PaymentDetailsModifier</code></a> in <em>modifiers</em>, if the
+                <li>For each <a>PaymentDetailsModifier</a> in <em>modifiers</em>, if the
                   <code>total</code> field is supplied and is not a <a>valid decimal monetary value</a>,
                   then set <em>modifiers</em> to an empty sequence.</li>
-                <li>For each <a><code>PaymentDetailsModifier</code></a> in <em>modifiers</em>, if the
-                  <code>additionalDisplayItems</code> sequence contains any <a><code>PaymentItem</code></a>
+                <li>For each <a>PaymentDetailsModifier</a> in <em>modifiers</em>, if the
+                  <code>additionalDisplayItems</code> sequence contains any <a>PaymentItem</a>
                   objects with an <code>amount</code> that is not a <a>valid decimal monetary value</a>,
                   then set <em>modifiers</em> to an empty sequence.</li>
                 <li>Copy <em>modifiers</em> to the <code>modifiers</code> field of <em>target</em>@[[\details]].</li> 
@@ -1238,10 +1239,10 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
                 <li>Let <em>shippingOptions</em> be the sequence <code>details.shippingOptions</code>.</li>
                 <li>
                   If the <em>shippingOptions</em> sequence contains multiple
-                  <a><code>PaymentShippingOption</code></a> objects that have the same <code>id</code>,
+                  <a>PaymentShippingOption</a> objects that have the same <code>id</code>,
                   then set <em>shippingOptions</em> to the empty sequence.</li>
                 <li>
-                  If the <em>shippingOptions</em> sequence contains a <a><code>PaymentShippingOption</code></a>
+                  If the <em>shippingOptions</em> sequence contains a <a>PaymentShippingOption</a>
                   that has an <code>amount.value</code> that is not a <a>valid decimal monetary value</a>,
                   then set <em>shippingOptions</em> to the empty sequence.</li>
                 <li>
@@ -1251,13 +1252,13 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
                 <li>Let <em>newOption</em> be <em>null</em>.</li>
                 <li>
                   If <em>target</em>@[[\details]] contains a <code>shippingOptions</code> sequence
-                  and if any <a><code>ShippingOption</code></a> in the sequence
+                  and if any <a>PaymentShippingOption</a> in the sequence
                   has the <code>selected</code> field set to <code>true</code>, then set
-                  <em>newOption</em> to the <code>id</code> of the last <a><code>ShippingOption</code></a>
+                  <em>newOption</em> to the <code>id</code> of the last <a>PaymentShippingOption</a>
                   in the sequence with <code>selected</code> set to <code>true</code>.
                 </li>
                 <li>
-                  Set the value of <a><code>shippingOption</code></a> on <em>target</em> to
+                  Set the value of <a data-lt="PaymentRequest.shippingOption">shippingOption</a> on <em>target</em> to
                   <em>newOption</em>.
                 </li>
               </ol>
@@ -1283,7 +1284,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
 <section>
   <h2>Algorithms</h2>
 
-  <p>When the internal slot [[\state]] of a <a><code>PaymentRequest</code></a> object is set to
+  <p>When the internal slot [[\state]] of a <a>PaymentRequest</a> object is set to
     <em>interactive</em>, the <a>user agent</a> will trigger the following algorithms based
     on user interaction.</p>
 
@@ -1294,11 +1295,11 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
       address. It MUST run the following steps:
     </p>
     <ol>
-      <li>Let <em>request</em> be the <a><code>PaymentRequest</code></a> object that the user is
+      <li>Let <em>request</em> be the <a>PaymentRequest</a> object that the user is
         interacting with.</li>
-      <li>Let <em>name</em> be <code><dfn>shippingaddresschange</dfn></code>.</li>
+      <li>Let <em>name</em> be <dfn>shippingaddresschange</dfn>.</li>
       <li>
-        Set the <a><code>shippingAddress</code></a> attribute on <em>request</em> to the
+        Set the <a data-lt="PaymentRequest.shippingAddress">shippingAddress</a> attribute on <em>request</em> to the
         shipping address provided by the user.
       </li>
       <li>
@@ -1314,12 +1315,12 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
       option. It MUST run the following steps:
     </p>
     <ol>
-      <li>Let <em>request</em> be the <a><code>PaymentRequest</code></a> object that the user is
+      <li>Let <em>request</em> be the <a>PaymentRequest</a> object that the user is
         interacting with.</li>
-      <li>Let <em>name</em> be <code><dfn>shippingoptionchange</dfn></code>.</li>
+      <li>Let <em>name</em> be <dfn>shippingoptionchange</dfn>.</li>
       <li>
-        Set the <a><code>shippingOption</code></a> attribute on <em>request</em> to the
-            <code>id</code> string of the <a><code>PaymentShippingOption</code></a> provided by the user.
+        Set the <a data-lt="PaymentRequest.shippingOption">shippingOption</a> attribute on <em>request</em> to the
+            <code>id</code> string of the <a>PaymentShippingOption</a> provided by the user.
       </li>
       <li>
         Run the <a>PaymentRequest updated algorithm</a> with <em>request</em> and <em>name</em>.
@@ -1331,7 +1332,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
     <h2>PaymentRequest updated algorithm</h2>
     <p>
       The <dfn>PaymentRequest updated algorithm</dfn> is run by other algorithms above to fire
-      an event to indicate that a user has made a change to a <a><code>PaymentRequest</code></a>
+      an event to indicate that a user has made a change to a <a>PaymentRequest</a>
       called <em>request</em> with an event name of <em>name</em>.</p>
     <p>It MUST run the following steps:</p>
     <ol>
@@ -1345,7 +1346,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
         then terminate this algorithm and take no further action. The <a>user agent</a> user interface
         should ensure that this never occurs.
       </li>
-      <li>Let <em>event</em> be a new <a><code>PaymentRequestUpdateEvent</code></a>.</li>
+      <li>Let <em>event</em> be a new <a>PaymentRequestUpdateEvent</a>.</li>
       <li>
         <a>Queue a task</a> to <a>fire an event</a> named <em>name</em> of type <em>event</em>
         at <em>request</em>.
@@ -1362,7 +1363,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
     </p>
     <ol>
       <li>
-        Let <em>request</em> be the <a><code>PaymentRequest</code></a> object that the user is
+        Let <em>request</em> be the <a>PaymentRequest</a> object that the user is
         interacting with.
       </li>
       <li>
@@ -1383,7 +1384,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
         never occur.
       </li>
       <li>
-        Let <em>response</em> be a new <a><code>PaymentResponse</code></a>.
+        Let <em>response</em> be a new <a>PaymentResponse</a>.
       </li>
       <li>
         Set the <code>methodName</code> attribute value of <em>response</em> to the <a>payment method identifier</a>
@@ -1397,21 +1398,21 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
       <li>
         If the <code>requestShipping</code> value of <em>request</em>@[[\options]]
         is <code>true</code>, then copy the <code>shippingAddress</code> attribute of
-        <em>request</em> to the <code>shippingAddress</code> attribute of <em>response</em>.
+        <em>request</em> to the <a data-lt="PaymentResponse.shippingAddress">shippingAddress</a> attribute of <em>response</em>.
       </li>
       <li>
         If the <code>requestShipping</code> value of <em>request</em>@[[\options]]
         is <code>true</code>, then copy the <code>shippingOption</code> attribute of
-        <em>request</em> to the <code>shippingOption</code> attribute of <em>response</em>.
+        <em>request</em> to the <a data-lt="PaymentResponse.shippingOption">shippingOption</a> attribute of <em>response</em>.
       </li>
       <li>
         If the <code>requestPayerName</code> value of <em>request</em>@[[\options]]
-        is <code>true</code>, then set the <code>payerName</code> attribute of
+        is <code>true</code>, then set the <a data-lt="PaymentResponse.payerName">payerName</a> attribute of
         <em>response</em> to the payer's name provided by the user.
       </li>
       <li>
         If the <code>requestPayerEmail</code> value of <em>request</em>@[[\options]]
-        is <code>true</code>, then set the <code>payerEmail</code> attribute of
+        is <code>true</code>, then set the <a data-lt="PaymentResponse.payerEmail">payerEmail</a> attribute of
         <em>response</em> to the payer's email address selected by the user.
       </li>
       <li>
@@ -1441,7 +1442,7 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
   <section>
     <h2>Encryption of data fields</h2>
     <p>
-      The <a><code>PaymentRequest</code></a> API does not directly support encryption of data fields.
+      The <a>PaymentRequest</a> API does not directly support encryption of data fields.
       Individual <a>payment methods</a> may choose to include support for encrypted data but it is not
       mandatory that all <a>payment methods</a> support this.
     </p>
@@ -1501,15 +1502,15 @@ dictionary PaymentRequestUpdateEventInit : EventInit {
     </dd>
     <dt>DOM4</dt>
     <dd>
-      The <code><dfn>Event</dfn></code> type and the terms <dfn>fire an event</dfn>, <dfn>dispatch flag</dfn>,
+      The <dfn>Event</dfn> type and the terms <dfn>fire an event</dfn>, <dfn>dispatch flag</dfn>,
       <dfn>stop propagation flag</dfn>, and <dfn>stop immediate propagation flag</dfn> are defined by [[!DOM4]].
       <p><dfn>DOMException</dfn> and the following DOMException types from [[!DOM4]] are used:</p>
       <table>
         <tr><th>Type</th><th>Message (optional)</th></tr>
-        <tr><td><code><dfn>AbortError</dfn></code></td><td>The payment request was aborted</td></tr>
-        <tr><td><code><dfn>InvalidStateError</dfn></code></td><td>The object is in an invalid state</td></tr>
-        <tr><td><code><dfn>NotSupportedError</dfn></code></td><td>The payment method was not supported</td></tr>
-        <tr><td><code><dfn>SecurityError</dfn></code></td><td>The operation is only supported in a secure context</td></tr>
+        <tr><td><dfn>AbortError</dfn></td><td>The payment request was aborted</td></tr>
+        <tr><td><dfn>InvalidStateError</dfn></td><td>The object is in an invalid state</td></tr>
+        <tr><td><dfn>NotSupportedError</dfn></td><td>The payment method was not supported</td></tr>
+        <tr><td><dfn>SecurityError</dfn></td><td>The operation is only supported in a secure context</td></tr>
       </table>
     </dd>
     <dt>WebIDL</dt>
