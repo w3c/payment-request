@@ -1260,7 +1260,7 @@
         <code>PaymentResponse</code> interface
       </h2>
       <pre class="idl">
-        enum PaymentComplete { "success", "fail", "" };
+        enum PaymentComplete { "success", "fail", "unknown" };
 
         [SecureContext]
         interface PaymentResponse {
@@ -1274,7 +1274,7 @@
           readonly attribute DOMString? payerEmail;
           readonly attribute DOMString? payerPhone;
 
-          Promise&lt;void&gt; complete(optional PaymentComplete result = "");
+          Promise&lt;void&gt; complete(optional PaymentComplete result = "unknown");
         };
       </pre>
       <p>
@@ -1390,7 +1390,7 @@
             agent</a> MAY display UI indicating failure.
           </dd>
           <dt>
-            <dfn id="dom-paymentcomplete-"><code>""</code></dfn>
+            "<dfn>unknown</dfn>"
           </dt>
           <dd>
             The web page did not indicate success or failure and the <a>user
@@ -1439,7 +1439,7 @@
           <li>Close down any remaining user interface. The <a>user agent</a>
           MAY use the value <code>result</code> to influence the user
           experience. <a>User agents</a> SHOULD treat unrecognized
-          <code>result</code> values as the value <code>""</code>.
+          <code>result</code> values as the value "<a>unknown</a>".
           </li>
           <li>Resolve <em>promise</em> with <code>undefined</code>.
           </li>
