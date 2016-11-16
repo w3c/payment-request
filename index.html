@@ -164,6 +164,34 @@
         </section>
       </section>
     </section>
+    <section>
+      <h2>
+        Definitions
+      </h2>
+      <section>
+        <p>
+          A string is a <dfn>valid decimal monetary value</dfn> if it consists
+          of the following components in the given order:
+        </p>
+        <ol>
+          <li>Optionally, a single U+002D HYPHEN-MINUS character (-), to
+          indicate that the amount is negative
+          </li>
+          <li>One or more characters in the range U+0030 DIGIT ZERO (0) to
+          U+0039 DIGIT NINE (9)
+          </li>
+          <li>Optionally, a single U+002E FULL STOP character (.) followed by
+          one or more characters in the range U+0030 DIGIT ZERO (0) to U+0039
+          DIGIT NINE (9)
+          </li>
+        </ol>
+        <div class="note">
+          The following regular expression is an implementation of the above
+          definition.
+          <pre class="hljs">^-?[0-9]+(\.[0-9]+)?$</pre>
+        </div>
+      </section>
+    </section>
     <section data-dfn-for="PaymentRequest">
       <h2>
         <code>PaymentRequest</code> interface
@@ -718,26 +746,7 @@
           <dfn>value</dfn>
         </dt>
         <dd>
-          A <a>valid decimal monetary value</a> containing a monetary amount. A
-          string is a <dfn>valid decimal monetary value</dfn> if it consists of
-          the following components in the given order:
-          <ol>
-            <li>Optionally, a single U+002D HYPHEN-MINUS character (-), to
-            indicate that the amount is negative
-            </li>
-            <li>One or more characters in the range U+0030 DIGIT ZERO (0) to
-            U+0039 DIGIT NINE (9)
-            </li>
-            <li>Optionally, a single U+002E FULL STOP character (.) followed by
-            one or more characters in the range U+0030 DIGIT ZERO (0) to U+0039
-            DIGIT NINE (9)
-            </li>
-          </ol>
-          <div class="note">
-            The following regular expression is an implementation of the above
-            definition.
-            <pre class="hljs">^-?[0-9]+(\.[0-9]+)?$</pre>
-          </div>
+          A <a>valid decimal monetary value</a> containing a monetary amount.
         </dd>
       </dl>
       <p>
