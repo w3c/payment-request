@@ -643,11 +643,11 @@
         <code>PaymentMethodData</code> dictionary
       </h2>
       <pre class="idl">
-    dictionary PaymentMethodData {
-      required sequence&lt;DOMString&gt; supportedMethods;
-      object data;
-    };
-  </pre>
+        dictionary PaymentMethodData {
+          required sequence&lt;DOMString&gt; supportedMethods;
+          object data;
+        };
+      </pre>
       <p>
         A <dfn>PaymentMethodData</dfn> dictionary is used to indicate a set of
         supported <a>payment methods</a> and any associated <a>payment
@@ -755,14 +755,14 @@
         <code>PaymentDetails</code> dictionary
       </h2>
       <pre class="idl">
-  dictionary PaymentDetails {
-    PaymentItem total;
-    sequence&lt;PaymentItem&gt; displayItems;
-    sequence&lt;PaymentShippingOption&gt; shippingOptions;
-    sequence&lt;PaymentDetailsModifier&gt; modifiers;
-    DOMString error;
-  };
-  </pre>
+        dictionary PaymentDetails {
+          PaymentItem total;
+          sequence&lt;PaymentItem&gt; displayItems;
+          sequence&lt;PaymentShippingOption&gt; shippingOptions;
+          sequence&lt;PaymentDetailsModifier&gt; modifiers;
+          DOMString error;
+        };
+      </pre>
       <p>
         The <dfn>PaymentDetails</dfn> dictionary is passed to the
         <a>PaymentRequest</a> constructor and provides information about the
@@ -869,13 +869,13 @@
         <code>PaymentDetailsModifier</code> dictionary
       </h2>
       <pre class="idl">
-    dictionary PaymentDetailsModifier {
-      required sequence&lt;DOMString&gt; supportedMethods;
-      PaymentItem total;
-      sequence&lt;PaymentItem&gt; additionalDisplayItems;
-      object data;
-    };
-  </pre>
+        dictionary PaymentDetailsModifier {
+          required sequence&lt;DOMString&gt; supportedMethods;
+          PaymentItem total;
+          sequence&lt;PaymentItem&gt; additionalDisplayItems;
+          object data;
+        };
+      </pre>
       <p>
         The <dfn>PaymentDetailsModifier</dfn> dictionary provides details that
         modify the <a>PaymentDetails</a> based on <a>payment method
@@ -1046,12 +1046,12 @@
         <code>PaymentItem</code> dictionary
       </h2>
       <pre class="idl">
-    dictionary PaymentItem {
-      required DOMString label;
-      required PaymentCurrencyAmount amount;
-      boolean pending = false;
-    };
-  </pre>
+        dictionary PaymentItem {
+          required DOMString label;
+          required PaymentCurrencyAmount amount;
+          boolean pending = false;
+        };
+      </pre>
       <p>
         A sequence of one or more <code>PaymentItem</code> dictionaries is
         included in the <a>PaymentDetails</a> dictionary to indicate what the
@@ -1092,22 +1092,22 @@
         <code>PaymentAddress</code> interface
       </h2>
       <pre class="idl">
-    [SecureContext]
-    interface PaymentAddress {
-      serializer = { attribute };
-      readonly attribute DOMString country;
-      readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
-      readonly attribute DOMString region;
-      readonly attribute DOMString city;
-      readonly attribute DOMString dependentLocality;
-      readonly attribute DOMString postalCode;
-      readonly attribute DOMString sortingCode;
-      readonly attribute DOMString languageCode;
-      readonly attribute DOMString organization;
-      readonly attribute DOMString recipient;
-      readonly attribute DOMString phone;
-    };
-  </pre>
+        [SecureContext]
+        interface PaymentAddress {
+          serializer = { attribute };
+          readonly attribute DOMString country;
+          readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
+          readonly attribute DOMString region;
+          readonly attribute DOMString city;
+          readonly attribute DOMString dependentLocality;
+          readonly attribute DOMString postalCode;
+          readonly attribute DOMString sortingCode;
+          readonly attribute DOMString languageCode;
+          readonly attribute DOMString organization;
+          readonly attribute DOMString recipient;
+          readonly attribute DOMString phone;
+        };
+      </pre>
       <dl>
         <dt>
           <dfn>country</dfn>
@@ -1203,13 +1203,13 @@
         <code>PaymentShippingOption</code> dictionary
       </h2>
       <pre class="idl">
-    dictionary PaymentShippingOption {
-      required DOMString id;
-      required DOMString label;
-      required PaymentCurrencyAmount amount;
-      boolean selected = false;
-    };
-  </pre>
+        dictionary PaymentShippingOption {
+          required DOMString id;
+          required DOMString label;
+          required PaymentCurrencyAmount amount;
+          boolean selected = false;
+        };
+      </pre>
       <p>
         The <a>PaymentShippingOption</a> dictionary has fields describing a
         shipping option. A web page can provide the user with one or more
@@ -1260,23 +1260,23 @@
         <code>PaymentResponse</code> interface
       </h2>
       <pre class="idl">
-    enum PaymentComplete { "success", "fail", "" };
+        enum PaymentComplete { "success", "fail", "" };
 
-    [SecureContext]
-    interface PaymentResponse {
-      serializer = { attribute };
+        [SecureContext]
+        interface PaymentResponse {
+          serializer = { attribute };
 
-      readonly attribute DOMString methodName;
-      readonly attribute object details;
-      readonly attribute PaymentAddress? shippingAddress;
-      readonly attribute DOMString?      shippingOption;
-      readonly attribute DOMString? payerName;
-      readonly attribute DOMString? payerEmail;
-      readonly attribute DOMString? payerPhone;
+          readonly attribute DOMString methodName;
+          readonly attribute object details;
+          readonly attribute PaymentAddress? shippingAddress;
+          readonly attribute DOMString?      shippingOption;
+          readonly attribute DOMString? payerName;
+          readonly attribute DOMString? payerEmail;
+          readonly attribute DOMString? payerPhone;
 
-      Promise&lt;void&gt; complete(optional PaymentComplete result = "");
-    };
-  </pre>
+          Promise&lt;void&gt; complete(optional PaymentComplete result = "");
+        };
+      </pre>
       <p>
         A <dfn>PaymentResponse</dfn> is returned when a user has selected a
         payment method and approved a payment request. It contains the
@@ -1501,10 +1501,10 @@
           The iframe DOM interface is extended as follows:
         </p>
         <pre class="idl">
-      partial interface HTMLIFrameElement {
-          attribute boolean allowPaymentRequest;
-      };
-    </pre>
+          partial interface HTMLIFrameElement {
+              attribute boolean allowPaymentRequest;
+          };
+        </pre>
         <dl>
           <dt>
             <code>allowPaymentRequest</code>
@@ -1565,14 +1565,14 @@
           <code>PaymentRequestUpdateEvent</code> interface
         </h2>
         <pre class="idl">
-      [Constructor(DOMString type, optional PaymentRequestUpdateEventInit eventInitDict),SecureContext]
-      interface PaymentRequestUpdateEvent : Event {
-        void updateWith(Promise&lt;PaymentDetails&gt; d);
-      };
+          [Constructor(DOMString type, optional PaymentRequestUpdateEventInit eventInitDict),SecureContext]
+          interface PaymentRequestUpdateEvent : Event {
+            void updateWith(Promise&lt;PaymentDetails&gt; d);
+          };
 
-      dictionary PaymentRequestUpdateEventInit : EventInit {
-      };
-    </pre>
+          dictionary PaymentRequestUpdateEventInit : EventInit {
+          };
+        </pre>
         <p>
           The <a>PaymentRequestUpdateEvent</a> enables the web page to update
           the details of the payment request in response to a user interaction.
