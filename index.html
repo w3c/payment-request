@@ -297,7 +297,11 @@
           <pre class="example highlight">
             [
               {
-                supportedMethods: ["visa","bitcoin"]
+                supportedMethods: ["basic-card"]
+  	        data: {
+        	    supportedNetworks: ['aFamousBrand', 'aDebitNetwork'],
+  	            supportedTypes: ['debit']
+	        }
               },
               {
                 supportedMethods: ["bobpay.com"],
