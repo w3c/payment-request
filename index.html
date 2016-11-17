@@ -174,6 +174,7 @@
         interface PaymentRequest : EventTarget {
           Promise&lt;PaymentResponse&gt; show();
           Promise&lt;void&gt; abort();
+          Promise&lt;Boolean&gt; canMakeActivePayment();
 
           readonly attribute PaymentAddress? shippingAddress;
           readonly attribute DOMString? shippingOption;
@@ -520,6 +521,60 @@
           <a>AbortError</a>.
           </li>
           <li>Resolve <em>promise</em> with <code>undefined</code>.
+          </li>
+        </ol>
+      </section>
+      <section>  
+        <h2>
+          canMakeActivePayment()
+        </h2>
+        <p>
+          The <code><dfn>canMakeActivePayment</dfn></code> method is called when the page wants to know if the user has a payment method available to use for payment before calling <code>show</code>. The <code>canMakeActivePayment</code> method returns a <a>Promise</a> that will be resolved when the <dfn>user agent</dfn> has determined if at least one method is available from <em>supportedMethods</em> data. In order to prevent the page from probing different payment methods supported by user, <code>canMakeActivePayment</code> can only be called once per top-level domain. Multiple calls to <code>canMakeActivePayment</code> will result in cached response from previous call. In addition user agents may also limit the call to <code>canMakeActivePayment</code> for certain time before invalidating the cached response per top-level domain to reduce privacy risks. Page can call <code>canMakeActivePayment</code> multiple times with same set of <em>supportedMethods</em> per top-level domain.  
+        </p>
+        <p>
+          The <a><code>canMakeActivePayment</code></a> method MUST act as follows:
+        </p>
+        <ol>
+          <li>
+            Let <em>request</em> be the <a><code>PaymentRequest</code></a> object on which the method is called.
+          </li>
+          <li>If the value of <em>request</em>@[[\state]] is not <em>created</em> then
+            <a>throw</a> an <a><code>InvalidStateError</code></a>.</li>
+          <li>
+            Set the value of <em>request</em>@[[\state]] to <em>interactive</em>.
+          </li>
+          <li>
+            Let <em>acceptPromise</em> be a new <a>Promise</a>.
+          </li>
+          <li>
+            Store <em>acceptPromise</em> in <em>request</em>@[[\acceptPromise]].
+          </li>
+          <li>
+            Return <em>acceptPromise</em> and asynchronously perform the remaining steps.
+          </li>
+          <li>
+            Let <em>topLevelDomain</em> be the URL of the top level page. Let <em>cachedResponse</em> be cached result of previous call to <code>canMakeActivePayment()</code>. If is <em>cachedResponse</em> present, resolve <em>acceptPromise</em> promise with <em>cachedResponse</em>.
+          </li>
+          <li>
+            Let <em>cacheInvalidateTimer</em> be the time <a>user agent</a> recorded for previous call to <code>canMakeActivePayment()</code> for <em>topLevelDomain</em>. Set <a>DateTime</a> to <em>cacheInvalidateTimer</em> if it's not set. 
+          </li>
+          <li>
+            If <em>cacheInvalidateTimer</em> is set and is still active, resolve <em>acceptPromise</em> promise with <em>cached</em> response.
+          </li>
+          <li>
+            Let <em>supportedMethods</em> be the union of all the <code>supportedMethods</code> sequences from each
+            <a><code>PaymentMethodData</code></a> in the <em>request</em>@[[\methodData]] sequence.
+          </li>
+          <li>
+            Let <em>acceptedMethods</em> be <em>supportedMethods</em> with all identifiers removed that the
+            <a>user agent</a> does not accept and method supports active payment instrument for payment.
+          </li>
+          <li>
+            If the length of <em>acceptedMethods</em> is zero, then reject <em>acceptPromise</em> with a
+            <a><code>False</code></a> otherwise resolve <em>acceptPromise</em> with <a><code>True</code></a>.
+          </li>
+          <li>
+            Catch the response in <em>cachedResponse</em> and set <em>cacheInvalidateTimer</em> to certain <a>DateTime</a> for the <em>topLevelDomain</em>.
           </li>
         </ol>
       </section>
