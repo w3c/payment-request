@@ -174,7 +174,7 @@
         interface PaymentRequest : EventTarget {
           Promise&lt;PaymentResponse&gt; show();
           Promise&lt;void&gt; abort();
-          Promise&lt;Boolean&gt; canMakeActivePayment();
+          Promise&lt;boolean&gt; canMakeActivePayment();
 
           readonly attribute PaymentAddress? shippingAddress;
           readonly attribute DOMString? shippingOption;
