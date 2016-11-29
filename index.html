@@ -274,18 +274,19 @@
             data.
           </p>
           <pre class="example">
-            [
-              {
-                supportedMethods: ["visa","bitcoin"]
-              },
-              {
-                supportedMethods: ["bobpay.com"],
-                data: {
-                  merchantIdentifier: "XXXX",
-                  bobPaySpecificField: true
-                }
+            [{
+              supportedMethods: ["basic-card"]
+              data: {
+                supportedNetworks: ['aFamousBrand', 'aDebitNetwork'],
+                supportedTypes: ['debit']
               }
-            ]
+            }, {
+              supportedMethods: ["bobpay.com"],
+              data: {
+                merchantIdentifier: "XXXX",
+                bobPaySpecificField: true
+              }
+            }]
           </pre>
           <p>
             The <code>details</code> object contains information about the
