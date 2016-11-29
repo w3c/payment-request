@@ -385,7 +385,7 @@
           <li>Let <em>request</em> be a new <a>PaymentRequest</a>.
           </li>
           <li>Store <code>methodData</code> into
-          <em>request</em>@[[\methodData]].
+          <em>request</em>@<a>[[\methodData]]</a>.
             <p>
               The <code>methodData</code> supplied to the <a>PaymentRequest</a>
               constructor SHOULD be in the order of preference of the caller.
@@ -394,11 +394,14 @@
               presenting payment methods.
             </p>
           </li>
-          <li>Store <code>details</code> into <em>request</em>@[[\details]].
+          <li>Store <code>details</code> into
+          <em>request</em>@<a>[[\details]]</a>.
           </li>
-          <li>Store <code>options</code> into <em>request</em>@[[\options]].
+          <li>Store <code>options</code> into
+          <em>request</em>@<a>[[\options]]</a>.
           </li>
-          <li>Set the value <em>request</em>@[[\state]] to <em>created</em>.
+          <li>Set the value <em>request</em>@<a>[[\state]]</a> to
+          <em>created</em>.
           </li>
           <li>Set the value of the <a data-lt="PaymentRequest.shippingAddress">
             shippingAddress</a> attribute on <em>request</em> to <em>null</em>.
@@ -429,9 +432,9 @@
           multiple <a>PaymentShippingOption</a> objects that have the same
           <code>id</code>, then set the <a data-lt=
           "PaymentDetails.shippingOptions">shippingOptions</a> field of
-          <em>request</em>@[[\details]] to an empty sequence.
+          <em>request</em>@<a>[[\details]]</a> to an empty sequence.
           </li>
-          <li>If <em>request</em>@[[\details]] contains a
+          <li>If <em>request</em>@<a>[[\details]]</a> contains a
           <code>shippingOptions</code> sequence and if any
           <a>PaymentShippingOption</a> in the sequence has the
           <code>selected</code> field set to <code>true</code>, then set
@@ -439,7 +442,8 @@
           <code>id</code> of the last <a>PaymentShippingOption</a> in the
           sequence with <code>selected</code> set to <code>true</code>.
           </li>
-          <li>Set the value <em>request</em>@[[\updating]] to <em>false</em>.
+          <li>Set the value <em>request</em>@<a>[[\updating]]</a> to
+          <em>false</em>.
           </li>
           <li>Return <em>request</em>.
           </li>
@@ -465,24 +469,24 @@
           <li>Let <em>request</em> be the <a>PaymentRequest</a> object on which
           the method is called.
           </li>
-          <li>If the value of <em>request</em>@[[\state]] is not
+          <li>If the value of <em>request</em>@<a>[[\state]]</a> is not
           <em>created</em> then <a>throw</a> an <a>InvalidStateError</a>.
           </li>
-          <li>Set the value of <em>request</em>@[[\state]] to
+          <li>Set the value of <em>request</em>@<a>[[\state]]</a> to
           <em>interactive</em>.
           </li>
           <li>Let <em>acceptPromise</em> be a new <a>Promise</a>.
           </li>
           <li>Store <em>acceptPromise</em> in
-          <em>request</em>@[[\acceptPromise]].
+          <em>request</em>@<a>[[\acceptPromise]]</a>.
           </li>
           <li>Return <em>acceptPromise</em> and asynchronously perform the
           remaining steps.
           </li>
           <li>Let <em>supportedMethods</em> be the union of all the
           <code>supportedMethods</code> sequences from each
-          <a>PaymentMethodData</a> in the <em>request</em>@[[\methodData]]
-          sequence.
+          <a>PaymentMethodData</a> in the
+          <em>request</em>@<a>[[\methodData]]</a> sequence.
           </li>
           <li>Let <em>acceptedMethods</em> be <em>supportedMethods</em> with
           all identifiers removed that the <a>user agent</a> does not accept.
@@ -507,11 +511,11 @@
           to tear down any user interface that might be shown.
           <code>abort</code> can only be called after the <a data-lt=
           "PaymentRequest.show">show</a> method has been called and before the
-          <em>request</em>@[[\acceptPromise]] has been resolved. For example, a
-          web page might choose to do this if the goods they are selling are
-          only available for a limited amount of time. If the user does not
-          accept the payment request within the allowed time period, then the
-          request will be aborted.
+          <em>request</em>@<a>[[\acceptPromise]]</a> has been resolved. For
+          example, a web page might choose to do this if the goods they are
+          selling are only available for a limited amount of time. If the user
+          does not accept the payment request within the allowed time period,
+          then the request will be aborted.
         </p>
         <p>
           A <a>user agent</a> might not always be able to abort a request. For
@@ -527,7 +531,7 @@
           <li>Let <em>request</em> be the <a>PaymentRequest</a> object on which
           the method is called.
           </li>
-          <li>If the value of <em>request</em>@[[\state]] is not
+          <li>If the value of <em>request</em>@<a>[[\state]]</a> is not
           <em>interactive</em> then <a>throw</a> an <a>InvalidStateError</a>.
           </li>
           <li>Let <em>promise</em> be a new <a>Promise</a>.
@@ -542,11 +546,11 @@
           reject <em>promise</em> with <a>InvalidStateError</a> and abort this
           algorithm.
           </li>
-          <li>Set the value of the internal slot <em>request</em>@[[\state]] to
-          <em>closed</em>.
+          <li>Set the value of the internal slot
+          <em>request</em>@<a>[[\state]]</a> to <em>closed</em>.
           </li>
-          <li>Reject the promise <em>request</em>@[[\acceptPromise]] with an
-          <a>AbortError</a>.
+          <li>Reject the promise <em>request</em>@<a>[[\acceptPromise]]</a>
+          with an <a>AbortError</a>.
           </li>
           <li>Resolve <em>promise</em> with <code>undefined</code>.
           </li>
@@ -557,7 +561,8 @@
           State transitions
         </h2>
         <p>
-          The internal slot [[\state]] follows the following state transitions:
+          The internal slot <a>[[\state]]</a> follows the following state
+          transitions:
         </p><img alt=
         "Transition diagram for internal slot state of a PaymentRequest object"
         src="images/state-transitions.svg" width="518" height="125">
@@ -610,7 +615,7 @@
           </tr>
           <tr>
             <td>
-              [[\methodData]]
+              <dfn>[[\methodData]]</dfn>
             </td>
             <td>
               The <code>methodData</code> supplied to the constructor.
@@ -618,7 +623,7 @@
           </tr>
           <tr>
             <td>
-              [[\details]]
+              <dfn>[[\details]]</dfn>
             </td>
             <td>
               The current <a>PaymentDetails</a> for the payment request
@@ -629,7 +634,7 @@
           </tr>
           <tr>
             <td>
-              [[\options]]
+              <dfn>[[\options]]</dfn>
             </td>
             <td>
               The <a>PaymentOptions</a> supplied to the constructor.
@@ -637,7 +642,7 @@
           </tr>
           <tr>
             <td>
-              [[\state]]
+              <dfn>[[\state]]</dfn>
             </td>
             <td>
               The current <a class="internalDFN" href=
@@ -646,7 +651,7 @@
           </tr>
           <tr>
             <td>
-              [[\updating]]
+              <dfn>[[\updating]]</dfn>
             </td>
             <td>
               <em>true</em> is there is a pending <a data-lt=
@@ -656,7 +661,7 @@
           </tr>
           <tr>
             <td>
-              [[\acceptPromise]]
+              <dfn>[[\acceptPromise]]</dfn>
             </td>
             <td>
               The pending <a>Promise</a> created during <a data-lt=
@@ -1372,10 +1377,10 @@
         </h2>
         <p>
           The <dfn>complete</dfn> method is called after the user has accepted
-          the payment request and the [[\acceptPromise]] has been resolved.
-          Calling the <code>complete</code> method tells the <a>user agent</a>
-          that the user interaction is over (and SHOULD cause any remaining
-          user interface to be closed).
+          the payment request and the <a>[[\acceptPromise]]</a> has been
+          resolved. Calling the <code>complete</code> method tells the <a>user
+          agent</a> that the user interaction is over (and SHOULD cause any
+          remaining user interface to be closed).
         </p>
         <p>
           The <code>complete</code> method takes a string argument from the
@@ -1437,10 +1442,10 @@
         <ol>
           <li>Let <em>promise</em> be a new <a>Promise</a>.
           </li>
-          <li>If the value of the internal slot [[\completeCalled]] is
+          <li>If the value of the internal slot <a>[[\completeCalled]]</a> is
           <em>true</em>, then <a>throw</a> an <a>InvalidStateError</a>.
           </li>
-          <li>Set the value of the internal slot [[\completeCalled]] to
+          <li>Set the value of the internal slot <a>[[\completeCalled]]</a> to
           <em>true</em>.
           </li>
           <li>Return <em>promise</em> and asynchronously perform the remaining
@@ -1474,7 +1479,7 @@
           </tr>
           <tr>
             <td>
-              [[\completeCalled]]
+              <dfn>[[\completeCalled]]</dfn>
             </td>
             <td>
               <em>true</em> if the <a data-lt=
@@ -1615,10 +1620,11 @@
             <li>If [[\waitForUpdate]] is <em>true</em>, then <a>throw</a> an
             <a>InvalidStateError</a>.
             </li>
-            <li>If <em>target</em>@[[\state]] is not <em>interactive</em>, then
-            <a>throw</a> an <a>InvalidStateError</a>.
+            <li>If <em>target</em>@<a>[[\state]]</a> is not
+            <em>interactive</em>, then <a>throw</a> an
+            <a>InvalidStateError</a>.
             </li>
-            <li>If <em>target</em>@[[\updating]] is <em>true</em>, then
+            <li>If <em>target</em>@<a>[[\updating]]</a> is <em>true</em>, then
             <a>throw</a> an <a>InvalidStateError</a>.
             </li>
             <li>Set the <a>stop propagation flag</a> and <a>stop immediate
@@ -1626,7 +1632,7 @@
             </li>
             <li>Set [[\waitForUpdate]] to <em>true</em>.
             </li>
-            <li>Set <em>target</em>@[[\updating]] to <em>true</em>.
+            <li>Set <em>target</em>@<a>[[\updating]]</a> to <em>true</em>.
             </li>
             <li>The <a>user agent</a> SHOULD disable the user interface that
             allows the user to accept the payment request. This is to ensure
@@ -1661,10 +1667,11 @@
                 remaining user interface.
                 </li>
                 <li>Set the value of the internal slot
-                <em>target</em>@[[\state]] to <em>closed</em>.
+                <em>target</em>@<a>[[\state]]</a> to <em>closed</em>.
                 </li>
-                <li>Reject the promise <em>target</em>@[[\acceptPromise]] with
-                an <a>AbortError</a>.
+                <li>Reject the promise
+                <em>target</em>@<a>[[\acceptPromise]]</a> with an
+                <a>AbortError</a>.
                 </li>
                 <li>Abort this algorithm.
                 </li>
@@ -1689,8 +1696,8 @@
                 monetary value</a> and the first character of
                 <code>total.amount.value</code> is NOT U+002D HYPHEN-MINUS,
                 then copy <code>total</code> value to the <code>total</code>
-                field of <em>target</em>@[[\details]] (<code>total</code> MUST
-                be a non-negative amount).
+                field of <em>target</em>@<a>[[\details]]</a>
+                (<code>total</code> MUST be a non-negative amount).
                 </li>
                 <li>If <code>details</code> contains a
                 <code>displayItems</code> value and every <a>PaymentItem</a> in
@@ -1698,7 +1705,7 @@
                 containing a <a>valid decimal monetary value</a>, then copy
                 <code>details.displayItems</code> to the
                 <code>displayItems</code> field of
-                <em>target</em>@[[\details]].
+                <em>target</em>@<a>[[\details]]</a>.
                 </li>
                 <li>If <code>details</code> contains a <code>modifiers</code>
                 value, then:
@@ -1719,7 +1726,7 @@
                       modifiers</em> to an empty sequence.
                     </li>
                     <li>Copy <em>modifiers</em> to the <code>modifiers</code>
-                    field of <em>target</em>@[[\details]].
+                    field of <em>target</em>@<a>[[\details]]</a>.
                     </li>
                   </ol>
                 </li>
@@ -1742,11 +1749,11 @@
                     </li>
                     <li>Copy <em>shippingOptions</em> to the
                     <code>shippingOptions</code> field of
-                    <em>target</em>@[[\details]].
+                    <em>target</em>@<a>[[\details]]</a>.
                     </li>
                     <li>Let <em>newOption</em> be <em>null</em>.
                     </li>
-                    <li>If <em>target</em>@[[\details]] contains a
+                    <li>If <em>target</em>@<a>[[\details]]</a> contains a
                     <code>shippingOptions</code> sequence and if any
                     <a>PaymentShippingOption</a> in the sequence has the <code>
                       selected</code> field set to <code>true</code>, then set
@@ -1769,7 +1776,7 @@
             </li>
             <li>Set [[\waitForUpdate]] to <em>false</em>.
             </li>
-            <li>Set <em>target</em>@[[\updating]] to <em>false</em>.
+            <li>Set <em>target</em>@<a>[[\updating]]</a> to <em>false</em>.
             </li>
             <li>The <a>user agent</a> should update the user interface based on
             any changed values in <em>target</em>. The user agent SHOULD
@@ -1785,9 +1792,9 @@
         Algorithms
       </h2>
       <p>
-        When the internal slot [[\state]] of a <a>PaymentRequest</a> object is
-        set to <em>interactive</em>, the <a>user agent</a> will trigger the
-        following algorithms based on user interaction.
+        When the internal slot <a>[[\state]]</a> of a <a>PaymentRequest</a>
+        object is set to <em>interactive</em>, the <a>user agent</a> will
+        trigger the following algorithms based on user interaction.
       </p>
       <section>
         <h2>
@@ -1850,11 +1857,11 @@
           It MUST run the following steps:
         </p>
         <ol>
-          <li>If the <em>request</em>@[[\updating]] is <em>true</em>, then
-          terminate this algorithm and take no further action. Only one update
-          may take place at a time. This should never occur.
+          <li>If the <em>request</em>@<a>[[\updating]]</a> is <em>true</em>,
+          then terminate this algorithm and take no further action. Only one
+          update may take place at a time. This should never occur.
           </li>
-          <li>If the <em>request</em>@[[\state]] is not set to
+          <li>If the <em>request</em>@<a>[[\state]]</a> is not set to
           <em>interactive</em>, then terminate this algorithm and take no
           further action. The <a>user agent</a> user interface should ensure
           that this never occurs.
@@ -1881,20 +1888,21 @@
           <li>Let <em>request</em> be the <a>PaymentRequest</a> object that the
           user is interacting with.
           </li>
-          <li>If the <em>request</em>@[[\updating]] is <em>true</em>, then
-          terminate this algorithm and take no further action. The <a>user
+          <li>If the <em>request</em>@<a>[[\updating]]</a> is <em>true</em>,
+          then terminate this algorithm and take no further action. The <a>user
           agent</a> user interface should ensure that this never occurs.
           </li>
-          <li>If <em>request</em>@[[\state]] is not <em>interactive</em>, then
-          terminate this algorithm and take no further action. The <a>user
-          agent</a> user interface should ensure that this never occurs.
+          <li>If <em>request</em>@<a>[[\state]]</a> is not
+          <em>interactive</em>, then terminate this algorithm and take no
+          further action. The <a>user agent</a> user interface should ensure
+          that this never occurs.
           </li>
           <li>If the <code>requestShipping</code> value of
-          <em>request</em>@[[\options]] is <code>true</code>, then if the
-          <code>shippingAddress</code> attribute of <em>request</em> is <code>
-            null</code> or if the <code>shippingOption</code> attribute of
-            <em>request</em> is <code>null</code>, then terminate this
-            algorithm and take no further action. This should never occur.
+          <em>request</em>@<a>[[\options]]</a> is <code>true</code>, then if
+          the <code>shippingAddress</code> attribute of <em>request</em> is
+          <code>null</code> or if the <code>shippingOption</code> attribute of
+          <em>request</em> is <code>null</code>, then terminate this algorithm
+          and take no further action. This should never occur.
           </li>
           <li>Let <em>response</em> be a new <a>PaymentResponse</a>.
           </li>
@@ -1909,38 +1917,40 @@
           for each <a>payment method</a>.
           </li>
           <li>If the <code>requestShipping</code> value of
-          <em>request</em>@[[\options]] is <code>true</code>, then copy the
-          <code>shippingAddress</code> attribute of <em>request</em> to the
+          <em>request</em>@<a>[[\options]]</a> is <code>true</code>, then copy
+          the <code>shippingAddress</code> attribute of <em>request</em> to the
           <a data-lt="PaymentResponse.shippingAddress">shippingAddress</a>
           attribute of <em>response</em>.
           </li>
           <li>If the <code>requestShipping</code> value of
-          <em>request</em>@[[\options]] is <code>true</code>, then copy the
-          <code>shippingOption</code> attribute of <em>request</em> to the
+          <em>request</em>@<a>[[\options]]</a> is <code>true</code>, then copy
+          the <code>shippingOption</code> attribute of <em>request</em> to the
           <a data-lt="PaymentResponse.shippingOption">shippingOption</a>
           attribute of <em>response</em>.
           </li>
           <li>If the <code>requestPayerName</code> value of
-          <em>request</em>@[[\options]] is <code>true</code>, then set the
-          <a data-lt="PaymentResponse.payerName">payerName</a> attribute of
+          <em>request</em>@<a>[[\options]]</a> is <code>true</code>, then set
+          the <a data-lt="PaymentResponse.payerName">payerName</a> attribute of
           <em>response</em> to the payer's name provided by the user.
           </li>
           <li>If the <code>requestPayerEmail</code> value of
-          <em>request</em>@[[\options]] is <code>true</code>, then set the
-          <a data-lt="PaymentResponse.payerEmail">payerEmail</a> attribute of
-          <em>response</em> to the payer's email address selected by the user.
+          <em>request</em>@<a>[[\options]]</a> is <code>true</code>, then set
+          the <a data-lt="PaymentResponse.payerEmail">payerEmail</a> attribute
+          of <em>response</em> to the payer's email address selected by the
+          user.
           </li>
           <li>If the <code>requestPayerPhone</code> value of
-          <em>request</em>@[[\options]] is <code>true</code>, then set the
-          <code>payerPhone</code> attribute of <em>response</em> to the payer's
-          phone number selected by the user.
+          <em>request</em>@<a>[[\options]]</a> is <code>true</code>, then set
+          the <code>payerPhone</code> attribute of <em>response</em> to the
+          payer's phone number selected by the user.
           </li>
-          <li>Set <em>response</em>@[[\completeCalled]] to <em>false</em>.
+          <li>Set <em>response</em>@<a>[[\completeCalled]]</a> to
+          <em>false</em>.
           </li>
-          <li>Set <em>request</em>@[[\state]] to <em>closed</em>.
+          <li>Set <em>request</em>@<a>[[\state]]</a> to <em>closed</em>.
           </li>
-          <li>Resolve the pending promise <em>request</em>@[[\acceptPromise]]
-          with <em>response</em>.
+          <li>Resolve the pending promise
+          <em>request</em>@<a>[[\acceptPromise]]</a> with <em>response</em>.
           </li>
         </ol>
       </section>
