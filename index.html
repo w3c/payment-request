@@ -325,12 +325,20 @@
           The <a>PaymentRequest</a> constructor MUST act as follows:
         </p>
         <ol>
-          <li>If the length of the <code>methodData</code> sequence is zero,
-          then <a>throw</a> a <a>TypeError</a>.
+          <li>If the length of the <var>methodData</var> sequence is zero, then
+          <a>throw</a> a <a>TypeError</a>; optionally informing the developer
+          that at least one <a>payment method</a> is required.
           </li>
-          <li>For each <a>PaymentMethodData</a> dictionary, if the length of
-          the <code>supportedMethods</code> sequence is zero, then <a>throw</a>
-          a <a>TypeError</a>.
+          <li>For each <var>paymentMethod</var> of <var>methodData</var>:
+            <ol>
+              <li>If the length of the <a data-lt=
+              "PaymentMethodData.supportedMethods">supportedMethods</a>
+              sequence is zero, then <a>throw</a> a <a>TypeError</a>;
+              optionally informing the developer that each <a>payment
+              method</a> needs to include at least one <a>payment method
+              identifier</a>.
+              </li>
+            </ol>
           </li>
           <li>If the <a>browsing context</a> of the script calling the
           constructor is a <a>nested browsing context</a> whose origin is
@@ -338,56 +346,74 @@
           nested browsing context is not <a>allowed to make payment
           requests</a>, then <a>throw</a> a <a>SecurityError</a>.
           </li>
-          <li>If <code>details</code> does not contain a value for
-          <code>total</code>, then throw a <a>TypeError</a>.
+          <li>If the <var>details</var> argument does not contain a value for
+          <a data-lt="PaymentDetails.total">total</a>, then throw a
+          <a>TypeError</a>; optionally informing the developer that including a
+          <a data-lt="PaymentDetails.total">total</a> is required.
           </li>
-          <li>If <code>details.total.amount.value</code> is not a <a>valid
-          decimal monetary value</a>, then throw a <a>TypeError</a>.
+          <li>If <a data-lt=
+          "PaymentCurrencyAmount.value">details.total.amount.value</a> is not a
+          <a>valid decimal monetary value</a>, then throw a <a>TypeError</a>;
+          optionally informing the developer that the value is invalid.
           </li>
-          <li>If the first character of <code>details.total.amount.value</code>
-          is U+002D HYPHEN-MINUS, then throw a <a>TypeError</a>.
-          <code>total</code> MUST be a non-negative amount.
+          <li>If the first character of <a data-lt=
+          "PaymentCurrencyAmount.value">details.total.amount.value</a> is
+          U+002D HYPHEN-MINUS, then throw a <a>TypeError</a>; optionally
+          informing the developer that <a data-lt=
+          "PaymentCurrencyAmount.value">total</a> can't be a negative amount
+          value.
           </li>
-          <li>If the <code>details.displayItems</code> sequence contains any
-          <a>PaymentItem</a> objects with an <code>amount</code> that is not a
-          <a>valid decimal monetary value</a>, then throw a <a>TypeError</a>.
+          <li>If the sequence of <a data-lt=
+          "PaymentDetails.displayItems">details.displayItems</a> contains any
+          <a>PaymentItem</a> objects with an <a data-lt=
+          "PaymentItem.amount">amount</a> that is not a <a>valid decimal
+          monetary value</a>, then throw a <a>TypeError</a>; optionally
+          informing the developer that the value is invalid.
           </li>
-          <li>If the <code>details.shippingOptions</code> sequence contains any
-          <a>PaymentShippingOption</a> objects with an <code>amount</code> that
-          is not a <a>valid decimal monetary value</a>, then throw a
-          <a>TypeError</a>.
+          <li>If the sequence of <a data-lt=
+          "PaymentDetails.shippingOptions">details.shippingOptions</a> contains
+          any <a>PaymentShippingOption</a> objects with an <a data-lt=
+          "PaymentShippingOption.amount">amount</a> that is not a <a>valid
+          decimal monetary value</a>, then throw a <a>TypeError</a>; optionally
+          informing the developer that the value is invalid.
           </li>
           <li>If <code>details</code> contains a value for <code>error</code>,
           then throw a <a>TypeError</a>.
           </li>
-          <li>For each <a>PaymentMethodData</a> in <code>methodData</code>, if
-          the <code>data</code> field is supplied but is not a
-          <a>JSON-serializable object</a>, then <a>throw</a> a
-          <a>TypeError</a>.
+          <li>For each <var>paymentMethod</var> in the <var>methodData</var>
+          argument, if the <a data-lt="PaymentMethodData.data">data</a> field
+          is supplied but is not a <a>JSON-serializable object</a>, then
+          <a>throw</a> a <a>TypeError</a>.
           </li>
-          <li>For each <a>PaymentDetailsModifier</a> in
-          <code>details.modifiers</code>, if the <code>total</code> field is
-          supplied and is not a <a>valid decimal monetary value</a>, then throw
-          a <a>TypeError</a>.
-          </li>
-          <li>For each <a>PaymentDetailsModifier</a> in
-          <code>details.modifiers</code>, if the <code>total</code> field is
-          supplied and the first character of <code>total.amount.value</code>
-          is U+002D HYPHEN-MINUS, then throw a <a>TypeError</a>.
-          <code>total</code> MUST be a non-negative amount.
-          </li>
-          <li>For each <a>PaymentDetailsModifier</a> in
-          <code>details.modifiers</code>, if the
-          <code>additionalDisplayItems</code> sequence contains any
-          <a>PaymentItem</a> objects with an <code>amount</code> that is not a
-          <a>valid decimal monetary value</a>, then throw a <a>TypeError</a>.
+          <li>For each <var>paymentDetailsModifier</var> in <a data-lt=
+          "PaymentDetails.modifiers">details.modifiers</a>:
+            <ol>
+              <li>If the <a data-lt="PaymentDetails.total">total</a> field is
+              supplied and is not a <a>valid decimal monetary value</a>, then
+              throw a <a>TypeError</a>; optionally informing the developer that
+              the value is invalid.
+              </li>
+              <li>If the <a data-lt="PaymentDetails.total">total</a> field is
+              supplied and the first character of
+              <code>total.amount.value</code> is U+002D HYPHEN-MINUS, then
+              throw a <a>TypeError</a>; optionally informing the developer that
+              the value can't be non-negative amount.
+              </li>
+              <li>If the sequence of <a data-lt=
+              "PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>
+              contains any <a>PaymentItem</a> objects with an <a data-lt=
+              "PaymentItem.amount">amount</a> that is not a <a>valid decimal
+              monetary value</a>, then throw a <a>TypeError</a>; optionally
+              informing the developer that the value is invalid.
+              </li>
+            </ol>
           </li>
           <li>Let <em>request</em> be a new <a>PaymentRequest</a>.
           </li>
           <li>Store <code>methodData</code> into
           <em>request</em>@<a>[[\methodData]]</a>.
             <p>
-              The <code>methodData</code> supplied to the <a>PaymentRequest</a>
+              The <var>methodData</var> supplied to the <a>PaymentRequest</a>
               constructor SHOULD be in the order of preference of the caller.
               Implementations MAY show payment methods in this order if
               possible but SHOULD prioritize the preference of the user when
