@@ -250,8 +250,9 @@
           payment.addEventListener("shippingaddresschange", event =&gt; {
               // Process shipping address change
           });
-          const paymentResponse = await payment.show();
+          let paymentResponse;
           try {
+            paymentResponse = await payment.show();
             // paymentResponse.methodName contains the selected payment method.
             // paymentResponse.details contains a payment method specific
             // response.
