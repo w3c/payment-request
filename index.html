@@ -346,8 +346,10 @@
           <li>If the <a>browsing context</a> of the script calling the
           constructor is a <a>nested browsing context</a> whose origin is
           different from the <a>top-level browsing context</a>'s origin and the
-          nested browsing context is not <a>allowed to make payment
-          requests</a>, then <a>throw</a> a <a>SecurityError</a>.
+          nested <a>browsing context</a>'s <a>browsing context container</a>'s
+          <a>node document</a> is not <a>allowed to use</a> the feature
+          indicated by attribute name <a><code>allowpaymentrequest</code></a>,
+          then <a>throw</a> a <a>SecurityError</a>.
           </li>
           <li>If the <var>details</var> argument does not contain a value for
           <a data-lt="PaymentDetails.total">total</a>, then throw a
@@ -1519,24 +1521,15 @@
         </table>
       </section>
     </section>
-    <section>
+    <section class="informative">
       <h2>
         PaymentRequest and <code>iframe</code> elements
       </h2>
       <p>
-        There are some circumstances where a cross-origin
-        <a><code>iframe</code></a> wants to make a payment request. A
-        cross-origin <a><code>iframe</code></a> needs explicit permission
-        from the embedding page to invoke the payment request API.
-      </p>
-      <p>
-        When an <a><code>iframe</code></a> element has an
-        <a><code>allowpaymentrequest</code></a> attribute, and does not
-        have any ancestor <a><code>iframe</code></a> element without an
-        <a><code>allowpaymentrequest</code></a> attribute, then
-        <code>Document</code> objects in the <a><code>iframe</code></a>
-        element's <span>browsing context</span> are <dfn>allowed to
-        make payment requests</dfn>.
+        To indicate that a cross-origin <a><code>iframe</code></a> is
+        allowed to invoke the payment request API, the
+        <a><code>allowpaymentrequest</code></a> attribute can be
+        specified on the <a><code>iframe</code></a> element.
       </p>
     </section>
     <section>
@@ -2041,10 +2034,12 @@
           The following are defined by [[!HTML51]]:
           <ul>
             <li><dfn>queue a task</dfn></li>
-            <li>the <dfn>Document</dfn> object</li>
+            <li><dfn>node document</dfn></li>
             <li><dfn>browsing context</dfn></li>
+            <li><dfn>browsing context container</dfn></li>
             <li><dfn>nested browsing context</dfn></li>
-            <li><dfn>top-level browsing context</dfn><li>
+            <li><dfn>top-level browsing context</dfn></li>
+            <li><dfn>allowed to use</dfn></li>
             <li>the <dfn>iframe</dfn> element</li>
             <li>the <dfn>allowpaymentrequest</dfn> attribute</li>
           </ul>
