@@ -1521,44 +1521,23 @@
     </section>
     <section>
       <h2>
-        PaymentRequest and iframes
+        PaymentRequest and <code>iframe</code> elements
       </h2>
       <p>
-        There are some circumstances where a cross-origin <a>iframe</a> wants
-        to make a payment request. A cross-origin iframe needs explicit
-        permission from the embedding page to invoke the payment request API.
+        There are some circumstances where a cross-origin
+        <a><code>iframe</code></a> wants to make a payment request. A
+        cross-origin <a><code>iframe</code></a> needs explicit permission
+        from the embedding page to invoke the payment request API.
       </p>
       <p>
-        The <a>HTMLIFrameElement</a> is extended with an
-        <dfn><code>allowpaymentrequest</code></dfn> content attribute.
-        <a>allowpaymentrequest</a> is a <a>boolean attribute</a>. When
-        specified, it indicates that scripts in the iframe element's browsing
-        context are <dfn>allowed to make payment requests</dfn> (if it's not
-        blocked for other reasons, e.g., there is another ancestor iframe
-        without this attribute set).
+        When an <a><code>iframe</code></a> element has an
+        <a><code>allowpaymentrequest</code></a> attribute, and does not
+        have any ancestor <a><code>iframe</code></a> element without an
+        <a><code>allowpaymentrequest</code></a> attribute, then
+        <code>Document</code> objects in the <a><code>iframe</code></a>
+        element's <span>browsing context</span> are <dfn>allowed to
+        make payment requests</dfn>.
       </p>
-      <section data-dfn-for="HTMLIFrameElement">
-        <h2>
-          <code>HTMLIFrameElement</code> extension
-        </h2>
-        <p>
-          The iframe DOM interface is extended as follows:
-        </p>
-        <pre class="idl">
-          partial interface HTMLIFrameElement {
-              attribute boolean allowPaymentRequest;
-          };
-        </pre>
-        <dl>
-          <dt>
-            <code>allowPaymentRequest</code>
-          </dt>
-          <dd>
-            The <code>allowPaymentRequest</code> IDL attribute MUST
-            <a>reflect</a> the <a>allowpaymentrequest</a> content attribute.
-          </dd>
-        </dl>
-      </section>
     </section>
     <section>
       <h2>
@@ -2059,10 +2038,16 @@
           HTML 5.1
         </dt>
         <dd>
-          The terms <dfn>global object</dfn>, <dfn>boolean attribute</dfn>,
-          <dfn>reflect</dfn>, <dfn>iframe</dfn>, <dfn>queue a task</dfn>,
-          <dfn>browsing context</dfn>, <dfn>nested browsing context</dfn>, and
-          <dfn>top-level browsing context</dfn> are defined by [[!HTML51]].
+          The following are defined by [[!HTML51]]:
+          <ul>
+            <li><dfn>queue a task</dfn></li>
+            <li>the <dfn>Document</dfn> object</li>
+            <li><dfn>browsing context</dfn></li>
+            <li><dfn>nested browsing context</dfn></li>
+            <li><dfn>top-level browsing context</dfn><li>
+            <li>the <dfn>iframe</dfn> element</li>
+            <li>the <dfn>allowpaymentrequest</dfn> attribute</li>
+          </ul>
         </dd>
         <dt>
           ECMA-262 6th Edition, The ECMAScript 2015 Language Specification
