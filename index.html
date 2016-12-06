@@ -839,10 +839,9 @@
           for the payment request that the <a>user agent</a> MAY display. For
           example, it might include details of products or breakdown of tax and
           shipping. It is optional to provide this information.
-          <p>
-            The <a>user agent</a> MAY validate that the <code>total</code>
-            amount is the sum of these items, but it is the responsibility of
-            the calling code to ensure that.
+          <p class="note">
+            It is the developer's responsibility to verify that the <a data-lt=
+            "PaymentDetails.total">total</a> amount is the sum of these items.
           </p>
         </dd>
         <dt>
@@ -955,11 +954,11 @@
           This field is commonly used to add a discount or surcharge line item
           indicating the reason for the different <code>total</code> amount for
           the selected <a>payment method</a> that the user agent MAY display.
-          <p>
-            The user agent MAY validate that the <code>total</code> amount is
-            the sum of the <code>displayItems</code> and the
-            <code>additionalDisplayItems</code>, but it is the responsibility
-            of the calling code to ensure that.
+          <p class="note">
+            It is the developer's responsibility to verify that the
+            <a data-lt="PaymentDetails.total">total</a> amount is the sum of the
+            <a data-lt="PaymentDetails.displayItems">displayItems</a> and the
+            <a data-lt="PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>.
           </p>
         </dd>
         <dt>
