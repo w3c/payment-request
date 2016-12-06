@@ -1,0 +1,2 @@
+index.html?specStatus=WD;shortName=payment-request respec
+images/state-transitions.svg
