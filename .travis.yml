@@ -1,7 +1,7 @@
 language: node_js
 branches:
   only:
-  - gh-pages
+    - gh-pages
 env:
   global:
     - URL="https://w3c.github.io/browser-payment-api/echidna-manifest.txt"
