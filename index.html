@@ -343,13 +343,24 @@
               </li>
             </ol>
           </li>
-          <li>If the <a>browsing context</a> of the script calling the
-          constructor is a <a>nested browsing context</a> whose origin is
-          different from the <a>top-level browsing context</a>'s origin and the
-          nested <a>browsing context</a>'s <a>browsing context container</a>'s
-          <a>node document</a> is not <a>allowed to use</a> the feature
-          indicated by attribute name <a><code>allowpaymentrequest</code></a>,
-          then <a>throw</a> a <a>SecurityError</a>.
+          <li>If the constructor is called from a <a>nested browsing context</a>, then
+            <ol>
+              <li>
+                Let <var>context</var> be the <a>nested browsing context</a>.
+              </li>
+              <li>
+                Let <var>origin</var> be the origin of the <a>active document</a>
+                of <var>context</var>.
+              </li>
+              <li>
+                If any <a>ancestor browsing context</a> of <var>context</var> has
+                an <a>active document</a> with an origin that is not the same as
+                <var>origin</var> and <var>context</var>'s <a>browsing context container</a>'s
+                <a>node document</a> is not <a>allowed to use</a> the feature
+                indicated by attribute name <a><code>allowpaymentrequest</code></a>,
+                then <a>throw</a> a <a>SecurityError</a>.
+              </li>
+            </ol>
           </li>
           <li>If the <var>details</var> argument does not contain a value for
           <a data-lt="PaymentDetails.total">total</a>, then throw a
@@ -2038,8 +2049,10 @@
             <li><dfn>browsing context</dfn></li>
             <li><dfn>browsing context container</dfn></li>
             <li><dfn>nested browsing context</dfn></li>
+            <li><dfn>ancestor browsing context</dfn></li>
             <li><dfn>top-level browsing context</dfn></li>
             <li><dfn>allowed to use</dfn></li>
+            <li><dfn>active document</dfn></li>
             <li>the <dfn>iframe</dfn> element</li>
             <li>the <dfn>allowpaymentrequest</dfn> attribute</li>
           </ul>
