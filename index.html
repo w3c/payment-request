@@ -243,21 +243,31 @@
         The following example shows how to construct a <a>PaymentRequest</a>
         and begin the user interaction:
       </p>
-      <pre class="example">
-    var payment = new PaymentRequest(methodData, details, options);
-    payment.addEventListener("shippingaddresschange", function (changeEvent) {
-        // Process shipping address change
-    });
+      <pre class="example" title="Constructing a PaymentRequest object">
+        function validateResponse(response){
+          // check that the response is ok... throw if bad, for example.
+        }
 
-    payment.show().then(function(paymentResponse) {
-      // Process paymentResponse
-      // paymentResponse.methodName contains the selected payment method
-      // paymentResponse.details contains a payment method specific response
-      paymentResponse.complete("success");
-    }).catch(function(err) {
-      console.error("Uh oh, something bad happened", err.message);
-    });
-  </pre>
+        async function doPaymentRequest() {
+          const payment = new PaymentRequest(methodData, details, options);
+          payment.addEventListener("shippingaddresschange", event =&gt; {
+              // Process shipping address change
+          });
+          let paymentResponse;
+          try {
+            paymentResponse = await payment.show();
+            // paymentResponse.methodName contains the selected payment method.
+            // paymentResponse.details contains a payment method specific
+            // response.
+            validateResponse(paymentResponse);
+            paymentResponse.complete("success");
+          } catch (err) {
+            console.error("Uh oh, bad payment response!", err.message);
+            paymentResponse.complete("fail");
+          }
+        }
+        doPaymentRequest();
+      </pre>
       <section>
         <h2>
           Constructor
@@ -276,8 +286,8 @@
             site accepts and any associated <a>payment method</a> specific
             data.
           </p>
-          <pre class="example">
-            [{
+          <pre class="example" title="The 'methodData' argument">
+            const methodData = [{
               supportedMethods: ["basic-card"]
               data: {
                 supportedNetworks: ['aFamousBrand', 'aDebitNetwork'],
@@ -289,15 +299,16 @@
                 merchantIdentifier: "XXXX",
                 bobPaySpecificField: true
               }
-            }]
+            }];
+            const request = new PaymentRequest(methodData, details, options);
           </pre>
           <p>
             The <code>details</code> object contains information about the
             transaction that the user is being asked to complete such as the
             line items in an order.
           </p>
-          <pre class="example">
-            {
+          <pre class="example lang-js" title="The 'details' argument">
+            const details = {
               displayItems: [
                 {
                   label: "Sub-total",
@@ -308,20 +319,22 @@
                   amount: { currency: "USD", value : "5.00" }, // US$5.00
                 }
               ],
-              total:  {
+              total: {
                 label: "Total due",
                 amount: { currency: "USD", value : "60.00" }, // US$60.00
               }
             }
+            const request = new PaymentRequest(methodData, details, options);
           </pre>
           <p>
             The <code>options</code> object contains information about what
             options the web page wishes to use from the payment request system.
           </p>
-          <pre class="example">
-            {
+          <pre class="example" title="The 'options' argument">
+            const options = {
               requestShipping: true
             }
+            const request = new PaymentRequest(methodData, details, options);
           </pre>
         </div>
         <p>
