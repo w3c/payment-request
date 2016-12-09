@@ -356,7 +356,8 @@
               </li>
             </ol>
           </li>
-          <li>If the constructor is called from a <a>nested browsing context</a>, then
+          <li>If the <a>current settings object</a> has a <a>responsible browsing
+            context</a> that is not a <a>top-level browsing context</a>, then
             <ol>
               <li>
                 Let <var>context</var> be the <a>nested browsing context</a>.
@@ -2062,8 +2063,10 @@
             <li><dfn>browsing context</dfn></li>
             <li><dfn>browsing context container</dfn></li>
             <li><dfn>nested browsing context</dfn></li>
+            <li><dfn>responsible browsing context</dfn></li>
             <li><dfn>ancestor browsing context</dfn></li>
             <li><dfn>top-level browsing context</dfn></li>
+            <li><dfn>current settings object</dfn></li>
             <li><dfn>allowed to use</dfn></li>
             <li><dfn>active document</dfn></li>
             <li>the <dfn>iframe</dfn> element</li>
