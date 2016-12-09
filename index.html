@@ -551,9 +551,13 @@
           <em>acceptPromise</em> with a <a>NotSupportedError</a>.
           </li>
           <li>Show a user interface to allow the user to interact with the
-          payment request process. The <em>acceptPromise</em> will later be
-          resolved by the <a>user accepts the payment request algorithm</a>
-          through interaction with the user interface.
+          payment request process. If the <code>enableLegacyCheckout</code>
+          value of <em>request</em>@<a>[[\options]]</a> is <code>true</code>,
+          then provide an option on the user interface to complete checkout
+          on the payee's website without selecting a payment method. The
+          <em>acceptPromise</em> will later be resolved by the
+          <a>user accepts the payment request algorithm</a> through interaction
+          with the user interface.
           </li>
         </ol>
       </section>
@@ -1015,6 +1019,7 @@
           boolean requestPayerPhone = false;
           boolean requestShipping = false;
           DOMString shippingType = "shipping";
+          boolean enableLegacyCheckout = false;
         };
       </pre>
       <p>
@@ -1108,6 +1113,17 @@
             The <code>shippingType</code> field only affects the user interface
             for the payment request.
           </p>
+        </dd>
+        <dt>
+          <dfn>enableLegacyCheckout</dfn>
+        </dt>
+        <dd>
+          This <em>boolean</em> value indicates whether the <a>user agent</a>
+          should provide an additional option for the payer to complete the
+          checkout process on the payee's website. For example, setting this
+          to <code>true</code> would let a customer opt to complete checkout
+          on a merchant's website if the customer does not want to or cannot
+          select a payment method.
         </dd>
       </dl>
     </section>
@@ -1934,7 +1950,11 @@
           </li>
           <li>Set the <code>methodName</code> attribute value of
           <em>response</em> to the <a>payment method identifier</a> for the <a>
-            payment method</a> that the user selected to accept the payment.
+            payment method</a> that the user selected to accept the payment. If
+            the <code>enableLegacyCheckout</code> value of
+            <em>request</em>@<a>[[\options]]</a> is <code>true</code> and
+            the user selected the option to complete checkout on the payee's
+            website, then set <code>methodName</code> to <code>null</code>.
           </li>
           <li>Set the <code>details</code> attribute value of <em>response</em>
           to a <a>JSON-serializable object</a> containing the <a>payment
