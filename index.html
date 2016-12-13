@@ -533,8 +533,8 @@
           <li>Set <var>acceptPromise</var> in
           <var>request</var>@<a>[[\acceptPromise]]</a>.
           </li>
-          <li>Return <var>acceptPromise</var> and asynchronously perform the
-          remaining steps.
+          <li>Return <var>acceptPromise</var> and perform the remaining steps
+          <a>in parallel</a>.
           </li>
           <li>Let <var>supportedMethods</var> be the union of all the
           <code>supportedMethods</code> sequences from each
@@ -590,8 +590,8 @@
           </li>
           <li>Let <var>promise</var> be a new <a>Promise</a>.
           </li>
-          <li>Return <var>promise</var> and asynchronously perform the
-          remaining steps.
+          <li>Return <var>promise</var> and perform the remaining steps <a>in
+          parallel</a>.
           </li>
           <li>Try to abort the current user interaction and close down any
           remaining user interface.
@@ -1498,8 +1498,8 @@
           <li>Set the value of the internal slot <a>[[\completeCalled]]</a> to
           true.
           </li>
-          <li>Return <var>promise</var> and asynchronously perform the
-          remaining steps.
+          <li>Return <var>promise</var> and perform the remaining steps <a>in
+          parallel</a>.
           </li>
           <li>Close down any remaining user interface. The <a>user agent</a>
           MAY use the value <code>result</code> to influence the user
@@ -1665,8 +1665,8 @@
                 Only one update may be processed at a time.
               </p>
             </li>
-            <li>Return from the method and asynchronously perform the remaining
-            steps.
+            <li>Return from the method and perform the remaining steps <a>in
+            parallel</a>.
             </li>
             <li>Wait until <code>d</code> settles.
               <div class="note">
@@ -2083,6 +2083,9 @@
             </li>
             <li>
               <dfn>active document</dfn>
+            </li>
+            <li>
+              <dfn>in parallel</dfn>
             </li>
             <li>the <dfn>iframe</dfn> element
             </li>
