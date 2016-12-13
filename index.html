@@ -356,23 +356,21 @@
               </li>
             </ol>
           </li>
-          <li>If the <a>current settings object</a> has a <a>responsible browsing
-            context</a> that is not a <a>top-level browsing context</a>, then
+          <li>If the <a>current settings object</a> has a <a>responsible
+          browsing context</a> that is not a <a>top-level browsing context</a>,
+          then
             <ol>
-              <li>
-                Let <var>context</var> be the <a>nested browsing context</a>.
+              <li>Let <var>context</var> be the <a>nested browsing context</a>.
               </li>
-              <li>
-                Let <var>origin</var> be the origin of the <a>active document</a>
-                of <var>context</var>.
+              <li>Let <var>origin</var> be the origin of the <a>active
+              document</a> of <var>context</var>.
               </li>
-              <li>
-                If any <a>ancestor browsing context</a> of <var>context</var> has
-                an <a>active document</a> with an origin that is not the same as
-                <var>origin</var> and <var>context</var>'s <a>active document</a>
-                is not <a>allowed to use</a> the feature
-                indicated by attribute name <a><code>allowpaymentrequest</code></a>,
-                then <a>throw</a> a <a>SecurityError</a>.
+              <li>If any <a>ancestor browsing context</a> of <var>context</var>
+              has an <a>active document</a> with an origin that is not the same
+              as <var>origin</var> and <var>context</var>'s <a>active
+              document</a> is not <a>allowed to use</a> the feature indicated
+              by attribute name <a><code>allowpaymentrequest</code></a>, then
+              <a>throw</a> a <a>SecurityError</a>.
               </li>
             </ol>
           </li>
@@ -438,10 +436,13 @@
               </li>
             </ol>
           </li>
-          <li>Let <em>request</em> be a new <a>PaymentRequest</a>.
+          <li>Let <var>request</var> be a new <a>PaymentRequest</a>.
           </li>
-          <li>Store <code>methodData</code> into
-          <em>request</em>@<a>[[\methodData]]</a>.
+          <li>
+            <p>
+              Set <var>request</var>@<a>[[\methodData]]</a> to
+              <var>methodData</var>.
+            </p>
             <p>
               The <var>methodData</var> supplied to the <a>PaymentRequest</a>
               constructor SHOULD be in the order of preference of the caller.
@@ -450,33 +451,30 @@
               presenting payment methods.
             </p>
           </li>
-          <li>Store <code>details</code> into
-          <em>request</em>@<a>[[\details]]</a>.
+          <li>Set <var>request</var>@<a>[[\details]]</a> to <var>details</var>.
           </li>
-          <li>Store <code>options</code> into
-          <em>request</em>@<a>[[\options]]</a>.
+          <li>Set <var>request</var>@<a>[[\options]]</a> to <var>options</var>.
           </li>
-          <li>Set the value <em>request</em>@<a>[[\state]]</a> to
-          <em>created</em>.
+          <li>Set <var>request</var>@<a>[[\state]]</a> to <i>created</i>.
           </li>
           <li>Set the value of the <a data-lt="PaymentRequest.shippingAddress">
-            shippingAddress</a> attribute on <em>request</em> to <em>null</em>.
+            shippingAddress</a> attribute on <var>request</var> to null.
           </li>
           <li>Set the value of the <a data-lt="PaymentRequest.shippingOption">
-            shippingOption</a> attribute on <em>request</em> to <em>null</em>.
+            shippingOption</a> attribute on <var>request</var> to null.
           </li>
           <li>Set the value of the <a data-lt=
           "PaymentRequest.shippingType">shippingType</a> attribute on
-          <em>request</em> to <em>null</em>.
+          <var>request</var> to null.
           </li>
-          <li>If <code>options.requestShipping</code> is set to
-          <code>true</code>, then set the value of the <a data-lt=
+          <li>If <code>options.requestShipping</code> is set to true, then set
+          the value of the <a data-lt=
           "PaymentRequest.shippingType">shippingType</a> attribute on
-          <em>request</em> to <code>options.shippingType</code>. If
+          <var>request</var> to <code>options.shippingType</code>. If
           <code>options.shippingType</code> is not a valid
           <a>PaymentShippingType</a> value then set the <a data-lt=
           "PaymentRequest.shippingType">shippingType</a> attribute on
-          <em>request</em> to <code>"shipping"</code>.
+          <var>request</var> to <code>"shipping"</code>.
             <div class="note">
               This behavior allows a page to detect if it supplied an
               unsupported shipping type. This will be important if new shipping
@@ -488,20 +486,19 @@
           multiple <a>PaymentShippingOption</a> objects that have the same
           <code>id</code>, then set the <a data-lt=
           "PaymentDetails.shippingOptions">shippingOptions</a> field of
-          <em>request</em>@<a>[[\details]]</a> to an empty sequence.
+          <var>request</var>@<a>[[\details]]</a> to an empty sequence.
           </li>
-          <li>If <em>request</em>@<a>[[\details]]</a> contains a
+          <li>If <var>request</var>@<a>[[\details]]</a> contains a
           <code>shippingOptions</code> sequence and if any
           <a>PaymentShippingOption</a> in the sequence has the
-          <code>selected</code> field set to <code>true</code>, then set
-          <a data-lt="PaymentRequest.shippingOption">shippingOption</a> to the
+          <code>selected</code> field set to true, then set <a data-lt=
+          "PaymentRequest.shippingOption">shippingOption</a> to the
           <code>id</code> of the last <a>PaymentShippingOption</a> in the
-          sequence with <code>selected</code> set to <code>true</code>.
+          sequence with <code>selected</code> set to true.
           </li>
-          <li>Set the value <em>request</em>@<a>[[\updating]]</a> to
-          <em>false</em>.
+          <li>Set <var>request</var>@<a>[[\updating]]</a> to false.
           </li>
-          <li>Return <em>request</em>.
+          <li>Return <var>request</var>.
           </li>
         </ol>
       </section>
@@ -522,36 +519,37 @@
           follows:
         </p>
         <ol>
-          <li>Let <em>request</em> be the <a>PaymentRequest</a> object on which
-          the method is called.
+          <li>Let <var>request</var> be the <a>PaymentRequest</a> object on
+          which the method is called.
           </li>
-          <li>If the value of <em>request</em>@<a>[[\state]]</a> is not
-          <em>created</em> then <a>throw</a> an <a>InvalidStateError</a>.
+          <li>If the value of <var>request</var>@<a>[[\state]]</a> is not
+          <i>created</i> then <a>throw</a> an <a>InvalidStateError</a>.
           </li>
-          <li>Set the value of <em>request</em>@<a>[[\state]]</a> to
-          <em>interactive</em>.
+          <li>Set the value of <var>request</var>@<a>[[\state]]</a> to
+          <i>interactive</i>.
           </li>
-          <li>Let <em>acceptPromise</em> be a new <a>Promise</a>.
+          <li>Let <var>acceptPromise</var> be a new <a>Promise</a>.
           </li>
-          <li>Store <em>acceptPromise</em> in
-          <em>request</em>@<a>[[\acceptPromise]]</a>.
+          <li>Set <var>acceptPromise</var> in
+          <var>request</var>@<a>[[\acceptPromise]]</a>.
           </li>
-          <li>Return <em>acceptPromise</em> and asynchronously perform the
+          <li>Return <var>acceptPromise</var> and asynchronously perform the
           remaining steps.
           </li>
-          <li>Let <em>supportedMethods</em> be the union of all the
+          <li>Let <var>supportedMethods</var> be the union of all the
           <code>supportedMethods</code> sequences from each
           <a>PaymentMethodData</a> in the
-          <em>request</em>@<a>[[\methodData]]</a> sequence.
+          <var>request</var>@<a>[[\methodData]]</a> sequence.
           </li>
-          <li>Let <em>acceptedMethods</em> be <em>supportedMethods</em> with
-          all identifiers removed that the <a>user agent</a> does not accept.
+          <li>Let <var>acceptedMethods</var> be <var>supportedMethods</var>
+          with all identifiers removed that the <a>user agent</a> does not
+          accept.
           </li>
-          <li>If the length of <em>acceptedMethods</em> is zero, then reject
-          <em>acceptPromise</em> with a <a>NotSupportedError</a>.
+          <li>If the length of <var>acceptedMethods</var> is zero, then reject
+          <var>acceptPromise</var> with a <a>NotSupportedError</a>.
           </li>
           <li>Show a user interface to allow the user to interact with the
-          payment request process. The <em>acceptPromise</em> will later be
+          payment request process. The <var>acceptPromise</var> will later be
           resolved by the <a>user accepts the payment request algorithm</a>
           through interaction with the user interface.
           </li>
@@ -563,11 +561,11 @@
         </h2>
         <p>
           The <dfn>abort</dfn> method may be called if the web page wishes to
-          tell the <a>user agent</a> to abort the payment <em>request</em> and
-          to tear down any user interface that might be shown.
+          tell the <a>user agent</a> to abort the payment <var>request</var>
+          and to tear down any user interface that might be shown.
           <code>abort</code> can only be called after the <a data-lt=
           "PaymentRequest.show">show</a> method has been called and before the
-          <em>request</em>@<a>[[\acceptPromise]]</a> has been resolved. For
+          <var>request</var>@<a>[[\acceptPromise]]</a> has been resolved. For
           example, a web page might choose to do this if the goods they are
           selling are only available for a limited amount of time. If the user
           does not accept the payment request within the allowed time period,
@@ -584,31 +582,31 @@
           follows:
         </p>
         <ol>
-          <li>Let <em>request</em> be the <a>PaymentRequest</a> object on which
-          the method is called.
+          <li>Let <var>request</var> be the <a>PaymentRequest</a> object on
+          which the method is called.
           </li>
-          <li>If the value of <em>request</em>@<a>[[\state]]</a> is not
-          <em>interactive</em> then <a>throw</a> an <a>InvalidStateError</a>.
+          <li>If the value of <var>request</var>@<a>[[\state]]</a> is not
+          <i>interactive</i> then <a>throw</a> an <a>InvalidStateError</a>.
           </li>
-          <li>Let <em>promise</em> be a new <a>Promise</a>.
+          <li>Let <var>promise</var> be a new <a>Promise</a>.
           </li>
-          <li>Return <em>promise</em> and asynchronously perform the remaining
-          steps.
+          <li>Return <var>promise</var> and asynchronously perform the
+          remaining steps.
           </li>
           <li>Try to abort the current user interaction and close down any
           remaining user interface.
           </li>
           <li>If it is not possible to abort the current user interaction, then
-          reject <em>promise</em> with <a>InvalidStateError</a> and abort this
-          algorithm.
+          reject <var>promise</var> with <a>InvalidStateError</a> and abort
+          this algorithm.
           </li>
           <li>Set the value of the internal slot
-          <em>request</em>@<a>[[\state]]</a> to <em>closed</em>.
+          <var>request</var>@<a>[[\state]]</a> to <i>closed</i>.
           </li>
-          <li>Reject the promise <em>request</em>@<a>[[\acceptPromise]]</a>
+          <li>Reject the promise <var>request</var>@<a>[[\acceptPromise]]</a>
           with an <a>AbortError</a>.
           </li>
-          <li>Resolve <em>promise</em> with <code>undefined</code>.
+          <li>Resolve <var>promise</var> with undefined.
           </li>
         </ol>
       </section>
@@ -629,9 +627,8 @@
         </h2>
         <p>
           <dfn>shippingAddress</dfn> is populated when the user provides a
-          shipping address. It is <em>null</em> by default. When a user
-          provides a shipping address, the <a>shipping address changed
-          algorithm</a> runs.
+          shipping address. It is null by default. When a user provides a
+          shipping address, the <a>shipping address changed algorithm</a> runs.
         </p>
         <p>
           <dfn>onshippingaddresschange</dfn> is an <code>EventHandler</code>
@@ -644,8 +641,8 @@
         </h2>
         <p>
           <dfn>shippingOption</dfn> is populated when the user chooses a
-          shipping option. It is <em>null</em> by default. When a user chooses
-          a shipping option, the <a>shipping option changed algorithm</a> runs.
+          shipping option. It is null by default. When a user chooses a
+          shipping option, the <a>shipping option changed algorithm</a> runs.
         </p>
         <p>
           <dfn>onshippingoptionchange</dfn> is an <code>EventHandler</code> for
@@ -710,9 +707,9 @@
               <dfn>[[\updating]]</dfn>
             </td>
             <td>
-              <em>true</em> is there is a pending <a data-lt=
+              true is there is a pending <a data-lt=
               "PaymentRequestUpdateEvent.updateWith">updateWith</a> call to
-              update the payment request and <em>false</em> otherwise.
+              update the payment request and false otherwise.
             </td>
           </tr>
           <tr>
@@ -884,28 +881,27 @@
           </p>
           <p>
             If an item in the sequence has the <code>selected</code> field set
-            to <code>true</code>, then this is the shipping option that will be
-            used by default and <a data-lt=
+            to true, then this is the shipping option that will be used by
+            default and <a data-lt=
             "PaymentRequest.shippingOption">shippingOption</a> will be set to
             the <code>id</code> of this option without running the <a>shipping
             option changed algorithm</a>. Authors SHOULD NOT set
-            <code>selected</code> to <code>true</code> on more than one item.
-            If more than one item in the sequence has <code>selected</code> set
-            to <code>true</code>, then <a>user agents</a> MUST select the last
-            one in the sequence.
+            <code>selected</code> to true on more than one item. If more than
+            one item in the sequence has <code>selected</code> set to true,
+            then <a>user agents</a> MUST select the last one in the sequence.
           </p>
           <p>
             The <code>shippingOptions</code> field is only used if the
             <a>PaymentRequest</a> was constructed with <a>PaymentOptions</a>
-            <code>requestShipping</code> set to <code>true</code>.
+            <code>requestShipping</code> set to true.
           </p>
           <p class="note">
             If the sequence has an item with the <code>selected</code> field
-            set to <code>true</code>, then authors are responsible for ensuring
-            that the <code>total</code> field includes the cost of the shipping
-            option. This is because no <a>shippingoptionchange</a> event will
-            be fired for this option unless the user selects an alternative
-            option first.
+            set to true, then authors are responsible for ensuring that the
+            <code>total</code> field includes the cost of the shipping option.
+            This is because no <a>shippingoptionchange</a> event will be fired
+            for this option unless the user selects an alternative option
+            first.
           </p>
         </dd>
         <dt>
@@ -982,10 +978,11 @@
           indicating the reason for the different <code>total</code> amount for
           the selected <a>payment method</a> that the user agent MAY display.
           <p class="note">
-            It is the developer's responsibility to verify that the
-            <a data-lt="PaymentDetails.total">total</a> amount is the sum of the
+            It is the developer's responsibility to verify that the <a data-lt=
+            "PaymentDetails.total">total</a> amount is the sum of the
             <a data-lt="PaymentDetails.displayItems">displayItems</a> and the
-            <a data-lt="PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>.
+            <a data-lt=
+            "PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>.
           </p>
         </dd>
         <dt>
@@ -1031,39 +1028,38 @@
           <dfn>requestPayerName</dfn>
         </dt>
         <dd>
-          This <em>boolean</em> value indicates whether the <a>user agent</a>
-          should collect and return the payer's name as part of the payment
-          request. For example, this would be set to <code>true</code> to allow
-          a merchant to make a booking in the payer's name.
+          This boolean value indicates whether the <a>user agent</a> should
+          collect and return the payer's name as part of the payment request.
+          For example, this would be set to true to allow a merchant to make a
+          booking in the payer's name.
         </dd>
         <dt>
           <dfn>requestPayerEmail</dfn>
         </dt>
         <dd>
-          This <em>boolean</em> value indicates whether the <a>user agent</a>
-          should collect and return the payer's email address as part of the
-          payment request. For example, this would be set to <code>true</code>
-          to allow a merchant to email a receipt.
+          This boolean value indicates whether the <a>user agent</a> should
+          collect and return the payer's email address as part of the payment
+          request. For example, this would be set to true to allow a merchant
+          to email a receipt.
         </dd>
         <dt>
           <dfn>requestPayerPhone</dfn>
         </dt>
         <dd>
-          This <em>boolean</em> value indicates whether the <a>user agent</a>
-          should collect and return the payer's phone number as part of the
-          payment request. For example, this would be set to <code>true</code>
-          to allow a merchant to phone a customer with a billing enquiry.
+          This boolean value indicates whether the <a>user agent</a> should
+          collect and return the payer's phone number as part of the payment
+          request. For example, this would be set to true to allow a merchant
+          to phone a customer with a billing enquiry.
         </dd>
         <dt>
           <dfn>requestShipping</dfn>
         </dt>
         <dd>
-          This <em>boolean</em> value indicates whether the <a>user agent</a>
-          should collect and return a shipping address as part of the payment
-          request. For example, this would be set to <code>true</code> when
-          physical goods need to be shipped by the merchant to the user. This
-          would be set to <code>false</code> for an online-only electronic
-          purchase transaction.
+          This boolean value indicates whether the <a>user agent</a> should
+          collect and return a shipping address as part of the payment request.
+          For example, this would be set to true when physical goods need to be
+          shipped by the merchant to the user. This would be set to false for
+          an online-only electronic purchase transaction.
         </dd>
         <dt>
           <dfn>shippingType</dfn>
@@ -1072,7 +1068,7 @@
           Some transactions require an address for delivery but the term
           "shipping" isn't appropriate. For example, "pizza delivery" not
           "pizza shipping" and "laundry pickup" not "laundry shipping". If
-          <code>requestShipping</code> is set to <code>true</code>, then the
+          <code>requestShipping</code> is set to true, then the
           <code>shippingType</code> field may be used to influence the way the
           <a>user agent</a> presents the user interface for gathering the
           shipping address.
@@ -1149,11 +1145,11 @@
           <dfn>pending</dfn>
         </dt>
         <dd>
-          When set to <code>true</code> this flag means that the
-          <code>amount</code> field is not final. This is commonly used to show
-          items such as shipping or tax amounts that depend upon selection of
-          shipping address or shipping option. <a>User agents</a> MAY indicate
-          pending fields in the user interface for the payment request.
+          When set to true this flag means that the <code>amount</code> field
+          is not final. This is commonly used to show items such as shipping or
+          tax amounts that depend upon selection of shipping address or
+          shipping option. <a>User agents</a> MAY indicate pending fields in
+          the user interface for the payment request.
         </dd>
       </dl>
     </section>
@@ -1260,9 +1256,9 @@
       </dl>
       <p>
         If the <a data-lt="PaymentOptions.requestShipping">requestShipping</a>
-        flag was set to <code>true</code> in the <a>PaymentOptions</a> passed
-        to the <a>PaymentRequest</a> constructor, then the <a>user agent</a>
-        will populate the <code>shippingAddress</code> field of the
+        flag was set to true in the <a>PaymentOptions</a> passed to the
+        <a>PaymentRequest</a> constructor, then the <a>user agent</a> will
+        populate the <code>shippingAddress</code> field of the
         <a>PaymentRequest</a> and ultimately the <a>PaymentResponse</a> object
         with the user's selected shipping address after the user has accepted
         the payment.
@@ -1318,10 +1314,9 @@
           <code>selected</code>
         </dt>
         <dd>
-          This is set to <code>true</code> to indicate that this is the default
-          selected <a>PaymentShippingOption</a> in a sequence. <a>User
-          agents</a> SHOULD display this option by default in the user
-          interface.
+          This is set to true to indicate that this is the default selected
+          <a>PaymentShippingOption</a> in a sequence. <a>User agents</a> SHOULD
+          display this option by default in the user interface.
         </dd>
       </dl>
     </section>
@@ -1376,8 +1371,8 @@
         <dd>
           If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> flag was set to
-          <code>true</code> in the <a>PaymentOptions</a> passed to the
-          <a>PaymentRequest</a> constructor, then <a data-lt=
+          true in the <a>PaymentOptions</a> passed to the <a>PaymentRequest</a>
+          constructor, then <a data-lt=
           "PaymentRequest.shippingAddress">shippingAddress</a> will be the full
           and final shipping address chosen by the user.
         </dd>
@@ -1387,8 +1382,8 @@
         <dd>
           If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> flag was set to
-          <code>true</code> in the <a>PaymentOptions</a> passed to the
-          <a>PaymentRequest</a> constructor, then <a data-lt=
+          true in the <a>PaymentOptions</a> passed to the <a>PaymentRequest</a>
+          constructor, then <a data-lt=
           "PaymentRequest.shippingOption">shippingOption</a> will be the
           <code>id</code> attribute of the selected shipping option.
         </dd>
@@ -1398,7 +1393,7 @@
         <dd>
           If the <a data-lt=
           "PaymentOptions.requestPayerName">requestPayerName</a> flag was set
-          to <code>true</code> in the <a>PaymentOptions</a> passed to the
+          to true in the <a>PaymentOptions</a> passed to the
           <a>PaymentRequest</a> constructor, then <a data-lt=
           "PaymentResponse.payerName">payerName</a> will be the name provided
           by the user.
@@ -1409,7 +1404,7 @@
         <dd>
           If the <a data-lt=
           "PaymentOptions.requestPayerEmail">requestPayerEmail</a> flag was set
-          to <code>true</code> in the <a>PaymentOptions</a> passed to the
+          to true in the <a>PaymentOptions</a> passed to the
           <a>PaymentRequest</a> constructor, then <a data-lt=
           "PaymentResponse.payerEmail">payerEmail</a> will be the email address
           chosen by the user.
@@ -1420,7 +1415,7 @@
         <dd>
           If the <a data-lt=
           "PaymentOptions.requestPayerPhone">requestPayerPhone</a> flag was set
-          to <code>true</code> in the <a>PaymentOptions</a> passed to the
+          to true in the <a>PaymentOptions</a> passed to the
           <a>PaymentRequest</a> constructor, then <a data-lt=
           "PaymentResponse.payerPhone">payerPhone</a> will be the phone number
           chosen by the user.
@@ -1495,24 +1490,24 @@
           act as follows:
         </p>
         <ol>
-          <li>Let <em>promise</em> be a new <a>Promise</a>.
+          <li>Let <var>promise</var> be a new <a>Promise</a>.
           </li>
           <li>If the value of the internal slot <a>[[\completeCalled]]</a> is
-          <em>true</em>, then <a>throw</a> an <a>InvalidStateError</a>.
+          true, then <a>throw</a> an <a>InvalidStateError</a>.
           </li>
           <li>Set the value of the internal slot <a>[[\completeCalled]]</a> to
-          <em>true</em>.
+          true.
           </li>
-          <li>Return <em>promise</em> and asynchronously perform the remaining
-          steps.
+          <li>Return <var>promise</var> and asynchronously perform the
+          remaining steps.
           </li>
           <li>Close down any remaining user interface. The <a>user agent</a>
           MAY use the value <code>result</code> to influence the user
           experience. <a>User agents</a> SHOULD treat unrecognized
-          <code>result</code> values as the value
-          "<a href="#dom-paymentcomplete-unknown">unknown</a>".
+          <code>result</code> values as the value "<a href=
+          "#dom-paymentcomplete-unknown">unknown</a>".
           </li>
-          <li>Resolve <em>promise</em> with <code>undefined</code>.
+          <li>Resolve <var>promise</var> with undefined.
           </li>
         </ol>
       </section>
@@ -1538,9 +1533,8 @@
               <dfn>[[\completeCalled]]</dfn>
             </td>
             <td>
-              <em>true</em> if the <a data-lt=
-              "PaymentResponse.complete">complete</a> method has been called
-              and <em>false</em> otherwise.
+              true if the <a data-lt="PaymentResponse.complete">complete</a>
+              method has been called and false otherwise.
             </td>
           </tr>
         </table>
@@ -1551,10 +1545,10 @@
         PaymentRequest and <code>iframe</code> elements
       </h2>
       <p>
-        To indicate that a cross-origin <a><code>iframe</code></a> is
-        allowed to invoke the payment request API, the
-        <a><code>allowpaymentrequest</code></a> attribute can be
-        specified on the <a><code>iframe</code></a> element.
+        To indicate that a cross-origin <a><code>iframe</code></a> is allowed
+        to invoke the payment request API, the
+        <a><code>allowpaymentrequest</code></a> attribute can be specified on
+        the <a><code>iframe</code></a> element.
       </p>
     </section>
     <section>
@@ -1627,7 +1621,7 @@
         </p>
         <p>
           The <a>PaymentRequestUpdateEvent</a> constructor MUST set the
-          internal slot [[\waitForUpdate]] to <em>false</em>.
+          internal slot [[\waitForUpdate]] to false.
         </p>
         <section>
           <h2>
@@ -1637,28 +1631,27 @@
             The <dfn>updateWith</dfn> method MUST act as follows:
           </p>
           <ol>
-            <li>Let <em>target</em> be the <a>PaymentRequest</a> object that is
-            the target of the event.
+            <li>Let <var>target</var> be the <a>PaymentRequest</a> object that
+            is the target of the event.
             </li>
             <li>If the <a>dispatch flag</a> is unset, then <a>throw</a> an <a>
               InvalidStateError</a>.
             </li>
-            <li>If [[\waitForUpdate]] is <em>true</em>, then <a>throw</a> an
+            <li>If [[\waitForUpdate]] is true, then <a>throw</a> an
             <a>InvalidStateError</a>.
             </li>
-            <li>If <em>target</em>@<a>[[\state]]</a> is not
-            <em>interactive</em>, then <a>throw</a> an
-            <a>InvalidStateError</a>.
+            <li>If <var>target</var>@<a>[[\state]]</a> is not
+            <i>interactive</i>, then <a>throw</a> an <a>InvalidStateError</a>.
             </li>
-            <li>If <em>target</em>@<a>[[\updating]]</a> is <em>true</em>, then
+            <li>If <var>target</var>@<a>[[\updating]]</a> is true, then
             <a>throw</a> an <a>InvalidStateError</a>.
             </li>
             <li>Set the <a>stop propagation flag</a> and <a>stop immediate
             propagation flag</a>.
             </li>
-            <li>Set [[\waitForUpdate]] to <em>true</em>.
+            <li>Set [[\waitForUpdate]] to true.
             </li>
-            <li>Set <em>target</em>@<a>[[\updating]]</a> to <em>true</em>.
+            <li>Set <var>target</var>@<a>[[\updating]]</a> to true.
             </li>
             <li>The <a>user agent</a> SHOULD disable the user interface that
             allows the user to accept the payment request. This is to ensure
@@ -1693,10 +1686,10 @@
                 remaining user interface.
                 </li>
                 <li>Set the value of the internal slot
-                <em>target</em>@<a>[[\state]]</a> to <em>closed</em>.
+                <var>target</var>@<a>[[\state]]</a> to <i>closed</i>.
                 </li>
                 <li>Reject the promise
-                <em>target</em>@<a>[[\acceptPromise]]</a> with an
+                <var>target</var>@<a>[[\acceptPromise]]</a> with an
                 <a>AbortError</a>.
                 </li>
                 <li>Abort this algorithm.
@@ -1722,7 +1715,7 @@
                 monetary value</a> and the first character of
                 <code>total.amount.value</code> is NOT U+002D HYPHEN-MINUS,
                 then copy <code>total</code> value to the <code>total</code>
-                field of <em>target</em>@<a>[[\details]]</a>
+                field of <var>target</var>@<a>[[\details]]</a>
                 (<code>total</code> MUST be a non-negative amount).
                 </li>
                 <li>If <code>details</code> contains a
@@ -1731,65 +1724,65 @@
                 containing a <a>valid decimal monetary value</a>, then copy
                 <code>details.displayItems</code> to the
                 <code>displayItems</code> field of
-                <em>target</em>@<a>[[\details]]</a>.
+                <var>target</var>@<a>[[\details]]</a>.
                 </li>
                 <li>If <code>details</code> contains a <code>modifiers</code>
                 value, then:
                   <ol>
-                    <li>Let <em>modifiers</em> be the sequence
+                    <li>Let <var>modifiers</var> be the sequence
                     <code>details.modifiers</code>.
                     </li>
                     <li>For each <a>PaymentDetailsModifier</a> in
-                    <em>modifiers</em>, if the <code>total</code> field is
+                    <var>modifiers</var>, if the <code>total</code> field is
                     supplied and is not a <a>valid decimal monetary value</a>,
-                    then set <em>modifiers</em> to an empty sequence.
+                    then set <var>modifiers</var> to an empty sequence.
                     </li>
                     <li>For each <a>PaymentDetailsModifier</a> in
-                    <em>modifiers</em>, if the
+                    <var>modifiers</var>, if the
                     <code>additionalDisplayItems</code> sequence contains any
                     <a>PaymentItem</a> objects with an <code>amount</code> that
-                    is not a <a>valid decimal monetary value</a>, then set <em>
-                      modifiers</em> to an empty sequence.
+                    is not a <a>valid decimal monetary value</a>, then set
+                    <var>modifiers</var> to an empty sequence.
                     </li>
-                    <li>Copy <em>modifiers</em> to the <code>modifiers</code>
-                    field of <em>target</em>@<a>[[\details]]</a>.
+                    <li>Copy <var>modifiers</var> to the <code>modifiers</code>
+                    field of <var>target</var>@<a>[[\details]]</a>.
                     </li>
                   </ol>
                 </li>
                 <li>If <code>details</code> contains a
                 <code>shippingOptions</code> sequence, then:
                   <ol>
-                    <li>Let <em>shippingOptions</em> be the sequence
+                    <li>Let <var>shippingOptions</var> be the sequence
                     <code>details.shippingOptions</code>.
                     </li>
-                    <li>If the <em>shippingOptions</em> sequence contains
+                    <li>If the <var>shippingOptions</var> sequence contains
                     multiple <a>PaymentShippingOption</a> objects that have the
-                    same <code>id</code>, then set <em>shippingOptions</em> to
+                    same <code>id</code>, then set <var>shippingOptions</var>
+                    to the empty sequence.
+                    </li>
+                    <li>If the <var>shippingOptions</var> sequence contains a
+                    <a>PaymentShippingOption</a> that has an
+                    <code>amount.value</code> that is not a <a>valid decimal
+                    monetary value</a>, then set <var>shippingOptions</var> to
                     the empty sequence.
                     </li>
-                    <li>If the <em>shippingOptions</em> sequence contains a <a>
-                      PaymentShippingOption</a> that has an
-                      <code>amount.value</code> that is not a <a>valid decimal
-                      monetary value</a>, then set <em>shippingOptions</em> to
-                      the empty sequence.
-                    </li>
-                    <li>Copy <em>shippingOptions</em> to the
+                    <li>Copy <var>shippingOptions</var> to the
                     <code>shippingOptions</code> field of
-                    <em>target</em>@<a>[[\details]]</a>.
+                    <var>target</var>@<a>[[\details]]</a>.
                     </li>
-                    <li>Let <em>newOption</em> be <em>null</em>.
+                    <li>Let <var>newOption</var> be null.
                     </li>
-                    <li>If <em>target</em>@<a>[[\details]]</a> contains a
+                    <li>If <var>target</var>@<a>[[\details]]</a> contains a
                     <code>shippingOptions</code> sequence and if any
                     <a>PaymentShippingOption</a> in the sequence has the <code>
-                      selected</code> field set to <code>true</code>, then set
-                      <em>newOption</em> to the <code>id</code> of the last
+                      selected</code> field set to true, then set
+                      <var>newOption</var> to the <code>id</code> of the last
                       <a>PaymentShippingOption</a> in the sequence with
-                      <code>selected</code> set to <code>true</code>.
+                      <code>selected</code> set to true.
                     </li>
                     <li>Set the value of <a data-lt=
-                    "PaymentRequest.shippingOption">shippingOption</a> on <em>
-                      target</em> to <em>newOption</em>.
+                    "PaymentRequest.shippingOption">shippingOption</a> on <var>
+                      target</var> to <var>newOption</var>.
                     </li>
                   </ol>
                 </li>
@@ -1800,12 +1793,12 @@
                 </li>
               </ol>
             </li>
-            <li>Set [[\waitForUpdate]] to <em>false</em>.
+            <li>Set [[\waitForUpdate]] to false.
             </li>
-            <li>Set <em>target</em>@<a>[[\updating]]</a> to <em>false</em>.
+            <li>Set <var>target</var>@<a>[[\updating]]</a> to false.
             </li>
             <li>The <a>user agent</a> should update the user interface based on
-            any changed values in <em>target</em>. The user agent SHOULD
+            any changed values in <var>target</var>. The user agent SHOULD
             re-enable user interface elements that might have been disabled in
             the steps above if appropriate.
             </li>
@@ -1819,8 +1812,8 @@
       </h2>
       <p>
         When the internal slot <a>[[\state]]</a> of a <a>PaymentRequest</a>
-        object is set to <em>interactive</em>, the <a>user agent</a> will
-        trigger the following algorithms based on user interaction.
+        object is set to <i>interactive</i>, the <a>user agent</a> will trigger
+        the following algorithms based on user interaction.
       </p>
       <section>
         <h2>
@@ -1831,17 +1824,17 @@
           provides a new shipping address. It MUST run the following steps:
         </p>
         <ol>
-          <li>Let <em>request</em> be the <a>PaymentRequest</a> object that the
-          user is interacting with.
+          <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
+          the user is interacting with.
           </li>
-          <li>Let <em>name</em> be <dfn>shippingaddresschange</dfn>.
+          <li>Let <var>name</var> be <dfn>shippingaddresschange</dfn>.
           </li>
           <li>Set the <a data-lt=
           "PaymentRequest.shippingAddress">shippingAddress</a> attribute on
-          <em>request</em> to the shipping address provided by the user.
+          <var>request</var> to the shipping address provided by the user.
           </li>
           <li>Run the <a>PaymentRequest updated algorithm</a> with
-          <em>request</em> and <em>name</em>.
+          <var>request</var> and <var>name</var>.
           </li>
         </ol>
       </section>
@@ -1854,18 +1847,18 @@
           chooses a new shipping option. It MUST run the following steps:
         </p>
         <ol>
-          <li>Let <em>request</em> be the <a>PaymentRequest</a> object that the
-          user is interacting with.
+          <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
+          the user is interacting with.
           </li>
-          <li>Let <em>name</em> be <dfn>shippingoptionchange</dfn>.
+          <li>Let <var>name</var> be <dfn>shippingoptionchange</dfn>.
           </li>
           <li>Set the <a data-lt=
-          "PaymentRequest.shippingOption">shippingOption</a> attribute on <em>
-            request</em> to the <code>id</code> string of the
+          "PaymentRequest.shippingOption">shippingOption</a> attribute on <var>
+            request</var> to the <code>id</code> string of the
             <a>PaymentShippingOption</a> provided by the user.
           </li>
           <li>Run the <a>PaymentRequest updated algorithm</a> with
-          <em>request</em> and <em>name</em>.
+          <var>request</var> and <var>name</var>.
           </li>
         </ol>
       </section>
@@ -1876,27 +1869,27 @@
         <p>
           The <dfn>PaymentRequest updated algorithm</dfn> is run by other
           algorithms above to fire an event to indicate that a user has made a
-          change to a <a>PaymentRequest</a> called <em>request</em> with an
-          event name of <em>name</em>.
+          change to a <a>PaymentRequest</a> called <var>request</var> with an
+          event name of <var>name</var>.
         </p>
         <p>
           It MUST run the following steps:
         </p>
         <ol>
-          <li>If the <em>request</em>@<a>[[\updating]]</a> is <em>true</em>,
-          then terminate this algorithm and take no further action. Only one
-          update may take place at a time. This should never occur.
+          <li>If the <var>request</var>@<a>[[\updating]]</a> is true, then
+          terminate this algorithm and take no further action. Only one update
+          may take place at a time. This should never occur.
           </li>
-          <li>If the <em>request</em>@<a>[[\state]]</a> is not set to
-          <em>interactive</em>, then terminate this algorithm and take no
-          further action. The <a>user agent</a> user interface should ensure
-          that this never occurs.
+          <li>If the <var>request</var>@<a>[[\state]]</a> is not set to
+          <i>interactive</i>, then terminate this algorithm and take no further
+          action. The <a>user agent</a> user interface should ensure that this
+          never occurs.
           </li>
-          <li>Let <em>event</em> be a new <a>PaymentRequestUpdateEvent</a>.
+          <li>Let <var>event</var> be a new <a>PaymentRequestUpdateEvent</a>.
           </li>
           <li>
-            <a>Queue a task</a> to <a>fire an event</a> named <em>name</em> of
-            type <em>event</em> at <em>request</em>.
+            <a>Queue a task</a> to <a>fire an event</a> named <var>name</var>
+            of type <var>event</var> at <var>request</var>.
           </li>
         </ol>
       </section>
@@ -1911,72 +1904,72 @@
           following steps:
         </p>
         <ol>
-          <li>Let <em>request</em> be the <a>PaymentRequest</a> object that the
-          user is interacting with.
+          <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
+          the user is interacting with.
           </li>
-          <li>If the <em>request</em>@<a>[[\updating]]</a> is <em>true</em>,
-          then terminate this algorithm and take no further action. The <a>user
+          <li>If the <var>request</var>@<a>[[\updating]]</a> is true, then
+          terminate this algorithm and take no further action. The <a>user
           agent</a> user interface should ensure that this never occurs.
           </li>
-          <li>If <em>request</em>@<a>[[\state]]</a> is not
-          <em>interactive</em>, then terminate this algorithm and take no
-          further action. The <a>user agent</a> user interface should ensure
-          that this never occurs.
+          <li>If <var>request</var>@<a>[[\state]]</a> is not
+          <i>interactive</i>, then terminate this algorithm and take no further
+          action. The <a>user agent</a> user interface should ensure that this
+          never occurs.
           </li>
           <li>If the <code>requestShipping</code> value of
-          <em>request</em>@<a>[[\options]]</a> is <code>true</code>, then if
-          the <code>shippingAddress</code> attribute of <em>request</em> is
+          <var>request</var>@<a>[[\options]]</a> is true, then if the
+          <code>shippingAddress</code> attribute of <var>request</var> is
           <code>null</code> or if the <code>shippingOption</code> attribute of
-          <em>request</em> is <code>null</code>, then terminate this algorithm
-          and take no further action. This should never occur.
+          <var>request</var> is <code>null</code>, then terminate this
+          algorithm and take no further action. This should never occur.
           </li>
-          <li>Let <em>response</em> be a new <a>PaymentResponse</a>.
+          <li>Let <var>response</var> be a new <a>PaymentResponse</a>.
           </li>
           <li>Set the <code>methodName</code> attribute value of
-          <em>response</em> to the <a>payment method identifier</a> for the <a>
-            payment method</a> that the user selected to accept the payment.
+          <var>response</var> to the <a>payment method identifier</a> for the
+          <a>payment method</a> that the user selected to accept the payment.
           </li>
-          <li>Set the <code>details</code> attribute value of <em>response</em>
-          to a <a>JSON-serializable object</a> containing the <a>payment
-          method</a> specific message that will be used by the merchant to
-          process the transaction. The format of this response will be defined
-          for each <a>payment method</a>.
-          </li>
-          <li>If the <code>requestShipping</code> value of
-          <em>request</em>@<a>[[\options]]</a> is <code>true</code>, then copy
-          the <code>shippingAddress</code> attribute of <em>request</em> to the
-          <a data-lt="PaymentResponse.shippingAddress">shippingAddress</a>
-          attribute of <em>response</em>.
+          <li>Set the <code>details</code> attribute value of
+          <var>response</var> to a <a>JSON-serializable object</a> containing
+          the <a>payment method</a> specific message that will be used by the
+          merchant to process the transaction. The format of this response will
+          be defined for each <a>payment method</a>.
           </li>
           <li>If the <code>requestShipping</code> value of
-          <em>request</em>@<a>[[\options]]</a> is <code>true</code>, then copy
-          the <code>shippingOption</code> attribute of <em>request</em> to the
-          <a data-lt="PaymentResponse.shippingOption">shippingOption</a>
-          attribute of <em>response</em>.
+          <var>request</var>@<a>[[\options]]</a> is true, then copy the <code>
+            shippingAddress</code> attribute of <var>request</var> to the
+            <a data-lt="PaymentResponse.shippingAddress">shippingAddress</a>
+            attribute of <var>response</var>.
+          </li>
+          <li>If the <code>requestShipping</code> value of
+          <var>request</var>@<a>[[\options]]</a> is true, then copy the <code>
+            shippingOption</code> attribute of <var>request</var> to the
+            <a data-lt="PaymentResponse.shippingOption">shippingOption</a>
+            attribute of <var>response</var>.
           </li>
           <li>If the <code>requestPayerName</code> value of
-          <em>request</em>@<a>[[\options]]</a> is <code>true</code>, then set
-          the <a data-lt="PaymentResponse.payerName">payerName</a> attribute of
-          <em>response</em> to the payer's name provided by the user.
+          <var>request</var>@<a>[[\options]]</a> is true, then set the
+          <a data-lt="PaymentResponse.payerName">payerName</a> attribute of
+          <var>response</var> to the payer's name provided by the user.
           </li>
           <li>If the <code>requestPayerEmail</code> value of
-          <em>request</em>@<a>[[\options]]</a> is <code>true</code>, then set
-          the <a data-lt="PaymentResponse.payerEmail">payerEmail</a> attribute
-          of <em>response</em> to the payer's email address selected by the
+          <var>request</var>@<a>[[\options]]</a> is true, then set the
+          <a data-lt="PaymentResponse.payerEmail">payerEmail</a> attribute of
+          <var>response</var> to the payer's email address selected by the
           user.
           </li>
           <li>If the <code>requestPayerPhone</code> value of
-          <em>request</em>@<a>[[\options]]</a> is <code>true</code>, then set
-          the <code>payerPhone</code> attribute of <em>response</em> to the
+          <var>request</var>@<a>[[\options]]</a> is true, then set the
+          <code>payerPhone</code> attribute of <var>response</var> to the
           payer's phone number selected by the user.
           </li>
-          <li>Set <em>response</em>@<a>[[\completeCalled]]</a> to
-          <em>false</em>.
+          <li>Set <var>response</var>@<a>[[\completeCalled]]</a> to false.
           </li>
-          <li>Set <em>request</em>@<a>[[\state]]</a> to <em>closed</em>.
+          <li>Set <var>request</var>@<a>[[\state]]</a> to <i>closed</i>.
           </li>
           <li>Resolve the pending promise
-          <em>request</em>@<a>[[\acceptPromise]]</a> with <em>response</em>.
+          <var>request</var>@<a>[[\acceptPromise]]</a> with
+          <var>response</var>.
           </li>
         </ol>
       </section>
@@ -2058,19 +2051,43 @@
         <dd>
           The following are defined by [[!HTML51]]:
           <ul>
-            <li><dfn>queue a task</dfn></li>
-            <li><dfn>node document</dfn></li>
-            <li><dfn>browsing context</dfn></li>
-            <li><dfn>browsing context container</dfn></li>
-            <li><dfn>nested browsing context</dfn></li>
-            <li><dfn>responsible browsing context</dfn></li>
-            <li><dfn>ancestor browsing context</dfn></li>
-            <li><dfn>top-level browsing context</dfn></li>
-            <li><dfn>current settings object</dfn></li>
-            <li><dfn>allowed to use</dfn></li>
-            <li><dfn>active document</dfn></li>
-            <li>the <dfn>iframe</dfn> element</li>
-            <li>the <dfn>allowpaymentrequest</dfn> attribute</li>
+            <li>
+              <dfn>queue a task</dfn>
+            </li>
+            <li>
+              <dfn>node document</dfn>
+            </li>
+            <li>
+              <dfn>browsing context</dfn>
+            </li>
+            <li>
+              <dfn>browsing context container</dfn>
+            </li>
+            <li>
+              <dfn>nested browsing context</dfn>
+            </li>
+            <li>
+              <dfn>responsible browsing context</dfn>
+            </li>
+            <li>
+              <dfn>ancestor browsing context</dfn>
+            </li>
+            <li>
+              <dfn>top-level browsing context</dfn>
+            </li>
+            <li>
+              <dfn>current settings object</dfn>
+            </li>
+            <li>
+              <dfn>allowed to use</dfn>
+            </li>
+            <li>
+              <dfn>active document</dfn>
+            </li>
+            <li>the <dfn>iframe</dfn> element
+            </li>
+            <li>the <dfn>allowpaymentrequest</dfn> attribute
+            </li>
           </ul>
         </dd>
         <dt>
@@ -2081,8 +2098,9 @@
           <dfn><code>TypeError</code></dfn>, <dfn>JSON.stringify</dfn>, and
           <dfn>JSON.parse</dfn> are defined by [[!ECMA-262-2015]].
           <p>
-            This document uses the format <em>object</em>@[[\slotname]] to mean
-            the internal slot [[\slotname]] of the object <em>object</em>.
+            This document uses the format <var>object</var>@[[\slotname]] to
+            mean the internal slot [[\slotname]] of the object
+            <var>object</var>.
           </p>
           <p>
             The term <dfn>JSON-serializable object</dfn> used in this
