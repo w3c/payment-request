@@ -125,11 +125,18 @@
         every transaction: the merchant (e.g., an online web store), the buyer
         represented by the <a>user agent</a> (e.g., the user buying from the
         online web store), and the <dfn data-lt=
-        "payment method|payment methods">Payment Method</dfn> (e.g., credit
+        "payment method|payment methods">payment method</dfn> (e.g., credit
         card). Information necessary to process and confirm a transaction is
-        passed between the <a>Payment Method</a> and the merchant via the
+        passed between the <a>payment method</a> and the merchant via the
         <a>user agent</a> with the buyer confirming and authorizing as
         necessary across the flow.
+      </p>
+      <p>
+        The details of how to fulfill a payment request for a given <a>payment
+        method</a> are handled by <dfn data-lt=
+        "payment app|payment apps">payment apps</dfn>. In this specification,
+        these details are left up to the <a>user agent</a>, but future
+        specifications may expand on the processing model in more detail.
       </p>
       <p>
         In addition to better, more consistent user experiences, this also
@@ -276,13 +283,15 @@
         </h2>
         <p>
           The <a>PaymentRequest</a> is constructed using the supplied
-          <code>methodData</code> list including any <a>payment method</a>
-          specific <code>data</code>, the payment <code>details</code>, and the
-          payment <code>options</code>.
+          <var>methodData</var> list including any <a>payment method</a>
+          specific <a data-lt="PaymentMethodData.data">data</a>, the payment
+          <var>details</var>, and the payment <var>options</var>. The
+          <var>methodData</var> supplied to the <a>PaymentRequest</a>
+          constructor SHOULD be in the order of preference of the caller.
         </p>
         <div class="note">
           <p>
-            The <code>methodData</code> sequence contains
+            The <var>methodData</var> sequence contains
             <a>PaymentMethodData</a> dictionaries containing the <a>payment
             method identifiers</a> for the <a>payment methods</a> that the web
             site accepts and any associated <a>payment method</a> specific
@@ -305,7 +314,7 @@
             const request = new PaymentRequest(methodData, details, options);
           </pre>
           <p>
-            The <code>details</code> object contains information about the
+            The <var>details</var> object contains information about the
             transaction that the user is being asked to complete such as the
             line items in an order.
           </p>
@@ -329,7 +338,7 @@
             const request = new PaymentRequest(methodData, details, options);
           </pre>
           <p>
-            The <code>options</code> object contains information about what
+            The <var>options</var> object contains information about what
             options the web page wishes to use from the payment request system.
           </p>
           <pre class="example" title="The 'options' argument">
@@ -364,6 +373,8 @@
               </li>
             </ol>
           </li>
+          <li>Let <var>parsedMethodData</var> be an empty list.
+          </li>
           <li>Process payment methods:
             <ol>
               <li>If the length of the <var>methodData</var> sequence is zero,
@@ -379,12 +390,17 @@
                     method</a> needs to include at least one <a>payment method
                     identifier</a>.
                   </li>
-                  <li>If the <a data-lt="PaymentMethodData.data">data</a>
-                  member of <var>paymentMethod</var> is present, but
-                  <var>paymentMethod</var>.<a data-lt=
-                  "PaymentMethodData.data">data</a> is not a
-                  <a>JSON-serializable object</a>, then <a>throw</a> a
-                  <a>TypeError</a>.
+                  <li>Let <var>parsedData</var> be the result of
+                  <a>JSON-serializing</a>
+                    <var>paymentMethod</var>.<a data-lt="PaymentMethodData.data">data</a>
+                    into a string, if the <a data-lt=
+                    "PaymentMethodData.data">data</a> member of
+                    <var>paymentMethod</var> is present, or null if it is not.
+                    Rethrow any exceptions.
+                  </li>
+                  <li>Add the tuple (<var>paymentMethod</var>.<a data-lt=
+                  "PaymentMethodData.supportedMethods">supportedMethods</a>,
+                  <var>parsedData</var>) to <var>parsedMethodData</var>.
                   </li>
                 </ol>
               </li>
@@ -558,18 +574,8 @@
           </li>
           <li>Set <var>request</var>.<a>[[\details]]</a> to <var>details</var>.
           </li>
-          <li>
-            <p>
-              Set <var>request</var>.<a>[[\methodData]]</a> to
-              <var>methodData</var>.
-            </p>
-            <p>
-              The <var>methodData</var> supplied to the <a>PaymentRequest</a>
-              constructor SHOULD be in the order of preference of the caller.
-              Implementations MAY show payment methods in this order if
-              possible but SHOULD prioritize the preference of the user when
-              presenting payment methods.
-            </p>
+          <li>Set <var>request</var>.<a>[[\parsedMethodData]]</a> to
+          <var>parsedMethodData</var>.
           </li>
           <li>Set the value of <var>request</var>'s <a data-lt=
           "PaymentRequest.shippingOption">shippingOption</a> attribute to <var>
@@ -638,22 +644,36 @@
           <li>Return <var>acceptPromise</var> and perform the remaining steps
           <a>in parallel</a>.
           </li>
-          <li>Let <var>supportedMethods</var> be the union of all the
-          <code>supportedMethods</code> sequences from each
-          <a>PaymentMethodData</a> in the
-          <var>request</var>.<a>[[\methodData]]</a> sequence.
+          <li>For each <var>paymentMethod</var> in
+          <var>request</var>.<a>[[\parsedMethodData]]</a>:
+            <ol>
+              <li>Consult the appropriate <a>payment apps</a> to see if they
+              support any of the <a>payment method identifiers</a> given by the
+              first element of the <var>paymentMethod</var> tuple, passing
+              along the data string given by the second element of the tuple in
+              order to help them determine their support.
+              </li>
+            </ol>
           </li>
-          <li>Let <var>acceptedMethods</var> be <var>supportedMethods</var>
-          with all identifiers removed that the <a>user agent</a> does not
-          accept.
+          <li>If this consultation produced no supported method of paying, then
+          reject <var>acceptPromise</var> with a <a>NotSupportedError</a>, and
+          abort this algorithm.
           </li>
-          <li>If the length of <var>acceptedMethods</var> is zero, then reject
-          <var>acceptPromise</var> with a <a>NotSupportedError</a>.
-          </li>
-          <li>Show a user interface to allow the user to interact with the
-          payment request process. The <var>acceptPromise</var> will later be
-          resolved by the <a>user accepts the payment request algorithm</a>
-          through interaction with the user interface.
+          <li>
+            <p>
+              Otherwise, show a user interface to allow the user to interact
+              with the payment request process, using those <a>payment apps</a>
+              and <a>payment methods</a> which the above step identified as
+              feasible. The user agent MAY show payment methods in the order
+              given by <var>supportedMethods</var>, but SHOULD prioritize the
+              preference of the user when presenting payment methods and
+              applications.
+            </p>
+            <p>
+              The <var>acceptPromise</var> will later be resolved by the
+              <a>user accepts the payment request algorithm</a> through
+              interaction with the user interface.
+            </p>
           </li>
         </ol>
       </section>
@@ -830,10 +850,12 @@
           </tr>
           <tr>
             <td>
-              <dfn>[[\methodData]]</dfn>
+              <dfn>[[\parsedMethodData]]</dfn>
             </td>
             <td>
-              The <code>methodData</code> supplied to the constructor.
+              The <code>methodData</code> supplied to the constructor, but
+              represented as tuples containing supported methods and a string
+              or null for data (instead of the original object form).
             </td>
           </tr>
           <tr>
@@ -920,9 +942,9 @@
           <dfn>data</dfn>
         </dt>
         <dd>
-          <a data-lt="PaymentMethodData.data">data</a> is a
-          <a>JSON-serializable object</a> that provides optional information
-          that might be needed by the supported payment methods.
+          <a data-lt="PaymentMethodData.data">data</a> is an object that
+          provides optional information that might be needed by the supported
+          payment methods. If supplied, it will be <a>JSON-serialized</a>.
         </dd>
       </dl>
     </section>
@@ -1055,7 +1077,8 @@
           <p>
             The <code>shippingOptions</code> field is only used if the
             <a>PaymentRequest</a> was constructed with <a>PaymentOptions</a>
-            <code>requestShipping</code> set to true.
+            <a data-lt="PaymentOptions.requestShipping">requestShipping</a> set
+            to true.
           </p>
           <p class="note">
             If the sequence has an item with the <code>selected</code> field
@@ -1529,11 +1552,10 @@
           <dfn>details</dfn>
         </dt>
         <dd>
-          A <a>JSON-serializable object</a> that provides a <a>payment
-          method</a> specific message used by the merchant to process the
-          transaction and determine successful fund transfer. This data is
-          returned by the <a>payment method</a> specific code that satisfies
-          the payment request.
+          An object that provides a <a>payment method</a> specific message used
+          by the merchant to process the transaction and determine successful
+          fund transfer. This data is returned by the <a>payment method</a>
+          specific code that satisfies the payment request.
         </dd>
         <dt>
           <dfn>shippingAddress</dfn>
@@ -2159,52 +2181,68 @@
           action. The <a>user agent</a> user interface should ensure that this
           never occurs.
           </li>
-          <li>If the <code>requestShipping</code> value of
+          <li>If the <a data-lt=
+          "PaymentOptions.requestShipping">requestShipping</a> value of
           <var>request</var>.<a>[[\options]]</a> is true, then if the
-          <code>shippingAddress</code> attribute of <var>request</var> is
-          <code>null</code> or if the <code>shippingOption</code> attribute of
-          <var>request</var> is <code>null</code>, then terminate this
-          algorithm and take no further action. This should never occur.
+          <a data-lt="PaymentRequest.shippingAddress">shippingAddress</a>
+          attribute of <var>request</var> is null or if the <a data-lt=
+          "PaymentRequest.shippingOption">shippingOption</a> attribute of <var>
+            request</var> is null, then terminate this algorithm and take no
+            further action. This should never occur.
           </li>
           <li>Let <var>response</var> be a new <a>PaymentResponse</a>.
           </li>
-          <li>Set the <code>methodName</code> attribute value of
-          <var>response</var> to the <a>payment method identifier</a> for the
-          <a>payment method</a> that the user selected to accept the payment.
+          <li>Set the <a data-lt="PaymentResponse.methodName">methodName</a>
+          attribute value of <var>response</var> to the <a>payment method
+          identifier</a> for the <a>payment method</a> that the user selected
+          to accept the payment.
           </li>
-          <li>Set the <code>details</code> attribute value of
-          <var>response</var> to a <a>JSON-serializable object</a> containing
-          the <a>payment method</a> specific message that will be used by the
+          <li>Set the <a data-lt="PaymentResponse.details">details</a>
+          attribute value of <var>response</var> to an object containing the
+          <a>payment method</a> specific message that will be used by the
           merchant to process the transaction. The format of this response will
-          be defined for each <a>payment method</a>.
+          be defined for each <a>payment method</a>, and the contents of the
+          response will be determined by the <a>payment app</a> used. If the
+          response is provided as a Web IDL dictionary, first <a data-lt=
+          "converting a dictionary to an ECMAScript value">convert it</a> to an
+          ECMAScript object.
           </li>
-          <li>If the <code>requestShipping</code> value of
-          <var>request</var>.<a>[[\options]]</a> is true, then copy the <code>
-            shippingAddress</code> attribute of <var>request</var> to the
-            <a data-lt="PaymentResponse.shippingAddress">shippingAddress</a>
-            attribute of <var>response</var>.
+          <li>If the <a data-lt=
+          "PaymentOptions.requestShipping">requestShipping</a> value of
+          <var>request</var>.<a>[[\options]]</a> is true, then:
+            <ol>
+              <li>Set the <a data-lt=
+              "PaymentRequest.shippingAddress">shippingAddress</a> attribute of
+              <var>request</var> to the <a data-lt=
+              "PaymentResponse.shippingAddress">shippingAddress</a> attribute
+              of <var>response</var>.
+              </li>
+              <li>Set the <a data-lt=
+              "PaymentRequest.shippingOption">shippingOption</a> attribute of
+              <var>request</var> to the <a data-lt=
+              "PaymentResponse.shippingOption">shippingOption</a> attribute of
+              <var>response</var>.
+              </li>
+            </ol>
           </li>
-          <li>If the <code>requestShipping</code> value of
-          <var>request</var>.<a>[[\options]]</a> is true, then copy the <code>
-            shippingOption</code> attribute of <var>request</var> to the
-            <a data-lt="PaymentResponse.shippingOption">shippingOption</a>
-            attribute of <var>response</var>.
+          <li>If the <a data-lt=
+          "PaymentOptions.requestPayerName">requestPayerName</a> value of <var>
+            request</var>.<a>[[\options]]</a> is true, then set the <a data-lt=
+            "PaymentResponse.payerName">payerName</a> attribute of
+            <var>response</var> to the payer's name provided by the user.
           </li>
-          <li>If the <code>requestPayerName</code> value of
-          <var>request</var>.<a>[[\options]]</a> is true, then set the
-          <a data-lt="PaymentResponse.payerName">payerName</a> attribute of
-          <var>response</var> to the payer's name provided by the user.
-          </li>
-          <li>If the <code>requestPayerEmail</code> value of
+          <li>If the <a data-lt=
+          "PaymentOptions.requestPayerEmail">requestPayerEmail</a> value of
           <var>request</var>.<a>[[\options]]</a> is true, then set the
           <a data-lt="PaymentResponse.payerEmail">payerEmail</a> attribute of
           <var>response</var> to the payer's email address selected by the
           user.
           </li>
-          <li>If the <code>requestPayerPhone</code> value of
+          <li>If the <a data-lt=
+          "PaymentOptions.requestPayerPhone">requestPayerPhone</a> value of
           <var>request</var>.<a>[[\options]]</a> is true, then set the
-          <code>payerPhone</code> attribute of <var>response</var> to the
-          payer's phone number selected by the user.
+          <a data-lt="PaymentResponse.payerPhone">payerPhone</a> attribute of
+          <var>response</var> to the payer's phone number selected by the user.
           </li>
           <li>Set <var>response</var>.<a>[[\completeCalled]]</a> to false.
           </li>
@@ -2284,9 +2322,8 @@
         </dt>
         <dd>
           The term <dfn data-lt=
-          "payment method identifier|payment method identifiers">Payment Method
-          Identifier</dfn> is defined by the Payment Method Identifiers
-          specification [[!METHOD-IDENTIFIERS]].
+          "payment method identifier|payment method identifiers">payment method
+          identifier</dfn> is defined by [[!METHOD-IDENTIFIERS]].
         </dd>
         <dt>
           HTML 5.1
@@ -2345,9 +2382,17 @@
           <dfn>JSON.parse</dfn> are defined by [[!ECMA-262-2015]].
           <p>
             The term <dfn>JSON-serializable object</dfn> used in this
-            specification means an object that can be serialized to a string
-            using <a>JSON.stringify</a> and later deserialized back to an
-            object using <a>JSON.parse</a> with no loss of data.
+            specification is not well defined; see <a href=
+            "https://github.com/w3c/browser-payment-api/issues/307">issue
+            #307</a>.
+          </p>
+          <p>
+            The term <dfn data-lt=
+            "JSON-serialize|JSON-serialized|JSON-serializing">JSON-serialize</dfn>
+            applied to a given object means to run the algorithm specified by
+            the original value of the <a>JSON.stringify</a> function on the
+            supplied object, passing the supplied object as the sole argument,
+            and return the resulting string. This can throw an exception.
           </p>
         </dd>
         <dt>
@@ -2437,7 +2482,8 @@
           </p>
           <p>
             The algorithm for <dfn>converting an ECMAScript value to a
-            dictionary</dfn> is defined by [[!WEBIDL-2]].
+            dictionary</dfn> and for <dfn>converting a dictionary to an
+            ECMAScript value</dfn> is defined by [[!WEBIDL-2]].
           </p>
         </dd>
         <dt>
