@@ -381,6 +381,21 @@
                   <a>JSON-serializable object</a>, then <a>throw</a> a
                   <a>TypeError</a>.
                   </li>
+                  <li>For each <var>supportedMethod</var> of
+                  <var>paymentMethod</var>.<a data-lt=
+                  "PaymentMethodData.supportedMethods">supportedMethods</a>:
+                    <ol>
+                      <li>Perform the <a>validate payment method data
+                      algorithm</a> for the <a>payment method</a> identified by
+                      <var>supportedMethod</var>, passing in
+                      <var>paymentMethod</var>.<a data-lt=
+                      "PaymentMethodData.data">data</a> if the <a data-lt=
+                      "PaymentMethodData.data">data</a> member of
+                      <var>paymentMethod</var> is present, or null if it is
+                      not. Rethrow any exceptions.
+                      </li>
+                    </ol>
+                  </li>
                 </ol>
               </li>
             </ol>
@@ -2280,6 +2295,13 @@
           specification [[SECURE-CONTEXTS]].
         </dd>
       </dl>
+      <p>
+        Additionally, each <a>payment method</a> must have a <dfn>validate
+        payment method data algorithm</dfn> defined in its specification, which
+        takes payment method data: either an object, or null in the case no
+        data was passed. This algorithm must throw an exception if the given
+        data is not appropriate for that payment method.
+      </p>
     </section>
     <section id="conformance">
       <p>
