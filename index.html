@@ -207,6 +207,7 @@
           Promise&lt;void&gt; abort();
           Promise&lt;boolean&gt; canMakePayment();
 
+          readonly attribute DOMString? paymentRequestID;
           readonly attribute PaymentAddress? shippingAddress;
           readonly attribute DOMString? shippingOption;
           readonly attribute PaymentShippingType? shippingType;
@@ -342,6 +343,9 @@
           The <a>PaymentRequest</a> constructor MUST act as follows:
         </p>
         <ol>
+          <li>
+            If a <code>paymentRequestID</code> was not provided during construction, generate a <code>paymentRequestID</code>.  
+          </li>
           <li>If the length of the <var>methodData</var> sequence is zero, then
           <a>throw</a> a <a>TypeError</a>; optionally informing the developer
           that at least one <a>payment method</a> is required.
@@ -1392,6 +1396,7 @@
         interface PaymentResponse {
           serializer = { attribute };
 
+          readonly attribute DOMString paymentRequestID;
           readonly attribute DOMString methodName;
           readonly attribute object details;
           readonly attribute PaymentAddress? shippingAddress;
@@ -1409,6 +1414,10 @@
         following fields:
       </p>
       <dl>
+        <dt><code><dfn>paymentRequestID</dfn></code></dt>
+        <dd>
+          The same <code>paymentRequestID</code> present in the original <code>PaymentRequest</code>.
+        </dd>
         <dt>
           <dfn>methodName</dfn>
         </dt>
