@@ -205,7 +205,6 @@
         interface PaymentRequest : EventTarget {
           Promise&lt;PaymentResponse&gt; show();
           Promise&lt;void&gt; abort();
-          
           Promise&lt;boolean&gt; canMakePayment();
 
           readonly attribute DOMString? paymentRequestID;
@@ -343,7 +342,6 @@
         <p>
           The <a>PaymentRequest</a> constructor MUST act as follows:
         </p>
-
         <ol>
           <li>
             If a <code>paymentRequestID</code> was not provided during construction, generate a <code>paymentRequestID</code>.  
