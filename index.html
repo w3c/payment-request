@@ -346,21 +346,6 @@
           <li>
             If a <code>paymentRequestID</code> was not provided during construction, generate a <code>paymentRequestID</code>.  
           </li>
-          <li>If the length of the <var>methodData</var> sequence is zero, then
-          <a>throw</a> a <a>TypeError</a>; optionally informing the developer
-          that at least one <a>payment method</a> is required.
-          </li>
-          <li>For each <var>paymentMethod</var> of <var>methodData</var>:
-            <ol>
-              <li>If the length of the <a data-lt=
-              "PaymentMethodData.supportedMethods">supportedMethods</a>
-              sequence is zero, then <a>throw</a> a <a>TypeError</a>;
-              optionally informing the developer that each <a>payment
-              method</a> needs to include at least one <a>payment method
-              identifier</a>.
-              </li>
-            </ol>
-          </li>
           <li>If the <a>current settings object</a> has a <a>responsible
           browsing context</a> that is not a <a>top-level browsing context</a>,
           then
@@ -379,69 +364,199 @@
               </li>
             </ol>
           </li>
-          <li>If the <var>details</var> argument does not contain a value for
-          <a data-lt="PaymentDetails.total">total</a>, then throw a
-          <a>TypeError</a>; optionally informing the developer that including a
-          <a data-lt="PaymentDetails.total">total</a> is required.
-          </li>
-          <li>If <a data-lt=
-          "PaymentCurrencyAmount.value">details.total.amount.value</a> is not a
-          <a>valid decimal monetary value</a>, then throw a <a>TypeError</a>;
-          optionally informing the developer that the value is invalid.
-          </li>
-          <li>If the first character of <a data-lt=
-          "PaymentCurrencyAmount.value">details.total.amount.value</a> is
-          U+002D HYPHEN-MINUS, then throw a <a>TypeError</a>; optionally
-          informing the developer that <a data-lt=
-          "PaymentCurrencyAmount.value">total</a> can't be a negative amount
-          value.
-          </li>
-          <li>If the sequence of <a data-lt=
-          "PaymentDetails.displayItems">details.displayItems</a> contains any
-          <a>PaymentItem</a> objects with an <a data-lt=
-          "PaymentItem.amount">amount</a> that is not a <a>valid decimal
-          monetary value</a>, then throw a <a>TypeError</a>; optionally
-          informing the developer that the value is invalid.
-          </li>
-          <li>If the sequence of <a data-lt=
-          "PaymentDetails.shippingOptions">details.shippingOptions</a> contains
-          any <a>PaymentShippingOption</a> objects with an <a data-lt=
-          "PaymentShippingOption.amount">amount</a> that is not a <a>valid
-          decimal monetary value</a>, then throw a <a>TypeError</a>; optionally
-          informing the developer that the value is invalid.
-          </li>
-          <li>If <code>details</code> contains a value for <code>error</code>,
-          then throw a <a>TypeError</a>.
-          </li>
-          <li>For each <var>paymentMethod</var> in the <var>methodData</var>
-          argument, if the <a data-lt="PaymentMethodData.data">data</a> field
-          is supplied but is not a <a>JSON-serializable object</a>, then
-          <a>throw</a> a <a>TypeError</a>.
-          </li>
-          <li>For each <var>paymentDetailsModifier</var> in <a data-lt=
-          "PaymentDetails.modifiers">details.modifiers</a>:
+          <li>Process payment methods:
             <ol>
-              <li>If the <a data-lt="PaymentDetails.total">total</a> field is
-              supplied and is not a <a>valid decimal monetary value</a>, then
-              throw a <a>TypeError</a>; optionally informing the developer that
-              the value is invalid.
+              <li>If the length of the <var>methodData</var> sequence is zero,
+              then <a>throw</a> a <a>TypeError</a>, optionally informing the
+              developer that at least one <a>payment method</a> is required.
               </li>
-              <li>If the <a data-lt="PaymentDetails.total">total</a> field is
-              supplied and the first character of
-              <code>total.amount.value</code> is U+002D HYPHEN-MINUS, then
-              throw a <a>TypeError</a>; optionally informing the developer that
-              the value can't be non-negative amount.
-              </li>
-              <li>If the sequence of <a data-lt=
-              "PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>
-              contains any <a>PaymentItem</a> objects with an <a data-lt=
-              "PaymentItem.amount">amount</a> that is not a <a>valid decimal
-              monetary value</a>, then throw a <a>TypeError</a>; optionally
-              informing the developer that the value is invalid.
+              <li>For each <var>paymentMethod</var> of <var>methodData</var>:
+                <ol>
+                  <li>If the length of the
+                    <var>paymentMethod</var>.<a data-lt="PaymentMethodData.supportedMethods">supportedMethods</a>
+                    sequence is zero, then <a>throw</a> a <a>TypeError</a>,
+                    optionally informing the developer that each <a>payment
+                    method</a> needs to include at least one <a>payment method
+                    identifier</a>.
+                  </li>
+                  <li>If the <a data-lt="PaymentMethodData.data">data</a>
+                  member of <var>paymentMethod</var> is present, but
+                  <var>paymentMethod</var>.<a data-lt=
+                  "PaymentMethodData.data">data</a> is not a
+                  <a>JSON-serializable object</a>, then <a>throw</a> a
+                  <a>TypeError</a>.
+                  </li>
+                </ol>
               </li>
             </ol>
           </li>
+          <li>Process the total:
+            <ol>
+              <li>If the <a data-lt="PaymentDetails.total">total</a> member of
+              <var>details</var> is not present, then <a>throw</a> a
+              <a>TypeError</a>, optionally informing the developer that
+              including <a data-lt="PaymentDetails.total">total</a> is
+              required.
+              </li>
+              <li>If <var>details</var>.<a data-lt=
+              "PaymentDetails.total">total</a>.<a data-lt=
+              "PaymentItem.amount">amount</a>.<a data-lt=
+              "PaymentCurrencyAmount.value">value</a> is not a <a>valid decimal
+              monetary value</a>, then <a>throw</a> a <a>TypeError</a>;
+              optionally informing the developer that the value is invalid.
+              </li>
+              <li>If the first character of <var>details</var>.<a data-lt=
+              "PaymentDetails.total">total</a>.<a data-lt=
+              "PaymentItem.amount">amount</a>.<a data-lt=
+              "PaymentCurrencyAmount.value">value</a> is U+002D HYPHEN-MINUS,
+              then <a>throw</a> a <a>TypeError</a>, optionally informing the
+              developer that the total can't be negative.
+              </li>
+            </ol>
+          </li>
+          <li>If the <a data-lt="PaymentDetails.displayItems">displayItems</a>
+          member of <var>details</var> is present, then for each
+          <var>item</var> in <var>details</var>.<a data-lt=
+          "PaymentDetails.displayItems">displayItems</a>:
+            <ol>
+              <li>If <var>item</var>.<a data-lt=
+              "PaymentItem.amount">amount</a>.<a data-lt=
+              "PaymentCurrencyAmount.value">value</a> is not a <a>valid decimal
+              monetary value</a>, then <a>throw</a> a <a>TypeError</a>,
+              optionally informing the developer that the value is invalid.
+              </li>
+            </ol>
+          </li>
+          <li>Let <var>selectedShippingOption</var> be null.
+          </li>
+          <li>Process shipping options:
+            <ol>
+              <li>Let <var>options</var> be an empty
+              <code>sequence</code>&lt;<a>PaymentShippingOption</a>&gt;.
+              </li>
+              <li>If the <a data-lt=
+              "PaymentDetails.shippingOptions">shippingOptions</a> member of
+              <var>details</var> is present, then:
+                <ol>
+                  <li>Let <var>seenIDs</var> be an empty list.
+                  </li>
+                  <li>Set <var>options</var> to
+                    <var>details</var>.<a data-lt="PaymentDetails.shippingOptions">shippingOptions</a>.
+                  </li>
+                  <li>For each <var>option</var> in <var>options</var>:
+                    <ol>
+                      <li>If <var>option</var>.<a data-lt=
+                      "PaymentShippingOption.amount">amount</a>.<a data-lt=
+                      "PaymentCurrencyAmount.value">value</a> is not a <a>valid
+                      decimal monetary value</a>, then <a>throw</a> a
+                      <a>TypeError</a>, optionally informing the developer that
+                      the value is invalid.
+                      </li>
+                      <li>If <var>seenIDs</var> contains
+                      <var>option</var>.<a data-lt=
+                      "PaymentShippingOption.id">id</a>, then set
+                      <var>options</var> to an empty sequence and break.
+                      </li>
+                      <li>Append <var>option</var>.<a data-lt=
+                      "PaymentShippingOption.id">id</a> to <var>seenIDs</var>.
+                      </li>
+                    </ol>
+                  </li>
+                  <li>For each <var>option</var> in <var>options</var> (which
+                  may have been reset to the empty sequence in the previous
+                  step):
+                    <ol>
+                      <li>If <var>option</var>.<a data-lt=
+                      "PaymentShippingOption.selected">selected</a> is true,
+                      then set <var>selectedShippingOption</var> to
+                      <var>option</var>.<a data-lt=
+                      "PaymentShippingOption.id">id</a>.
+                      </li>
+                    </ol>
+                  </li>
+                </ol>
+              </li>
+              <li>Set <var>details</var>.<a data-lt=
+              "PaymentDetails.shippingOptions">shippingOptions</a> to
+              <var>options</var>.
+              </li>
+            </ol>
+          </li>
+          <li>Process payment details modifiers:
+            <ol>
+              <li>Let <var>modifiers</var> be an empty
+              <code>sequence</code>&lt;<a>PaymentDetailsModifier</a>&gt;.
+              </li>
+              <li>If the <a data-lt="PaymentDetails.modifiers">modifiers</a>
+              member of <var>details</var> is present, then:
+                <ol>
+                  <li>Set <var>modifiers</var> to
+                    <var>details</var>.<a data-lt="PaymentDetails.modifiers">modifiers</a>.
+                  </li>
+                  <li>For each <var>modifier</var> of <var>modifiers</var>:
+                    <ol>
+                      <li>If the <a data-lt=
+                      "PaymentDetailsModifier.total">total</a> member of <var>
+                        modifier</var> is present, then:
+                        <ol>
+                          <li>Let <var>value</var> be
+                          <var>modifier</var>.<a data-lt=
+                          "PaymentDetailsModifier.total">total</a>.<a data-lt="PaymentItem.amount">amount</a>.<a data-lt="PaymentCurrencyAmount.value">value</a>.
+                          </li>
+                          <li>If <var>value</var> is not a <a>valid decimal
+                          monetary value</a>, then throw a <a>TypeError</a>,
+                          optionally informing the developer that the value is
+                          invalid.
+                          </li>
+                          <li>If the first character of <var>value</var> is
+                          U+002D HYPHEN-MINUS, then throw a <a>TypeError</a>,
+                          optionally informing the developer that the value
+                          can't be negative.
+                          </li>
+                        </ol>
+                      </li>
+                      <li>If the <a data-lt=
+                      "PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>
+                      member of <var>modifier</var> is present, then for each
+                      <var>item</var> of <var>modifier</var>.<a data-lt=
+                      "PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>:
+                        <ol>
+                          <li>Let <var>value</var> be
+                          <var>item</var>.<a data-lt=
+                          "PaymentItem.amount">amount</a>.<a data-lt=
+                          "PaymentCurrencyAmount.value">value</a>.
+                          </li>
+                          <li>If <var>value</var> is not a <a>valid decimal
+                          monetary value</a>, then throw a <a>TypeError</a>,
+                          optionally informing the developer that the value is
+                          invalid.
+                          </li>
+                        </ol>
+                      </li>
+                    </ol>
+                  </li>
+                  <li>Set <var>details</var>.<a data-lt=
+                  "PaymentDetails.modifiers">modifiers</a> to
+                  <var>modifiers</var>.
+                  </li>
+                </ol>
+              </li>
+            </ol>
+          </li>
+          <li>If the <a data-lt="PaymentDetails.error">error</a> member of
+          <var>details</var> is present, then throw a <a>TypeError</a>,
+          optionally informing the developer that an error message cannot be
+          specified in the constructor.
+          </li>
           <li>Let <var>request</var> be a new <a>PaymentRequest</a>.
+          </li>
+          <li>Set <var>request</var>.<a>[[\options]]</a> to <var>options</var>.
+          </li>
+          <li>Set <var>request</var>.<a>[[\state]]</a> to <i>created</i>.
+          </li>
+          <li>Set <var>request</var>.<a>[[\updating]]</a> to false.
+          </li>
+          <li>Set <var>request</var>.<a>[[\details]]</a> to <var>details</var>.
           </li>
           <li>
             <p>
@@ -456,52 +571,34 @@
               presenting payment methods.
             </p>
           </li>
-          <li>Set <var>request</var>.<a>[[\details]]</a> to <var>details</var>.
-          </li>
-          <li>Set <var>request</var>.<a>[[\options]]</a> to <var>options</var>.
-          </li>
-          <li>Set <var>request</var>.<a>[[\state]]</a> to <i>created</i>.
+          <li>Set the value of <var>request</var>'s <a data-lt=
+          "PaymentRequest.shippingOption">shippingOption</a> attribute to <var>
+            selectedShippingOption</var>.
           </li>
           <li>Set the value of the <a data-lt="PaymentRequest.shippingAddress">
             shippingAddress</a> attribute on <var>request</var> to null.
-          </li>
-          <li>Set the value of the <a data-lt="PaymentRequest.shippingOption">
-            shippingOption</a> attribute on <var>request</var> to null.
           </li>
           <li>Set the value of the <a data-lt=
           "PaymentRequest.shippingType">shippingType</a> attribute on
           <var>request</var> to null.
           </li>
-          <li>If <code>options.requestShipping</code> is set to true, then set
-          the value of the <a data-lt=
+          <li>If <var>options</var>.<a data-lt=
+          "PaymentOptions.requestShipping">requestShipping</a> is set to true,
+          then set the value of the <a data-lt=
           "PaymentRequest.shippingType">shippingType</a> attribute on
-          <var>request</var> to <code>options.shippingType</code>. If
-          <code>options.shippingType</code> is not a valid
-          <a>PaymentShippingType</a> value then set the <a data-lt=
-          "PaymentRequest.shippingType">shippingType</a> attribute on
-          <var>request</var> to <code>"shipping"</code>.
+          <var>request</var> to <var>options</var>.<a data-lt=
+          "PaymentOptions.shippingType">shippingType</a>. If
+          <var>options</var>.<a data-lt=
+          "PaymentOptions.shippingType">shippingType</a> is not a valid
+          <a>PaymentShippingType</a> value then set the value of the
+            <a data-lt="PaymentRequest.shippingType">shippingType</a> attribute
+            on <var>request</var> to "<code>shipping</code>".
             <div class="note">
               This behavior allows a page to detect if it supplied an
               unsupported shipping type. This will be important if new shipping
               types are added to a future version of this specification but a
               page is run in a <a>user agent</a> supporting an earlier version.
             </div>
-          </li>
-          <li>If the <code>details.shippingOptions</code> sequence contains
-          multiple <a>PaymentShippingOption</a> objects that have the same
-          <code>id</code>, then set the <a data-lt=
-          "PaymentDetails.shippingOptions">shippingOptions</a> field of
-          <var>request</var>.<a>[[\details]]</a> to an empty sequence.
-          </li>
-          <li>If <var>request</var>.<a>[[\details]]</a> contains a
-          <code>shippingOptions</code> sequence and if any
-          <a>PaymentShippingOption</a> in the sequence has the
-          <code>selected</code> field set to true, then set <a data-lt=
-          "PaymentRequest.shippingOption">shippingOption</a> to the
-          <code>id</code> of the last <a>PaymentShippingOption</a> in the
-          sequence with <code>selected</code> set to true.
-          </li>
-          <li>Set <var>request</var>.<a>[[\updating]]</a> to false.
           </li>
           <li>Return <var>request</var>.
           </li>
