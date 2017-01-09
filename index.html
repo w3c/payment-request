@@ -343,8 +343,8 @@
           The <a>PaymentRequest</a> constructor MUST act as follows:
         </p>
         <ol>
-          <li>
-            If a <code>paymentRequestID</code> was not provided during construction, generate a <code>paymentRequestID</code>.  
+          <li>If a <code>paymentRequestID</code> was not provided during
+          construction, generate a <code>paymentRequestID</code>.
           </li>
           <li>If the <a>current settings object</a> has a <a>responsible
           browsing context</a> that is not a <a>top-level browsing context</a>,
@@ -1497,7 +1497,7 @@
           readonly attribute DOMString methodName;
           readonly attribute object details;
           readonly attribute PaymentAddress? shippingAddress;
-          readonly attribute DOMString?      shippingOption;
+          readonly attribute DOMString? shippingOption;
           readonly attribute DOMString? payerName;
           readonly attribute DOMString? payerEmail;
           readonly attribute DOMString? payerPhone;
@@ -1511,9 +1511,12 @@
         following fields:
       </p>
       <dl>
-        <dt><code><dfn>paymentRequestID</dfn></code></dt>
+        <dt>
+          <code><dfn>paymentRequestID</dfn></code>
+        </dt>
         <dd>
-          The same <code>paymentRequestID</code> present in the original <code>PaymentRequest</code>.
+          The same <code>paymentRequestID</code> present in the original
+          <code>PaymentRequest</code>.
         </dd>
         <dt>
           <dfn>methodName</dfn>
@@ -2247,8 +2250,8 @@
           Exposing user information
         </h2>
         <p>
-          The <a>user agent</a> MUST NOT share information about the user
-          to the web page (such as the shipping address) without user consent.
+          The <a>user agent</a> MUST NOT share information about the user to
+          the web page (such as the shipping address) without user consent.
         </p>
       </section>
       <section>
