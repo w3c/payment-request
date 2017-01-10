@@ -347,8 +347,8 @@
             If a <code>paymentRequestID</code> was not provided during construction, generate a <code>paymentRequestID</code>.  
           </li>
           <li>If the <a>current settings object</a>'s
-          <a>responsible document</a> is not <a>allowed to use</a> the feature
-          indicated by attribute name <a><code>allowpaymentrequest</code></a>,
+          <a data-cite="!html5#responsible-document">responsible document</a> is not <a>allowed to use</a> the feature
+          indicated by attribute name <a>allowpaymentrequest</a>,
           then <a>throw</a> a <a>SecurityError</a>.
           </li>
           <li>Process payment methods:
@@ -2283,9 +2283,6 @@
             </li>
             <li>
               <dfn>node document</dfn>
-            </li>
-            <li>
-              <dfn>responsible document</dfn>
             </li>
             <li>
               <dfn>top-level browsing context</dfn>
