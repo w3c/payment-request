@@ -134,7 +134,7 @@
       <p>
         The details of how to fulfill a payment request for a given <a>payment
         method</a> are handled by <dfn data-lt=
-        "payment app|payment apps">payment apps</dfn>. In this specification,
+        "payment app">payment apps</dfn>. In this specification,
         these details are left up to the <a>user agent</a>, but future
         specifications may expand on the processing model in more detail.
       </p>
@@ -202,7 +202,7 @@
         </div>
       </section>
     </section>
-    <section data-dfn-for="PaymentRequest">
+    <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
       <h2>
         <dfn>PaymentRequest</dfn> interface
       </h2>
@@ -411,9 +411,9 @@
               </li>
             </ol>
           </li>
-          <li>If the <a>displayItems</a>
-          member of <var>details</var> is present, then for each
-          <var>item</var> in <var>details</var>.<a>displayItems</a>:
+          <li>If the <a>displayItems</a> member of <var>details</var> is
+          present, then for each <var>item</var> in
+          <var>details</var>.<a>displayItems</a>:
             <ol>
               <li>If <var>item</var>.<a data-lt=
               "PaymentItem.amount">amount</a>.<a data-lt=
@@ -430,26 +430,29 @@
               <li>Let <var>options</var> be an empty
               <code>sequence</code>&lt;<a>PaymentShippingOption</a>&gt;.
               </li>
-              <li>If the <a>shippingOptions</a> member of
-              <var>details</var> is present, then:
+              <li>If the <a>shippingOptions</a> member of <var>details</var> is
+              present, then:
                 <ol data-link-for="PaymentShippingOption">
                   <li>Let <var>seenIDs</var> be an empty list.
                   </li>
                   <li>Set <var>options</var> to
-                    <var>details</var>.<a>shippingOptions</a>.
+                  <var>details</var>.<a data-link-for=
+                  "PaymentDetails">shippingOptions</a>.
                   </li>
                   <li>For each <var>option</var> in <var>options</var>:
                     <ol>
-                      <li>If <var>option</var>.<a>amount</a>.<a>value</a> is not a <a>valid
-                      decimal monetary value</a>, then <a>throw</a> a
-                      <a>TypeError</a>, optionally informing the developer that
-                      the value is invalid.
+                      <li>If
+                        <var>option</var>.<a>amount</a>.<a data-link-for="PaymentCurrencyAmount">value</a>
+                        is not a <a>valid decimal monetary value</a>, then
+                        <a>throw</a> a <a>TypeError</a>, optionally informing
+                        the developer that the value is invalid.
                       </li>
                       <li>If <var>seenIDs</var> contains
-                      <var>option</var>.<a>id</a>, then set
-                      <var>options</var> to an empty sequence and break.
+                      <var>option</var>.<a>id</a>, then set <var>options</var>
+                      to an empty sequence and break.
                       </li>
-                      <li>Append <var>option</var>.<a>id</a> to <var>seenIDs</var>.
+                      <li>Append <var>option</var>.<a>id</a> to
+                      <var>seenIDs</var>.
                       </li>
                     </ol>
                   </li>
@@ -457,8 +460,8 @@
                   may have been reset to the empty sequence in the previous
                   step):
                     <ol>
-                      <li>If <var>option</var>.<a>selected</a> is true,
-                      then set <var>selectedShippingOption</var> to
+                      <li>If <var>option</var>.<a>selected</a> is true, then
+                      set <var>selectedShippingOption</var> to
                       <var>option</var>.<a>id</a>.
                       </li>
                     </ol>
@@ -471,16 +474,16 @@
               </li>
             </ol>
           </li>
-          <li>Process payment details modifiers:
+          <li data-link-for="PaymentDetails">Process payment details modifiers:
             <ol>
               <li>Let <var>modifiers</var> be an empty
               <code>sequence</code>&lt;<a>PaymentDetailsModifier</a>&gt;.
               </li>
-              <li>If the <a data-lt="PaymentDetails.modifiers">modifiers</a>
-              member of <var>details</var> is present, then:
+              <li>If the <a>modifiers</a> member of <var>details</var> is
+              present, then:
                 <ol>
                   <li>Set <var>modifiers</var> to
-                    <var>details</var>.<a data-lt="PaymentDetails.modifiers">modifiers</a>.
+                  <var>details</var>.<a>modifiers</a>.
                   </li>
                   <li>For each <var>modifier</var> of <var>modifiers</var>:
                     <ol>
@@ -748,7 +751,7 @@
           parallel</a>.
           </li>
           <li>For each <var>methodData</var> in
-          <var>request</var>.<a>[[\methodData]]</a>:
+          <var>request</var>.<a>[[\parsedMethodData]]</a>:
             <ol>
               <li>If <var>methodData</var>.<a data-lt=
               "PaymentMethodData.supportedMethods">supportedMethods</a>
@@ -773,7 +776,7 @@
         "Transition diagram for internal slot state of a PaymentRequest object"
         src="images/state-transitions.svg" width="518" height="125">
       </section>
-      <section data-dfn-for="PaymentRequest">
+      <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
         <h2>
           <dfn>shippingAddress</dfn> attribute
         </h2>
@@ -787,7 +790,7 @@
           for an <code>Event</code> named <code>shippingaddresschange</code>.
         </p>
       </section>
-      <section data-dfn-for="PaymentRequest">
+      <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
         <h2>
           <dfn>shippingOption</dfn> attribute
         </h2>
@@ -912,13 +915,13 @@
           <dfn>data</dfn> member
         </dt>
         <dd>
-          <a data-lt="PaymentMethodData.data">data</a> is an object that
+          <a>data</a> is an object that
           provides optional information that might be needed by the supported
           payment methods. If supplied, it will be <a>JSON-serialized</a>.
         </dd>
       </dl>
     </section>
-    <section data-dfn-for="PaymentCurrencyAmount">
+    <section data-dfn-for="PaymentCurrencyAmount" data-link-for="PaymentCurrencyAmount">
       <h2>
         <dfn>PaymentCurrencyAmount</dfn> dictionary
       </h2>
@@ -941,10 +944,9 @@
           <dfn>currencySystem</dfn>
         </dt>
         <dd>
-          A URL that indicates the currency system that the <a data-lt=
-          "PaymentCurrencyAmount.currency">currency</a> identifier belongs to.
+          A URL that indicates the currency system that the <a>currency</a> identifier belongs to.
           By default, the value is <code>urn:iso:std:iso:4217</code> indicating
-          that <code>currency</code> is defined by [[ISO4217]] (for example,
+          that <a>currency</a> is defined by [[ISO4217]] (for example,
           <code>USD</code> for US Dollars).
         </dd>
         <dt>
@@ -952,8 +954,8 @@
         </dt>
         <dd>
           A string containing a currency identifier. The value of
-          <code>currency</code> can be any string that is valid within the
-          currency system indicated by <code>currencySystem</code>.
+          <a>currency</a> can be any string that is valid within the
+          currency system indicated by <a>currencySystem</a>.
         </dd>
         <dt>
           <dfn>value</dfn>
@@ -972,7 +974,7 @@
 }
       </pre>
     </section>
-    <section data-dfn-for="PaymentDetails">
+    <section data-dfn-for="PaymentDetails" data-link-for="PaymentDetails">
       <h2>
         <dfn>PaymentDetails</dfn> dictionary
       </h2>
@@ -988,12 +990,12 @@
       <p>
         The <a>PaymentDetails</a> dictionary is passed to the
         <a>PaymentRequest</a> constructor and provides information about the
-        requested transaction. The <code>PaymentDetails</code> dictionary is
+        requested transaction. The <a>PaymentDetails</a> dictionary is
         also used to update the payment request using <a data-lt=
         "PaymentRequestUpdateEvent.updateWith">updateWith</a>.
       </p>
       <p>
-        The following fields are part of the <code>PaymentDetails</code>
+        The following fields are part of the <a>PaymentDetails</a>
         dictionary:
       </p>
       <dl>
@@ -1073,7 +1075,7 @@
         <dd>
           When the payment request is updated using <a data-lt=
           "PaymentRequestUpdateEvent.updateWith">updateWith</a>, the
-          <code>PaymentDetails</code> can contain a message in the
+          <a>PaymentDetails</a> can contain a message in the
           <code>error</code> field that will be displayed to the user. For
           example, this might commonly be used to explain why goods cannot be
           shipped to the chosen shipping address.
@@ -1085,7 +1087,7 @@
         </dd>
       </dl>
     </section>
-    <section data-dfn-for="PaymentDetailsModifier">
+    <section data-dfn-for="PaymentDetailsModifier" data-link-for="PaymentDetailsModifier">
       <h2>
         <dfn>PaymentDetailsModifier</dfn> dictionary
       </h2>
@@ -1107,8 +1109,7 @@
           <dfn>supportedMethods</dfn>
         </dt>
         <dd>
-          The <a data-lt=
-          "PaymentDetailsModifier.supportedMethods">supportedMethods</a> field
+          The <a>supportedMethods</a> field
           contains a sequence of <a>payment method identifiers</a>. The
           remaining fields in the <a>PaymentDetailsModifier</a> apply only if
           the user selects a <a>payment method</a> included in this sequence.
@@ -1136,8 +1137,7 @@
             It is the developer's responsibility to verify that the <a data-lt=
             "PaymentDetails.total">total</a> amount is the sum of the
             <a data-lt="PaymentDetails.displayItems">displayItems</a> and the
-            <a data-lt=
-            "PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>.
+            <a>additionalDisplayItems</a>.
           </p>
         </dd>
         <dt>
@@ -1928,33 +1928,28 @@
                     </li>
                   </ol>
                 </li>
-                <li>If the <a data-lt="PamentDetails.modifiers">modifiers</a>
+                <li data-link-for="PaymentDetails">If the <a>modifiers</a>
                 member of <var>details</var> is present, then:
                   <ol>
                     <li>Let <var>modifiers</var> be the sequence
-                    <var>details</var>.<a data-lt=
-                    "PamentDetails.modifiers">modifiers</a>.
+                    <var>details</var>.<a>modifiers</a>.
                     </li>
                     <li>For each <a>PaymentDetailsModifier</a>
                     <var>modifier</var> in <var>modifiers</var>:
-                      <ol>
-                        <li>If the <a data-lt=
-                        "PaymentDetailsModifier.total">total</a> member of
-                        <var>modifier</var> is present and
-                        <var>member</var>.<a data-lt=
-                        "PaymentDetailsModifier.total">total</a>.<a data-lt=
+                      <ol data-link-for="PaymentDetailsModifier">
+                        <li>If the <a>total</a> member of <var>modifier</var>
+                        is present and
+                        <var>member</var>.<a>total</a>.<a data-lt=
                         "PaymentItem.amount">amount</a>.<a data-lt=
                         "PaymentCurrencyAmount.value">value</a> is not a
                         <a>valid decimal monetary value</a>, then set
                         <var>modifiers</var> to an empty sequence, and jump to
                         the step labeled <i>copy modifiers</i> below.
                         </li>
-                        <li>If the <a data-lt=
-                        "PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>
-                        member of <var>modifier</var> is present, then for each
+                        <li>If the <a>additionalDisplayItems</a> member of
+                        <var>modifier</var> is present, then for each
                         <a>PaymentItem</a> <var>item</var> in
-                        <var>modifier</var>.<a data-lt=
-                        "PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>:
+                        <var>modifier</var>.<a>additionalDisplayItems</a>:
                           <ol>
                             <li>Let <var>amountValue</var> be
                             <var>item</var>.<a data-lt=
