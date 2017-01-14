@@ -133,10 +133,10 @@
       </p>
       <p>
         The details of how to fulfill a payment request for a given <a>payment
-        method</a> are handled by <dfn data-lt=
-        "payment app">payment apps</dfn>. In this specification,
-        these details are left up to the <a>user agent</a>, but future
-        specifications may expand on the processing model in more detail.
+        method</a> are handled by <dfn data-lt="payment app">payment
+        apps</dfn>. In this specification, these details are left up to the
+        <a>user agent</a>, but future specifications may expand on the
+        processing model in more detail.
       </p>
       <p>
         In addition to better, more consistent user experiences, this also
@@ -353,10 +353,10 @@
           <li>If a <code>paymentRequestID</code> was not provided during
           construction, generate a <code>paymentRequestID</code>.
           </li>
-          <li>If the <a>current settings object</a>'s
-          <a data-cite="!html5#responsible-document">responsible document</a> is not <a>allowed to use</a> the feature
-          indicated by attribute name <a>allowpaymentrequest</a>,
-          then <a>throw</a> a <a>SecurityError</a>.
+          <li>If the <a>current settings object</a>'s <a data-cite=
+          "!html5#responsible-document">responsible document</a> is not
+          <a>allowed to use</a> the feature indicated by attribute name
+          <a>allowpaymentrequest</a>, then <a>throw</a> a <a>SecurityError</a>.
           </li>
           <li>Let <var>parsedMethodData</var> be an empty list.
           </li>
@@ -915,13 +915,14 @@
           <dfn>data</dfn> member
         </dt>
         <dd>
-          <a>data</a> is an object that
-          provides optional information that might be needed by the supported
-          payment methods. If supplied, it will be <a>JSON-serialized</a>.
+          <a>data</a> is an object that provides optional information that
+          might be needed by the supported payment methods. If supplied, it
+          will be <a>JSON-serialized</a>.
         </dd>
       </dl>
     </section>
-    <section data-dfn-for="PaymentCurrencyAmount" data-link-for="PaymentCurrencyAmount">
+    <section data-dfn-for="PaymentCurrencyAmount" data-link-for=
+    "PaymentCurrencyAmount">
       <h2>
         <dfn>PaymentCurrencyAmount</dfn> dictionary
       </h2>
@@ -944,18 +945,19 @@
           <dfn>currencySystem</dfn>
         </dt>
         <dd>
-          A URL that indicates the currency system that the <a>currency</a> identifier belongs to.
-          By default, the value is <code>urn:iso:std:iso:4217</code> indicating
-          that <a>currency</a> is defined by [[ISO4217]] (for example,
-          <code>USD</code> for US Dollars).
+          A URL that indicates the currency system that the <a>currency</a>
+          identifier belongs to. By default, the value is
+          <code>urn:iso:std:iso:4217</code> indicating that <a>currency</a> is
+          defined by [[ISO4217]] (for example, <code>USD</code> for US
+          Dollars).
         </dd>
         <dt>
           <dfn>currency</dfn>
         </dt>
         <dd>
           A string containing a currency identifier. The value of
-          <a>currency</a> can be any string that is valid within the
-          currency system indicated by <a>currencySystem</a>.
+          <a>currency</a> can be any string that is valid within the currency
+          system indicated by <a>currencySystem</a>.
         </dd>
         <dt>
           <dfn>value</dfn>
@@ -990,13 +992,12 @@
       <p>
         The <a>PaymentDetails</a> dictionary is passed to the
         <a>PaymentRequest</a> constructor and provides information about the
-        requested transaction. The <a>PaymentDetails</a> dictionary is
-        also used to update the payment request using <a data-lt=
+        requested transaction. The <a>PaymentDetails</a> dictionary is also
+        used to update the payment request using <a data-lt=
         "PaymentRequestUpdateEvent.updateWith">updateWith</a>.
       </p>
       <p>
-        The following fields are part of the <a>PaymentDetails</a>
-        dictionary:
+        The following fields are part of the <a>PaymentDetails</a> dictionary:
       </p>
       <dl>
         <dt>
@@ -1075,10 +1076,10 @@
         <dd>
           When the payment request is updated using <a data-lt=
           "PaymentRequestUpdateEvent.updateWith">updateWith</a>, the
-          <a>PaymentDetails</a> can contain a message in the
-          <code>error</code> field that will be displayed to the user. For
-          example, this might commonly be used to explain why goods cannot be
-          shipped to the chosen shipping address.
+          <a>PaymentDetails</a> can contain a message in the <code>error</code>
+          field that will be displayed to the user. For example, this might
+          commonly be used to explain why goods cannot be shipped to the chosen
+          shipping address.
           <p>
             The <code>error</code> field cannot be passed to the
             <a>PaymentRequest</a> constructor. Doing so will cause a
@@ -1087,7 +1088,8 @@
         </dd>
       </dl>
     </section>
-    <section data-dfn-for="PaymentDetailsModifier" data-link-for="PaymentDetailsModifier">
+    <section data-dfn-for="PaymentDetailsModifier" data-link-for=
+    "PaymentDetailsModifier">
       <h2>
         <dfn>PaymentDetailsModifier</dfn> dictionary
       </h2>
@@ -1109,10 +1111,10 @@
           <dfn>supportedMethods</dfn>
         </dt>
         <dd>
-          The <a>supportedMethods</a> field
-          contains a sequence of <a>payment method identifiers</a>. The
-          remaining fields in the <a>PaymentDetailsModifier</a> apply only if
-          the user selects a <a>payment method</a> included in this sequence.
+          The <a>supportedMethods</a> field contains a sequence of <a>payment
+          method identifiers</a>. The remaining fields in the
+          <a>PaymentDetailsModifier</a> apply only if the user selects a
+          <a>payment method</a> included in this sequence.
         </dd>
         <dt>
           <dfn>total</dfn>
