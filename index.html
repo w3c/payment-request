@@ -765,6 +765,84 @@
           </li>
         </ol>
       </section>
+      <section>  
+        <h2>
+          <code>canMakePayment()</code> method
+        </h2>
+        <p>
+          The <dfn>canMakePayment</dfn> method can be called by the page to know 
+          if user has a payment method available for payment before calling 
+          <a data-lt="PaymentRequest.show">show</a>. The <a>canMakePayment</a> method returns 
+          a <a>Promise</a> that will be resolved when the <a>user agent</a> has determined 
+          if at least one method is available from <a>supportedMethods</a> data. 
+          
+          In order to prevent the page from probing different payment methods supported by user, <a>canMakePayment</a> 
+          can only be called once per top-level domain. Multiple calls to <a>canMakePayment</a> will result in
+          rejection of the promise with QuotaExceededError. To reduce privacy risks, implementations MAY limit calls 
+          to <a>canMakePayment</a> for a certain period of time before allowing top-level origin to call
+          <a>canMakePayment</a> again. However <a>canMakePayment</a> can be called multiple times with same 
+          set of <a data-lt="PaymentMethodData.supportedMethods">supportedMethods</a> per top-level origin.  
+        </p>
+        <p>
+          The <a>canMakePayment</a> method MUST act as follows:
+        </p>
+        <ol>
+          <li>
+            Let <var>this</var> be the <a>PaymentRequest</a> object on which the method is called.
+          </li>
+          <li>
+            If the value of <var>request</var>@[[\state]] is not "created", then
+            reject <em>promise</em> with <a>InvalidStateError</a>.
+          </li>
+          <li>
+            Set the value of <em>request</em>@[[\state]] to "interactive".
+          </li>
+          <li>
+            Let <var>canMakePaymentPromise</var> be a new <a>Promise</a>.
+          </li>
+          <li>
+            Store <var>canMakePaymentPromise</var> in <em>request</em>@[[\canMakePaymentPromise]].
+          </li>
+          <li>
+            Return <var>canMakePaymentPromise</var> and asynchronously perform the remaining steps.
+          </li>
+          <li> 
+            Let <var>topLevelOrigin</var> be the URL of the top level page. 
+            Let <var>cachedSupportedMethods</var> be <a>supportedMethods</a> sequences from each <a>PaymentMethodData</a> from previous call to <a>PaymentRequest</a>.
+            Let <var>cachedResponse</var> be response from previous call to <a>canMakePayment</a>.
+            Let <var>canMakePaymentQuotaReached</var> be boolean value of previous call to <a>canMakePayment</a> for the <a>topLevelOrigin</a>.
+          </li>
+          <li>
+            Let <var>supportedMethods</var> be the union of all the <a>supportedMethods</a> sequences from each
+            <a>PaymentMethodData</a> in the <var>request</var>@[[\methodData]] sequence.
+          </li>
+          <li>
+            If <var>cachedSupportedMethods</var> is preset and matches <a>supportMethods</a>, 
+            then resolve <var>canMakePaymentPromise</var> with <a>cachedResponse</a>. Else, 
+            set <var>cachedSupportedMethods</var> to <var>supportedMethods</var>.
+          </li>
+          <li>
+            If <a>canMakePaymentQuotaReached</a> is set, then reject the <var>canMakePaymentPromise</var>
+            with QuotaExceededError.
+          </li>
+          <li>
+            Let <var>acceptedMethods</var> be <var>supportedMethods</var> with all identifiers removed that the
+            <a>user agent</a> does not support.
+          </li>
+          <li>
+            If the length of <var>acceptedMethods</var> is zero, then resolve <var>canMakePaymentPromise</var> with
+            <code>false</code>, otherwise resolve <var>acceptPromise</var> with <code>true</code>.
+          </li>
+          <li>
+            Cache the response in <var>cachedResponse</var> and set <var>canMakePaymentQuotaReached</var> to 
+            to true.
+          </li>
+          <li> 
+            In addition, implementations may choose to implement a timeout to reset 
+            <var>canMakePaymentQuotaReached</var> for the <var>topLevelOrigin</var>.
+          </li>
+        </ol>
+      </section>
       <section>
         <h2 id="state-transitions" class="informative">
           State transitions
