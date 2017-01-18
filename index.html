@@ -1490,13 +1490,46 @@
         </dd>
       </dl>
     </section>
+    <section data-dfn-for="PaymentComplete" data-link-for="PaymentComplete">
+      <h2><dfn>PaymentComplete</dfn> enum</h2>
+      <pre class="idl">
+        enum PaymentComplete {
+          "fail",
+          "success",
+          "unknown",
+        };
+      </pre>
+      <dl>
+        <dt>
+          "<dfn>fail</dfn>"
+        </dt>
+        <dd>
+          Indicates that processing of the payment failed. The <a>user
+          agent</a> MAY display UI indicating failure.
+        </dd>
+        <dt>
+          "<dfn>success</dfn>"
+        </dt>
+        <dd>
+          Indicates the payment was successfully processed. The <a>user
+          agent</a> MAY display UI indicating success.
+        </dd>
+        <dt>
+          "<dfn>unknown</dfn>"
+        </dt>
+        <dd>
+          The web page did not indicate success or failure and the <a>user
+          agent</a> SHOULD NOT display UI indicating success or failure. This
+          is the default value if the web page does not supply a value for
+          <code>result</code>.
+        </dd>
+      </dl>
+    </section>
     <section data-dfn-for="PaymentResponse">
       <h2>
         <dfn>PaymentResponse</dfn> interface
       </h2>
       <pre class="idl">
-        enum PaymentComplete { "success", "fail", "unknown" };
-
         [SecureContext]
         interface PaymentResponse {
           serializer = { attribute };
@@ -1617,38 +1650,6 @@
           agent</a> that the user interaction is over (and SHOULD cause any
           remaining user interface to be closed).
         </p>
-        <p>
-          The <a>complete()</a> method takes a string argument from the
-          <dfn>PaymentComplete</dfn> enum (<code>result</code>). These values
-          are used to influence the user experience provided by the <a>user
-          agent</a> when the user interface is dismissed. The value of
-          <code>result</code> has the following meaning:
-        </p>
-        <dl data-dfn-for="PaymentComplete">
-          <dt>
-            "<dfn>success</dfn>"
-          </dt>
-          <dd>
-            Indicates the payment was successfully processed. The <a>user
-            agent</a> MAY display UI indicating success.
-          </dd>
-          <dt>
-            "<dfn>fail</dfn>"
-          </dt>
-          <dd>
-            Indicates that processing of the payment failed. The <a>user
-            agent</a> MAY display UI indicating failure.
-          </dd>
-          <dt>
-            "<dfn>unknown</dfn>"
-          </dt>
-          <dd>
-            The web page did not indicate success or failure and the <a>user
-            agent</a> SHOULD NOT display UI indicating success or failure. This
-            is the default value if the web page does not supply a value for
-            <code>result</code>.
-          </dd>
-        </dl>
         <div class="note">
           <p>
             After the payment request has been accepted and the
