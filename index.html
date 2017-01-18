@@ -356,7 +356,8 @@
           <li>If the <a>current settings object</a>'s <a data-cite=
           "!html5#responsible-document">responsible document</a> is not
           <a>allowed to use</a> the feature indicated by attribute name
-          <a>allowpaymentrequest</a>, then <a>throw</a> a <a>SecurityError</a>.
+          <a>allowpaymentrequest</a>, then <a>throw</a> a
+          "<a>SecurityError</a>" <a>DOMException</a>.
           </li>
           <li>Let <var>parsedMethodData</var> be an empty list.
           </li>
@@ -606,7 +607,8 @@
           which the method is called.
           </li>
           <li>If the value of <var>request</var>.<a>[[\state]]</a> is not
-          <i>created</i> then <a>throw</a> an <a>InvalidStateError</a>.
+          <i>created</i> then <a>throw</a> an "<a>InvalidStateError</a>"
+          <a>DOMException</a>.
           </li>
           <li>Set the value of <var>request</var>.<a>[[\state]]</a> to
           <i>interactive</i>.
@@ -631,8 +633,8 @@
             </ol>
           </li>
           <li>If this consultation produced no supported method of paying, then
-          reject <var>acceptPromise</var> with a <a>NotSupportedError</a>, and
-          abort this algorithm.
+          reject <var>acceptPromise</var> with a "<a>NotSupportedError</a>" <a>
+            DOMException</a>, and abort this algorithm.
           </li>
           <li>
             <p>
@@ -683,7 +685,8 @@
           which the method is called.
           </li>
           <li>If the value of <var>request</var>.<a>[[\state]]</a> is not
-          <i>interactive</i> then <a>throw</a> an <a>InvalidStateError</a>.
+          <i>interactive</i> then <a>throw</a> an "<a>InvalidStateError</a>"
+          <a>DOMException</a>.
           </li>
           <li>Let <var>promise</var> be a new <a>Promise</a>.
           </li>
@@ -694,14 +697,14 @@
           remaining user interface.
           </li>
           <li>If it is not possible to abort the current user interaction, then
-          reject <var>promise</var> with <a>InvalidStateError</a> and abort
-          this algorithm.
+          reject <var>promise</var> with "<a>InvalidStateError</a>"
+          <a>DOMException</a> and abort this algorithm.
           </li>
           <li>Set the value of the internal slot
           <var>request</var>.<a>[[\state]]</a> to <i>closed</i>.
           </li>
           <li>Reject the promise <var>request</var>.<a>[[\acceptPromise]]</a>
-          with an <a>AbortError</a>.
+          with an "<a>AbortError</a>" <a>DOMException</a>.
           </li>
           <li>Resolve <var>promise</var> with undefined.
           </li>
@@ -719,8 +722,8 @@
           any of the desired <a>payment methods</a> supplied to the
           <a>PaymentRequest</a> constructor, and false if none are supported.
           If the method is called too often, the user agent might instead
-          return a promise rejected with a <a>QuotaExceededError</a>, at its
-          discretion.
+          return a promise rejected with a "<a>QuotaExceededError</a>"
+          <a>DOMException</a>, at its discretion.
         </p>
         <p>
           The <a>canMakePayment</a> method MUST act as follows:
@@ -730,10 +733,12 @@
           which the method was called.
           </li>
           <li>If <var>request</var>.<a>[[\state]]</a> is not <i>created</i>,
-          then return a promise rejected with an <a>InvalidStateError</a>.
+          then return a promise rejected with an "<a>InvalidStateError</a>" <a>
+            DOMException</a>.
           </li>
           <li>Optionally, at the <a>user agent</a>'s discretion, return a
-          promise rejected with a <a>QuotaExceededError</a>.
+          promise rejected with a "<a>QuotaExceededError</a>"
+          <a>DOMException</a>.
             <p class="note" data-link-for="PaymentRequest">
               This allows user agents to apply heuristics to detect and prevent
               abuse of the <a>canMakePayment</a> method for fingerprinting
@@ -1670,7 +1675,8 @@
           <li>Let <var>promise</var> be a new <a>Promise</a>.
           </li>
           <li>If the value of the internal slot <a>[[\completeCalled]]</a> is
-          true, then <a>throw</a> an <a>InvalidStateError</a>.
+          true, then <a>throw</a> an "<a>InvalidStateError</a>"
+          <a>DOMException</a>.
           </li>
           <li>Set the value of the internal slot <a>[[\completeCalled]]</a> to
           true.
@@ -1812,17 +1818,18 @@
             <li>If <var>target</var> is not a <code>PaymentRequest</code>
             object, then <a>throw</a> a <a>TypeError</a>.
             </li>
-            <li>If the <a>dispatch flag</a> is unset, then <a>throw</a> an <a>
-              InvalidStateError</a>.
+            <li>If the <a>dispatch flag</a> is unset, then <a>throw</a> an
+            "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
             <li>If [[\waitForUpdate]] is true, then <a>throw</a> an
-            <a>InvalidStateError</a>.
+            "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
             <li>If <var>target</var>.<a>[[\state]]</a> is not
-            <i>interactive</i>, then <a>throw</a> an <a>InvalidStateError</a>.
+            <i>interactive</i>, then <a>throw</a> an "<a>InvalidStateError</a>"
+            <a>DOMException</a>.
             </li>
             <li>If <var>target</var>.<a>[[\updating]]</a> is true, then
-            <a>throw</a> an <a>InvalidStateError</a>.
+            <a>throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
             <li>Set the <a>stop propagation flag</a> and <a>stop immediate
             propagation flag</a>.
@@ -1871,7 +1878,7 @@
                 </li>
                 <li>Reject the promise
                 <var>target</var>.<a>[[\acceptPromise]]</a> with an
-                <a>AbortError</a>.
+                "<a>AbortError</a>" <a>DOMException</a>.
                 </li>
               </ol>
               <div class="note">
@@ -2370,8 +2377,9 @@
           <dfn>dispatch flag</dfn>, <dfn>stop propagation flag</dfn>, and
           <dfn>stop immediate propagation flag</dfn> are defined by [[!DOM4]].
           <p>
-            <dfn>DOMException</dfn> and the following DOMException types from
-            [[!DOM4]] are used:
+            <code><dfn data-cite=
+            "!WEBIDL-2#dfn-DOMException">DOMException</dfn></code> and the
+            following DOMException types from [[!DOM4]] are used:
           </p>
           <table>
             <tr>
@@ -2384,7 +2392,8 @@
             </tr>
             <tr>
               <td>
-                <dfn>AbortError</dfn>
+                <code><dfn data-cite=
+                "!WEBIDL-2#aborterror">AbortError</dfn></code>
               </td>
               <td>
                 The payment request was aborted
@@ -2392,7 +2401,8 @@
             </tr>
             <tr>
               <td>
-                <dfn>InvalidStateError</dfn>
+                <code><dfn data-cite=
+                "!WEBIDL-2#invalidstateerror">InvalidStateError</dfn></code>
               </td>
               <td>
                 The object is in an invalid state
@@ -2400,7 +2410,8 @@
             </tr>
             <tr>
               <td>
-                <dfn>NotSupportedError</dfn>
+                <code><dfn data-cite=
+                "!WEBIDL-2#notsupportederror">NotSupportedError</dfn></code>
               </td>
               <td>
                 The payment method was not supported
@@ -2408,7 +2419,8 @@
             </tr>
             <tr>
               <td>
-                <dfn>QuotaExceededError</dfn>
+                <code><dfn data-cite=
+                "!WEBIDL-2#quotaexceedederror">QuotaExceededError</dfn></code>
               </td>
               <td>
                 The <a data-lt=
@@ -2419,7 +2431,8 @@
             </tr>
             <tr>
               <td>
-                <dfn>SecurityError</dfn>
+                <code><dfn data-cite=
+                "!WEBIDL-2#securityerror">SecurityError</dfn></code>
               </td>
               <td>
                 The operation is only supported in a secure context
@@ -2431,12 +2444,12 @@
           Web IDL
         </dt>
         <dd>
-          When this specification says to <dfn>throw</dfn> an error, the
-          <a>user agent</a> must throw an error as described in [[!WEBIDL-2]].
-          When this occurs in a sub-algorithm, this results in termination of
-          execution of the sub-algorithm and all ancestor algorithms until one
-          is reached that explicitly describes procedures for catching
-          exceptions.
+          When this specification says to <dfn data-cite=
+          "!WEBIDL-2#dfn-throw">throw</dfn> an error, the <a>user agent</a>
+          must throw an error as described in [[!WEBIDL-2]]. When this occurs
+          in a sub-algorithm, this results in termination of execution of the
+          sub-algorithm and all ancestor algorithms until one is reached that
+          explicitly describes procedures for catching exceptions.
           <p>
             The term <dfn>extended attribute</dfn> is defined by [[!WEBIDL-2]].
           </p>
