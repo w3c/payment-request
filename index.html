@@ -2376,10 +2376,31 @@
           The <dfn>Event</dfn> type and the terms <dfn>fire an event</dfn>,
           <dfn>dispatch flag</dfn>, <dfn>stop propagation flag</dfn>, and
           <dfn>stop immediate propagation flag</dfn> are defined by [[!DOM4]].
+        </dd>
+        <dt>
+          Web IDL
+        </dt>
+        <dd>
+          When this specification says to <dfn data-cite=
+          "!WEBIDL-2#dfn-throw">throw</dfn> an error, the <a>user agent</a>
+          must throw an error as described in [[!WEBIDL-2]]. When this occurs
+          in a sub-algorithm, this results in termination of execution of the
+          sub-algorithm and all ancestor algorithms until one is reached that
+          explicitly describes procedures for catching exceptions.
+          <p>
+            The term <dfn>extended attribute</dfn> is defined by [[!WEBIDL-2]].
+          </p>
+          <p>
+            The algorithm for <dfn>converting an ECMAScript value to a
+            dictionary</dfn> and for <dfn>converting a dictionary to an
+            ECMAScript value</dfn> is defined by [[!WEBIDL-2]].
+          </p>
+        </dd>
+        <dd>
           <p>
             <code><dfn data-cite=
             "!WEBIDL-2#dfn-DOMException">DOMException</dfn></code> and the
-            following DOMException types from [[!DOM4]] are used:
+            following <a>DOMException</a> types from [[!WEBIDL-2]] are used:
           </p>
           <table>
             <tr>
@@ -2439,25 +2460,6 @@
               </td>
             </tr>
           </table>
-        </dd>
-        <dt>
-          Web IDL
-        </dt>
-        <dd>
-          When this specification says to <dfn data-cite=
-          "!WEBIDL-2#dfn-throw">throw</dfn> an error, the <a>user agent</a>
-          must throw an error as described in [[!WEBIDL-2]]. When this occurs
-          in a sub-algorithm, this results in termination of execution of the
-          sub-algorithm and all ancestor algorithms until one is reached that
-          explicitly describes procedures for catching exceptions.
-          <p>
-            The term <dfn>extended attribute</dfn> is defined by [[!WEBIDL-2]].
-          </p>
-          <p>
-            The algorithm for <dfn>converting an ECMAScript value to a
-            dictionary</dfn> and for <dfn>converting a dictionary to an
-            ECMAScript value</dfn> is defined by [[!WEBIDL-2]].
-          </p>
         </dd>
         <dt>
           Secure Contexts
