@@ -592,15 +592,15 @@
           <dfn>show()</dfn> method
         </h2>
         <p>
-          The <a>show</a> method is called when the page wants to begin user
-          interaction for the payment request. The <a>show</a> method returns a
-          <a>Promise</a> that will be resolved when the <a>user accepts the
+          The <a>show()</a> method is called when the page wants to begin user
+          interaction for the payment request. The <a>show()</a> method returns
+          a <a>Promise</a> that will be resolved when the <a>user accepts the
           payment request</a>. Some kind of user interface will be presented to
-          the user to facilitate the payment request after the <a>show</a>
+          the user to facilitate the payment request after the <a>show()</a>
           method returns.
         </p>
         <p>
-          The <a>show</a> method MUST act as follows:
+          The <a>show()</a> method MUST act as follows:
         </p>
         <ol>
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object on
@@ -662,23 +662,21 @@
           The <a>abort()</a> method may be called if the web page wishes to
           tell the <a>user agent</a> to abort the payment <var>request</var>
           and to tear down any user interface that might be shown.
-          <code>abort</code> can only be called after the <a data-lt=
-          "PaymentRequest.show">show</a> method has been called and before the
-          <var>request</var>.<a>[[\acceptPromise]]</a> has been resolved. For
-          example, a web page might choose to do this if the goods they are
-          selling are only available for a limited amount of time. If the user
-          does not accept the payment request within the allowed time period,
-          then the request will be aborted.
+          <a>abort()</a> can only be called after the <a>show()</a> method has
+          been called and before this instance's <a>[[\acceptPromise]]</a> has
+          been resolved. For example, a web page might choose to do this if the
+          goods they are selling are only available for a limited amount of
+          time. If the user does not accept the payment request within the
+          allowed time period, then the request will be aborted.
         </p>
         <p>
           A <a>user agent</a> might not always be able to abort a request. For
           example, if the <a>user agent</a> has delegated responsibility for
-          the request to another app. In this situation, <code>abort</code>
-          will reject the returned <a>Promise</a>.
+          the request to another app. In this situation, <a>abort()</a> will
+          reject the returned <a>Promise</a>.
         </p>
         <p>
-          The <a data-lt="PaymentRequest.abort">abort</a> method MUST act as
-          follows:
+          The <a>abort()</a> method MUST act as follows:
         </p>
         <ol>
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object on
@@ -715,9 +713,9 @@
           <dfn>canMakePayment()</dfn> method
         </h2>
         <p>
-          The <a>canMakePayment</a> method can be used by the developer to
+          The <a>canMakePayment()</a> method can be used by the developer to
           determine if the <a>PaymentRequest</a> object can be used to make a
-          payment, before they call <a>show</a>. It returns a <a>Promise</a>
+          payment, before they call <a>show()</a>. It returns a <a>Promise</a>
           that will be fulfilled with true if the <a>user agent</a> supports
           any of the desired <a>payment methods</a> supplied to the
           <a>PaymentRequest</a> constructor, and false if none are supported.
@@ -726,7 +724,7 @@
           <a>DOMException</a>, at its discretion.
         </p>
         <p>
-          The <a>canMakePayment</a> method MUST act as follows:
+          The <a>canMakePayment()</a> method MUST act as follows:
         </p>
         <ol>
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object on
@@ -741,11 +739,11 @@
           <a>DOMException</a>.
             <p class="note" data-link-for="PaymentRequest">
               This allows user agents to apply heuristics to detect and prevent
-              abuse of the <a>canMakePayment</a> method for fingerprinting
+              abuse of the <a>canMakePayment()</a> method for fingerprinting
               purposes, such as creating <a>PaymentRequest</a> objects with a
               variety of supported <a>payment methods</a> and calling
-              <a>canMakePayment</a> on them one after the other. For example, a
-              user agent may restrict the number of successful calls that can
+              <a>canMakePayment()</a> on them one after the other. For example,
+              a user agent may restrict the number of successful calls that can
               be made based on the <a>top-level browsing context</a> or the
               time period in which those calls were made.
             </p>
@@ -1610,17 +1608,17 @@
       </dl>
       <section data-dfn-for="PaymentResponse" data-link-for="PaymentResponse">
         <h2>
-          <dfn>complete()</dfn> method
+          <dfn data-lt="complete(result)">complete()</dfn> method
         </h2>
         <p>
-          The <a>complete</a> method is called after the user has accepted the
-          payment request and the <a>[[\acceptPromise]]</a> has been resolved.
-          Calling the <code>complete</code> method tells the <a>user agent</a>
-          that the user interaction is over (and SHOULD cause any remaining
-          user interface to be closed).
+          The <a>complete()</a> method is called after the user has accepted
+          the payment request and the <a>[[\acceptPromise]]</a> has been
+          resolved. Calling the <a>complete()</a> method tells the <a>user
+          agent</a> that the user interaction is over (and SHOULD cause any
+          remaining user interface to be closed).
         </p>
         <p>
-          The <code>complete</code> method takes a string argument from the
+          The <a>complete()</a> method takes a string argument from the
           <dfn>PaymentComplete</dfn> enum (<code>result</code>). These values
           are used to influence the user experience provided by the <a>user
           agent</a> when the user interface is dismissed. The value of
@@ -1669,7 +1667,7 @@
           </p>
         </div>
         <p>
-          The <a>complete()</a> method MUST act as follows:
+          The <a>complete(result)</a> method MUST act as follows:
         </p>
         <ol>
           <li>Let <var>promise</var> be a new <a>Promise</a>.
@@ -2443,11 +2441,9 @@
                 <code><dfn data-cite=
                 "!WEBIDL-2#quotaexceedederror">QuotaExceededError</dfn></code>
               </td>
-              <td>
-                The <a data-lt=
-                "PaymentRequest.canMakePayment">canMakePayment</a> method was
-                called too often according to the <a>user agent</a>'s
-                heuristics.
+              <td data-link-for="PaymentRequest">
+                The <a>canMakePayment()</a> method was called too often
+                according to the <a>user agent</a>'s heuristics.
               </td>
             </tr>
             <tr>
