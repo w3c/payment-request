@@ -842,7 +842,7 @@
               The current <a>PaymentDetails</a> for the payment request
               initially supplied to the constructor and then updated with calls
               to <a data-lt=
-              "PaymentRequestUpdateEvent.updateWith">updateWith</a>.
+              "PaymentRequestUpdateEvent.updateWith">updateWith()</a>.
             </td>
           </tr>
           <tr>
@@ -868,7 +868,7 @@
             </td>
             <td>
               true is there is a pending <a data-lt=
-              "PaymentRequestUpdateEvent.updateWith">updateWith</a> call to
+              "PaymentRequestUpdateEvent.updateWith">updateWith()</a> call to
               update the payment request and false otherwise.
             </td>
           </tr>
@@ -997,7 +997,7 @@
         <a>PaymentRequest</a> constructor and provides information about the
         requested transaction. The <a>PaymentDetails</a> dictionary is also
         used to update the payment request using <a data-lt=
-        "PaymentRequestUpdateEvent.updateWith">updateWith</a>.
+        "PaymentRequestUpdateEvent.updateWith">updateWith()</a>.
       </p>
       <p>
         The following fields are part of the <a>PaymentDetails</a> dictionary:
@@ -1078,7 +1078,7 @@
         </dt>
         <dd>
           When the payment request is updated using <a data-lt=
-          "PaymentRequestUpdateEvent.updateWith">updateWith</a>, the
+          "PaymentRequestUpdateEvent.updateWith">updateWith()</a>, the
           <a>PaymentDetails</a> can contain a message in the <code>error</code>
           field that will be displayed to the user. For example, this might
           commonly be used to explain why goods cannot be shipped to the chosen
@@ -1157,7 +1157,7 @@
     </section>
     <section data-dfn-for="PaymentShippingType">
       <h2>
-        <dfn>PaymentShippingType</dfn>
+        <dfn>PaymentShippingType</dfn> enum
       </h2>
       <pre class="idl">
         enum PaymentShippingType {
@@ -1450,7 +1450,7 @@
         The <a>PaymentShippingOption</a> dictionary has fields describing a
         shipping option. A web page can provide the user with one or more
         shipping options by calling the <a data-lt=
-        "PaymentRequestUpdateEvent.updateWith">updateWith</a> method in
+        "PaymentRequestUpdateEvent.updateWith">updateWith()</a> method in
         response to a change event.
       </p>
       <p>
@@ -1491,7 +1491,9 @@
       </dl>
     </section>
     <section data-dfn-for="PaymentComplete" data-link-for="PaymentComplete">
-      <h2><dfn>PaymentComplete</dfn> enum</h2>
+      <h2>
+        <dfn>PaymentComplete</dfn> enum
+      </h2>
       <pre class="idl">
         enum PaymentComplete {
           "fail",
@@ -1783,7 +1785,7 @@
         <pre class="idl">
           [Constructor(DOMString type, optional PaymentRequestUpdateEventInit eventInitDict),SecureContext]
           interface PaymentRequestUpdateEvent : Event {
-            void updateWith(Promise&lt;PaymentDetails&gt; d);
+            void updateWith(Promise&lt;PaymentDetails&gt; details);
           };
         </pre>
         <p>
@@ -1792,8 +1794,8 @@
         </p>
         <p>
           If the web page wishes to update the payment request then it should
-          call <a>updateWith</a> and provide a promise that will resolve with a
-          <a>PaymentDetails</a> dictionary containing changed values that the
+          call <a>updateWith()</a> and provide a promise that will resolve with
+          a <a>PaymentDetails</a> dictionary containing changed values that the
           <a>user agent</a> SHOULD present to the user.
         </p>
         <p>
@@ -1802,10 +1804,10 @@
         </p>
         <section>
           <h2>
-            <dfn>updateWith()</dfn> method
+            <dfn data-lt="updateWith(details)">updateWith()</dfn> method
           </h2>
           <p>
-            The <a>updateWith</a> method MUST act as follows:
+            The <a>updateWith(details)</a> method MUST act as follows:
           </p>
           <ol>
             <li>Let <var>target</var> be the value of this
