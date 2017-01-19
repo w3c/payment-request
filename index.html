@@ -2224,7 +2224,9 @@
           <var>request</var>.<a>[[\options]]</a> is true, then set the
           <code>payerPhone</code> attribute of <var>response</var> to the
           payer's phone number selected by the user, or to <code>null</code> if
-          none was provided.
+          none was provided. When setting the <a data-lt=
+          "PaymentResponse.payerPhone">payerPhone</a> value, the user agent
+          SHOULD format the phone number to adhere to [[!E.164]].
           </li>
           <li>Set <var>response</var>.<a>[[\completeCalled]]</a> to false.
           </li>
