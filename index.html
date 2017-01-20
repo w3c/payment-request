@@ -357,7 +357,7 @@
           <a>allowpaymentrequest</a>, then <a>throw</a> a
           "<a>SecurityError</a>" <a>DOMException</a>.
           </li>
-          <li>Let <var>parsedMethodData</var> be an empty list.
+          <li>Let <var>serializedMethodData</var> be an empty list.
           </li>
           <li>Process payment methods:
             <ol data-link-for="PaymentMethodData">
@@ -373,7 +373,7 @@
                   informing the developer that each <a>payment method</a> needs
                   to include at least one <a>payment method identifier</a>.
                   </li>
-                  <li>Let <var>parsedData</var> be the result of
+                  <li>Let <var>serializedData</var> be the result of
                   <a>JSON-serializing</a>
                     <var>paymentMethod</var>.<a data-lt="PaymentMethodData.data">data</a>
                     into a string, if the <a data-lt=
@@ -383,7 +383,8 @@
                   </li>
                   <li>Add the tuple (<var>paymentMethod</var>.<a data-lt=
                   "PaymentMethodData.supportedMethods">supportedMethods</a>,
-                  <var>parsedData</var>) to <var>parsedMethodData</var>.
+                  <var>serializedData</var>) to
+                  <var>serializedMethodData</var>.
                   </li>
                 </ol>
               </li>
@@ -549,8 +550,8 @@
           </li>
           <li>Set <var>request</var>.<a>[[\details]]</a> to <var>details</var>.
           </li>
-          <li>Set <var>request</var>.<a>[[\parsedMethodData]]</a> to
-          <var>parsedMethodData</var>.
+          <li>Set <var>request</var>.<a>[[\serializedMethodData]]</a> to <var>
+            serializedMethodData</var>.
           </li>
           <li>Set the value of <var>request</var>'s <a data-lt=
           "PaymentRequest.shippingOption">shippingOption</a> attribute to <var>
@@ -620,7 +621,7 @@
           <a>in parallel</a>.
           </li>
           <li>For each <var>paymentMethod</var> in
-          <var>request</var>.<a>[[\parsedMethodData]]</a>:
+          <var>request</var>.<a>[[\serializedMethodData]]</a>:
             <ol>
               <li>Consult the appropriate <a>payment apps</a> to see if they
               support any of the <a>payment method identifiers</a> given by the
@@ -752,7 +753,7 @@
           parallel</a>.
           </li>
           <li>For each <var>methodData</var> in
-          <var>request</var>.<a>[[\parsedMethodData]]</a>:
+          <var>request</var>.<a>[[\serializedMethodData]]</a>:
             <ol>
               <li>If <var>methodData</var>.<a data-lt=
               "PaymentMethodData.supportedMethods">supportedMethods</a>
@@ -824,7 +825,7 @@
           </tr>
           <tr>
             <td>
-              <dfn>[[\parsedMethodData]]</dfn>
+              <dfn>[[\serializedMethodData]]</dfn>
             </td>
             <td>
               The <code>methodData</code> supplied to the constructor, but
