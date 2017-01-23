@@ -692,17 +692,24 @@
           <li>Try to abort the current user interaction and close down any
           remaining user interface.
           </li>
-          <li>If it is not possible to abort the current user interaction, then
-          reject <var>promise</var> with "<a>InvalidStateError</a>"
-          <a>DOMException</a> and abort this algorithm.
-          </li>
-          <li>Set the value of the internal slot
-          <var>request</var>.<a>[[\state]]</a> to <i>closed</i>.
-          </li>
-          <li>Reject the promise <var>request</var>.<a>[[\acceptPromise]]</a>
-          with an "<a>AbortError</a>" <a>DOMException</a>.
-          </li>
-          <li>Resolve <var>promise</var> with undefined.
+          <li>
+            <a>Queue a task</a> on the <a>user interaction task source</a> to
+            perform the following steps:
+            <ol>
+              <li>If it is not possible to abort the current user interaction,
+              then reject <var>promise</var> with "<a>InvalidStateError</a>"
+              <a>DOMException</a> and abort these steps.
+              </li>
+              <li>Set the value of the internal slot
+              <var>request</var>.<a>[[\state]]</a> to <i>closed</i>.
+              </li>
+              <li>Reject the promise
+              <var>request</var>.<a>[[\acceptPromise]]</a> with an
+              "<a>AbortError</a>" <a>DOMException</a>.
+              </li>
+              <li>Resolve <var>promise</var> with undefined.
+              </li>
+            </ol>
           </li>
         </ol>
       </section>
@@ -2083,12 +2090,18 @@
           </li>
           <li>Let <var>name</var> be <dfn>shippingaddresschange</dfn>.
           </li>
-          <li>Set the <a data-lt=
-          "PaymentRequest.shippingAddress">shippingAddress</a> attribute on
-          <var>request</var> to the shipping address provided by the user.
-          </li>
-          <li>Run the <a>PaymentRequest updated algorithm</a> with
-          <var>request</var> and <var>name</var>.
+          <li>
+            <a>Queue a task</a> on the <a>user interaction task source</a> to
+            run the following steps:
+            <ol>
+              <li>Set the <a data-lt=
+              "PaymentRequest.shippingAddress">shippingAddress</a> attribute on
+              <var>request</var> to the shipping address provided by the user.
+              </li>
+              <li>Run the <a>PaymentRequest updated algorithm</a> with
+              <var>request</var> and <var>name</var>.
+              </li>
+            </ol>
           </li>
         </ol>
       </section>
@@ -2106,13 +2119,19 @@
           </li>
           <li>Let <var>name</var> be <dfn>shippingoptionchange</dfn>.
           </li>
-          <li>Set the <a data-lt=
-          "PaymentRequest.shippingOption">shippingOption</a> attribute on <var>
-            request</var> to the <code>id</code> string of the
-            <a>PaymentShippingOption</a> provided by the user.
-          </li>
-          <li>Run the <a>PaymentRequest updated algorithm</a> with
-          <var>request</var> and <var>name</var>.
+          <li>
+            <a>Queue a task</a> on the <a>user interaction task source</a> to
+            run the following steps:
+            <ol>
+              <li>Set the <a data-lt=
+              "PaymentRequest.shippingOption">shippingOption</a> attribute on
+              <var>request</var> to the <code>id</code> string of the
+              <a>PaymentShippingOption</a> provided by the user.
+              </li>
+              <li>Run the <a>PaymentRequest updated algorithm</a> with
+              <var>request</var> and <var>name</var>.
+              </li>
+            </ol>
           </li>
         </ol>
       </section>
@@ -2142,8 +2161,8 @@
           <li>Let <var>event</var> be a new <a>PaymentRequestUpdateEvent</a>.
           </li>
           <li>
-            <a>Queue a task</a> to <a>fire an event</a> named <var>name</var>
-            of type <var>event</var> at <var>request</var>.
+            <a>Fire an event</a> named <var>name</var> of type <var>event</var>
+            at <var>request</var>.
           </li>
         </ol>
       </section>
@@ -2317,6 +2336,9 @@
           <ul>
             <li>
               <dfn>queue a task</dfn>
+            </li>
+            <li>
+              <dfn>user interaction task source</dfn>
             </li>
             <li>
               <dfn>node document</dfn>
