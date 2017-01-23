@@ -1814,9 +1814,11 @@
             The <a>updateWith(detailsPromise)</a> method MUST act as follows:
           </p>
           <ol>
-            <li>Let <var>target</var> be the value of this
-            <a>PaymentRequestUpdateEvent</a> event's <code><a data-cite=
-            "DOM4#dom-event-target">target</a></code> attribute.
+            <li>Let <var>event</var> be this <a>PaymentRequestUpdateEvent</a>
+            instance.
+            </li>
+            <li>Let <var>target</var> be the value of <var>event</var>'s <code>
+              <a data-cite="DOM4#dom-event-target">target</a></code> attribute.
             </li>
             <li>If <var>target</var> is not a <a>PaymentRequest</a> object,
             then <a>throw</a> a <a>TypeError</a>.
@@ -1824,8 +1826,8 @@
             <li>If the <a>dispatch flag</a> is unset, then <a>throw</a> an
             "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
-            <li>If <a>[[\waitForUpdate]]</a> is true, then <a>throw</a> an
-            "<a>InvalidStateError</a>" <a>DOMException</a>.
+            <li>If <var>event</var>.<a>[[\waitForUpdate]]</a> is true, then <a>
+              throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
             <li>If <var>target</var>.<a>[[\state]]</a> is not
             <i>interactive</i>, then <a>throw</a> an "<a>InvalidStateError</a>"
@@ -1834,10 +1836,10 @@
             <li>If <var>target</var>.<a>[[\updating]]</a> is true, then
             <a>throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
-            <li>Set the <a>stop propagation flag</a> and <a>stop immediate
-            propagation flag</a>.
+            <li>Set <var>event</var>'s <a>stop propagation flag</a> and <a>stop
+            immediate propagation flag</a>.
             </li>
-            <li>Set <a>[[\waitForUpdate]]</a> to true.
+            <li>Set <var>event</var>.<a>[[\waitForUpdate]]</a> to true.
             </li>
             <li>Set <var>target</var>.<a>[[\updating]]</a> to true.
             </li>
@@ -1877,8 +1879,7 @@
                 <li>Abort the current user interaction and close down any
                 remaining user interface.
                 </li>
-                <li>Set the value of the internal slot
-                <var>target</var>.<a>[[\state]]</a> to <i>closed</i>.
+                <li>Set <var>target</var>.<a>[[\state]]</a> to <i>closed</i>.
                 </li>
                 <li>Reject the promise
                 <var>target</var>.<a>[[\acceptPromise]]</a> with an
@@ -2044,7 +2045,7 @@
             <li>In either case, run the following steps, after either the upon
             rejection or upon fulfillment steps have concluded:
               <ol>
-                <li>Set [[\waitForUpdate]] to false.
+                <li>Set <var>event</var>.<a>[[\waitForUpdate]]</a> to false.
                 </li>
                 <li>Set <var>target</var>.<a>[[\updating]]</a> to false.
                 </li>
@@ -2056,6 +2057,34 @@
               </ol>
             </li>
           </ol>
+        </section>
+        <section>
+          <h2>
+            Internal Slots
+          </h2>
+          <p>
+            Instances of <a>PaymentRequestUpdateEvent</a> are created with the
+            internal slots in the following table:
+          </p>
+          <table>
+            <tr>
+              <th>
+                Internal Slot
+              </th>
+              <th>
+                Description (<em>non-normative</em>)
+              </th>
+            </tr>
+            <tr>
+              <td>
+                <dfn>[[\waitForUpdate]]</dfn>
+              </td>
+              <td>
+                A boolean indicating whether an <a>updateWith()</a>-initiated
+                update is currently in progress.
+              </td>
+            </tr>
+          </table>
         </section>
         <section>
           <h3>
