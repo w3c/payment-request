@@ -357,7 +357,7 @@
           <a>allowpaymentrequest</a>, then <a>throw</a> a
           "<a>SecurityError</a>" <a>DOMException</a>.
           </li>
-          <li>Let <var>parsedMethodData</var> be an empty list.
+          <li>Let <var>serializedMethodData</var> be an empty list.
           </li>
           <li>Process payment methods:
             <ol data-link-for="PaymentMethodData">
@@ -373,7 +373,7 @@
                   informing the developer that each <a>payment method</a> needs
                   to include at least one <a>payment method identifier</a>.
                   </li>
-                  <li>Let <var>parsedData</var> be the result of
+                  <li>Let <var>serializedData</var> be the result of
                   <a>JSON-serializing</a>
                     <var>paymentMethod</var>.<a data-lt="PaymentMethodData.data">data</a>
                     into a string, if the <a data-lt=
@@ -383,7 +383,8 @@
                   </li>
                   <li>Add the tuple (<var>paymentMethod</var>.<a data-lt=
                   "PaymentMethodData.supportedMethods">supportedMethods</a>,
-                  <var>parsedData</var>) to <var>parsedMethodData</var>.
+                  <var>serializedData</var>) to
+                  <var>serializedMethodData</var>.
                   </li>
                 </ol>
               </li>
@@ -473,6 +474,8 @@
               </li>
             </ol>
           </li>
+          <li>Let <var>serializedModifierData</var> be an empty list.
+          </li>
           <li data-link-for="PaymentDetails">Process payment details modifiers:
             <ol>
               <li>Let <var>modifiers</var> be an empty
@@ -524,13 +527,26 @@
                           </li>
                         </ol>
                       </li>
+                      <li>Let <var>serializedData</var> be the result of
+                      <a>JSON-serializing</a> <var>modifier</var>.<a data-lt=
+                      "PaymentDetailsModifier.data">data</a> into a string, if
+                      the <a data-lt="PaymentDetailsModifier.data">data</a>
+                      member of <var>modifier</var> is present, or null if it
+                      is not. Rethrow any exceptions.
+                      </li>
+                      <li>Add <var>serializedData</var> to
+                      <var>serializedModifierData</var>.
+                      </li>
+                      <li>Remove the <a data-lt="PaymentDetailsModifier.data">
+                        data</a> member of <var>modifier</var>, if it is
+                        present.
+                      </li>
                     </ol>
                   </li>
-                  <li>Set <var>details</var>.<a data-lt=
-                  "PaymentDetails.modifiers">modifiers</a> to
-                  <var>modifiers</var>.
-                  </li>
                 </ol>
+              </li>
+              <li>Set <var>details</var>.<a data-lt=
+              "PaymentDetails.modifiers">modifiers</a> to <var>modifiers</var>.
               </li>
             </ol>
           </li>
@@ -549,8 +565,11 @@
           </li>
           <li>Set <var>request</var>.<a>[[\details]]</a> to <var>details</var>.
           </li>
-          <li>Set <var>request</var>.<a>[[\parsedMethodData]]</a> to
-          <var>parsedMethodData</var>.
+          <li>Set <var>request</var>.<a>[[\serializedModifierData]]</a> to
+          <var>serializedModifierData</var>.
+          </li>
+          <li>Set <var>request</var>.<a>[[\serializedMethodData]]</a> to <var>
+            serializedMethodData</var>.
           </li>
           <li>Set the value of <var>request</var>'s <a data-lt=
           "PaymentRequest.shippingOption">shippingOption</a> attribute to <var>
@@ -620,7 +639,7 @@
           <a>in parallel</a>.
           </li>
           <li>For each <var>paymentMethod</var> in
-          <var>request</var>.<a>[[\parsedMethodData]]</a>:
+          <var>request</var>.<a>[[\serializedMethodData]]</a>:
             <ol>
               <li>Consult the appropriate <a>payment apps</a> to see if they
               support any of the <a>payment method identifiers</a> given by the
@@ -643,6 +662,12 @@
               given by <var>supportedMethods</var>, but SHOULD prioritize the
               preference of the user when presenting payment methods and
               applications.
+            </p>
+            <p>
+              The <a>payment app</a> should be sent the appropriate data from
+              <var>request</var> in order to guide the user through the payment
+              process. This includes the various attributes and internal slots
+              of <var>request</var>.
             </p>
             <p>
               The <var>acceptPromise</var> will later be resolved by the
@@ -759,7 +784,7 @@
           parallel</a>.
           </li>
           <li>For each <var>methodData</var> in
-          <var>request</var>.<a>[[\parsedMethodData]]</a>:
+          <var>request</var>.<a>[[\serializedMethodData]]</a>:
             <ol>
               <li>If <var>methodData</var>.<a data-lt=
               "PaymentMethodData.supportedMethods">supportedMethods</a>
@@ -831,12 +856,24 @@
           </tr>
           <tr>
             <td>
-              <dfn>[[\parsedMethodData]]</dfn>
+              <dfn>[[\serializedMethodData]]</dfn>
             </td>
             <td>
               The <code>methodData</code> supplied to the constructor, but
               represented as tuples containing supported methods and a string
               or null for data (instead of the original object form).
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\serializedModifierData]]</dfn>
+            </td>
+            <td>
+              A list containing the serialized string form of each <a data-lt=
+              "PaymentDetailsModifier.data">data</a> member for each
+              corresponding item in the sequence
+              <a>[[\details]]</a>.<a data-lt="PaymentDetails">modifier</a>, or
+              null if no such member was present.
             </td>
           </tr>
           <tr>
@@ -847,7 +884,12 @@
               The current <a>PaymentDetails</a> for the payment request
               initially supplied to the constructor and then updated with calls
               to <a data-lt=
-              "PaymentRequestUpdateEvent.updateWith">updateWith()</a>.
+              "PaymentRequestUpdateEvent.updateWith">updateWith()</a>. Note
+              that all <a data-lt="PaymentDetailsModifier.data">data</a>
+              members of <a>PaymentDetailsModifier</a> instances contained in
+              the <a data-lt="PaymentDetails.modifiers">modifiers</a> member
+              will be removed, as they are instead stored in serialized form in
+              the <a>[[\serializedModifierData]]</a> internal slot.
             </td>
           </tr>
           <tr>
@@ -1154,9 +1196,9 @@
           <dfn>data</dfn>
         </dt>
         <dd>
-          <code>data</code> is a <a>JSON-serializable object</a> that provides
-          optional information that might be needed by the supported payment
-          methods.
+          <code>data</code> is an object that provides optional information
+          that might be needed by the supported payment methods. If supplied,
+          it will be <a>JSON-serialized</a>.
         </dd>
       </dl>
     </section>
@@ -1948,6 +1990,8 @@
                     <li>Let <var>modifiers</var> be the sequence
                     <var>details</var>.<a>modifiers</a>.
                     </li>
+                    <li>Let <var>serializedModifierData</var> be an empty list.
+                    </li>
                     <li>For each <a>PaymentDetailsModifier</a>
                     <var>modifier</var> in <var>modifiers</var>:
                       <ol data-link-for="PaymentDetailsModifier">
@@ -1957,8 +2001,9 @@
                         "PaymentItem.amount">amount</a>.<a data-lt=
                         "PaymentCurrencyAmount.value">value</a> is not a
                         <a>valid decimal monetary value</a>, then set
-                        <var>modifiers</var> to an empty sequence, and jump to
-                        the step labeled <i>copy modifiers</i> below.
+                        <var>modifiers</var> to an empty sequence and
+                        <var>serializedModifierData</var> to an empty list, and
+                        jump to the step labeled <i>copy modifiers</i> below.
                         </li>
                         <li>If the <a>additionalDisplayItems</a> member of
                         <var>modifier</var> is present, then for each
@@ -1972,17 +2017,41 @@
                             </li>
                             <li>If <var>amountValue</var> is not a <a>valid
                             decimal monetary value</a>, then set
-                            <var>modifiers</var> to an empty sequence, and jump
-                            to the step labeled <i>copy modifiers</i> below.
+                            <var>modifiers</var> to an empty sequence and <var>
+                              serializedModifierData</var> to an empty list,
+                              and jump to the step labeled <i>copy
+                              modifiers</i> below.
                             </li>
                           </ol>
+                        </li>
+                        <li>Let <var>serializedData</var> be the result of <a>
+                          JSON-serializing</a> <var>modifier</var>.<a data-lt=
+                          "PaymentDetailsModifier.data">data</a> into a string,
+                          if the <a data-lt=
+                          "PaymentDetailsModifier.data">data</a> member of
+                          <var>modifier</var> is present, or null if it is not.
+                          If <a>JSON-serializing</a> throws an exception, then
+                          set <var>modifiers</var> to an empty sequence and
+                          <var>serializedModifierData</var> to an empty list,
+                          and jump to the step labeled <i>copy modifiers</i>
+                          below.
+                        </li>
+                        <li>Add <var>serializedData</var> to
+                        <var>serializedModifierData</var>.
+                        </li>
+                        <li>Remove the <a data-lt=
+                        "PaymentDetailsModifier.data">data</a> member of <var>
+                          modifier</var>, if it is present.
                         </li>
                       </ol>
                     </li>
                     <li>
-                      <i>Copy modifiers</i>: Copy <var>modifiers</var> to the
-                      <a data-lt="PaymentDetails.modifiers">modifiers</a> field
-                      of <var>target</var>.<a>[[\details]]</a>.
+                      <i>Copy modifiers</i>: Set
+                      <var>target</var>.<a>[[\details]]</a>.<a data-lt=
+                      "PaymentDetails.modifiers">modifiers</a> to
+                      <var>modifiers</var>, and set
+                      <var>target</var>.<a>[[\serializedModifierData]]</a> to
+                      <var>serializedModifierData</var>.
                     </li>
                   </ol>
                 </li>
@@ -2397,12 +2466,6 @@
           The terms <dfn>Promise</dfn>, <dfn>internal slot</dfn>,
           <dfn><code>TypeError</code></dfn>, <dfn>JSON.stringify</dfn>, and
           <dfn>JSON.parse</dfn> are defined by [[!ECMA-262-2015]].
-          <p>
-            The term <dfn>JSON-serializable object</dfn> used in this
-            specification is not well defined; see <a href=
-            "https://github.com/w3c/browser-payment-api/issues/307">issue
-            #307</a>.
-          </p>
           <p>
             The term <dfn data-lt=
             "JSON-serialize|JSON-serialized|JSON-serializing">JSON-serialize</dfn>
