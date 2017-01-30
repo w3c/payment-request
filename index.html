@@ -798,17 +798,6 @@
           </li>
         </ol>
       </section>
-      <section>
-        <h2 id="state-transitions" class="informative">
-          State transitions
-        </h2>
-        <p>
-          The internal slot <a>[[\state]]</a> follows the following state
-          transitions:
-        </p><img alt=
-        "Transition diagram for internal slot state of a PaymentRequest object"
-        src="images/state-transitions.svg" width="518" height="125">
-      </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
         <h2>
           <dfn>shippingAddress</dfn> attribute
@@ -930,6 +919,14 @@
             </td>
           </tr>
         </table>
+        <div class="note" id="state-transitions">
+          <p>
+            The internal slot <a>[[\state]]</a> transitions between its various
+            potential values as follows:
+          </p><img alt=
+          "The constructor sets the initial state to &quot;created&quot;. The show() method changes the state to &quot;interactive&quot;. From there, the abort() method or any other error can send the state to &quot;closed&quot;; similarly, the &quot;user accepts the payment request algorithm&quot; will send the state to &quot;closed&quot;."
+          src="images/state-transitions.svg" width="518" height="125">
+        </div>
       </section>
     </section>
     <section data-dfn-for="PaymentMethodData" data-link-for=
