@@ -206,8 +206,12 @@
         <dfn>PaymentRequest</dfn> interface
       </h2>
       <pre class="idl">
-        [Constructor(sequence&lt;PaymentMethodData&gt; methodData, PaymentDetails details, optional PaymentOptions options),
-        SecureContext]
+        [Constructor(
+          optional DOMString paymentRequestID, 
+          sequence&lt;PaymentMethodData&gt; 
+          methodData, PaymentDetails details, 
+          optional PaymentOptions options
+         ), SecureContext]
         interface PaymentRequest : EventTarget {
           Promise&lt;PaymentResponse&gt; show();
           Promise&lt;void&gt; abort();
