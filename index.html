@@ -1818,7 +1818,7 @@
         <pre class="idl">
           [Constructor(DOMString type, optional PaymentRequestUpdateEventInit eventInitDict),SecureContext]
           interface PaymentRequestUpdateEvent : Event {
-            void updateWith(Promise&lt;PaymentDetails&gt; detailsPromise);
+            Promise&lt;void&gt; updateWith(Promise&lt;PaymentDetails&gt; detailsPromise);
           };
         </pre>
         <p>
@@ -1830,6 +1830,15 @@
           call <a>updateWith()</a> and provide a promise that will resolve with
           a <a>PaymentDetails</a> dictionary containing changed values that the
           <a>user agent</a> SHOULD present to the user.
+        </p>
+        <p>
+          The promise returned by <a>updateWith()</a> will be fulfilled with
+          undefined if all of the data is accepted, or rejected with a
+          <a>TypeError</a> if the update was complete but some data was
+          rejected as invalid. It can also be rejected if it is called
+          inappropriately, e.g. on a <a>PaymentRequestUpdateEvent</a> event
+          that is not being dispatched or is has already been updated, or if
+          the passed promise rejects.
         </p>
         <p>
           The <a>PaymentRequestUpdateEvent</a> constructor MUST set the
@@ -1850,20 +1859,22 @@
               <a data-cite="DOM4#dom-event-target">target</a></code> attribute.
             </li>
             <li>If <var>target</var> is not a <a>PaymentRequest</a> object,
-            then <a>throw</a> a <a>TypeError</a>.
+            then return a promise rejected with a <a>TypeError</a>.
             </li>
-            <li>If the <a>dispatch flag</a> is unset, then <a>throw</a> an
-            "<a>InvalidStateError</a>" <a>DOMException</a>.
+            <li>If the <a>dispatch flag</a> is unset, then return a promise
+            rejected with an "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
-            <li>If <var>event</var>.<a>[[\waitForUpdate]]</a> is true, then <a>
-              throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
-            </li>
-            <li>If <var>target</var>.<a>[[\state]]</a> is not
-            <i>interactive</i>, then <a>throw</a> an "<a>InvalidStateError</a>"
+            <li>If <var>event</var>.<a>[[\waitForUpdate]]</a> is true, then
+            return a promise rejected with an "<a>InvalidStateError</a>"
             <a>DOMException</a>.
             </li>
-            <li>If <var>target</var>.<a>[[\updating]]</a> is true, then
-            <a>throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
+            <li>If <var>target</var>.<a>[[\state]]</a> is not
+            <i>interactive</i>, then return a promise rejected with an
+            "<a>InvalidStateError</a>" <a>DOMException</a>.
+            </li>
+            <li>If <var>target</var>.<a>[[\updating]]</a> is true, then return
+            a promise rejected with an "<a>InvalidStateError</a>"
+            <a>DOMException</a>.
             </li>
             <li>Set <var>event</var>'s <a>stop propagation flag</a> and <a>stop
             immediate propagation flag</a>.
@@ -1884,10 +1895,12 @@
                 Only one update may be processed at a time.
               </p>
             </li>
+            <li>Let <var>returnedPromise</var> be a new promise.
+            </li>
             <li>
               <p>
-                Return from the method and perform the remaining steps <a>in
-                parallel</a>.
+                Return <var>returnedPromise</var>, and perform the remaining
+                steps <a>in parallel</a>.
               </p>
               <p>
                 The remaining steps are conditional on the
@@ -1914,6 +1927,9 @@
                 <var>target</var>.<a>[[\acceptPromise]]</a> with an
                 "<a>AbortError</a>" <a>DOMException</a>.
                 </li>
+                <li>Reject <var>returnedPromise</var> with an
+                "<a>AbortError</a>" <a>DOMException</a>.
+                </li>
               </ol>
               <div class="note">
                 If the promise <var>detailsPromise</var> is rejected then this
@@ -1934,8 +1950,11 @@
               <ol>
                 <li>Let <var>details</var> be the result of <a>converting</a>
                 <var>value</var> to a <a>PaymentDetails</a> dictionary. If this
-                <a>throws</a> an exception, abort these substeps, and
-                optionally show an error message to the user.
+                <a>throws</a> an exception, reject <var>returnedPromise</var>
+                with the exception, abort these substeps, and optionally show
+                an error message to the user.
+                </li>
+                <li>Let <var>errorsList</var> be an empty list.
                 </li>
                 <li>If the <a data-lt="PaymentDetails.total">total</a> member
                 of <var>details</var> is present, then:
@@ -1951,6 +1970,13 @@
                     "PaymentDetails.total">total</a> field of
                     <var>target</var>.<a>[[\details]]</a>. (Negative total
                     amounts are ignored.)
+                    </li>
+                    <li>Otherwise, add an error message describing the fact
+                    that <var>details</var>.<a data-lt=
+                    "PaymentDetails.total">total</a>.<a data-lt=
+                    "PaymentItem.amount">amount</a>.<a data-lt=
+                    "PaymentCurrencyAmount.value">value</a> was invalid to
+                    <var>errorsList</var>.
                     </li>
                   </ol>
                 </li>
@@ -1968,6 +1994,14 @@
                     "PaymentDetails.displayItems">displayItems</a> to the
                     <a data-lt="PaymentDetails.displayItems">displayItems</a>
                     field of <var>target</var>.<a>[[\details]]</a>.
+                    </li>
+                    <li>Otherwise, add an error message describing the fact
+                    that one of the <a data-lt=
+                    "PaymentDetails.displayItems">displayItems</a> had an
+                    invalid <a data-lt=
+                    "PaymentItem.amount">amount</a>.<a data-lt=
+                    "PaymentCurrencyAmount.value">value</a> to
+                    <var>errorsList</var>.
                     </li>
                   </ol>
                 </li>
@@ -1987,10 +2021,20 @@
                         <var>member</var>.<a>total</a>.<a data-lt=
                         "PaymentItem.amount">amount</a>.<a data-lt=
                         "PaymentCurrencyAmount.value">value</a> is not a
-                        <a>valid decimal monetary value</a>, then set
-                        <var>modifiers</var> to an empty sequence and
-                        <var>serializedModifierData</var> to an empty list, and
-                        jump to the step labeled <i>copy modifiers</i> below.
+                        <a>valid decimal monetary value</a>, then:
+                          <ol>
+                            <li>Set <var>modifiers</var> to an empty sequence.
+                            </li>
+                            <li>Set <var>serializedModifierData</var> to an
+                            empty list.
+                            </li>
+                            <li>Add an error describing the invalid total value
+                            to <var>errorsList</var>.
+                            </li>
+                            <li>Jump to the step labeled <i>copy modifiers</i>
+                            below.
+                            </li>
+                          </ol>
                         </li>
                         <li>If the <a>additionalDisplayItems</a> member of
                         <var>modifier</var> is present, then for each
@@ -2003,11 +2047,21 @@
                             "PaymentCurrencyAmount.value">value</a>.
                             </li>
                             <li>If <var>amountValue</var> is not a <a>valid
-                            decimal monetary value</a>, then set
-                            <var>modifiers</var> to an empty sequence and <var>
-                              serializedModifierData</var> to an empty list,
-                              and jump to the step labeled <i>copy
-                              modifiers</i> below.
+                            decimal monetary value</a>, then:
+                              <ol>
+                                <li>Set <var>modifiers</var> to an empty
+                                sequence.
+                                </li>
+                                <li>Set <var>serializedModifierData</var> to an
+                                empty list.
+                                </li>
+                                <li>Add an error describing the invalid item
+                                value to <var>errorsList</var>.
+                                </li>
+                                <li>Jump to the step labeled <i>copy
+                                modifiers</i> below.
+                                </li>
+                              </ol>
                             </li>
                           </ol>
                         </li>
@@ -2017,11 +2071,22 @@
                           if the <a data-lt=
                           "PaymentDetailsModifier.data">data</a> member of
                           <var>modifier</var> is present, or null if it is not.
-                          If <a>JSON-serializing</a> throws an exception, then
-                          set <var>modifiers</var> to an empty sequence and
-                          <var>serializedModifierData</var> to an empty list,
-                          and jump to the step labeled <i>copy modifiers</i>
-                          below.
+                          If <a>JSON-serializing</a> throws an exception, then:
+                          <ol>
+                            <li>Set <var>modifiers</var> to an empty sequence.
+                            </li>
+                            <li>Set <var>serializedModifierData</var> to an
+                            empty list.
+                            </li>
+                            <li>Add an error describing the fact that the given
+                            modifier's <a data-lt=
+                            "PaymentDetailsModifier.data">data</a> was not
+                            JSON-parseable to <var>errorsList</var>.
+                            </li>
+                            <li>Jump to the step labeled <i>copy modifiers</i>
+                            below.
+                            </li>
+                          </ol>
                         </li>
                         <li>Add <var>serializedData</var> to
                         <var>serializedModifierData</var>.
@@ -2059,13 +2124,29 @@
                         <li>If <var>option</var>.<a data-lt=
                         "PaymentShippingOption.amount">amount</a>.<a data-lt=
                         "PaymentCurrencyAmount.value">value</a> is not a
-                        <a>valid decimal monetary value</a>, then set
-                        <var>options</var> to the empty sequence and break.
+                        <a>valid decimal monetary value</a>, then:
+                          <ol>
+                            <li>Set <var>options</var> to the empty sequence.
+                            </li>
+                            <li>Add an error describing the invalid option
+                            value to <var>errorsList</var>.
+                            </li>
+                            <li>Break.
+                            </li>
+                          </ol>
                         </li>
                         <li>If <var>seenIDs</var> contains
                         <var>option</var>.<a data-lt=
-                        "PaymentShippingOption.id">id</a>, then set
-                        <var>options</var> to an empty sequence and break.
+                        "PaymentShippingOption.id">id</a>, then:
+                          <ol>
+                            <li>Set <var>options</var> to the empty sequence.
+                            </li>
+                            <li>Add an error describing the fact that there are
+                            duplicate option IDs to <var>errorsList</var>.
+                            </li>
+                            <li>Break.
+                            </li>
+                          </ol>
                         </li>
                         <li>Append <var>option</var>.<a data-lt=
                         "PaymentShippingOption.id">id</a> to
@@ -2095,6 +2176,12 @@
                 of <var>details</var> is present, then the <a>user agent</a>
                 should update the user interface to display the error message
                 contained in <a data-lt="PaymentDetails.error">error</a>.
+                </li>
+                <li>If <var>errorsList</var> is empty, fulfill
+                <var>returnedPromise</var> with undefined. Otherwise, reject
+                <var>returnedPromise</var> with a <a>TypeError</a>. User agents
+                SHOULD use the information from <var>errorsList</var> to
+                provide the message for the <a>TypeError</a>.
                 </li>
               </ol>
             </li>
