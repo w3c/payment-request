@@ -213,7 +213,7 @@
           Promise&lt;void&gt; abort();
           Promise&lt;boolean&gt; canMakePayment();
 
-          readonly attribute DOMString? paymentRequestID;
+          readonly attribute DOMString? paymentRequestId;
           readonly attribute PaymentAddress? shippingAddress;
           readonly attribute DOMString? shippingOption;
           readonly attribute PaymentShippingType? shippingType;
@@ -347,8 +347,8 @@
           The <a>PaymentRequest</a> constructor MUST act as follows:
         </p>
         <ol data-link-for="PaymentDetails">
-          <li>If a <code>paymentRequestID</code> was not provided during
-          construction, generate a <code>paymentRequestID</code>.
+          <li>If a <code>paymentRequestId</code> was not provided during
+          construction, generate a <code>paymentRequestId</code>.
           </li>
           <li>If the <a>current settings object</a>'s <a data-cite=
           "!html5#responsible-document">responsible document</a> is not
@@ -1577,7 +1577,7 @@
         interface PaymentResponse {
           serializer = { attribute };
 
-          readonly attribute DOMString paymentRequestID;
+          readonly attribute DOMString paymentRequestId;
           readonly attribute DOMString methodName;
           readonly attribute object details;
           readonly attribute PaymentAddress? shippingAddress;
@@ -1604,10 +1604,10 @@
           values</a> as per [[!WEBIDL-2]].
         </dd>
         <dt>
-          <dfn>paymentRequestID</dfn>
+          <dfn>paymentRequestId</dfn>
         </dt>
         <dd>
-          The same <a>paymentRequestID</a> present in the original
+          The same <a>paymentRequestId</a> present in the original
           <a>PaymentRequest</a>.
         </dd>
         <dt>
