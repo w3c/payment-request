@@ -2296,41 +2296,45 @@
           merchant to process the transaction. The format of this response will
           be defined for each <a>payment method</a>.
           </li>
-          <li>If the <code>requestShipping</code> value of
-          <var>request</var>.<a>[[\options]]</a> is true, then copy the <code>
-            shippingAddress</code> attribute of <var>request</var> to the
-            <a data-lt="PaymentResponse.shippingAddress">shippingAddress</a>
-            attribute of <var>response</var>, or to <code>null</code> if none
-            was provided.
-          </li>
-          <li>If the <code>requestShipping</code> value of
-          <var>request</var>.<a>[[\options]]</a> is true, then copy the <code>
-            shippingOption</code> attribute of <var>request</var> to the
-            <a data-lt="PaymentResponse.shippingOption">shippingOption</a>
-            attribute of <var>response</var>, or to <code>null</code> if none
-            was provided.
-          </li>
-          <li>If the <code>requestPayerName</code> value of
+          <li>If the <a data-lt=
+          "PaymentOptions.requestShipping">requestShipping</a> value of
           <var>request</var>.<a>[[\options]]</a> is true, then set the
-          <a data-lt="PaymentResponse.payerName">payerName</a> attribute of
-          <var>response</var> to the payer's name provided by the user, or to
-          <code>null</code> if none was provided.
+          <a data-lt="PaymentResponse.shippingAddress">shippingAddress</a>
+          attribute of <var>response</var> to the value of the <a data-lt=
+          "PaymentRequest.shippingAddress">shippingAddress</a> attribute of
+          <var>request</var>. Otherwise, set it to null.
+          </li>
+          <li>If the <a data-lt=
+          "PaymentOptions.requestShipping">requestShipping</a> value of
+          <var>request</var>.<a>[[\options]]</a> is true, then set the
+          <a data-lt="PaymentResponse.shippingOption">shippingOption</a>
+          attribute of <var>response</var> to the value of the <a data-lt=
+          "PaymentRequest.shippingOption">shippingOption</a> attribute of <var>
+            request</var>. Otherwise, set it to null.
+          </li>
+          <li>If the <a data-lt=
+          "PaymentOptions.requestPayerName">requestPayerName</a> value of <var>
+            request</var>.<a>[[\options]]</a> is true, then set the <a data-lt=
+            "PaymentResponse.payerName">payerName</a> attribute of
+            <var>response</var> to the payer's name provided by the user, or to
+            null if none was provided. Otherwise, set it to null.
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestPayerEmail">requestPayerEmail</a> value of
           <var>request</var>.<a>[[\options]]</a> is true, then set the
           <a data-lt="PaymentResponse.payerEmail">payerEmail</a> attribute of
-          <var>response</var> to the payer's email address selected by the
-          user, or to <code>null</code> if none was provided.
+          <var>response</var> to the payer's email address provided by the
+          user, or to null if none was provided. Otherwise, set it to null.
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestPayerPhone">requestPayerPhone</a> value of
           <var>request</var>.<a>[[\options]]</a> is true, then set the
-          <code>payerPhone</code> attribute of <var>response</var> to the
-          payer's phone number selected by the user, or to <code>null</code> if
-          none was provided. When setting the <a data-lt=
+          <a data-lt="PaymentResponse.payerPhone">payerPhone</a> attribute of
+          <var>response</var> to the payer's phone number provided by the user,
+          or to null if none was provided. When setting the <a data-lt=
           "PaymentResponse.payerPhone">payerPhone</a> value, the user agent
-          SHOULD format the phone number to adhere to [[!E.164]].
+          SHOULD format the phone number to adhere to [[!E.164]]. Otherwise,
+          set it to null.
           </li>
           <li>Set <var>response</var>.<a>[[\completeCalled]]</a> to false.
           </li>
