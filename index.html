@@ -332,7 +332,7 @@
         <p>
           The <a>PaymentRequest</a> constructor MUST act as follows:
         </p>
-        <ol data-link-for="PaymentDetails">
+        <ol data-link-for="PaymentDetails" class="algorithm">
           <li>If a <code>paymentRequestId</code> was not provided during
           construction, generate a <code>paymentRequestId</code>.
           </li>
@@ -604,7 +604,7 @@
         <p>
           The <a>show()</a> method MUST act as follows:
         </p>
-        <ol>
+        <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object on
           which the method is called.
           </li>
@@ -686,7 +686,7 @@
         <p>
           The <a>abort()</a> method MUST act as follows:
         </p>
-        <ol>
+        <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object on
           which the method is called.
           </li>
@@ -741,7 +741,7 @@
         <p>
           The <a>canMakePayment()</a> method MUST act as follows:
         </p>
-        <ol>
+        <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object on
           which the method was called.
           </li>
@@ -1699,7 +1699,7 @@
         <p>
           The <a>complete(result)</a> method MUST act as follows:
         </p>
-        <ol>
+        <ol class="algorithm">
           <li>Let <var>promise</var> be a new <a>Promise</a>.
           </li>
           <li>If the value of the internal slot <a>[[\completeCalled]]</a> is
@@ -1837,7 +1837,7 @@
           <p>
             The <a>updateWith(detailsPromise)</a> method MUST act as follows:
           </p>
-          <ol>
+          <ol class="algorithm">
             <li>Let <var>event</var> be this <a>PaymentRequestUpdateEvent</a>
             instance.
             </li>
@@ -2164,7 +2164,7 @@
           The <dfn>shipping address changed algorithm</dfn> runs when the user
           provides a new shipping address. It MUST run the following steps:
         </p>
-        <ol>
+        <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
           the user is interacting with.
           </li>
@@ -2193,7 +2193,7 @@
           The <dfn>shipping option changed algorithm</dfn> runs when the user
           chooses a new shipping option. It MUST run the following steps:
         </p>
-        <ol>
+        <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
           the user is interacting with.
           </li>
@@ -2228,7 +2228,7 @@
         <p>
           It MUST run the following steps:
         </p>
-        <ol>
+        <ol class="algorithm">
           <li>If the <var>request</var>.<a>[[\updating]]</a> is true, then
           terminate this algorithm and take no further action. Only one update
           may take place at a time. This should never occur.
@@ -2256,7 +2256,7 @@
           payment request and confirms that they want to pay. It MUST run the
           following steps:
         </p>
-        <ol>
+        <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
           the user is interacting with.
           </li>
