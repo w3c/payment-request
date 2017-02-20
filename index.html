@@ -229,11 +229,6 @@
         <a data-lt="PaymentOptions.requestShipping">requestShipping</a> flag is
         set.
       </p>
-      <p class="note">
-        The <code>[SecureContext]</code> <a>extended attribute</a> means that
-        the <a>PaymentRequest</a> is only exposed within a <a>secure
-        context</a> and won't be accessible elsewhere.
-      </p>
       <p>
         The following example shows how to construct a <a>PaymentRequest</a>
         and begin the user interaction:
@@ -1376,8 +1371,8 @@
         </dt>
         <dd>
           Each attribute is <a data-cite=
-          "WEBIDL-2#dfn-convert-to-serialized-value">converted to serialized
-          values</a> as per [[!WEBIDL-2]].
+          "WEBIDL-LS#dfn-convert-to-serialized-value">converted to serialized
+          values</a> as per [[!WEBIDL-LS]].
         </dd>
         <dt>
           <dfn>country</dfn>
@@ -1591,8 +1586,8 @@
         </dt>
         <dd>
           Each attribute is <a data-cite=
-          "WEBIDL-2#dfn-convert-to-serialized-value">converted to serialized
-          values</a> as per [[!WEBIDL-2]].
+          "WEBIDL-LS#dfn-convert-to-serialized-value">converted to serialized
+          values</a> as per [[!WEBIDL-LS]].
         </dd>
         <dt>
           <dfn>paymentRequestId</dfn>
@@ -2173,7 +2168,7 @@
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
           the user is interacting with.
           </li>
-          <li>Let <var>name</var> be <dfn>shippingaddresschange</dfn>.
+          <li>Let <var>name</var> be "shippingaddresschange".
           </li>
           <li>
             <a>Queue a task</a> on the <a>user interaction task source</a> to
@@ -2430,9 +2425,6 @@
               <dfn>user interaction task source</dfn>
             </li>
             <li>
-              <dfn>node document</dfn>
-            </li>
-            <li>
               <dfn>top-level browsing context</dfn>
             </li>
             <li>
@@ -2454,9 +2446,14 @@
           ECMA-262 6th Edition, The ECMAScript 2015 Language Specification
         </dt>
         <dd>
-          The terms <dfn>Promise</dfn>, <dfn>internal slot</dfn>,
-          <dfn><code>TypeError</code></dfn>, <dfn>JSON.stringify</dfn>, and
-          <dfn>JSON.parse</dfn> are defined by [[!ECMA-262-2015]].
+          The terms <dfn data-cite=
+          "!ECMA-262-2015#sec-promise-objects">Promise</dfn>, <dfn data-cite=
+          "!ECMA-262-2015#sec-object-internal-methods-and-internal-slots">internal
+          slot</dfn>, <code><dfn data-cite=
+          "!ECMA-262-2015#sec-native-error-types-used-in-this-standard-typeerror">
+          TypeError</dfn></code>, and <code><dfn data-cite=
+          "!ECMA-262-2015#sec-json.stringify">JSON.stringify</dfn></code> are
+          defined by [[!ECMA-262-2015]].
           <p>
             The term <dfn data-lt=
             "JSON-serialize|JSON-serialized|JSON-serializing">JSON-serialize</dfn>
@@ -2485,27 +2482,24 @@
           Web IDL
         </dt>
         <dd>
-          When this specification says to <dfn data-cite="!WEBIDL-2#dfn-throw"
+          When this specification says to <dfn data-cite="!WEBIDL-LS#dfn-throw"
           data-lt="throws">throw</dfn> an error, the <a>user agent</a> must
-          throw an error as described in [[!WEBIDL-2]]. When this occurs in a
+          throw an error as described in [[!WEBIDL-LS]]. When this occurs in a
           sub-algorithm, this results in termination of execution of the
           sub-algorithm and all ancestor algorithms until one is reached that
           explicitly describes procedures for catching exceptions.
           <p>
-            The term <dfn>extended attribute</dfn> is defined by [[!WEBIDL-2]].
-          </p>
-          <p>
-            The algorithm for <dfn data-lt="converting">converting an
-            ECMAScript value to a dictionary</dfn> and for <dfn>converting a
-            dictionary to an ECMAScript value</dfn> is defined by
-            [[!WEBIDL-2]].
+            The algorithm for <dfn data-cite=
+            "!WEBIDL-LS#dfn-convert-idl-to-ecmascript-value" data-lt=
+            "converting">converting an ECMAScript value to a dictionary</dfn>
+            is defined by [[!WEBIDL-LS]].
           </p>
         </dd>
         <dd>
           <p>
             <code><dfn data-cite=
-            "!WEBIDL-2#dfn-DOMException">DOMException</dfn></code> and the
-            following <a>DOMException</a> types from [[!WEBIDL-2]] are used:
+            "!WEBIDL-LS#dfn-DOMException">DOMException</dfn></code> and the
+            following <a>DOMException</a> types from [[!WEBIDL-LS]] are used:
           </p>
           <table>
             <tr>
@@ -2519,7 +2513,7 @@
             <tr>
               <td>
                 <code><dfn data-cite=
-                "!WEBIDL-2#aborterror">AbortError</dfn></code>
+                "!WEBIDL-LS#aborterror">AbortError</dfn></code>
               </td>
               <td>
                 The payment request was aborted
@@ -2528,7 +2522,7 @@
             <tr>
               <td>
                 <code><dfn data-cite=
-                "!WEBIDL-2#invalidstateerror">InvalidStateError</dfn></code>
+                "!WEBIDL-LS#invalidstateerror">InvalidStateError</dfn></code>
               </td>
               <td>
                 The object is in an invalid state
@@ -2537,7 +2531,7 @@
             <tr>
               <td>
                 <code><dfn data-cite=
-                "!WEBIDL-2#notsupportederror">NotSupportedError</dfn></code>
+                "!WEBIDL-LS#notsupportederror">NotSupportedError</dfn></code>
               </td>
               <td>
                 The payment method was not supported
@@ -2546,7 +2540,7 @@
             <tr>
               <td>
                 <code><dfn data-cite=
-                "!WEBIDL-2#quotaexceedederror">QuotaExceededError</dfn></code>
+                "!WEBIDL-LS#quotaexceedederror">QuotaExceededError</dfn></code>
               </td>
               <td data-link-for="PaymentRequest">
                 The <a>canMakePayment()</a> method was called too often
@@ -2556,20 +2550,13 @@
             <tr>
               <td>
                 <code><dfn data-cite=
-                "!WEBIDL-2#securityerror">SecurityError</dfn></code>
+                "!WEBIDL-LS#securityerror">SecurityError</dfn></code>
               </td>
               <td>
                 The operation is only supported in a secure context
               </td>
             </tr>
           </table>
-        </dd>
-        <dt>
-          Secure Contexts
-        </dt>
-        <dd>
-          The term <dfn>secure context</dfn> is defined by the Secure Contexts
-          specification [[SECURE-CONTEXTS]].
         </dd>
       </dl>
     </section>
