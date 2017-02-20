@@ -6,8 +6,7 @@
     </title>
     <meta charset='utf-8'>
     <script src='https://www.w3.org/Tools/respec/respec-w3c-common' class=
-    'remove'>
-    </script>
+    'remove'></script>
     <script class='remove'>
     var respecConfig = {
       shortName: "payment-request",
@@ -196,7 +195,7 @@
         <dfn>PaymentRequest</dfn> interface
       </h2>
       <pre class="idl">
-        [Constructor(sequence&lt;PaymentMethodData&gt; methodData, PaymentDetails details, optional PaymentOptions options),
+        [Constructor(sequence&lt;PaymentMethodData&gt; methodData, PaymentDetailsInit details, optional PaymentOptions options),
         SecureContext]
         interface PaymentRequest : EventTarget {
           Promise&lt;PaymentResponse&gt; show();
@@ -329,9 +328,10 @@
           </pre>
         </div>
         <p>
-          The <a>PaymentRequest</a> constructor MUST act as follows:
+          The <a>PaymentRequest(methodData, details, options)</a> constructor
+          MUST act as follows:
         </p>
-        <ol data-link-for="PaymentDetails" class="algorithm">
+        <ol data-link-for="PaymentDetailsBase" class="algorithm">
           <li>If a <code>paymentRequestId</code> was not provided during
           construction, generate a <code>paymentRequestId</code>.
           </li>
@@ -374,12 +374,8 @@
               </li>
             </ol>
           </li>
-          <li>Process the total:
+          <li data-link-for="PaymentDetailsInit">Process the total:
             <ol>
-              <li>If the <a>total</a> member of <var>details</var> is not
-              present, then <a>throw</a> a <a>TypeError</a>, optionally
-              informing the developer that including <a>total</a> is required.
-              </li>
               <li>If <var>details</var>.<a>total</a>.<a data-lt=
               "PaymentItem.amount">amount</a>.<a data-lt=
               "PaymentCurrencyAmount.value">value</a> is not a <a>valid decimal
@@ -421,7 +417,7 @@
                   </li>
                   <li>Set <var>options</var> to
                   <var>details</var>.<a data-link-for=
-                  "PaymentDetails">shippingOptions</a>.
+                  "PaymentDetailsBase">shippingOptions</a>.
                   </li>
                   <li>For each <var>option</var> in <var>options</var>:
                     <ol>
@@ -453,14 +449,15 @@
                 </ol>
               </li>
               <li>Set <var>details</var>.<a data-lt=
-              "PaymentDetails.shippingOptions">shippingOptions</a> to
-              <var>options</var>.
+              "PaymentDetailsBase.shippingOptions">shippingOptions</a> to <var>
+                options</var>.
               </li>
             </ol>
           </li>
           <li>Let <var>serializedModifierData</var> be an empty list.
           </li>
-          <li data-link-for="PaymentDetails">Process payment details modifiers:
+          <li data-link-for="PaymentDetailsBase">Process payment details
+          modifiers:
             <ol>
               <li>Let <var>modifiers</var> be an empty
               <code>sequence</code>&lt;<a>PaymentDetailsModifier</a>&gt;.
@@ -530,14 +527,10 @@
                 </ol>
               </li>
               <li>Set <var>details</var>.<a data-lt=
-              "PaymentDetails.modifiers">modifiers</a> to <var>modifiers</var>.
+              "PaymentDetailsBase.modifiers">modifiers</a> to
+              <var>modifiers</var>.
               </li>
             </ol>
-          </li>
-          <li>If the <a data-lt="PaymentDetails.error">error</a> member of
-          <var>details</var> is present, then throw a <a>TypeError</a>,
-          optionally informing the developer that an error message cannot be
-          specified in the constructor.
           </li>
           <li>Let <var>request</var> be a new <a>PaymentRequest</a>.
           </li>
@@ -845,8 +838,8 @@
               A list containing the serialized string form of each <a data-lt=
               "PaymentDetailsModifier.data">data</a> member for each
               corresponding item in the sequence
-              <a>[[\details]]</a>.<a data-lt="PaymentDetails">modifier</a>, or
-              null if no such member was present.
+              <a>[[\details]]</a>.<a data-lt="PaymentDetailsBase">modifier</a>,
+              or null if no such member was present.
             </td>
           </tr>
           <tr>
@@ -854,15 +847,15 @@
               <dfn>[[\details]]</dfn>
             </td>
             <td>
-              The current <a>PaymentDetails</a> for the payment request
+              The current <a>PaymentDetailsBase</a> for the payment request
               initially supplied to the constructor and then updated with calls
               to <a data-lt=
               "PaymentRequestUpdateEvent.updateWith">updateWith()</a>. Note
               that all <a data-lt="PaymentDetailsModifier.data">data</a>
               members of <a>PaymentDetailsModifier</a> instances contained in
-              the <a data-lt="PaymentDetails.modifiers">modifiers</a> member
-              will be removed, as they are instead stored in serialized form in
-              the <a>[[\serializedModifierData]]</a> internal slot.
+              the <a data-lt="PaymentDetailsBase.modifiers">modifiers</a>
+              member will be removed, as they are instead stored in serialized
+              form in the <a>[[\serializedModifierData]]</a> internal slot.
             </td>
           </tr>
           <tr>
@@ -1036,42 +1029,23 @@
 }
       </pre>
     </section>
-    <section data-dfn-for="PaymentDetails" data-link-for="PaymentDetails">
+    <section data-dfn-for="PaymentDetailsBase" data-link-for=
+    "PaymentDetailsBase">
       <h2>
-        <dfn>PaymentDetails</dfn> dictionary
+        <dfn>PaymentDetailsBase</dfn> dictionary
       </h2>
       <pre class="idl">
-        dictionary PaymentDetails {
-          PaymentItem total;
+        dictionary PaymentDetailsBase {
           sequence&lt;PaymentItem&gt; displayItems;
           sequence&lt;PaymentShippingOption&gt; shippingOptions;
           sequence&lt;PaymentDetailsModifier&gt; modifiers;
-          DOMString error;
         };
       </pre>
       <p>
-        The <a>PaymentDetails</a> dictionary is passed to the
-        <a>PaymentRequest</a> constructor and provides information about the
-        requested transaction. The <a>PaymentDetails</a> dictionary is also
-        used to update the payment request using <a data-lt=
-        "PaymentRequestUpdateEvent.updateWith">updateWith()</a>.
-      </p>
-      <p>
-        The following members are part of the <a>PaymentDetails</a> dictionary:
+        The following members are part of the <a>PaymentDetailsBase</a>
+        dictionary:
       </p>
       <dl>
-        <dt>
-          <dfn>total</dfn>
-        </dt>
-        <dd>
-          This <a>PaymentItem</a> contains the total amount of the payment
-          request.
-          <p>
-            <code>total</code> MUST be a non-negative value. This means that
-            the <code>total.amount.value</code> field MUST NOT begin with a
-            U+002D HYPHEN-MINUS character.
-          </p>
-        </dd>
         <dt>
           <dfn>displayItems</dfn>
         </dt>
@@ -1082,7 +1056,8 @@
           shipping. It is optional to provide this information.
           <p class="note">
             It is the developer's responsibility to verify that the <a data-lt=
-            "PaymentDetails.total">total</a> amount is the sum of these items.
+            "PaymentDetailsInit.total">total</a> amount is the sum of these
+            items.
           </p>
         </dd>
         <dt>
@@ -1118,11 +1093,11 @@
           <p class="note">
             If the sequence has an item with the <a data-lt=
             "PaymentShippingOption.selected">selected</a> member set to true,
-            then authors are responsible for ensuring that the
-            <a>total</a> member includes the cost of the shipping option.
-            This is because no <a>shippingoptionchange</a> event will be fired
-            for this option unless the user selects an alternative option
-            first.
+            then authors are responsible for ensuring that the <a data-lt=
+            "PaymentDetailsInit.total">total</a> member includes the cost of
+            the shipping option. This is because no <a>shippingoptionchange</a>
+            event will be fired for this option unless the user selects an
+            alternative option first.
           </p>
         </dd>
         <dt>
@@ -1133,21 +1108,75 @@
           modifiers for particular payment method identifiers. For example, it
           allows you to adjust the total amount based on payment method.
         </dd>
+      </dl>
+    </section>
+    <section data-dfn-for="PaymentDetailsInit" data-link-for=
+    "PaymentDetailsInit">
+      <h2>
+        <dfn>PaymentDetailsInit</dfn> dictionary
+      </h2>
+      <pre class="idl">
+        dictionary PaymentDetailsInit : PaymentDetailsBase {
+          required PaymentItem total;
+        };
+      </pre>
+      <p class="note">
+        The <a>PaymentDetailsInit</a> dictionary is used in the construction of
+        the payment request.
+      </p>
+      <p>
+        In addition to the members inherited from the <a>PaymentDetailsBase</a>
+        dictionary, the following members are part of the
+        <a>PaymentDetailsInit</a> dictionary:
+      </p>
+      <dl>
+        <dt>
+          <dfn>total</dfn>
+        </dt>
+        <dd>
+          This <a>PaymentItem</a> contains the non-negative total amount of the
+          payment request.
+        </dd>
+      </dl>
+    </section>
+    <section data-dfn-for="PaymentDetailsUpdate" data-link-for=
+    "PaymentDetailsUpdate">
+      <h2>
+        <dfn>PaymentDetailsUpdate</dfn> dictionary
+      </h2>
+      <pre class="idl">
+        dictionary PaymentDetailsUpdate : PaymentDetailsBase {
+          DOMString error;
+          PaymentItem total;
+        };
+      </pre>
+      <p>
+        The <a>PaymentDetailsUpdate</a> dictionary is used to update the
+        payment request using <a data-lt=
+        "PaymentRequestUpdateEvent.updateWith">updateWith()</a>.
+      </p>
+      <p>
+        In addition to the members inherited from the <a>PaymentDetailsBase</a>
+        dictionary, the following members are part of the
+        <a>PaymentDetailsUpdate</a> dictionary:
+      </p>
+      <dl>
         <dt>
           <dfn>error</dfn>
         </dt>
         <dd>
           When the payment request is updated using <a data-lt=
           "PaymentRequestUpdateEvent.updateWith">updateWith()</a>, the
-          <a>PaymentDetails</a> can contain a message in the <code>error</code>
+          <a>PaymentDetailsUpdate</a> can contain a message in the <a>error</a>
           member that will be displayed to the user. For example, this might
           commonly be used to explain why goods cannot be shipped to the chosen
           shipping address.
-          <p>
-            The <code>error</code> field cannot be passed to the
-            <a>PaymentRequest</a> constructor. Doing so will cause a
-            <a>TypeError</a> to be thrown.
-          </p>
+        </dd>
+        <dt>
+          <dfn>total</dfn>
+        </dt>
+        <dd>
+          This <a>PaymentItem</a> contains the non-negative total amount.
         </dd>
       </dl>
     </section>
@@ -1166,8 +1195,8 @@
       </pre>
       <p>
         The <a>PaymentDetailsModifier</a> dictionary provides details that
-        modify the <a>PaymentDetails</a> based on <a>payment method
-        identifier</a>. It contains the following members:
+        modify the <a>PaymentDetailsBase</a> based on <a>payment method
+        identifier</a>. It contains the following fields:
       </p>
       <dl>
         <dt>
@@ -1183,8 +1212,9 @@
           <dfn>total</dfn>
         </dt>
         <dd>
-          This <a>PaymentItem</a> value overrides the <a data-lt="PaymentDetails.total">total</a> member
-          in the <a>PaymentDetails</a> dictionary for the <a>payment method
+          This <a>PaymentItem</a> value overrides the <a data-lt=
+          "PaymentDetailsInit.total">total</a> member in the
+          <a>PaymentDetailsInit</a> dictionary for the <a>payment method
           identifiers</a> in the <a>supportedMethods</a> member.
         </dd>
         <dt>
@@ -1193,16 +1223,16 @@
         <dd>
           This sequence of <a>PaymentItem</a> dictionaries provides additional
           display items that are appended to the <a data-lt=
-          "PaymentDetails.displayItems">displayItems</a> member in the
-          <a>PaymentDetails</a> dictionary for the <a>payment method
+          "PaymentDetailsBase.displayItems">displayItems</a> member in the
+          <a>PaymentDetailsBase</a> dictionary for the <a>payment method
           identifiers</a> in the <a>supportedMethods</a> member. This member is
           commonly used to add a discount or surcharge line item indicating the
           reason for the different <a>total</a> amount for the selected
           <a>payment method</a> that the user agent MAY display.
           <p class="note">
-            It is the developer's responsibility to verify that the <a data-lt=
-            "PaymentDetails.total">total</a> amount is the sum of the
-            <a data-lt="PaymentDetails.displayItems">displayItems</a> and the
+            It is the developer's responsibility to verify that the
+            <a>total</a> amount is the sum of the <a data-lt=
+            "PaymentDetailsBase.displayItems">displayItems</a> and the
             <a>additionalDisplayItems</a>.
           </p>
         </dd>
@@ -1338,8 +1368,8 @@
       </pre>
       <p>
         A sequence of one or more <a>PaymentItem</a> dictionaries is included
-        in the <a>PaymentDetails</a> dictionary to indicate what the payment
-        request is for and the value asked for.
+        in the <a>PaymentDetailsBase</a> dictionary to indicate what the
+        payment request is for and the value asked for.
       </p>
       <dl>
         <dt>
@@ -1833,7 +1863,7 @@
         <pre class="idl">
           [Constructor(DOMString type, optional PaymentRequestUpdateEventInit eventInitDict),SecureContext]
           interface PaymentRequestUpdateEvent : Event {
-            void updateWith(Promise&lt;PaymentDetails&gt; detailsPromise);
+            void updateWith(Promise&lt;PaymentDetailsUpdate&gt; detailsPromise);
           };
         </pre>
         <p>
@@ -1843,8 +1873,8 @@
         <p>
           If the web page wishes to update the payment request then it should
           call <a>updateWith()</a> and provide a promise that will resolve with
-          a <a>PaymentDetails</a> dictionary containing changed values that the
-          <a>user agent</a> SHOULD present to the user.
+          a <a>PaymentDetailsUpdate</a> dictionary containing changed values
+          that the <a>user agent</a> SHOULD present to the user.
         </p>
         <p>
           The <a>PaymentRequestUpdateEvent</a> constructor MUST set the
@@ -1946,48 +1976,45 @@
             <li>
               <a>Upon fulfillment</a> of <var>detailsPromise</var> with value
               <var>value</var>:
-              <ol>
+              <ol data-link-for="PaymentDetailsBase">
                 <li>Let <var>details</var> be the result of <a>converting</a>
-                <var>value</var> to a <a>PaymentDetails</a> dictionary. If this
-                <a>throws</a> an exception, abort these substeps, and
+                <var>value</var> to a <a>PaymentDetailsUpdate</a> dictionary.
+                If this <a>throws</a> an exception, abort these substeps, and
                 optionally show an error message to the user.
                 </li>
-                <li>If the <a data-lt="PaymentDetails.total">total</a> member
-                of <var>details</var> is present, then:
+                <li data-link-for="PaymentDetailsUpdate">If the <a>total</a>
+                member of <var>details</var> is present, then:
                   <ol>
                     <li>Let <var>value</var> be
-                      <var>details</var>.<a data-lt="PaymentDetails.total">total</a>.<a data-lt="PaymentItem.amount">amount</a>.<a data-lt="PaymentCurrencyAmount.value">value</a>.
+                    <var>details</var>.<a>total</a>.<a data-lt=
+                    "PaymentItem.amount">amount</a>.<a data-lt=
+                    "PaymentCurrencyAmount.value">value</a>.
                     </li>
                     <li>If <var>value</var> is a <a>valid decimal monetary
                     value</a> and the first character of <var>value</var> is
                     <em>not</em> U+002D HYPHEN-MINUS, then copy
-                    <var>details</var>.<a data-lt=
-                    "PaymentDetails.total">total</a> to the <a data-lt=
-                    "PaymentDetails.total">total</a> member of
-                    <var>target</var>.<a>[[\details]]</a>. (Negative total
+                    <var>details</var>.<a>total</a> to the <a>total</a> member
+                    of <var>target</var>.<a>[[\details]]</a>. (Negative total
                     amounts are ignored.)
                     </li>
                   </ol>
                 </li>
-                <li>If the <a data-lt=
-                "PaymentDetails.displayItems">displayItems</a> member of <var>
-                  details</var> is present, then:
+                <li>If the <a>displayItems</a> member of <var>details</var> is
+                present, then:
                   <ol>
                     <li>If every <a>PaymentItem</a> in
-                    <var>details</var>.<a data-lt=
-                    "PaymentDetails.displayItems">displayItems</a> has an
-                    <a data-lt="PaymentItem.amount">amount</a>.<a data-lt=
+                    <var>details</var>.<a>displayItems</a> has an <a data-lt=
+                    "PaymentItem.amount">amount</a>.<a data-lt=
                     "PaymentCurrencyAmount.value">value</a> containing a
                     <a>valid decimal monetary value</a>, then copy
-                    <var>details</var>.<a data-lt=
-                    "PaymentDetails.displayItems">displayItems</a> to the
-                    <a data-lt="PaymentDetails.displayItems">displayItems</a>
-                    member of <var>target</var>.<a>[[\details]]</a>.
+                    <var>details</var>.<a>displayItems</a> to the
+                    <a>displayItems</a> member of
+                    <var>target</var>.<a>[[\details]]</a>.
                     </li>
                   </ol>
                 </li>
-                <li data-link-for="PaymentDetails">If the <a>modifiers</a>
-                member of <var>details</var> is present, then:
+                <li>If the <a>modifiers</a> member of <var>details</var> is
+                present, then:
                   <ol>
                     <li>Let <var>modifiers</var> be the sequence
                     <var>details</var>.<a>modifiers</a>.
@@ -2050,22 +2077,21 @@
                     <li>
                       <i>Copy modifiers</i>: Set
                       <var>target</var>.<a>[[\details]]</a>.<a data-lt=
-                      "PaymentDetails.modifiers">modifiers</a> to
+                      "PaymentDetailsBase.modifiers">modifiers</a> to
                       <var>modifiers</var>, and set
                       <var>target</var>.<a>[[\serializedModifierData]]</a> to
                       <var>serializedModifierData</var>.
                     </li>
                   </ol>
                 </li>
-                <li>If the <a data-lt=
-                "PaymentDetails.shippingOptions">shippingOptions</a> member of
-                <var>details</var> is present, and
+                <li>If the <a>shippingOptions</a> member of <var>details</var>
+                is present, and
                 <var>target</var>.<a>[[\options]]</a>.<a data-lt=
                 "PaymentOptions.requestShipping">requestShipping</a> is true,
                 then:
                   <ol>
                     <li>Let <var>options</var> be
-                      <var>details</var>.<a data-lt="PaymentDetails.shippingOptions">shippingOptions</a>.
+                    <var>details</var>.<a>shippingOptions</a>.
                     </li>
                     <li>Let <var>seenIDs</var> be an empty list.
                     </li>
@@ -2101,15 +2127,16 @@
                       </ol>
                     </li>
                     <li>Copy <var>options</var> to the <a data-lt=
-                    "PaymentDetails.shippingOptions">shippingOptions</a> member
-                    of <var>target</var>.<a>[[\details]]</a>.
+                    "PaymentDetailsBase.shippingOptions">shippingOptions</a>
+                    member of <var>target</var>.<a>[[\details]]</a>.
                     </li>
                   </ol>
                 </li>
-                <li>If the <a data-lt="PaymentDetails.error">error</a> member
-                of <var>details</var> is present, then the <a>user agent</a>
-                should update the user interface to display the error message
-                contained in <a data-lt="PaymentDetails.error">error</a>.
+                <li>If the <a data-lt="PaymentDetailsUpdate.error">error</a>
+                member of <var>details</var> is present, then the <a>user
+                agent</a> should update the user interface to display the error
+                message contained in <a data-lt=
+                "PaymentDetailsUpdate.error">error</a>.
                 </li>
               </ol>
             </li>
@@ -2534,25 +2561,20 @@
             following <a>DOMException</a> types from [[!WEBIDL-LS]] are used:
           </p>
           <ul>
-            <li>
-              "<code><dfn data-cite=
-              "!WEBIDL-LS#aborterror">AbortError</dfn></code>"
+            <li>"<code><dfn data-cite=
+            "!WEBIDL-LS#aborterror">AbortError</dfn></code>"
             </li>
-            <li>
-              "<code><dfn data-cite=
-              "!WEBIDL-LS#invalidstateerror">InvalidStateError</dfn></code>"
+            <li>"<code><dfn data-cite=
+            "!WEBIDL-LS#invalidstateerror">InvalidStateError</dfn></code>"
             </li>
-            <li>
-              "<code><dfn data-cite=
-              "!WEBIDL-LS#notsupportederror">NotSupportedError</dfn></code>"
+            <li>"<code><dfn data-cite=
+            "!WEBIDL-LS#notsupportederror">NotSupportedError</dfn></code>"
             </li>
-            <li>
-              "<code><dfn data-cite=
-              "!WEBIDL-LS#quotaexceedederror">QuotaExceededError</dfn></code>"
+            <li>"<code><dfn data-cite=
+            "!WEBIDL-LS#quotaexceedederror">QuotaExceededError</dfn></code>"
             </li>
-            <li>
-              "<code><dfn data-cite=
-              "!WEBIDL-LS#securityerror">SecurityError</dfn></code>"
+            <li>"<code><dfn data-cite=
+            "!WEBIDL-LS#securityerror">SecurityError</dfn></code>"
             </li>
           </ul>
         </dd>
