@@ -412,8 +412,8 @@
           </li>
           <li>Process shipping options:
             <ol>
-              <li>Let <var>options</var> be an empty
-              <code>sequence</code>&lt;<a>PaymentShippingOption</a>&gt;.
+              <li>Let <var>options</var> be an empty <code><a data-cite=
+              "WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
               </li>
               <li>If the <a>shippingOptions</a> member of <var>details</var> is
               present, then:
@@ -1755,10 +1755,9 @@
         PaymentRequest and <code>iframe</code> elements
       </h2>
       <p>
-        To indicate that a cross-origin <a><code>iframe</code></a> is allowed
-        to invoke the payment request API, the
-        <a><code>allowpaymentrequest</code></a> attribute can be specified on
-        the <a><code>iframe</code></a> element.
+        To indicate that a cross-origin <a>iframe</a> is allowed to invoke the
+        payment request API, the <a>allowpaymentrequest</a> attribute can be
+        specified on the <a>iframe</a> element.
       </p>
     </section>
     <section>
@@ -1841,8 +1840,8 @@
             <li>Let <var>event</var> be this <a>PaymentRequestUpdateEvent</a>
             instance.
             </li>
-            <li>Let <var>target</var> be the value of <var>event</var>'s <code>
-              <a data-cite="DOM4#dom-event-target">target</a></code> attribute.
+            <li>Let <var>target</var> be the value of <var>event</var>'s
+            <a data-cite="DOM4#dom-event-target">target</a> attribute.
             </li>
             <li>If <var>target</var> is not a <a>PaymentRequest</a> object,
             then <a>throw</a> a <a>TypeError</a>.
