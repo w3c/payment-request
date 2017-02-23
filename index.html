@@ -298,7 +298,7 @@
           </p>
           <pre class="example" title="The 'details' argument">
             const details = {
-              paymentRequestID: "1234567890123",
+              paymentRequestId: "1234567890123",
               displayItems: [
                 {
                   label: "Sub-total",
@@ -455,7 +455,7 @@
             </ol>
           </li>
           <li>Let <var>serializedModifierData</var> be an empty list.
-          <li>If <var>details.paymentRequestID</var> was not provided during
+          <li>If <var>details.paymentRequestId</var> was not provided during
           construction, populate the field with an [[RFC4122]] UUID.
           </li>
           </li>
@@ -1038,8 +1038,8 @@
         <dfn>PaymentDetailsBase</dfn> dictionary
       </h2>
       <pre class="idl">
-        dictionary PaymentDetailsBase {
-          DOMString paymentRequestID;
+        dictionary PaymentDetails {
+          DOMString paymentRequestId;
           PaymentItem total;
           sequence&lt;PaymentItem&gt; displayItems;
           sequence&lt;PaymentShippingOption&gt; shippingOptions;
@@ -1052,13 +1052,13 @@
       </p>
       <dl>
         <dt>
-          <dfn>paymentRequestID</dfn>
+          <dfn>paymentRequestId</dfn>
         </dt>
         <dd>
-          <code>paymentRequestID</code> is a freeform identifier for this
+          <a>paymentRequestId</a> is a freeform identifier for this
           payment request. This field is intended to hold a unique
           identifier for the purposes of recovering from failures and/or as a
-          foreign key into other systems. If a <code>paymentRequestID</code>
+          foreign key into other systems. If a <a>paymentRequestId</a>
           is not provided by the client then a UUID will be generated and stored
           instead.
         </dd>
