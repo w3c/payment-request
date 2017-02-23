@@ -544,7 +544,7 @@
           </li>
           <li>Set <var>request</var>.<a>[[\options]]</a> to <var>options</var>.
           </li>
-          <li>Set <var>request</var>.<a>[[\state]]</a> to <i>created</i>.
+          <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>created</a>".
           </li>
           <li>Set <var>request</var>.<a>[[\updating]]</a> to false.
           </li>
@@ -609,11 +609,11 @@
           which the method is called.
           </li>
           <li>If the value of <var>request</var>.<a>[[\state]]</a> is not
-          <i>created</i> then <a>throw</a> an "<a>InvalidStateError</a>"
-          <a>DOMException</a>.
+          "<a>created</a>" then <a>throw</a> an "<a>InvalidStateError</a>" <a>
+            DOMException</a>.
           </li>
           <li>Set the value of <var>request</var>.<a>[[\state]]</a> to
-          <i>interactive</i>.
+          "<a>interactive</a>".
           </li>
           <li>Let <var>acceptPromise</var> be a new <a>Promise</a>.
           </li>
@@ -691,7 +691,7 @@
           which the method is called.
           </li>
           <li>If the value of <var>request</var>.<a>[[\state]]</a> is not
-          <i>interactive</i> then <a>throw</a> an "<a>InvalidStateError</a>"
+          "<a>interactive</a>" then <a>throw</a> an "<a>InvalidStateError</a>"
           <a>DOMException</a>.
           </li>
           <li>Let <var>promise</var> be a new <a>Promise</a>.
@@ -711,7 +711,7 @@
               <a>DOMException</a> and abort these steps.
               </li>
               <li>Set the value of the internal slot
-              <var>request</var>.<a>[[\state]]</a> to <i>closed</i>.
+              <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
               </li>
               <li>Reject the promise
               <var>request</var>.<a>[[\acceptPromise]]</a> with an
@@ -745,7 +745,7 @@
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object on
           which the method was called.
           </li>
-          <li>If <var>request</var>.<a>[[\state]]</a> is not <i>created</i>,
+          <li>If <var>request</var>.<a>[[\state]]</a> is not "<a>created</a>",
           then return a promise rejected with an "<a>InvalidStateError</a>" <a>
             DOMException</a>.
           </li>
@@ -879,8 +879,47 @@
               <dfn>[[\state]]</dfn>
             </td>
             <td>
-              The current <a class="internalDFN" href=
-              "#state-transitions">state</a> of the payment request.
+              <p>
+                The current <dfn>state</dfn> of the payment request, which
+                transitions from:
+              </p>
+              <dl>
+                <dt>
+                  "<dfn>created</dfn>"
+                </dt>
+                <dd>
+                  The payment request is constructed and has not been presented
+                  to the user.
+                </dd>
+                <dt>
+                  "<dfn>interactive</dfn>"
+                </dt>
+                <dd>
+                  The payment request is being presented to the user.
+                </dd>
+                <dt>
+                  "<dfn>closed</dfn>"
+                </dt>
+                <dd>
+                  The payment request completed.
+                </dd>
+              </dl>
+              <p>
+                The <a>state</a> transitions are illustrated in the figure below:
+              </p>
+              <figure>
+                <img alt="" src="images/state-transitions.svg" width="518"
+                height="125">
+                <figcaption data-link-for="PaymentRequest">
+                  The constructor sets the initial <a>state</a> to
+                  "<a>created</a>". The <a>show()</a> method changes the
+                  <a>state</a> to "<a>interactive</a>". From there, the
+                  <a>abort()</a> method or any other error can send the
+                  <a>state</a> to "<a>closed</a>"; similarly, the <a>user
+                  accepts the payment request algorithm</a> will change the
+                  <a>state</a> to "<a>closed</a>".
+                </figcaption>
+              </figure>
             </td>
           </tr>
           <tr>
@@ -904,14 +943,6 @@
             </td>
           </tr>
         </table>
-        <div class="note" id="state-transitions">
-          <p>
-            The internal slot <a>[[\state]]</a> transitions between its various
-            potential values as follows:
-          </p><img alt=
-          "The constructor sets the initial state to &quot;created&quot;. The show() method changes the state to &quot;interactive&quot;. From there, the abort() method or any other error can send the state to &quot;closed&quot;; similarly, the &quot;user accepts the payment request algorithm&quot; will send the state to &quot;closed&quot;."
-          src="images/state-transitions.svg" width="518" height="125">
-        </div>
       </section>
     </section>
     <section data-dfn-for="PaymentMethodData" data-link-for=
@@ -1853,8 +1884,8 @@
               throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
             <li>If <var>target</var>.<a>[[\state]]</a> is not
-            <i>interactive</i>, then <a>throw</a> an "<a>InvalidStateError</a>"
-            <a>DOMException</a>.
+            "<a>interactive</a>", then <a>throw</a> an
+            "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
             <li>If <var>target</var>.<a>[[\updating]]</a> is true, then
             <a>throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
@@ -1902,7 +1933,7 @@
                 <li>Abort the current user interaction and close down any
                 remaining user interface.
                 </li>
-                <li>Set <var>target</var>.<a>[[\state]]</a> to <i>closed</i>.
+                <li>Set <var>target</var>.<a>[[\state]]</a> to "<a>closed</a>".
                 </li>
                 <li>Reject the promise
                 <var>target</var>.<a>[[\acceptPromise]]</a> with an
@@ -2152,8 +2183,8 @@
       </h2>
       <p>
         When the internal slot <a>[[\state]]</a> of a <a>PaymentRequest</a>
-        object is set to <i>interactive</i>, the <a>user agent</a> will trigger
-        the following algorithms based on user interaction.
+        object is set to "<a>interactive</a>", the <a>user agent</a> will
+        trigger the following algorithms based on user interaction.
       </p>
       <section>
         <h2>
@@ -2233,9 +2264,9 @@
           may take place at a time. This should never occur.
           </li>
           <li>If the <var>request</var>.<a>[[\state]]</a> is not set to
-          <i>interactive</i>, then terminate this algorithm and take no further
-          action. The <a>user agent</a> user interface should ensure that this
-          never occurs.
+          "<a>interactive</a>", then terminate this algorithm and take no
+          further action. The <a>user agent</a> user interface should ensure
+          that this never occurs.
           </li>
           <li>Let <var>event</var> be a new <a>PaymentRequestUpdateEvent</a>.
           </li>
@@ -2264,9 +2295,9 @@
           agent</a> user interface should ensure that this never occurs.
           </li>
           <li>If <var>request</var>.<a>[[\state]]</a> is not
-          <i>interactive</i>, then terminate this algorithm and take no further
-          action. The <a>user agent</a> user interface should ensure that this
-          never occurs.
+          "<a>interactive</a>", then terminate this algorithm and take no
+          further action. The <a>user agent</a> user interface should ensure
+          that this never occurs.
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> value of
@@ -2332,7 +2363,7 @@
           </li>
           <li>Set <var>response</var>.<a>[[\completeCalled]]</a> to false.
           </li>
-          <li>Set <var>request</var>.<a>[[\state]]</a> to <i>closed</i>.
+          <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
           </li>
           <li>Resolve the pending promise
           <var>request</var>.<a>[[\acceptPromise]]</a> with
