@@ -2492,81 +2492,48 @@
           Web IDL
         </dt>
         <dd>
-          When this specification says to <dfn data-cite="!WEBIDL-LS#dfn-throw"
-          data-lt="throws">throw</dfn> an error, the <a>user agent</a> must
-          throw an error as described in [[!WEBIDL-LS]]. When this occurs in a
-          sub-algorithm, this results in termination of execution of the
-          sub-algorithm and all ancestor algorithms until one is reached that
-          explicitly describes procedures for catching exceptions.
+          <p>
+            When this specification says to <dfn data-cite=
+            "!WEBIDL-LS#dfn-throw" data-lt="throws">throw</dfn> an error, the
+            <a>user agent</a> must throw an error as described in
+            [[!WEBIDL-LS]]. When this occurs in a sub-algorithm, this results
+            in termination of execution of the sub-algorithm and all ancestor
+            algorithms until one is reached that explicitly describes
+            procedures for catching exceptions.
+          </p>
           <p>
             The algorithm for <dfn data-cite=
             "!WEBIDL-LS#dfn-convert-idl-to-ecmascript-value" data-lt=
             "converting">converting an ECMAScript value to a dictionary</dfn>
             is defined by [[!WEBIDL-LS]].
           </p>
-        </dd>
-        <dd>
           <p>
             <code><dfn data-cite=
             "!WEBIDL-LS#dfn-DOMException">DOMException</dfn></code> and the
             following <a>DOMException</a> types from [[!WEBIDL-LS]] are used:
           </p>
-          <table>
-            <tr>
-              <th>
-                Type
-              </th>
-              <th>
-                Message (optional)
-              </th>
-            </tr>
-            <tr>
-              <td>
-                <code><dfn data-cite=
-                "!WEBIDL-LS#aborterror">AbortError</dfn></code>
-              </td>
-              <td>
-                The payment request was aborted
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <code><dfn data-cite=
-                "!WEBIDL-LS#invalidstateerror">InvalidStateError</dfn></code>
-              </td>
-              <td>
-                The object is in an invalid state
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <code><dfn data-cite=
-                "!WEBIDL-LS#notsupportederror">NotSupportedError</dfn></code>
-              </td>
-              <td>
-                The payment method was not supported
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <code><dfn data-cite=
-                "!WEBIDL-LS#quotaexceedederror">QuotaExceededError</dfn></code>
-              </td>
-              <td data-link-for="PaymentRequest">
-                The <a>canMakePayment()</a> method was called too often
-                according to the <a>user agent</a>'s heuristics.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <code><dfn data-cite=
-                "!WEBIDL-LS#securityerror">SecurityError</dfn></code>
-              </td>
-              <td>
-                The operation is only supported in a secure context
-              </td>
-            </tr>
-          </table>
+          <ul>
+            <li>
+              "<code><dfn data-cite=
+              "!WEBIDL-LS#aborterror">AbortError</dfn></code>"
+            </li>
+            <li>
+              "<code><dfn data-cite=
+              "!WEBIDL-LS#invalidstateerror">InvalidStateError</dfn></code>"
+            </li>
+            <li>
+              "<code><dfn data-cite=
+              "!WEBIDL-LS#notsupportederror">NotSupportedError</dfn></code>"
+            </li>
+            <li>
+              "<code><dfn data-cite=
+              "!WEBIDL-LS#quotaexceedederror">QuotaExceededError</dfn></code>"
+            </li>
+            <li>
+              "<code><dfn data-cite=
+              "!WEBIDL-LS#securityerror">SecurityError</dfn></code>"
+            </li>
+          </ul>
         </dd>
       </dl>
     </section>
