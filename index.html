@@ -2368,6 +2368,10 @@
           </li>
           <li>Let <var>response</var> be a new <a>PaymentResponse</a>.
           </li>
+          <li>Set the <a data-lt="PaymentResponse.requestId">requestId</a>
+          attribute value of <var>response</var> to the value of
+          <var>request</var>.<a data-lt="PaymentRequest.id">id</a>.
+          </li>
           <li>Set the <a data-lt="PaymentResponse.methodName">methodName</a>
           attribute value of <var>response</var> to the <a>payment method
           identifier</a> for the <a>payment method</a> that the user selected
