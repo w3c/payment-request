@@ -607,7 +607,7 @@
         <h2>
           <dfn>show()</dfn> method
         </h2>
-        <p>
+        <p class="note">
           The <a>show()</a> method is called when the page wants to begin user
           interaction for the payment request. The <a>show()</a> method returns
           a <a>Promise</a> that will be resolved when the <a>user accepts the
@@ -680,23 +680,26 @@
         <h2>
           <dfn>abort()</dfn> method
         </h2>
-        <p>
-          The <a>abort()</a> method may be called if the web page wishes to
-          tell the <a>user agent</a> to abort the payment <var>request</var>
-          and to tear down any user interface that might be presented.
-          <a>abort()</a> can only be called after the <a>show()</a> method has
-          been called and before this instance's <a>[[\acceptPromise]]</a> has
-          been resolved. For example, a web page might choose to do this if the
-          goods they are selling are only available for a limited amount of
-          time. If the user does not accept the payment request within the
-          allowed time period, then the request will be aborted.
-        </p>
-        <p>
-          A <a>user agent</a> might not always be able to abort a request. For
-          example, if the <a>user agent</a> has delegated responsibility for
-          the request to another app. In this situation, <a>abort()</a> will
-          reject the returned <a>Promise</a>.
-        </p>
+        <div class="note">
+          <p>
+            The <a>abort()</a> method is called if the web page wishes to tell
+            the <a>user agent</a> to abort the payment <var>request</var> and
+            to tear down any user interface that might be shown. The
+            <a>abort()</a> can only be called after the <a>show()</a> method
+            has been called (see <a data-lt="state">states</a>) and before this
+            instance's <a>[[\acceptPromise]]</a> has been resolved. For
+            example, a web page might choose to do this if the goods they are
+            selling are only available for a limited amount of time. If the
+            user does not accept the payment request within the allowed time
+            period, then the request will be aborted.
+          </p>
+          <p>
+            A <a>user agent</a> might not always be able to abort a request.
+            For example, if the <a>user agent</a> has delegated responsibility
+            for the request to another app. In this situation, <a>abort()</a>
+            will reject the returned <a>Promise</a>.
+          </p>
+        </div>
         <p>
           The <a>abort()</a> method MUST act as follows:
         </p>
@@ -741,7 +744,7 @@
         <h2>
           <dfn>canMakePayment()</dfn> method
         </h2>
-        <p>
+        <p class="note">
           The <a>canMakePayment()</a> method can be used by the developer to
           determine if the <a>PaymentRequest</a> object can be used to make a
           payment, before they call <a>show()</a>. It returns a <a>Promise</a>
@@ -801,28 +804,42 @@
         <h2>
           <dfn>shippingAddress</dfn> attribute
         </h2>
-        <p>
-          <a>shippingAddress</a> is populated when the user provides a shipping
-          address. It is null by default. When a user provides a shipping
-          address, the <a>shipping address changed algorithm</a> runs.
+        <p class="note">
+          A <a>PaymentRequest</a>'s <a>shippingAddress</a> attribute is
+          populated when the user provides a shipping address. It is null by
+          default. When a user provides a shipping address, the <a>shipping
+          address changed algorithm</a> runs.
         </p>
+      </section>
+      <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
+        <h2>
+          <dfn>onshippingaddresschange</dfn> attribute
+        </h2>
         <p>
-          <dfn>onshippingaddresschange</dfn> is an <code>EventHandler</code>
-          for an <code>Event</code> named <code>shippingaddresschange</code>.
+          A <a>PaymentRequest</a>'s <a>onshippingaddresschange</a> attribute is
+          an <code>EventHandler</code> for an <code>Event</code> named
+          <code>shippingaddresschange</code>.
         </p>
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
         <h2>
           <dfn>shippingOption</dfn> attribute
         </h2>
-        <p>
-          <a>shippingOption</a> is populated when the user chooses a shipping
-          option. It is null by default. When a user chooses a shipping option,
-          the <a>shipping option changed algorithm</a> runs.
+        <p class=" note">
+          A <a>PaymentRequest</a>'s <a>shippingOption</a> attribute is
+          populated when the user chooses a shipping option. It is null by
+          default. When a user chooses a shipping option, the <a>shipping
+          option changed algorithm</a> runs.
         </p>
-        <p>
-          <dfn>onshippingoptionchange</dfn> is an <code>EventHandler</code> for
-          an <code>Event</code> named <code>shippingoptionchange</code>.
+      </section>
+      <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
+        <h2>
+          <dfn>onshippingoptionchange</dfn> attribute
+        </h2>
+        <p class="note">
+          A <a>PaymentRequest</a>'s <a>onshippingoptionchange</a> attribute is
+          an <code>EventHandler</code> for an <code>Event</code> named
+          <code>shippingoptionchange</code>.
         </p>
       </section>
       <section>
@@ -1757,14 +1774,14 @@
         <h2>
           <dfn data-lt="complete(result)">complete()</dfn> method
         </h2>
-        <p>
+        <p class="note">
           The <a>complete()</a> method is called after the user has accepted
           the payment request and the <a>[[\acceptPromise]]</a> has been
           resolved. Calling the <a>complete()</a> method tells the <a>user
           agent</a> that the transaction is over (and SHOULD cause any
           remaining user interface to be closed).
         </p>
-        <div class="note">
+        <div class="note" title="Dealing with blocked browser UI">
           <p>
             After the payment request has been accepted and the
             <a>PaymentResponse</a> returned to the page but before the page
@@ -1918,6 +1935,12 @@
           <h2>
             <dfn data-lt="updateWith(detailsPromise)">updateWith()</dfn> method
           </h2>
+          <p class="note">
+            If the web page wishes to update the payment request then it can
+            call <a>updateWith()</a> and provide a promise that will resolve
+            with a <a>PaymentDetails</a> dictionary containing changed values
+            that the <a>user agent</a> presents to the user.
+          </p>
           <p>
             The <a>updateWith(detailsPromise)</a> method MUST act as follows:
           </p>
