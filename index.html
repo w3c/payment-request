@@ -346,14 +346,12 @@
           </li>
           <li>Establish the request's id:
             <ol>
-              <li>Let <var>requestId</var> be the empty string.
-              </li>
-              <li>If <var>details.id</var> is present, set <var>requestId</var>
-              to the value of <var>details</var>.<a data-lt=
-              "PaymentDetails.id">id</a>. Otherwise, set <var>requestId</var>
-              to a string that uniquely identifies this payment request. It is
-              RECOMMENDED that the string be a <abbr title=
-              "Universally Unique Identifier">UUID</abbr> [[!RFC4122]].
+              <li>If <var>details</var>.<a data-lt="PaymentDetails.id">id</a>
+              is missing, set the value of <var>details</var>.<a data-lt=
+              "PaymentDetails.id">id</a> to a string that uniquely identifies
+              this payment request. It is RECOMMENDED that the string be a
+              <abbr title="Universally Unique Identifier">UUID</abbr>
+              [[!RFC4122]].
               </li>
             </ol>
           </li>
@@ -548,8 +546,6 @@
           </li>
           <li>Let <var>request</var> be a new <a>PaymentRequest</a>.
           </li>
-          <li>Set <var>request</var>.<a>id</a> to <var>requestId</var>.
-          </li>
           <li>Set <var>request</var>.<a>[[\options]]</a> to <var>options</var>.
           </li>
           <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>created</a>".
@@ -596,6 +592,16 @@
           <li>Return <var>request</var>.
           </li>
         </ol>
+      </section>
+      <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
+        <h2>
+          <dfn>id</dfn> attribute
+        </h2>
+        <p>
+          When getting, the <a>id</a> attribute returns this
+          <a>PaymentRequest</a> <a>[[\details]]</a>.<a data-lt=
+          "PaymentDetails.id">id</a>.
+        </p>
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
         <h2>
@@ -1070,9 +1076,9 @@
         <dd>
           <a>id</a> is a free-form identifier for this payment request.
           <p class="note">
-            If a <a>id</a> member is not present, then the UA will generate a
-            unique identifier for the payment request during <a data-lt=
-            "PaymentRequest.PaymentRequest()">construction</a>.
+            If an <a>id</a> member is not present, then the <a>user agent</a>
+            will generate a unique identifier for the payment request during
+            <a data-lt="PaymentRequest.PaymentRequest()">construction</a>.
           </p>
         </dd>
         <dt>
@@ -2370,7 +2376,8 @@
           </li>
           <li>Set the <a data-lt="PaymentResponse.requestId">requestId</a>
           attribute value of <var>response</var> to the value of
-          <var>request</var>.<a data-lt="PaymentRequest.id">id</a>.
+          <var>request</var>.<a>[[\details]]</a>.<a data-lt=
+          "PaymentDetails.id">id</a>.
           </li>
           <li>Set the <a data-lt="PaymentResponse.methodName">methodName</a>
           attribute value of <var>response</var> to the <a>payment method
