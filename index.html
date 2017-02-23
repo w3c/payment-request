@@ -344,6 +344,19 @@
           </li>
           <li>Let <var>serializedMethodData</var> be an empty list.
           </li>
+          <li>Establish the request's id:
+            <ol>
+              <li>Let <var>requestId</var> be the empty string.
+              </li>
+              <li>If <var>details.id</var> is present, set <var>requestId</var>
+              to the value of <var>details</var>.<a data-lt=
+              "PaymentDetails.id">id</a>. Otherwise, set <var>requestId</var>
+              to a string that uniquely identifies this payment request. It is
+              RECOMMENDED that the string be a <abbr title=
+              "Universally Unique Identifier">UUID</abbr> [[!RFC4122]].
+              </li>
+            </ol>
+          </li>
           <li>Process payment methods:
             <ol data-link-for="PaymentMethodData">
               <li>If the length of the <var>methodData</var> sequence is zero,
@@ -456,9 +469,6 @@
             </ol>
           </li>
           <li>Let <var>serializedModifierData</var> be an empty list.
-          <li>If <var>details.id</var> was not provided during
-          construction, populate the field with an [[RFC4122]] UUID.
-          </li>
           </li>
           <li data-link-for="PaymentDetailsBase">Process payment details
           modifiers:
@@ -537,6 +547,8 @@
             </ol>
           </li>
           <li>Let <var>request</var> be a new <a>PaymentRequest</a>.
+          </li>
+          <li>Set <var>request</var>.<a>id</a> to <var>requestId</var>.
           </li>
           <li>Set <var>request</var>.<a>[[\options]]</a> to <var>options</var>.
           </li>
@@ -1056,12 +1068,12 @@
           <dfn>id</dfn>
         </dt>
         <dd>
-          <a>id</a> is a freeform identifier for this
-          payment request. This field is intended to hold a unique
-          identifier for the purposes of recovering from failures and/or as a
-          foreign key into other systems. If a <a>id</a>
-          is not provided by the client then a UUID will be generated and stored
-          instead.
+          <a>id</a> is a free-form identifier for this payment request.
+          <p class="note">
+            If a <a>id</a> member is not present, then the UA will generate a
+            unique identifier for the payment request during <a data-lt=
+            "PaymentRequest.PaymentRequest()">construction</a>.
+          </p>
         </dd>
         <dt>
           <dfn>total</dfn>
@@ -1739,6 +1751,13 @@
           <a>PaymentRequest</a> constructor, then <a data-lt=
           "PaymentResponse.payerPhone">payerPhone</a> will be the phone number
           chosen by the user.
+        </dd>
+        <dt>
+          <dfn>requestId</dfn>
+        </dt>
+        <dd>
+          The corresponding payment request <a data-lt=
+          "PaymentRequest.id">id</a> that spawned this payment response.
         </dd>
       </dl>
       <section data-dfn-for="PaymentResponse" data-link-for="PaymentResponse">
