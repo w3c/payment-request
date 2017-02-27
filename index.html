@@ -40,7 +40,6 @@
       wgPatentURI: "https://www.w3.org/2004/01/pp-impl/83744/status",
 
       issueBase: "https://github.com/w3c/browser-payment-api/issues/",
-
       localBiblio: {
         "METHOD-IDENTIFIERS": {
           title: "Payment Method Identifiers",
@@ -2243,9 +2242,9 @@
         </h2>
         <p>
           The <dfn>PaymentRequest updated algorithm</dfn> is run by other
-          algorithms above to fire an event to indicate that a user has made a
-          change to a <a>PaymentRequest</a> called <var>request</var> with an
-          event name of <var>name</var>.
+          algorithms above to <a>fire an event</a> to indicate that a user has
+          made a change to a <a>PaymentRequest</a> called <var>request</var>
+          with an event name of <var>name</var>.
         </p>
         <p>
           It MUST run the following steps:
@@ -2263,8 +2262,8 @@
           <li>Let <var>event</var> be a new <a>PaymentRequestUpdateEvent</a>.
           </li>
           <li>
-            <a>Fire an event</a> named <var>name</var> of type <var>event</var>
-            at <var>request</var>.
+            <a>Fire an event</a> named <var>name</var> at <var>request</var>
+            using <a>PaymentRequestUpdateEvent</a>.
           </li>
         </ol>
       </section>
