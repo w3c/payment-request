@@ -804,7 +804,7 @@
         <h2>
           <dfn>shippingAddress</dfn> attribute
         </h2>
-        <p class="note">
+        <p>
           A <a>PaymentRequest</a>'s <a>shippingAddress</a> attribute is
           populated when the user provides a shipping address. It is null by
           default. When a user provides a shipping address, the <a>shipping
@@ -825,7 +825,7 @@
         <h2>
           <dfn>shippingOption</dfn> attribute
         </h2>
-        <p class=" note">
+        <p>
           A <a>PaymentRequest</a>'s <a>shippingOption</a> attribute is
           populated when the user chooses a shipping option. It is null by
           default. When a user chooses a shipping option, the <a>shipping
@@ -1188,9 +1188,10 @@
           This <a>PaymentItem</a> contains the non-negative total amount of the
           payment request.
           <p class="note">
-            The <a>total</a>.<a data-lt=
-            "PaymentItem.amount">amount</a>.<a data-lt=
-            "PaymentCurrencyAmount.value">value</a> can't be a negative number.
+            Algorithms in this specification that accept a
+            <a>PaymentDetails</a> dictionary will throw if the
+            <a>total</a>.<a data-lt="PaymentItem.amount">amount</a>.<a data-lt=
+            "PaymentCurrencyAmount.value">value</a> is a negative number.
           </p>
         </dd>
       </dl>
@@ -1786,23 +1787,21 @@
           agent</a> that the transaction is over (and SHOULD cause any
           remaining user interface to be closed).
         </p>
-        <div class="note" title="Dealing with blocked browser UI">
-          <p>
-            After the payment request has been accepted and the
-            <a>PaymentResponse</a> returned to the page but before the page
-            calls <a>complete()</a> the payment request user interface remains
-            in a pending state. At this point the user interface ought not
-            offer a cancel command because acceptance of the payment request
-            has been returned. However, if something goes wrong and the page
-            never calls <a>complete()</a> then the user interface is blocked.
-          </p>
-          <p>
-            For this reason, implementations may choose to impose a timeout for
-            the page to call <a>complete()</a>. If the timeout expires then the
-            implementation will behave as if <a>complete()</a> was called with
-            no arguments.
-          </p>
-        </div>
+        <p>
+          After the payment request has been accepted and the
+          <a>PaymentResponse</a> returned to the page but before the page calls
+          <a>complete()</a> the payment request user interface remains in a
+          pending state. At this point the user interface ought not offer a
+          cancel command because acceptance of the payment request has been
+          returned. However, if something goes wrong and the page never calls
+          <a>complete()</a> then the user interface is blocked.
+        </p>
+        <p>
+          For this reason, implementations MAY impose a timeout for the page to
+          call <a>complete()</a>. If the timeout expires then the
+          implementation will behave as if <a>complete()</a> was called with no
+          arguments.
+        </p>
         <p>
           The <a>complete(result)</a> method MUST act as follows:
         </p>
