@@ -963,7 +963,7 @@
         method</a> specific data for those methods.
       </p>
       <p>
-        The following fields are part of the <a>PaymentMethodData</a>
+        The following members are part of the <a>PaymentMethodData</a>
         dictionary:
       </p>
       <dl>
@@ -1000,9 +1000,6 @@
       <p>
         A <a>PaymentCurrencyAmount</a> dictionary is used to supply monetary
         amounts.
-      </p>
-      <p>
-        The following fields are required:
       </p>
       <dl>
         <dt>
@@ -1061,7 +1058,7 @@
         "PaymentRequestUpdateEvent.updateWith">updateWith()</a>.
       </p>
       <p>
-        The following fields are part of the <a>PaymentDetails</a> dictionary:
+        The following members are part of the <a>PaymentDetails</a> dictionary:
       </p>
       <dl>
         <dt>
@@ -1101,26 +1098,29 @@
             "PaymentRequest.shippingAddress">shippingAddress</a>.
           </p>
           <p>
-            If an item in the sequence has the <code>selected</code> field set
-            to true, then this is the shipping option that will be used by
-            default and <a data-lt=
-            "PaymentRequest.shippingOption">shippingOption</a> will be set to
-            the <code>id</code> of this option without running the <a>shipping
-            option changed algorithm</a>. Authors SHOULD NOT set
-            <code>selected</code> to true on more than one item. If more than
-            one item in the sequence has <code>selected</code> set to true,
-            then <a>user agents</a> MUST select the last one in the sequence.
+            If an item in the sequence has the <a data-lt=
+            "PaymentShippingOption.selected">selected</a> member set to true,
+            then this is the shipping option that will be used by default and
+            <a>shippingOption</a> will be set to the <a data-lt=
+            "PaymentShippingOption.id">id</a> of this option without running
+            the <a>shipping option changed algorithm</a>. Authors SHOULD NOT
+            set <a data-lt="PaymentShippingOption.selected">selected</a> to
+            true on more than one item. If more than one item in the sequence
+            has <a data-lt="PaymentShippingOption.selected">selected</a> set to
+            true, then <a>user agents</a> MUST select the last one in the
+            sequence.
           </p>
           <p>
-            The <code>shippingOptions</code> field is only used if the
+            The <a>shippingOptions</a> member is only used if the
             <a>PaymentRequest</a> was constructed with <a>PaymentOptions</a>
             <a data-lt="PaymentOptions.requestShipping">requestShipping</a> set
             to true.
           </p>
           <p class="note">
-            If the sequence has an item with the <code>selected</code> field
-            set to true, then authors are responsible for ensuring that the
-            <code>total</code> field includes the cost of the shipping option.
+            If the sequence has an item with the <a data-lt=
+            "PaymentShippingOption.selected">selected</a> member set to true,
+            then authors are responsible for ensuring that the
+            <a>total</a> member includes the cost of the shipping option.
             This is because no <a>shippingoptionchange</a> event will be fired
             for this option unless the user selects an alternative option
             first.
@@ -1141,7 +1141,7 @@
           When the payment request is updated using <a data-lt=
           "PaymentRequestUpdateEvent.updateWith">updateWith()</a>, the
           <a>PaymentDetails</a> can contain a message in the <code>error</code>
-          field that will be displayed to the user. For example, this might
+          member that will be displayed to the user. For example, this might
           commonly be used to explain why goods cannot be shipped to the chosen
           shipping address.
           <p>
@@ -1168,15 +1168,15 @@
       <p>
         The <a>PaymentDetailsModifier</a> dictionary provides details that
         modify the <a>PaymentDetails</a> based on <a>payment method
-        identifier</a>. It contains the following fields:
+        identifier</a>. It contains the following members:
       </p>
       <dl>
         <dt>
           <dfn>supportedMethods</dfn>
         </dt>
         <dd>
-          The <a>supportedMethods</a> field contains a sequence of <a>payment
-          method identifiers</a>. The remaining fields in the
+          The <a>supportedMethods</a> member contains a sequence of <a>payment
+          method identifiers</a>. The remaining members in the
           <a>PaymentDetailsModifier</a> apply only if the user selects a
           <a>payment method</a> included in this sequence.
         </dd>
@@ -1184,21 +1184,22 @@
           <dfn>total</dfn>
         </dt>
         <dd>
-          This <a>PaymentItem</a> value overrides the <code>total</code> field
+          This <a>PaymentItem</a> value overrides the <a data-lt="PaymentDetails.total">total</a> member
           in the <a>PaymentDetails</a> dictionary for the <a>payment method
-          identifiers</a> in the <code>supportedMethods</code> field.
+          identifiers</a> in the <a>supportedMethods</a> member.
         </dd>
         <dt>
           <dfn>additionalDisplayItems</dfn>
         </dt>
         <dd>
           This sequence of <a>PaymentItem</a> dictionaries provides additional
-          display items that are appended to the <code>displayItems</code>
-          field in the <a>PaymentDetails</a> dictionary for the <a>payment
-          method identifiers</a> in the <code>supportedMethods</code> field.
-          This field is commonly used to add a discount or surcharge line item
-          indicating the reason for the different <code>total</code> amount for
-          the selected <a>payment method</a> that the user agent MAY display.
+          display items that are appended to the <a data-lt=
+          "PaymentDetails.displayItems">displayItems</a> member in the
+          <a>PaymentDetails</a> dictionary for the <a>payment method
+          identifiers</a> in the <a>supportedMethods</a> member. This member is
+          commonly used to add a discount or surcharge line item indicating the
+          reason for the different <a>total</a> amount for the selected
+          <a>payment method</a> that the user agent MAY display.
           <p class="note">
             It is the developer's responsibility to verify that the <a data-lt=
             "PaymentDetails.total">total</a> amount is the sum of the
@@ -1210,9 +1211,9 @@
           <dfn>data</dfn>
         </dt>
         <dd>
-          <code>data</code> is an object that provides optional information
-          that might be needed by the supported payment methods. If supplied,
-          it will be <a>JSON-serialized</a>.
+          <a>data</a> is an object that provides optional information that
+          might be needed by the supported payment methods. If supplied, it
+          will be <a>JSON-serialized</a>.
         </dd>
       </dl>
     </section>
@@ -1224,7 +1225,7 @@
         enum PaymentShippingType {
           "shipping",
           "delivery",
-          "pickup"
+          "pickup",
         };
       </pre>
       <dl>
@@ -1252,7 +1253,7 @@
         </dd>
       </dl>
     </section>
-    <section data-dfn-for="PaymentOptions">
+    <section data-dfn-for="PaymentOptions" data-link-for="PaymentOptions">
       <h2>
         <dfn>PaymentOptions</dfn> dictionary
       </h2>
@@ -1265,14 +1266,10 @@
           PaymentShippingType shippingType = "shipping";
         };
       </pre>
-      <p>
+      <p class="note">
         The <a>PaymentOptions</a> dictionary is passed to the
         <a>PaymentRequest</a> constructor and provides information about the
         options desired for the payment request.
-      </p>
-      <p>
-        The following fields MAY be passed to the <a>PaymentRequest</a>
-        constructor:
       </p>
       <dl>
         <dt>
@@ -1319,18 +1316,17 @@
           Some transactions require an address for delivery but the term
           "shipping" isn't appropriate. For example, "pizza delivery" not
           "pizza shipping" and "laundry pickup" not "laundry shipping". If
-          <code>requestShipping</code> is set to true, then the
-          <code>shippingType</code> field may be used to influence the way the
-          <a>user agent</a> presents the user interface for gathering the
-          shipping address.
+          <a>requestShipping</a> is set to true, then the <a>shippingType</a>
+          member may be used to influence the way the <a>user agent</a>
+          presents the user interface for gathering the shipping address.
           <p>
-            The <code>shippingType</code> field only affects the user interface
-            for the payment request.
+            The <a>shippingType</a> member only affects the user interface for
+            the payment request.
           </p>
         </dd>
       </dl>
     </section>
-    <section data-dfn-for="PaymentItem">
+    <section data-dfn-for="PaymentItem" data-link-for="PaymentItem">
       <h2>
         <dfn>PaymentItem</dfn> dictionary
       </h2>
@@ -1345,9 +1341,6 @@
         A sequence of one or more <a>PaymentItem</a> dictionaries is included
         in the <a>PaymentDetails</a> dictionary to indicate what the payment
         request is for and the value asked for.
-      </p>
-      <p>
-        The following fields are required:
       </p>
       <dl>
         <dt>
@@ -1368,11 +1361,11 @@
           <dfn>pending</dfn>
         </dt>
         <dd>
-          When set to true this flag means that the <code>amount</code> field
-          is not final. This is commonly used to show items such as shipping or
-          tax amounts that depend upon selection of shipping address or
-          shipping option. <a>User agents</a> MAY indicate pending fields in
-          the user interface for the payment request.
+          When set to true this flag means that the <a>amount</a> member is not
+          final. This is commonly used to show items such as shipping or tax
+          amounts that depend upon selection of shipping address or shipping
+          option. <a>User agents</a> MAY indicate pending fields in the user
+          interface for the payment request.
         </dd>
       </dl>
     </section>
@@ -1474,7 +1467,7 @@
           <dfn>recipient</dfn>
         </dt>
         <dd>
-          This is the name of the recipient or contact person. This field may,
+          This is the name of the recipient or contact person. This member may,
           under certain circumstances, contain multiline information. For
           example, it might contain "care of" information.
         </dd>
@@ -1489,7 +1482,8 @@
         If the <a data-lt="PaymentOptions.requestShipping">requestShipping</a>
         flag was set to true in the <a>PaymentOptions</a> passed to the
         <a>PaymentRequest</a> constructor, then the <a>user agent</a> will
-        populate the <code>shippingAddress</code> field of the
+        populate the <a data-lt=
+        "PaymentRequest.shippingAddress">shippingAddress</a> member of the
         <a>PaymentRequest</a> and ultimately the <a>PaymentResponse</a> object
         with the user's selected shipping address after the user has accepted
         the payment.
@@ -1508,14 +1502,11 @@
         };
       </pre>
       <p>
-        The <a>PaymentShippingOption</a> dictionary has fields describing a
+        The <a>PaymentShippingOption</a> dictionary has members describing a
         shipping option. A web page can provide the user with one or more
         shipping options by calling the <a data-lt=
         "PaymentRequestUpdateEvent.updateWith">updateWith()</a> method in
         response to a change event.
-      </p>
-      <p>
-        The following fields are required:
       </p>
       <dl>
         <dt>
@@ -1607,10 +1598,9 @@
           Promise&lt;void&gt; complete(optional PaymentComplete result = "unknown");
         };
       </pre>
-      <p>
+      <p class="note">
         A <a>PaymentResponse</a> is returned when a user has selected a payment
-        method and approved a payment request. It contains the following
-        fields:
+        method and approved a payment request.
       </p>
       <dl data-link-for="PaymentResponse">
         <dt>
@@ -1974,7 +1964,7 @@
                     <em>not</em> U+002D HYPHEN-MINUS, then copy
                     <var>details</var>.<a data-lt=
                     "PaymentDetails.total">total</a> to the <a data-lt=
-                    "PaymentDetails.total">total</a> field of
+                    "PaymentDetails.total">total</a> member of
                     <var>target</var>.<a>[[\details]]</a>. (Negative total
                     amounts are ignored.)
                     </li>
@@ -1993,7 +1983,7 @@
                     <var>details</var>.<a data-lt=
                     "PaymentDetails.displayItems">displayItems</a> to the
                     <a data-lt="PaymentDetails.displayItems">displayItems</a>
-                    field of <var>target</var>.<a>[[\details]]</a>.
+                    member of <var>target</var>.<a>[[\details]]</a>.
                     </li>
                   </ol>
                 </li>
@@ -2112,7 +2102,7 @@
                       </ol>
                     </li>
                     <li>Copy <var>options</var> to the <a data-lt=
-                    "PaymentDetails.shippingOptions">shippingOptions</a> field
+                    "PaymentDetails.shippingOptions">shippingOptions</a> member
                     of <var>target</var>.<a>[[\details]]</a>.
                     </li>
                   </ol>
