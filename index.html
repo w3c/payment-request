@@ -196,8 +196,12 @@
         <dfn>PaymentRequest</dfn> interface
       </h2>
       <pre class="idl">
-        [Constructor(sequence&lt;PaymentMethodData&gt; methodData, PaymentDetails details, optional PaymentOptions options),
-        SecureContext]
+        [Constructor(
+          optional DOMString paymentRequestID, 
+          sequence&lt;PaymentMethodData&gt; methodData, 
+          PaymentDetails details, 
+          optional PaymentOptions options
+         ), SecureContext]
         interface PaymentRequest : EventTarget {
           Promise&lt;PaymentResponse&gt; show();
           Promise&lt;void&gt; abort();
@@ -262,7 +266,7 @@
           Constructor
         </h2>
         <p>
-          The <a>PaymentRequest</a> is constructed using the supplied
+          The <a>PaymentRequest</a> is constructed using the supplied <var>paymentRequestID</var>,
           <var>methodData</var> list including any <a>payment method</a>
           specific <a data-lt="PaymentMethodData.data">data</a>, the payment
           <var>details</var>, and the payment <var>options</var>. The
@@ -540,6 +544,8 @@
           specified in the constructor.
           </li>
           <li>Let <var>request</var> be a new <a>PaymentRequest</a>.
+          </li>
+          <li>Set <var>request</var>.<a>[[\paymentRequestID]]</a> to <var>paymentRequestID</var>.
           </li>
           <li>Set <var>request</var>.<a>[[\options]]</a> to <var>options</var>.
           </li>
@@ -826,6 +832,14 @@
             <th>
               Description (<em>non-normative</em>)
             </th>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\paymentRequestID]]</dfn>
+            </td>
+            <td>
+              The <code>paymentRequestID</code> supplied or generated during construction.
+            </td>
           </tr>
           <tr>
             <td>
