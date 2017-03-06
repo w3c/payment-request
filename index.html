@@ -1482,94 +1482,6 @@
           readonly attribute DOMString phone;
         };
       </pre>
-      <dl>
-        <dt>
-          <dfn>serializer</dfn>
-        </dt>
-        <dd>
-          Each attribute is <a data-cite=
-          "WEBIDL-LS#dfn-convert-to-serialized-value">converted to serialized
-          values</a> as per [[!WEBIDL-LS]].
-        </dd>
-        <dt>
-          <dfn>country</dfn>
-        </dt>
-        <dd>
-          This is the [[CLDR]] (Common Locale Data Repository) region code. For
-          example, US, GB, CN, or JP.
-        </dd>
-        <dt>
-          <dfn>addressLine</dfn>
-        </dt>
-        <dd>
-          This is the most specific part of the address. It can include, for
-          example, a street name, a house number, apartment number, a rural
-          delivery route, descriptive instructions, or a post office box
-          number.
-        </dd>
-        <dt>
-          <dfn>region</dfn>
-        </dt>
-        <dd>
-          This is the top level administrative subdivision of the country. For
-          example, this can be a state, a province, an oblast, or a prefecture.
-        </dd>
-        <dt>
-          <dfn>city</dfn>
-        </dt>
-        <dd>
-          This is the city/town portion of the address.
-        </dd>
-        <dt>
-          <dfn>dependentLocality</dfn>
-        </dt>
-        <dd>
-          This is the dependent locality or sublocality within a city. For
-          example, used for neighborhoods, boroughs, districts, or UK dependent
-          localities.
-        </dd>
-        <dt>
-          <dfn>postalCode</dfn>
-        </dt>
-        <dd>
-          This is the postal code or ZIP code, also known as PIN code in India.
-        </dd>
-        <dt>
-          <dfn>sortingCode</dfn>
-        </dt>
-        <dd>
-          This is the sorting code as used in, for example, France.
-        </dd>
-        <dt>
-          <dfn>languageCode</dfn>
-        </dt>
-        <dd>
-          This is the BCP-47 language code for the address. It's used to
-          determine the field separators and the order of fields when
-          formatting the address for display.
-        </dd>
-        <dt>
-          <dfn>organization</dfn>
-        </dt>
-        <dd>
-          This is the organization, firm, company, or institution at this
-          address.
-        </dd>
-        <dt>
-          <dfn>recipient</dfn>
-        </dt>
-        <dd>
-          This is the name of the recipient or contact person. This member may,
-          under certain circumstances, contain multiline information. For
-          example, it might contain "care of" information.
-        </dd>
-        <dt>
-          <dfn>phone</dfn>
-        </dt>
-        <dd>
-          This is the phone number of the recipient or contact person.
-        </dd>
-      </dl>
       <p>
         If the <a data-lt="PaymentOptions.requestShipping">requestShipping</a>
         flag was set to true in the <a>PaymentOptions</a> passed to the
@@ -1580,6 +1492,116 @@
         with the user's selected shipping address after the user has accepted
         the payment.
       </p>
+      <section>
+        <h2>
+          <dfn>serializer</dfn>
+        </h2>
+        <p>
+          Each attribute is <a data-cite=
+          "WEBIDL-LS#dfn-convert-to-serialized-value">converted to serialized
+          values</a> as per [[!WEBIDL-LS]].
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>country</dfn> attribute
+        </h2>
+        <p>
+          This is the [[!CLDR]] (Common Locale Data Repository) region code. For
+          example, US, GB, CN, or JP.
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>addressLine</dfn> attribute
+        </h2>
+        <p>
+          This is the most specific part of the address. It can include, for
+          example, a street name, a house number, apartment number, a rural
+          delivery route, descriptive instructions, or a post office box
+          number.
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>region</dfn> attribute
+        </h2>
+        <p>
+          This is the top level administrative subdivision of the country. For
+          example, this can be a state, a province, an oblast, or a prefecture.
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>city</dfn> attribute
+        </h2>
+        <p>
+          This is the city/town portion of the address.
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>dependentLocality</dfn> attribute
+        </h2>
+        <p>
+          This is the dependent locality or sublocality within a city. For
+          example, used for neighborhoods, boroughs, districts, or UK dependent
+          localities.
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>postalCode</dfn> attribute
+        </h2>
+        <p>
+          This is the postal code or ZIP code, also known as PIN code in India.
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>sortingCode</dfn> attribute
+        </h2>
+        <p>
+          This is the sorting code as used in, for example, France.
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>languageCode</dfn> attribute
+        </h2>
+        <p>
+          This is the BCP-47 language code for the address. It's used to
+          determine the field separators and the order of fields when
+          formatting the address for display.
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>organization</dfn> attribute
+        </h2>
+        <p>
+          This is the organization, firm, company, or institution at this
+          address.
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>recipient</dfn> attribute
+        </h2>
+        <p>
+          This is the name of the recipient or contact person. This member may,
+          under certain circumstances, contain multiline information. For
+          example, it might contain "care of" information.
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>phone</dfn> attribute
+        </h2>
+        <p>
+          This is the phone number of the recipient or contact person.
+        </p>
+      </section>
     </section>
     <section data-dfn-for="PaymentShippingOption">
       <h2>
