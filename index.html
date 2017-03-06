@@ -346,8 +346,8 @@
           </li>
           <li>Establish the request's id:
             <ol>
-              <li>If <var>details</var>.<a data-lt="PaymentDetails.id">id</a>
-              is missing, add an <a data-lt="PaymentDetails.id">id</a> member
+              <li>If <var>details</var>.<a data-lt="PaymentDetailsInit.id">id</a>
+              is missing, add an <a data-lt="PaymentDetailsInit.id">id</a> member
               to <var>details</var> and set its value to string that uniquely
               identifies this payment request. It is RECOMMENDED that the
               string be a <abbr title=
@@ -600,7 +600,7 @@
         <p>
           When getting, the <a>id</a> attribute returns this
           <a>PaymentRequest</a>'s <a>[[\details]]</a>.<a data-lt=
-          "PaymentDetails.id">id</a>.
+          "PaymentDetailsInit.id">id</a>.
         </p>
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
@@ -1058,7 +1058,6 @@
       </h2>
       <pre class="idl">
         dictionary PaymentDetailsBase {
-          DOMString id;
           sequence&lt;PaymentItem&gt; displayItems;
           sequence&lt;PaymentShippingOption&gt; shippingOptions;
           sequence&lt;PaymentDetailsModifier&gt; modifiers;
@@ -1069,17 +1068,6 @@
         dictionary:
       </p>
       <dl>
-        <dt>
-          <dfn>id</dfn>
-        </dt>
-        <dd>
-          <a>id</a> is a free-form identifier for this payment request.
-          <p class="note">
-            If an <a>id</a> member is not present, then the <a>user agent</a>
-            will generate a unique identifier for the payment request during
-            <a data-lt="PaymentRequest.PaymentRequest()">construction</a>.
-          </p>
-        </dd>
         <dt>
           <dfn>displayItems</dfn>
         </dt>
@@ -1151,6 +1139,7 @@
       </h2>
       <pre class="idl">
         dictionary PaymentDetailsInit : PaymentDetailsBase {
+          DOMString id;
           required PaymentItem total;
         };
       </pre>
@@ -1164,6 +1153,17 @@
         <a>PaymentDetailsInit</a> dictionary:
       </p>
       <dl>
+        <dt>
+          <dfn>id</dfn>
+        </dt>
+        <dd>
+          <a>id</a> is a free-form identifier for this payment request.
+          <p class="note">
+            If an <a>id</a> member is not present, then the <a>user agent</a>
+            will generate a unique identifier for the payment request during
+            <a data-lt="PaymentRequest.PaymentRequest()">construction</a>.
+          </p>
+        </dd>
         <dt>
           <dfn>total</dfn>
         </dt>
@@ -2364,7 +2364,7 @@
           <li>Set the <a data-lt="PaymentResponse.requestId">requestId</a>
           attribute value of <var>response</var> to the value of
           <var>request</var>.<a>[[\details]]</a>.<a data-lt=
-          "PaymentDetails.id">id</a>.
+          "PaymentDetailsInit.id">id</a>.
           </li>
           <li>Set the <a data-lt="PaymentResponse.methodName">methodName</a>
           attribute value of <var>response</var> to the <a>payment method
