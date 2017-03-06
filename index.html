@@ -121,7 +121,7 @@
         authorizing as necessary across the flow.
       </p>
       <p>
-        The details of how to fulfill a payment request for a given <a>payment
+        The details of how to fulfil a payment request for a given <a>payment
         method</a> are handled by <dfn data-lt="payment app">payment
         apps</dfn>. In this specification, these details are left up to the
         <a>user agent</a>, but future specifications may expand on the
@@ -1482,16 +1482,6 @@
           readonly attribute DOMString phone;
         };
       </pre>
-      <p>
-        If the <a data-lt="PaymentOptions.requestShipping">requestShipping</a>
-        flag was set to true in the <a>PaymentOptions</a> passed to the
-        <a>PaymentRequest</a> constructor, then the <a>user agent</a> will
-        populate the <a data-lt=
-        "PaymentRequest.shippingAddress">shippingAddress</a> member of the
-        <a>PaymentRequest</a> and ultimately the <a>PaymentResponse</a> object
-        with the user's selected shipping address after the user has accepted
-        the payment.
-      </p>
       <section>
         <h2>
           <dfn>serializer</dfn>
@@ -1507,8 +1497,8 @@
           <dfn>country</dfn> attribute
         </h2>
         <p>
-          This is the [[!CLDR]] (Common Locale Data Repository) region code. For
-          example, US, GB, CN, or JP.
+          This is the [[!CLDR]] (Common Locale Data Repository) region code.
+          For example, US, GB, CN, or JP.
         </p>
       </section>
       <section>
@@ -1769,7 +1759,8 @@
           true in the <a>PaymentOptions</a> passed to the <a>PaymentRequest</a>
           constructor, then <a data-lt=
           "PaymentRequest.shippingOption">shippingOption</a> will be the
-          <code>id</code> attribute of the selected shipping option.
+          <a data-lt="PaymentShippingOption.id">id</a> attribute of the
+          selected shipping option.
         </p>
       </section>
       <section>
