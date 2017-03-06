@@ -346,11 +346,11 @@
           </li>
           <li>Establish the request's id:
             <ol>
-              <li>If <var>details</var>.<a data-lt="PaymentDetailsInit.id">id</a>
-              is missing, add an <a data-lt="PaymentDetailsInit.id">id</a> member
-              to <var>details</var> and set its value to string that uniquely
-              identifies this payment request. It is RECOMMENDED that the
-              string be a <abbr title=
+              <li>If <var>details</var>.<a data-lt=
+              "PaymentDetailsInit.id">id</a> is missing, add an <a data-lt=
+              "PaymentDetailsInit.id">id</a> member to <var>details</var> and
+              set its value to string that uniquely identifies this payment
+              request. It is RECOMMENDED that the string be a <abbr title=
               "Universally Unique Identifier">UUID</abbr> [[!RFC4122]].
               </li>
             </ol>
@@ -1189,7 +1189,7 @@
           payment request.
           <p class="note">
             Algorithms in this specification that accept a
-            <a>PaymentDetails</a> dictionary will throw if the
+            <a>PaymentDetailsInit</a> dictionary will throw if the
             <a>total</a>.<a data-lt="PaymentItem.amount">amount</a>.<a data-lt=
             "PaymentCurrencyAmount.value">value</a> is a negative number.
           </p>
@@ -1234,6 +1234,12 @@
         </dt>
         <dd>
           This <a>PaymentItem</a> contains the non-negative total amount.
+          <p class="note">
+            Algorithms in this specification that accept a
+            <a>PaymentDetailsUpdate</a> dictionary will throw if the
+            <a>total</a>.<a data-lt="PaymentItem.amount">amount</a>.<a data-lt=
+            "PaymentCurrencyAmount.value">value</a> is a negative number.
+          </p>
         </dd>
       </dl>
     </section>
@@ -1663,7 +1669,7 @@
         </dd>
       </dl>
     </section>
-    <section data-dfn-for="PaymentResponse">
+    <section data-dfn-for="PaymentResponse" data-link-for="PaymentResponse">
       <h2>
         <dfn>PaymentResponse</dfn> interface
       </h2>
@@ -1688,94 +1694,110 @@
         A <a>PaymentResponse</a> is returned when a user has selected a payment
         method and approved a payment request.
       </p>
-      <dl data-link-for="PaymentResponse">
-        <dt>
+      <section>
+        <h2>
           <dfn>serializer</dfn>
-        </dt>
-        <dd>
+        </h2>
+        <p>
           Each attribute is <a data-cite=
           "WEBIDL-LS#dfn-convert-to-serialized-value">converted to serialized
           values</a> as per [[!WEBIDL-LS]].
-        </dd>
-        <dt>
-          <dfn>methodName</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>methodName</dfn> attribute
+        </h2>
+        <p>
           The <a>payment method identifier</a> for the <a>payment method</a>
           that the user selected to fulfil the transaction.
-        </dd>
-        <dt>
-          <dfn>details</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>details</dfn> attribute
+        </h2>
+        <p>
           An object that provides a <a>payment method</a> specific message used
           by the merchant to process the transaction and determine successful
           fund transfer. This data is returned by the <a>payment method</a>
           specific code that satisfies the payment request.
-        </dd>
-        <dt>
-          <dfn>shippingAddress</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>shippingAddress</dfn> attribute
+        </h2>
+        <p>
           If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> flag was set to
           true in the <a>PaymentOptions</a> passed to the <a>PaymentRequest</a>
           constructor, then <a data-lt=
           "PaymentRequest.shippingAddress">shippingAddress</a> will be the full
           and final shipping address chosen by the user.
-        </dd>
-        <dt>
-          <dfn>shippingOption</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>shippingOption</dfn> attribute
+        </h2>
+        <p>
           If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> flag was set to
           true in the <a>PaymentOptions</a> passed to the <a>PaymentRequest</a>
           constructor, then <a data-lt=
           "PaymentRequest.shippingOption">shippingOption</a> will be the
           <code>id</code> attribute of the selected shipping option.
-        </dd>
-        <dt>
-          <dfn>payerName</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>payerName</dfn> attribute
+        </h2>
+        <p>
           If the <a data-lt=
           "PaymentOptions.requestPayerName">requestPayerName</a> flag was set
           to true in the <a>PaymentOptions</a> passed to the
           <a>PaymentRequest</a> constructor, then <a data-lt=
           "PaymentResponse.payerName">payerName</a> will be the name provided
           by the user.
-        </dd>
-        <dt>
-          <dfn>payerEmail</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>payerEmail</dfn> attribute
+        </h2>
+        <p>
           If the <a data-lt=
           "PaymentOptions.requestPayerEmail">requestPayerEmail</a> flag was set
           to true in the <a>PaymentOptions</a> passed to the
           <a>PaymentRequest</a> constructor, then <a data-lt=
           "PaymentResponse.payerEmail">payerEmail</a> will be the email address
           chosen by the user.
-        </dd>
-        <dt>
-          <dfn>payerPhone</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>payerPhone</dfn> attribute
+        </h2>
+        <p>
           If the <a data-lt=
           "PaymentOptions.requestPayerPhone">requestPayerPhone</a> flag was set
           to true in the <a>PaymentOptions</a> passed to the
           <a>PaymentRequest</a> constructor, then <a data-lt=
           "PaymentResponse.payerPhone">payerPhone</a> will be the phone number
           chosen by the user.
-        </dd>
-        <dt>
-          <dfn>requestId</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>requestId</dfn> attribute
+        </h2>
+        <p>
           The corresponding payment request <a data-lt=
           "PaymentRequest.id">id</a> that spawned this payment response.
-        </dd>
-      </dl>
+        </p>
+      </section>
       <section data-dfn-for="PaymentResponse" data-link-for="PaymentResponse">
         <h2>
           <dfn data-lt="complete(result)">complete()</dfn> method
@@ -1942,8 +1964,8 @@
           <p class="note">
             If the web page wishes to update the payment request then it can
             call <a>updateWith()</a> and provide a promise that will resolve
-            with a <a>PaymentDetails</a> dictionary containing changed values
-            that the <a>user agent</a> presents to the user.
+            with a <a>PaymentDetailsUpdate</a> dictionary containing changed
+            values that the <a>user agent</a> presents to the user.
           </p>
           <p>
             The <a>updateWith(detailsPromise)</a> method MUST act as follows:
