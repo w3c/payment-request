@@ -634,6 +634,27 @@
           <li>Set <var>acceptPromise</var> in
           <var>request</var>.<a>[[\acceptPromise]]</a>.
           </li>
+          <li>
+            <p>
+              Optionally:
+            </p>
+            <ol>
+              <li>Reject <var>acceptPromise</var> with an "<a>AbortError</a>"
+              <a>DOMException</a>.
+              </li>
+              <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
+              </li>
+              <li>Abort this algorithm.
+              </li>
+            </ol>
+            <p class="note">
+              This allows the <a>user agent</a> to act as if the user had
+              immediately <a data-lt="user aborts the payment request">aborted
+              the payment request</a>, at its discretion. For example, in
+              "private browsing" modes or similar, user agents might take
+              advantage of this step.
+            </p>
+          </li>
           <li>Return <var>acceptPromise</var> and perform the remaining steps
           <a>in parallel</a>.
           </li>
@@ -669,9 +690,10 @@
               of <var>request</var>.
             </p>
             <p>
-              The <var>acceptPromise</var> will later be resolved by the
-              <a>user accepts the payment request algorithm</a> through
-              interaction with the user interface.
+              The <var>acceptPromise</var> will later be resolved or rejected
+              by either the <a>user accepts the payment request algorithm</a>
+              or the <a>user aborts the payment request algorithm</a>, which
+              are triggered through interaction with the user interface.
             </p>
           </li>
         </ol>
@@ -948,7 +970,8 @@
                   <a>state</a> to "<a>interactive</a>". From there, the
                   <a>abort()</a> method or any other error can send the
                   <a>state</a> to "<a>closed</a>"; similarly, the <a>user
-                  accepts the payment request algorithm</a> will change the
+                  accepts the payment request algorithm</a> and <a>user aborts
+                  the payment request algorithm</a> will change the
                   <a>state</a> to "<a>closed</a>".
                 </figcaption>
               </figure>
@@ -1988,7 +2011,7 @@
             instance.
             </li>
             <li>Let <var>target</var> be the value of <var>event</var>'s
-            <a data-cite="DOM4#dom-event-target">target</a> attribute.
+            <a data-cite="DOM#dom-event-target">target</a> attribute.
             </li>
             <li>If <var>target</var> is not a <a>PaymentRequest</a> object,
             then <a>throw</a> a <a>TypeError</a>.
@@ -2489,6 +2512,43 @@
           </li>
         </ol>
       </section>
+      <section>
+        <h2>
+          User aborts the payment request algorithm
+        </h2>
+        <p>
+          The <dfn data-lt="user aborts the payment request">user aborts the
+          payment request algorithm</dfn> runs when the user aborts the payment
+          request through the currently interactive user interface. It MUST run
+          the following steps:
+        </p>
+        <ol class="algorithm">
+          <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
+          the user is interacting with.
+          </li>
+          <li>If the <var>request</var>.<a>[[\updating]]</a> is true, then
+          terminate this algorithm and take no further action. The <a>user
+          agent</a> user interface should ensure that this never occurs.
+          </li>
+          <li>If <var>request</var>.<a>[[\state]]</a> is not
+          "<a>interactive</a>", then terminate this algorithm and take no
+          further action. The <a>user agent</a> user interface should ensure
+          that this never occurs.
+          </li>
+          <li>
+            <a>Queue a task</a> on the <a>user interaction task source</a> to
+            perform the following steps:
+            <ol>
+              <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
+              </li>
+              <li>Reject the promise
+              <var>request</var>.<a>[[\acceptPromise]]</a> with an
+              "<a>AbortError</a>" <a>DOMException</a>.
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </section>
     </section>
     <section class='informative'>
       <h2>
@@ -2629,13 +2689,13 @@
           DOM
         </dt>
         <dd>
-          The <code><dfn data-cite="!whatwg-dom#event">Event</dfn></code>
-          interface and the terms <dfn data-cite=
-          "!whatwg-dom#concept-event-fire">fire an event</dfn>, <dfn data-cite=
-          "!whatwg-dom#dispatch-flag">dispatch flag</dfn>, <dfn data-cite=
-          "!whatwg-dom#stop-propagation-flag">stop propagation flag</dfn>, and
-          <dfn data-cite="!whatwg-dom#stop-immediate-propagation-flag">stop
-          immediate propagation flag</dfn> are defined by [[!DOM]].
+          The <code><dfn data-cite="!DOM#event">Event</dfn></code> interface
+          and the terms <dfn data-cite="!DOM#concept-event-fire">fire an
+          event</dfn>, <dfn data-cite="!DOM#dispatch-flag">dispatch flag</dfn>,
+          <dfn data-cite="!DOM#stop-propagation-flag">stop propagation
+          flag</dfn>, and <dfn data-cite=
+          "!DOM#stop-immediate-propagation-flag">stop immediate propagation
+          flag</dfn> are defined by [[!DOM]].
         </dd>
         <dt>
           Web IDL
