@@ -121,7 +121,7 @@
         authorizing as necessary across the flow.
       </p>
       <p>
-        The details of how to fulfil a payment request for a given <a>payment
+        The details of how to fulfill a payment request for a given <a>payment
         method</a> are handled by <dfn data-lt="payment app">payment
         apps</dfn>. In this specification, these details are left up to the
         <a>user agent</a>, but future specifications may expand on the
@@ -836,7 +836,7 @@
         <h2>
           <dfn>onshippingoptionchange</dfn> attribute
         </h2>
-        <p class="note">
+        <p>
           A <a>PaymentRequest</a>'s <a>onshippingoptionchange</a> attribute is
           an <code>EventHandler</code> for an <code>Event</code> named
           <code>shippingoptionchange</code>.
@@ -1722,7 +1722,7 @@
         </h2>
         <p>
           The <a>payment method identifier</a> for the <a>payment method</a>
-          that the user selected to fulfil the transaction.
+          that the user selected to fulfill the transaction.
         </p>
       </section>
       <section>
@@ -1962,9 +1962,9 @@
         </p>
         <p>
           If the web page wishes to update the payment request then it should
-          call <a>updateWith()</a> and provide a promise that will resolve with
-          a <a>PaymentDetailsUpdate</a> dictionary containing changed values
-          that the <a>user agent</a> SHOULD present to the user.
+          call <a>updateWith()</a> and provide a <a>PaymentDetailsUpdate</a>
+          dictionary, or a promise for one, containing changed values that the
+          <a>user agent</a> SHOULD present to the user.
         </p>
         <p>
           The <a>PaymentRequestUpdateEvent</a> constructor MUST set the
@@ -1975,10 +1975,10 @@
             <dfn data-lt="updateWith(detailsPromise)">updateWith()</dfn> method
           </h2>
           <p class="note">
-            If the web page wishes to update the payment request then it can
-            call <a>updateWith()</a> and provide a promise that will resolve
-            with a <a>PaymentDetailsUpdate</a> dictionary containing changed
-            values that the <a>user agent</a> presents to the user.
+            If the web page wishes to update the payment request then it should
+            call <a>updateWith()</a> and provide a <a>PaymentDetailsUpdate</a>
+            dictionary, or a promise for one, containing changed values that
+            the <a>user agent</a> presents to the user.
           </p>
           <p>
             The <a>updateWith(detailsPromise)</a> method MUST act as follows:
