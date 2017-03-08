@@ -607,7 +607,7 @@
         <h2>
           <dfn>show()</dfn> method
         </h2>
-        <p>
+        <p class="note">
           The <a>show()</a> method is called when the page wants to begin user
           interaction for the payment request. The <a>show()</a> method returns
           a <a>Promise</a> that will be resolved when the <a>user accepts the
@@ -680,23 +680,26 @@
         <h2>
           <dfn>abort()</dfn> method
         </h2>
-        <p>
-          The <a>abort()</a> method may be called if the web page wishes to
-          tell the <a>user agent</a> to abort the payment <var>request</var>
-          and to tear down any user interface that might be presented.
-          <a>abort()</a> can only be called after the <a>show()</a> method has
-          been called and before this instance's <a>[[\acceptPromise]]</a> has
-          been resolved. For example, a web page might choose to do this if the
-          goods they are selling are only available for a limited amount of
-          time. If the user does not accept the payment request within the
-          allowed time period, then the request will be aborted.
-        </p>
-        <p>
-          A <a>user agent</a> might not always be able to abort a request. For
-          example, if the <a>user agent</a> has delegated responsibility for
-          the request to another app. In this situation, <a>abort()</a> will
-          reject the returned <a>Promise</a>.
-        </p>
+        <div class="note">
+          <p>
+            The <a>abort()</a> method is called if the web page wishes to tell
+            the <a>user agent</a> to abort the payment <var>request</var> and
+            to tear down any user interface that might be shown. The
+            <a>abort()</a> can only be called after the <a>show()</a> method
+            has been called (see <a data-lt="state">states</a>) and before this
+            instance's <a>[[\acceptPromise]]</a> has been resolved. For
+            example, a web page might choose to do this if the goods they are
+            selling are only available for a limited amount of time. If the
+            user does not accept the payment request within the allowed time
+            period, then the request will be aborted.
+          </p>
+          <p>
+            A <a>user agent</a> might not always be able to abort a request.
+            For example, if the <a>user agent</a> has delegated responsibility
+            for the request to another app. In this situation, <a>abort()</a>
+            will reject the returned <a>Promise</a>.
+          </p>
+        </div>
         <p>
           The <a>abort()</a> method MUST act as follows:
         </p>
@@ -741,7 +744,7 @@
         <h2>
           <dfn>canMakePayment()</dfn> method
         </h2>
-        <p>
+        <p class="note">
           The <a>canMakePayment()</a> method can be used by the developer to
           determine if the <a>PaymentRequest</a> object can be used to make a
           payment, before they call <a>show()</a>. It returns a <a>Promise</a>
@@ -802,13 +805,20 @@
           <dfn>shippingAddress</dfn> attribute
         </h2>
         <p>
-          <a>shippingAddress</a> is populated when the user provides a shipping
-          address. It is null by default. When a user provides a shipping
-          address, the <a>shipping address changed algorithm</a> runs.
+          A <a>PaymentRequest</a>'s <a>shippingAddress</a> attribute is
+          populated when the user provides a shipping address. It is null by
+          default. When a user provides a shipping address, the <a>shipping
+          address changed algorithm</a> runs.
         </p>
+      </section>
+      <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
+        <h2>
+          <dfn>onshippingaddresschange</dfn> attribute
+        </h2>
         <p>
-          <dfn>onshippingaddresschange</dfn> is an <code>EventHandler</code>
-          for an <code>Event</code> named <code>shippingaddresschange</code>.
+          A <a>PaymentRequest</a>'s <a>onshippingaddresschange</a> attribute is
+          an <code>EventHandler</code> for an <code>Event</code> named
+          <code>shippingaddresschange</code>.
         </p>
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
@@ -816,13 +826,20 @@
           <dfn>shippingOption</dfn> attribute
         </h2>
         <p>
-          <a>shippingOption</a> is populated when the user chooses a shipping
-          option. It is null by default. When a user chooses a shipping option,
-          the <a>shipping option changed algorithm</a> runs.
+          A <a>PaymentRequest</a>'s <a>shippingOption</a> attribute is
+          populated when the user chooses a shipping option. It is null by
+          default. When a user chooses a shipping option, the <a>shipping
+          option changed algorithm</a> runs.
         </p>
+      </section>
+      <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
+        <h2>
+          <dfn>onshippingoptionchange</dfn> attribute
+        </h2>
         <p>
-          <dfn>onshippingoptionchange</dfn> is an <code>EventHandler</code> for
-          an <code>Event</code> named <code>shippingoptionchange</code>.
+          A <a>PaymentRequest</a>'s <a>onshippingoptionchange</a> attribute is
+          an <code>EventHandler</code> for an <code>Event</code> named
+          <code>shippingoptionchange</code>.
         </p>
       </section>
       <section>
@@ -1170,6 +1187,12 @@
         <dd>
           This <a>PaymentItem</a> contains the non-negative total amount of the
           payment request.
+          <p class="note">
+            Algorithms in this specification that accept a
+            <a>PaymentDetailsInit</a> dictionary will throw if the
+            <a>total</a>.<a data-lt="PaymentItem.amount">amount</a>.<a data-lt=
+            "PaymentCurrencyAmount.value">value</a> is a negative number.
+          </p>
         </dd>
       </dl>
     </section>
@@ -1211,6 +1234,12 @@
         </dt>
         <dd>
           This <a>PaymentItem</a> contains the non-negative total amount.
+          <p class="note">
+            Algorithms in this specification that accept a
+            <a>PaymentDetailsUpdate</a> dictionary will throw if the
+            <a>total</a>.<a data-lt="PaymentItem.amount">amount</a>.<a data-lt=
+            "PaymentCurrencyAmount.value">value</a> is a negative number.
+          </p>
         </dd>
       </dl>
     </section>
@@ -1453,104 +1482,116 @@
           readonly attribute DOMString phone;
         };
       </pre>
-      <dl>
-        <dt>
+      <section>
+        <h2>
           <dfn>serializer</dfn>
-        </dt>
-        <dd>
+        </h2>
+        <p>
           Each attribute is <a data-cite=
           "WEBIDL-LS#dfn-convert-to-serialized-value">converted to serialized
           values</a> as per [[!WEBIDL-LS]].
-        </dd>
-        <dt>
-          <dfn>country</dfn>
-        </dt>
-        <dd>
-          This is the [[CLDR]] (Common Locale Data Repository) region code. For
-          example, US, GB, CN, or JP.
-        </dd>
-        <dt>
-          <dfn>addressLine</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>country</dfn> attribute
+        </h2>
+        <p>
+          This is the [[!CLDR]] (Common Locale Data Repository) region code.
+          For example, US, GB, CN, or JP.
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>addressLine</dfn> attribute
+        </h2>
+        <p>
           This is the most specific part of the address. It can include, for
           example, a street name, a house number, apartment number, a rural
           delivery route, descriptive instructions, or a post office box
           number.
-        </dd>
-        <dt>
-          <dfn>region</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>region</dfn> attribute
+        </h2>
+        <p>
           This is the top level administrative subdivision of the country. For
           example, this can be a state, a province, an oblast, or a prefecture.
-        </dd>
-        <dt>
-          <dfn>city</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>city</dfn> attribute
+        </h2>
+        <p>
           This is the city/town portion of the address.
-        </dd>
-        <dt>
-          <dfn>dependentLocality</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>dependentLocality</dfn> attribute
+        </h2>
+        <p>
           This is the dependent locality or sublocality within a city. For
           example, used for neighborhoods, boroughs, districts, or UK dependent
           localities.
-        </dd>
-        <dt>
-          <dfn>postalCode</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>postalCode</dfn> attribute
+        </h2>
+        <p>
           This is the postal code or ZIP code, also known as PIN code in India.
-        </dd>
-        <dt>
-          <dfn>sortingCode</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>sortingCode</dfn> attribute
+        </h2>
+        <p>
           This is the sorting code as used in, for example, France.
-        </dd>
-        <dt>
-          <dfn>languageCode</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>languageCode</dfn> attribute
+        </h2>
+        <p>
           This is the BCP-47 language code for the address. It's used to
           determine the field separators and the order of fields when
           formatting the address for display.
-        </dd>
-        <dt>
-          <dfn>organization</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>organization</dfn> attribute
+        </h2>
+        <p>
           This is the organization, firm, company, or institution at this
           address.
-        </dd>
-        <dt>
-          <dfn>recipient</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>recipient</dfn> attribute
+        </h2>
+        <p>
           This is the name of the recipient or contact person. This member may,
           under certain circumstances, contain multiline information. For
           example, it might contain "care of" information.
-        </dd>
-        <dt>
-          <dfn>phone</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>phone</dfn> attribute
+        </h2>
+        <p>
           This is the phone number of the recipient or contact person.
-        </dd>
-      </dl>
-      <p>
-        If the <a data-lt="PaymentOptions.requestShipping">requestShipping</a>
-        flag was set to true in the <a>PaymentOptions</a> passed to the
-        <a>PaymentRequest</a> constructor, then the <a>user agent</a> will
-        populate the <a data-lt=
-        "PaymentRequest.shippingAddress">shippingAddress</a> member of the
-        <a>PaymentRequest</a> and ultimately the <a>PaymentResponse</a> object
-        with the user's selected shipping address after the user has accepted
-        the payment.
-      </p>
+        </p>
+      </section>
     </section>
     <section data-dfn-for="PaymentShippingOption">
       <h2>
@@ -1640,7 +1681,7 @@
         </dd>
       </dl>
     </section>
-    <section data-dfn-for="PaymentResponse">
+    <section data-dfn-for="PaymentResponse" data-link-for="PaymentResponse">
       <h2>
         <dfn>PaymentResponse</dfn> interface
       </h2>
@@ -1665,122 +1706,137 @@
         A <a>PaymentResponse</a> is returned when a user has selected a payment
         method and approved a payment request.
       </p>
-      <dl data-link-for="PaymentResponse">
-        <dt>
+      <section>
+        <h2>
           <dfn>serializer</dfn>
-        </dt>
-        <dd>
+        </h2>
+        <p>
           Each attribute is <a data-cite=
           "WEBIDL-LS#dfn-convert-to-serialized-value">converted to serialized
           values</a> as per [[!WEBIDL-LS]].
-        </dd>
-        <dt>
-          <dfn>methodName</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>methodName</dfn> attribute
+        </h2>
+        <p>
           The <a>payment method identifier</a> for the <a>payment method</a>
-          that the user selected to fulfil the transaction.
-        </dd>
-        <dt>
-          <dfn>details</dfn>
-        </dt>
-        <dd>
+          that the user selected to fulfill the transaction.
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>details</dfn> attribute
+        </h2>
+        <p>
           An object that provides a <a>payment method</a> specific message used
           by the merchant to process the transaction and determine successful
           fund transfer. This data is returned by the <a>payment method</a>
           specific code that satisfies the payment request.
-        </dd>
-        <dt>
-          <dfn>shippingAddress</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>shippingAddress</dfn> attribute
+        </h2>
+        <p>
           If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> flag was set to
           true in the <a>PaymentOptions</a> passed to the <a>PaymentRequest</a>
           constructor, then <a data-lt=
           "PaymentRequest.shippingAddress">shippingAddress</a> will be the full
           and final shipping address chosen by the user.
-        </dd>
-        <dt>
-          <dfn>shippingOption</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>shippingOption</dfn> attribute
+        </h2>
+        <p>
           If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> flag was set to
           true in the <a>PaymentOptions</a> passed to the <a>PaymentRequest</a>
           constructor, then <a data-lt=
           "PaymentRequest.shippingOption">shippingOption</a> will be the
-          <code>id</code> attribute of the selected shipping option.
-        </dd>
-        <dt>
-          <dfn>payerName</dfn>
-        </dt>
-        <dd>
+          <a data-lt="PaymentShippingOption.id">id</a> attribute of the
+          selected shipping option.
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>payerName</dfn> attribute
+        </h2>
+        <p>
           If the <a data-lt=
           "PaymentOptions.requestPayerName">requestPayerName</a> flag was set
           to true in the <a>PaymentOptions</a> passed to the
           <a>PaymentRequest</a> constructor, then <a data-lt=
           "PaymentResponse.payerName">payerName</a> will be the name provided
           by the user.
-        </dd>
-        <dt>
-          <dfn>payerEmail</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>payerEmail</dfn> attribute
+        </h2>
+        <p>
           If the <a data-lt=
           "PaymentOptions.requestPayerEmail">requestPayerEmail</a> flag was set
           to true in the <a>PaymentOptions</a> passed to the
           <a>PaymentRequest</a> constructor, then <a data-lt=
           "PaymentResponse.payerEmail">payerEmail</a> will be the email address
           chosen by the user.
-        </dd>
-        <dt>
-          <dfn>payerPhone</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>payerPhone</dfn> attribute
+        </h2>
+        <p>
           If the <a data-lt=
           "PaymentOptions.requestPayerPhone">requestPayerPhone</a> flag was set
           to true in the <a>PaymentOptions</a> passed to the
           <a>PaymentRequest</a> constructor, then <a data-lt=
           "PaymentResponse.payerPhone">payerPhone</a> will be the phone number
           chosen by the user.
-        </dd>
-        <dt>
-          <dfn>requestId</dfn>
-        </dt>
-        <dd>
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>requestId</dfn> attribute
+        </h2>
+        <p>
           The corresponding payment request <a data-lt=
           "PaymentRequest.id">id</a> that spawned this payment response.
-        </dd>
-      </dl>
+        </p>
+      </section>
       <section data-dfn-for="PaymentResponse" data-link-for="PaymentResponse">
         <h2>
           <dfn data-lt="complete(result)">complete()</dfn> method
         </h2>
-        <p>
+        <p class="note">
           The <a>complete()</a> method is called after the user has accepted
           the payment request and the <a>[[\acceptPromise]]</a> has been
           resolved. Calling the <a>complete()</a> method tells the <a>user
           agent</a> that the transaction is over (and SHOULD cause any
           remaining user interface to be closed).
         </p>
-        <div class="note">
-          <p>
-            After the payment request has been accepted and the
-            <a>PaymentResponse</a> returned to the page but before the page
-            calls <a>complete()</a> the payment request user interface remains
-            in a pending state. At this point the user interface ought not
-            offer a cancel command because acceptance of the payment request
-            has been returned. However, if something goes wrong and the page
-            never calls <a>complete()</a> then the user interface is blocked.
-          </p>
-          <p>
-            For this reason, implementations may choose to impose a timeout for
-            the page to call <a>complete()</a>. If the timeout expires then the
-            implementation will behave as if <a>complete()</a> was called with
-            no arguments.
-          </p>
-        </div>
+        <p>
+          After the payment request has been accepted and the
+          <a>PaymentResponse</a> returned to the page but before the page calls
+          <a>complete()</a> the payment request user interface remains in a
+          pending state. At this point the user interface ought not offer a
+          cancel command because acceptance of the payment request has been
+          returned. However, if something goes wrong and the page never calls
+          <a>complete()</a> then the user interface is blocked.
+        </p>
+        <p>
+          For this reason, implementations MAY impose a timeout for the page to
+          call <a>complete()</a>. If the timeout expires then the
+          implementation will behave as if <a>complete()</a> was called with no
+          arguments.
+        </p>
         <p>
           The <a>complete(result)</a> method MUST act as follows:
         </p>
@@ -1906,9 +1962,9 @@
         </p>
         <p>
           If the web page wishes to update the payment request then it should
-          call <a>updateWith()</a> and provide a promise that will resolve with
-          a <a>PaymentDetailsUpdate</a> dictionary containing changed values
-          that the <a>user agent</a> SHOULD present to the user.
+          call <a>updateWith()</a> and provide a <a>PaymentDetailsUpdate</a>
+          dictionary, or a promise for one, containing changed values that the
+          <a>user agent</a> SHOULD present to the user.
         </p>
         <p>
           The <a>PaymentRequestUpdateEvent</a> constructor MUST set the
@@ -1918,6 +1974,12 @@
           <h2>
             <dfn data-lt="updateWith(detailsPromise)">updateWith()</dfn> method
           </h2>
+          <p class="note">
+            If the web page wishes to update the payment request then it should
+            call <a>updateWith()</a> and provide a <a>PaymentDetailsUpdate</a>
+            dictionary, or a promise for one, containing changed values that
+            the <a>user agent</a> presents to the user.
+          </p>
           <p>
             The <a>updateWith(detailsPromise)</a> method MUST act as follows:
           </p>
