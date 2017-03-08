@@ -1137,14 +1137,14 @@
             If an item in the sequence has the <a data-lt=
             "PaymentShippingOption.selected">selected</a> member set to true,
             then this is the shipping option that will be used by default and
-            <a>shippingOption</a> will be set to the <a data-lt=
-            "PaymentShippingOption.id">id</a> of this option without running
-            the <a>shipping option changed algorithm</a>. Authors SHOULD NOT
-            set <a data-lt="PaymentShippingOption.selected">selected</a> to
-            true on more than one item. If more than one item in the sequence
-            has <a data-lt="PaymentShippingOption.selected">selected</a> set to
-            true, then <a>user agents</a> MUST select the last one in the
-            sequence.
+            <a data-lt="PaymentRequest.shippingOption">shippingOption</a> will
+            be set to the <a data-lt="PaymentShippingOption.id">id</a> of this
+            option without running the <a>shipping option changed
+            algorithm</a>. Authors SHOULD NOT set <a data-lt=
+            "PaymentShippingOption.selected">selected</a> to true on more than
+            one item. If more than one item in the sequence has <a data-lt=
+            "PaymentShippingOption.selected">selected</a> set to true, then
+            <a>user agents</a> MUST select the last one in the sequence.
           </p>
           <p>
             The <a>shippingOptions</a> member is only used if the
@@ -2057,8 +2057,8 @@
                 The remaining steps are conditional on the
                 <var>detailsPromise</var> settling. If
                 <var>detailsPromise</var> never settles then the payment
-                request is blocked. Users should always be able to cancel a
-                payment request. Implementations may choose to implement a
+                request is blocked. Users SHOULD always be able to cancel a
+                payment request. Implementations MAY choose to implement a
                 timeout for pending updates if <var>detailsPromise</var>
                 doesn't settle in a reasonable amount of time. If an
                 implementation chooses to implement a timeout, they must
@@ -2069,28 +2069,11 @@
             <li>
               <a>Upon rejection</a> of <var>detailsPromise</var>:
               <ol>
-                <li>Abort the current user interaction and close down any
-                remaining user interface.
-                </li>
-                <li>Set <var>target</var>.<a>[[\state]]</a> to "<a>closed</a>".
-                </li>
-                <li>Reject the promise
-                <var>target</var>.<a>[[\acceptPromise]]</a> with an
-                "<a>AbortError</a>" <a>DOMException</a>.
+                <li>
+                  <a>Abort the update</a> with an "<a>AbortError</a>"
+                  <a>DOMException</a>.
                 </li>
               </ol>
-              <div class="note">
-                If the promise <var>detailsPromise</var> is rejected then this
-                is a fatal error for the payment request. This would
-                potentially leave the payment request in an inconsistent state
-                since the web page hasn't successfully handled the change
-                event. Consequently, if <var>detailsPromise</var> is rejected
-                then the payment request is aborted.
-                <p>
-                  <a>User agents</a> might show an error message to the user
-                  when this occurs.
-                </p>
-              </div>
             </li>
             <li>
               <a>Upon fulfillment</a> of <var>detailsPromise</var> with value
@@ -2098,164 +2081,211 @@
               <ol data-link-for="PaymentDetailsBase">
                 <li>Let <var>details</var> be the result of <a>converting</a>
                 <var>value</var> to a <a>PaymentDetailsUpdate</a> dictionary.
-                If this <a>throws</a> an exception, abort these substeps, and
-                optionally show an error message to the user.
+                If this <a>throws</a> an exception, <a>abort the update</a>
+                with the thrown exception.
                 </li>
-                <li data-link-for="PaymentDetailsUpdate">If the <a>total</a>
-                member of <var>details</var> is present, then:
-                  <ol>
-                    <li>Let <var>value</var> be
-                    <var>details</var>.<a>total</a>.<a data-lt=
-                    "PaymentItem.amount">amount</a>.<a data-lt=
-                    "PaymentCurrencyAmount.value">value</a>.
-                    </li>
-                    <li>If <var>value</var> is a <a>valid decimal monetary
-                    value</a> and the first character of <var>value</var> is
-                    <em>not</em> U+002D HYPHEN-MINUS, then copy
-                    <var>details</var>.<a>total</a> to the <a>total</a> member
-                    of <var>target</var>.<a>[[\details]]</a>. (Negative total
-                    amounts are ignored.)
-                    </li>
-                  </ol>
+                <li>Let <var>serializedModifierData</var> be an empty list.
                 </li>
-                <li>If the <a>displayItems</a> member of <var>details</var> is
-                present, then:
-                  <ol>
-                    <li>If every <a>PaymentItem</a> in
-                    <var>details</var>.<a>displayItems</a> has an <a data-lt=
-                    "PaymentItem.amount">amount</a>.<a data-lt=
-                    "PaymentCurrencyAmount.value">value</a> containing a
-                    <a>valid decimal monetary value</a>, then copy
-                    <var>details</var>.<a>displayItems</a> to the
-                    <a>displayItems</a> member of
-                    <var>target</var>.<a>[[\details]]</a>.
-                    </li>
-                  </ol>
+                <li>Let <var>selectedShippingOption</var> be null.
                 </li>
-                <li>If the <a>modifiers</a> member of <var>details</var> is
-                present, then:
+                <li>Let <var>shippingOptions</var> be an empty
+                <code><a data-cite=
+                "WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
+                </li>
+                <li>Validate and canonicalize the details:
                   <ol>
-                    <li>Let <var>modifiers</var> be the sequence
-                    <var>details</var>.<a>modifiers</a>.
+                    <li data-link-for="PaymentDetailsUpdate">If the
+                    <a>total</a> member of <var>details</var> is present, then:
+                      <ol>
+                        <li>Let <var>value</var> be
+                        <var>details</var>.<a>total</a>.<a data-lt=
+                        "PaymentItem.amount">amount</a>.<a data-lt=
+                        "PaymentCurrencyAmount.value">value</a>.
+                        </li>
+                        <li>If <var>value</var> is not a <a>valid decimal
+                        monetary value</a>, then <a>abort the update</a> with a
+                        <a>TypeError</a>.
+                        </li>
+                        <li>If the first character of <var>value</var> is
+                        U+002D HYPHEN-MINUS, then <a>abort the update</a> with
+                        a <a>TypeError</a>.
+                        </li>
+                      </ol>
                     </li>
-                    <li>Let <var>serializedModifierData</var> be an empty list.
-                    </li>
-                    <li>For each <a>PaymentDetailsModifier</a>
-                    <var>modifier</var> in <var>modifiers</var>:
-                      <ol data-link-for="PaymentDetailsModifier">
-                        <li>If the <a>total</a> member of <var>modifier</var>
-                        is present and
-                        <var>member</var>.<a>total</a>.<a data-lt=
+                    <li>If the <a>displayItems</a> member of <var>details</var>
+                    is present, then for each <var>item</var> in
+                    <var>details</var>.<a>displayItems</a>:
+                      <ol>
+                        <li>If <var>item</var>.<a data-lt=
                         "PaymentItem.amount">amount</a>.<a data-lt=
                         "PaymentCurrencyAmount.value">value</a> is not a
-                        <a>valid decimal monetary value</a>, then set
-                        <var>modifiers</var> to an empty sequence and
-                        <var>serializedModifierData</var> to an empty list, and
-                        jump to the step labeled <i>copy modifiers</i> below.
+                        <a>valid decimal monetary value</a>, then <a>abort the
+                        update</a> with a <a>TypeError</a>.
                         </li>
-                        <li>If the <a>additionalDisplayItems</a> member of
-                        <var>modifier</var> is present, then for each
-                        <a>PaymentItem</a> <var>item</var> in
-                        <var>modifier</var>.<a>additionalDisplayItems</a>:
+                      </ol>
+                    </li>
+                    <li>If the <a>shippingOptions</a> member of
+                    <var>details</var> is present, and
+                    <var>target</var>.<a>[[\options]]</a>.<a data-lt=
+                    "PaymentOptions.requestShipping">requestShipping</a> is
+                    true, then:
+                      <ol>
+                        <li>Set <var>shippingOptions</var> to
+                        <var>details</var>.<a>shippingOptions</a>.
+                        </li>
+                        <li>Let <var>seenIDs</var> be an empty list.
+                        </li>
+                        <li>For each <var>option</var> in
+                        <var>shippingOptions</var>:
                           <ol>
-                            <li>Let <var>amountValue</var> be
-                            <var>item</var>.<a data-lt=
-                            "PaymentItem.amount">amount</a>.<a data-lt=
-                            "PaymentCurrencyAmount.value">value</a>.
+                            <li>If <var>option</var>.<a data-lt=
+                            "PaymentShippingOption.amount">amount</a>.<a data-lt="PaymentCurrencyAmount.value">value</a>
+                              is not a <a>valid decimal monetary value</a>,
+                              then <a>abort the update</a> with a
+                              <a>TypeError</a>.
                             </li>
-                            <li>If <var>amountValue</var> is not a <a>valid
-                            decimal monetary value</a>, then set
-                            <var>modifiers</var> to an empty sequence and <var>
-                              serializedModifierData</var> to an empty list,
-                              and jump to the step labeled <i>copy
-                              modifiers</i> below.
+                            <li>If <var>seenIDs</var> contains
+                            <var>option</var>.<a data-lt=
+                            "PaymentShippingOption.id">id</a>, then set
+                            <var>options</var> to an empty sequence and break.
+                            </li>
+                            <li>Append <var>option</var>.<a data-lt=
+                            "PaymentShippingOption.id">id</a> to
+                            <var>seenIDs</var>.
                             </li>
                           </ol>
                         </li>
-                        <li>Let <var>serializedData</var> be the result of <a>
-                          JSON-serializing</a> <var>modifier</var>.<a data-lt=
-                          "PaymentDetailsModifier.data">data</a> into a string,
-                          if the <a data-lt=
-                          "PaymentDetailsModifier.data">data</a> member of
-                          <var>modifier</var> is present, or null if it is not.
-                          If <a>JSON-serializing</a> throws an exception, then
-                          set <var>modifiers</var> to an empty sequence and
-                          <var>serializedModifierData</var> to an empty list,
-                          and jump to the step labeled <i>copy modifiers</i>
-                          below.
+                        <li>For each <var>option</var> in
+                        <var>shippingOptions</var> (which may have been reset
+                        to the empty sequence in the previous step):
+                          <ol>
+                            <li>If <var>option</var>.<a data-lt=
+                            "PaymentShippingOption.selected">selected</a> is
+                            true, then set <var>selectedShippingOption</var> to
+                            <var>option</var>.<a data-lt=
+                            "PaymentShippingOption.id">id</a>.
+                            </li>
+                          </ol>
                         </li>
-                        <li>Add <var>serializedData</var> to
+                      </ol>
+                    </li>
+                    <li>If the <a>modifiers</a> member of <var>details</var> is
+                    present, then:
+                      <ol>
+                        <li>Let <var>modifiers</var> be the sequence
+                        <var>details</var>.<a>modifiers</a>.
+                        </li>
+                        <li>Let <var>serializedModifierData</var> be an empty
+                        list.
+                        </li>
+                        <li>For each <a>PaymentDetailsModifier</a>
+                        <var>modifier</var> in <var>modifiers</var>:
+                          <ol data-link-for="PaymentDetailsModifier">
+                            <li>If the <a>total</a> member of
+                            <var>modifier</var> is present and
+                            <var>member</var>.<a>total</a>.<a data-lt=
+                            "PaymentItem.amount">amount</a>.<a data-lt=
+                            "PaymentCurrencyAmount.value">value</a> is not a
+                            <a>valid decimal monetary value</a>, then <a>abort
+                            the update</a> with a <a>TypeError</a>.
+                            </li>
+                            <li>If the <a>additionalDisplayItems</a> member of
+                            <var>modifier</var> is present, then for each
+                            <a>PaymentItem</a> <var>item</var> in
+                            <var>modifier</var>.<a>additionalDisplayItems</a>:
+                              <ol>
+                                <li>Let <var>amountValue</var> be
+                                <var>item</var>.<a data-lt=
+                                "PaymentItem.amount">amount</a>.<a data-lt=
+                                "PaymentCurrencyAmount.value">value</a>.
+                                </li>
+                                <li>If <var>amountValue</var> is not a <a>valid
+                                decimal monetary value</a>, then <a>abort the
+                                update</a> with a <a>TypeError</a>.
+                                </li>
+                              </ol>
+                            </li>
+                            <li>Let <var>serializedData</var> be the result of
+                            <a>JSON-serializing</a>
+                            <var>modifier</var>.<a data-lt=
+                            "PaymentDetailsModifier.data">data</a> into a
+                            string, if the <a data-lt=
+                            "PaymentDetailsModifier.data">data</a> member of
+                            <var>modifier</var> is present, or null if it is
+                            not. If <a>JSON-serializing</a> throws an
+                            exception, then <a>abort the update</a> with that
+                            exception.
+                            </li>
+                            <li>Add <var>serializedData</var> to
+                            <var>serializedModifierData</var>.
+                            </li>
+                            <li>Remove the <a data-lt=
+                            "PaymentDetailsModifier.data">data</a> member of
+                            <var>modifier</var>, if it is present.
+                            </li>
+                          </ol>
+                        </li>
+                      </ol>
+                    </li>
+                  </ol>
+                </li>
+                <li>Update the <a>PaymentRequest</a> using the new details:
+                  <ol>
+                    <li data-link-for="PaymentDetailsUpdate">If the
+                    <a>total</a> member of <var>details</var> is present, then:
+                      <ol>
+                        <li>Set
+                        <var>target</var>.<a>[[\details]]</a>.<a data-link-for="PaymentDetailsInit">total</a>
+                          to <var>details</var>.<a>total</a>.
+                        </li>
+                      </ol>
+                    </li>
+                    <li>If the <a>displayItems</a> member of <var>details</var>
+                    is present, then:
+                      <ol>
+                        <li>Set
+                        <var>target</var>.<a>[[\details]]</a>.<a>displayItems</a>
+                        to <var>details</var>.<a>displayItems</a>.
+                        </li>
+                      </ol>
+                    </li>
+                    <li>If the <a>shippingOptions</a> member of
+                    <var>details</var> is present, and
+                    <var>target</var>.<a>[[\options]]</a>.<a data-lt=
+                    "PaymentOptions.requestShipping">requestShipping</a> is
+                    true, then:
+                      <ol>
+                        <li>Set
+                        <var>target</var>.<a>[[\details]]</a>.<a>shippingOptions</a>
+                        to <var>shippingOptions</var>.
+                        </li>
+                        <li>Set the value of <var>target</var>'s <a data-lt=
+                        "PaymentRequest.shippingOption">shippingOption</a>
+                        attribute to <var>selectedShippingOption</var>.
+                        </li>
+                      </ol>
+                    </li>
+                    <li>If the <a>modifiers</a> member of <var>details</var> is
+                    present, then:
+                      <ol>
+                        <li>Set
+                        <var>target</var>.<a>[[\details]]</a>.<a>modifiers</a>
+                        to <var>details</var>.<a>modifiers</a>.
+                        </li>
+                        <li>Set
+                        <var>target</var>.<a>[[\serializedModifierData]]</a> to
                         <var>serializedModifierData</var>.
                         </li>
-                        <li>Remove the <a data-lt=
-                        "PaymentDetailsModifier.data">data</a> member of <var>
-                          modifier</var>, if it is present.
-                        </li>
                       </ol>
                     </li>
-                    <li>
-                      <i>Copy modifiers</i>: Set
-                      <var>target</var>.<a>[[\details]]</a>.<a data-lt=
-                      "PaymentDetailsBase.modifiers">modifiers</a> to
-                      <var>modifiers</var>, and set
-                      <var>target</var>.<a>[[\serializedModifierData]]</a> to
-                      <var>serializedModifierData</var>.
+                    <li>If the <a data-lt=
+                    "PaymentDetailsUpdate.error">error</a> member of
+                    <var>details</var> is present, then the <a>user agent</a>
+                    should update the user interface to display the error
+                    message contained in <a data-lt=
+                    "PaymentDetailsUpdate.error">error</a>.
                     </li>
                   </ol>
-                </li>
-                <li>If the <a>shippingOptions</a> member of <var>details</var>
-                is present, and
-                <var>target</var>.<a>[[\options]]</a>.<a data-lt=
-                "PaymentOptions.requestShipping">requestShipping</a> is true,
-                then:
-                  <ol>
-                    <li>Let <var>options</var> be
-                    <var>details</var>.<a>shippingOptions</a>.
-                    </li>
-                    <li>Let <var>seenIDs</var> be an empty list.
-                    </li>
-                    <li>For each <var>option</var> in <var>options</var>:
-                      <ol>
-                        <li>If <var>option</var>.<a data-lt=
-                        "PaymentShippingOption.amount">amount</a>.<a data-lt=
-                        "PaymentCurrencyAmount.value">value</a> is not a
-                        <a>valid decimal monetary value</a>, then set
-                        <var>options</var> to the empty sequence and break.
-                        </li>
-                        <li>If <var>seenIDs</var> contains
-                        <var>option</var>.<a data-lt=
-                        "PaymentShippingOption.id">id</a>, then set
-                        <var>options</var> to an empty sequence and break.
-                        </li>
-                        <li>Append <var>option</var>.<a data-lt=
-                        "PaymentShippingOption.id">id</a> to
-                        <var>seenIDs</var>.
-                        </li>
-                      </ol>
-                    </li>
-                    <li>For each <var>option</var> in <var>options</var> (which
-                    may have been reset to the empty sequence in the previous
-                    step):
-                      <ol>
-                        <li>If <var>option</var>.<a data-lt=
-                        "PaymentShippingOption.selected">selected</a> is true,
-                        then set <var>selectedShippingOption</var> to
-                        <var>option</var>.<a data-lt=
-                        "PaymentShippingOption.id">id</a>.
-                        </li>
-                      </ol>
-                    </li>
-                    <li>Copy <var>options</var> to the <a data-lt=
-                    "PaymentDetailsBase.shippingOptions">shippingOptions</a>
-                    member of <var>target</var>.<a>[[\details]]</a>.
-                    </li>
-                  </ol>
-                </li>
-                <li>If the <a data-lt="PaymentDetailsUpdate.error">error</a>
-                member of <var>details</var> is present, then the <a>user
-                agent</a> should update the user interface to display the error
-                message contained in <a data-lt=
-                "PaymentDetailsUpdate.error">error</a>.
                 </li>
               </ol>
             </li>
@@ -2274,6 +2304,40 @@
               </ol>
             </li>
           </ol>
+          <p>
+            If any of the above steps say to <dfn>abort the update</dfn> with
+            an exception <var>exception</var>, then:
+          </p>
+          <ol>
+            <li>Abort the current user interaction and close down any remaining
+            user interface.
+            </li>
+            <li>Set <var>target</var>.<a>[[\state]]</a> to "<a>closed</a>".
+            </li>
+            <li>Reject the promise <var>target</var>.<a>[[\acceptPromise]]</a>
+            with <var>exception</var>.
+            </li>
+            <li>Abort the algorithm.
+            </li>
+          </ol>
+          <div class="note">
+            <p>
+              <a data-lt="abort the update">Aborting the update</a> is
+              performed when there is a fatal error updating the payment
+              request, such as the supplied <var>detailsPromise</var>
+              rejecting, or its fulfillment value containing invalid data. This
+              would potentially leave the payment request in an inconsistent
+              state since the web page hasn't successfully handled the change
+              event. Consequently, the <a>PaymentRequest</a> moves to a
+              "<a>closed</a>" state. The error is signaled to the developer
+              through the rejection of the <a>[[\acceptPromise]]</a>, i.e. the
+              promise returned by <a data-lt="PaymentRequest.show">show()</a>.
+            </p>
+            <p>
+              <a>User agents</a> might show an error message to the user when
+              this occurs.
+            </p>
+          </div>
         </section>
         <section>
           <h2>
