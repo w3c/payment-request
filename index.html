@@ -576,18 +576,8 @@
           then set the value of the <a data-lt=
           "PaymentRequest.shippingType">shippingType</a> attribute on
           <var>request</var> to <var>options</var>.<a data-lt=
-          "PaymentOptions.shippingType">shippingType</a>. If
-          <var>options</var>.<a data-lt=
-          "PaymentOptions.shippingType">shippingType</a> is not a valid
-          <a>PaymentShippingType</a> value then set the value of the
-            <a data-lt="PaymentRequest.shippingType">shippingType</a> attribute
-            on <var>request</var> to "<code>shipping</code>".
-            <div class="note">
-              This behavior allows a page to detect if it supplied an
-              unsupported shipping type. This will be important if new shipping
-              types are added to a future version of this specification but a
-              page is run in a <a>user agent</a> supporting an earlier version.
-            </div>
+          "PaymentOptions.shippingType">shippingType</a>. Otherwise, set it to
+          null.
           </li>
           <li>Return <var>request</var>.
           </li>
