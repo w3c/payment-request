@@ -637,30 +637,21 @@
           <li>Return <var>acceptPromise</var> and perform the remaining steps
           <a>in parallel</a>.
           </li>
-          <li>For each <var>paymentMethod</var> in
-          <var>request</var>.<a>[[\serializedMethodData]]</a>:
-            <ol>
-              <li>Consult the appropriate <a>payment apps</a> to see if they
-              support any of the <a>payment method identifiers</a> given by the
-              first element of the <var>paymentMethod</var> tuple, passing
-              along the data string given by the second element of the tuple in
-              order to help them determine their support.
-              </li>
-            </ol>
+          <li>Let <var>matchingOptions</var> be the result of running the
+            <a>filter payment options algorithm</a>.
           </li>
-          <li>If this consultation produced no supported method of paying, then
-          reject <var>acceptPromise</var> with a "<a>NotSupportedError</a>" <a>
-            DOMException</a>, and abort this algorithm.
-          </li>
+          <li>If <var>matchingOptions</var> is empty, then reject
+            <var>acceptPromise</var> with a "<a>NotSupportedError</a>" <a>
+              DOMException</a>, and abort this algorithm. </li>
           <li>
             <p>
               Otherwise, show a user interface to allow the user to interact
-              with the payment request process, using those <a>payment apps</a>
-              and <a>payment methods</a> which the above step identified as
-              feasible. The user agent MAY show payment methods in the order
-              given by <var>supportedMethods</var>, but SHOULD prioritize the
-              preference of the user when presenting payment methods and
-              applications.
+              with the payment request process, using those <a>payment apps</a>,
+              <var>matchingOptions</var>, and <a>payment methods</a> which the
+              above step identified as feasible. The user agent MAY show payment
+              methods in the order given by <var>supportedMethods</var>, but
+              SHOULD prioritize the preference of the user when presenting
+              payment methods and applications.
             </p>
             <p>
               The <a>payment app</a> should be sent the appropriate data from
@@ -2487,6 +2478,50 @@
           <var>request</var>.<a>[[\acceptPromise]]</a> with
           <var>response</var>.
           </li>
+        </ol>
+      </section>
+      <section>
+        <h2>
+          Filter payment options algorithm
+        </h2>
+        <p>
+          The <dfn data-lt="filter payment options">filter payment options
+          algorithm</dfn> runs when user agent presents the user with the
+          collection of payment options available for selection. It MUST run the
+          following steps:
+        </p>
+        <ol>
+          <li>Let <var>matchingOptions</var> be an empty list.</li>
+          <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
+          the user is interacting with.
+          <li>For each <var>requestMethod</var> in
+            <var>request</var>.<a>[[\serializedMethodData]]</a>:
+            <ol type="I">
+              <li>Let <var>filters</var> be <var>requestMethod.data</var>
+                members whose values are lists of strings.</li>
+              <li>For each <var>option</var> of the installed
+                <a>payment apps</a>:
+                <ol type="i">
+                  <li>Let <var>optionMatch</var> be true.</li>
+                  <li>For <var>filterName</var> in the keys of
+                    <var>requestMethod</var>:
+                    <ol type="a">
+                      <li>If <var>option.capabilities</var> does not have key
+                      <var>filterName</var>, set <var>optionMatch</var> to
+                      false.</li>
+                      <li>Otherwise, if the intersection of
+                        <var>filters[filterName]</var> and
+                        <var>option.capabilities[filterName]</var> is empty, set
+                        <var>optionMatch</var> to false.</li>
+                    </ol>
+                  </li>
+                  <li>If <var>optionMatch</var> is true, add <var>option</var>
+                    to <var>matchingOptions</var>.</li>
+                </ol>
+              </li>
+            </ol>
+          </li>
+          <li>Return <var>matchingOptions</var>.</li>
         </ol>
       </section>
     </section>
