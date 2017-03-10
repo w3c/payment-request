@@ -1248,9 +1248,14 @@
           When the payment request is updated using <a data-lt=
           "PaymentRequestUpdateEvent.updateWith">updateWith()</a>, the
           <a>PaymentDetailsUpdate</a> can contain a message in the <a>error</a>
-          member that will be displayed to the user. For example, this might
-          commonly be used to explain why goods cannot be shipped to the chosen
-          shipping address.
+          member that will be displayed to the user, if the
+          <a>PaymentDetailsUpdate</a> indicates that there are no valid
+          <a data-lt="PaymentDetailsBase.shippingOptions">shippingOptions</a>
+          (and the <a>PaymentRequest</a> was constructed with the <a data-lt=
+          "PaymentOptions.requestShipping">requestShipping</a> option set to
+          true). This can be used to explain why goods cannot be shipped to the
+          chosen shipping address, or any other reason why no shipping options
+          are available.
         </dd>
         <dt>
           <dfn>total</dfn>
@@ -2283,12 +2288,22 @@
                         </li>
                       </ol>
                     </li>
-                    <li>If the <a data-lt=
+                    <li>If <var>target</var>.<a>[[\options]]</a>.<a data-lt=
+                    "PaymentOptions.requestShipping">requestShipping</a> is
+                    true, and
+                    <var>target</var>.<a>[[\details]]</a>.<a>shippingOptions</a>
+                    is empty, then the developer has signified that there are
+                    no valid shipping options for the currently-chosen shipping
+                    address (given by <var>target</var>'s <a data-lt=
+                    "PaymentRequest.shippingAddress">shippingAddress</a>). In
+                    this case, the user agent SHOULD display an error
+                    indicating this, and MAY indicate that that the
+                    currently-chosen shipping address is invalid in some way.
+                    The user agent SHOULD use the <a data-lt=
                     "PaymentDetailsUpdate.error">error</a> member of
-                    <var>details</var> is present, then the <a>user agent</a>
-                    should update the user interface to display the error
-                    message contained in <a data-lt=
-                    "PaymentDetailsUpdate.error">error</a>.
+                    <var>details</var>, if it is present, to give more
+                    information about why there are no valid shipping options
+                    for that address.
                     </li>
                   </ol>
                 </li>
