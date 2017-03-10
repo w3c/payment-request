@@ -661,11 +661,12 @@
           <li>For each <var>paymentMethod</var> in
           <var>request</var>.<a>[[\serializedMethodData]]</a>:
             <ol>
-              <li>Consult the appropriate <a>payment apps</a> to see if they
-              support any of the <a>payment method identifiers</a> given by the
-              first element of the <var>paymentMethod</var> tuple, passing
-              along the data string given by the second element of the tuple in
-              order to help them determine their support.
+              <li>Determine which <a>payment apps</a> support any of the
+              <a>payment method identifiers</a> given by the first element of
+              the <var>paymentMethod</var> tuple. For each resulting payment
+              app, if payment method specific capabilities supplied by the
+              payment app match those provided by the second element of the
+              tuple, the payment app matches.
               </li>
             </ol>
           </li>
@@ -813,8 +814,10 @@
               <li>If <var>methodData</var>.<a data-lt=
               "PaymentMethodData.supportedMethods">supportedMethods</a>
               contains a <a>payment method identifier</a> of a <a>payment
-              method</a> that the <a>user agent</a> supports, resolve
-              <var>promise</var> with true, and abort this algorithm.
+              method</a> that the <a>user agent</a> or other <a>payment app</a>
+              supports (including its <a>payment method</a> specific
+              capabilities), resolve <var>promise</var> with true, and abort
+              this algorithm.
               </li>
             </ol>
           </li>
