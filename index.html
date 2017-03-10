@@ -2187,12 +2187,22 @@
                         <var>modifier</var> in <var>modifiers</var>:
                           <ol data-link-for="PaymentDetailsModifier">
                             <li>If the <a>total</a> member of
-                            <var>modifier</var> is present and
-                            <var>member</var>.<a>total</a>.<a data-lt=
-                            "PaymentItem.amount">amount</a>.<a data-lt=
-                            "PaymentCurrencyAmount.value">value</a> is not a
-                            <a>valid decimal monetary value</a>, then <a>abort
-                            the update</a> with a <a>TypeError</a>.
+                            <var>modifier</var> is present, then:
+                              <ol>
+                                <li>Let <var>value</var> be
+                                <var>modifier</var>.<a>total</a>.<a data-lt=
+                                "PaymentItem.amount">amount</a>.<a data-lt=
+                                "PaymentCurrencyAmount.value">value</a>.
+                                </li>
+                                <li>If <var>value</var> is not a <a>valid
+                                decimal monetary value</a>, then <a>abort the
+                                update</a> with a <a>TypeError</a>.
+                                </li>
+                                <li>If the first character of <var>value</var>
+                                is U+002D HYPHEN-MINUS, then <a>abort the
+                                update</a> with a <a>TypeError</a>.
+                                </li>
+                              </ol>
                             </li>
                             <li>If the <a>additionalDisplayItems</a> member of
                             <var>modifier</var> is present, then for each
@@ -2207,11 +2217,6 @@
                                 <li>If <var>amountValue</var> is not a <a>valid
                                 decimal monetary value</a>, then <a>abort the
                                 update</a> with a <a>TypeError</a>.
-                                </li>
-                                <li>If the first character of
-                                <var>amountValue</var> is U+002D HYPHEN-MINUS,
-                                then <a>abort the update</a> with a
-                                <a>TypeError</a>.
                                 </li>
                               </ol>
                             </li>
