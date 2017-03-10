@@ -2203,6 +2203,11 @@
                                 decimal monetary value</a>, then <a>abort the
                                 update</a> with a <a>TypeError</a>.
                                 </li>
+                                <li>If the first character of
+                                <var>amountValue</var> is U+002D HYPHEN-MINUS,
+                                then <a>abort the update</a> with a
+                                <a>TypeError</a>.
+                                </li>
                               </ol>
                             </li>
                             <li>Let <var>serializedData</var> be the result of
