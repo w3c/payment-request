@@ -119,15 +119,17 @@
       </h2>
       <p>
         This specification describes an API that allows <a>user agents</a>
-        (e.g., browsers) to act as an intermediary between three systems in
-        every transaction: the merchant (e.g., an online web store), the buyer,
-        represented by the <a>user agent</a> (e.g., the user buying from the
-        online web store), and the <dfn data-lt="payment methods">payment
-        method</dfn> (e.g., credit card). Information necessary to process and
-        confirm a transaction is passed between the <a>payment method</a> and
-        the merchant via the <a>user agent</a> with the buyer confirming and
-        authorizing as necessary across the flow.
-      </p>
+        (e.g., browsers) to act as an intermediary between three parties in
+        a transaction:</p>
+
+      <ul>
+	<li>the payee, such as a merchant with an online store,</li>
+	<li>the payer, such as a person making a purchase on that online store, and who authenticates and authorizes payment as required,</li>
+	<li>the provider of a <dfn data-lt="payment methods">payment
+            method</dfn> (e.g., credit card) that the payer uses to pay, and
+	  that is accepted by the payee.</li>
+      </ul>
+
       <p>
         The details of how to fulfill a payment request for a given <a>payment
         method</a> are handled by <dfn data-lt="payment app">payment
@@ -148,13 +150,12 @@
         </h2>
         <ul>
           <li>Allow the user agent to act as intermediary between merchants,
-          users, and <a>payment methods</a>
+          users, and <a>payment method</a> providers.
           </li>
           <li>Standardize (to the extent that it makes sense) the communication
-          flow between a merchant, user agent, and <a>payment method</a>
+          flow between a merchant, user agent, and <a>payment method</a> provider.
           </li>
-          <li>Allow <a>payment methods</a> to bring more secure payment
-          transactions to the web
+          <li>Enable <a>payment method</a> providers to bring more secure payment transactions to the web.
           </li>
         </ul>
         <section id="out-of-scope">
@@ -223,9 +224,10 @@
       <p>
         A web page creates a <a>PaymentRequest</a> to make a payment request.
         This is typically associated with the user initiating a payment process
-        (e.g., selecting a "Power Up" in an interactive game, pulling up to an
-        automated kiosk in a parking structure, or activating a "Buy",
-        "Purchase", or "Checkout" button). The <a>PaymentRequest</a> allows the
+        (e.g., by activating a "Buy," "Purchase," or "Checkout" button
+	on a web site, selecting a "Power Up" in an interactive game, or
+	paying at a kiosk in a parking structure).
+	The <a>PaymentRequest</a> allows the
         web page to exchange information with the <a>user agent</a> while the
         user is providing input before approving or denying a payment request.
       </p>
@@ -288,11 +290,11 @@
             const methodData = [{
               supportedMethods: ["basic-card"],
               data: {
-                supportedNetworks: ['aFamousBrand', 'aDebitNetwork'],
+                supportedNetworks: ['visa, 'mastercard'],
                 supportedTypes: ['debit']
               }
             }, {
-              supportedMethods: ["bobpay.com"],
+              supportedMethods: ["https://example.com/bobpay"],
               data: {
                 merchantIdentifier: "XXXX",
                 bobPaySpecificField: true
