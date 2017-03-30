@@ -237,6 +237,12 @@
         is providing input before approving or denying a payment request.
       </p>
       <p data-link-for="PaymentRequest">
+        The <a>user agent</a> as a whole has a single <dfn>payment request is
+        showing</dfn> boolean, initially false. This is used to prevent
+        multiple <a>PaymentRequest</a>s from being shown, via their
+        <a>show()</a> method, at the same time.
+      </p>
+      <p data-link-for="PaymentRequest">
         The <a>shippingAddress</a>, <a>shippingOption</a>, and
         <a>shippingType</a> attributes are populated during processing if the
         <a data-lt="PaymentOptions.requestShipping">requestShipping</a> flag is
@@ -602,14 +608,23 @@
         <h2>
           <dfn>show()</dfn> method
         </h2>
-        <p class="note">
-          The <a>show()</a> method is called when the page wants to begin user
-          interaction for the payment request. The <a>show()</a> method returns
-          a <a>Promise</a> that will be resolved when the <a>user accepts the
-          payment request</a>. Some kind of user interface will be presented to
-          the user to facilitate the payment request after the <a>show()</a>
-          method returns.
-        </p>
+        <div class="note">
+          <p>
+            The <a>show()</a> method is called when the page wants to begin
+            user interaction for the payment request. The <a>show()</a> method
+            returns a <a>Promise</a> that will be resolved when the <a>user
+            accepts the payment request</a>. Some kind of user interface will
+            be presented to the user to facilitate the payment request after
+            the <a>show()</a> method returns.
+          </p>
+          <p>
+            It is not possible to show multiple <a>PaymentRequest</a>s at the
+            same time within one <a>user agent</a>. Calling <a>show()</a> if
+            another <a>PaymentRequest</a> is already showing, even due to some
+            other site, will return a promise rejected with an
+            "<a>AbortError</a>" <a>DOMException</a>.
+          </p>
+        </div>
         <p>
           The <a>show()</a> method MUST act as follows:
         </p>
@@ -620,6 +635,10 @@
           <li>If <var>request</var>.<a>[[\state]]</a> is not "<a>created</a>"
           then return a promise rejected with an "<a>InvalidStateError</a>" <a>
             DOMException</a>.
+          </li>
+          <li>If the <a>user agent</a>'s <a>payment request is showing</a>
+          boolean is true, then return a promise rejected with an
+          "<a>AbortError</a>" <a>DOMException</a>.
           </li>
           <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>interactive</a>".
           </li>
@@ -649,6 +668,9 @@
               advantage of this step.
             </p>
           </li>
+          <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
+          boolean to true.
+          </li>
           <li>Return <var>acceptPromise</var> and perform the remaining steps
           <a>in parallel</a>.
           </li>
@@ -666,7 +688,8 @@
           </li>
           <li>If this consultation produced no supported method of paying, then
           reject <var>acceptPromise</var> with a "<a>NotSupportedError</a>" <a>
-            DOMException</a>, and abort these steps.
+            DOMException</a>, and set the <a>user agent</a>'s <a>payment
+            request is showing</a> boolean to false.
           </li>
           <li>
             <p>
@@ -2589,6 +2612,9 @@
           </li>
           <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
           </li>
+          <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
+          boolean to false.
+          </li>
           <li>Resolve the pending promise
           <var>request</var>.<a>[[\acceptPromise]]</a> with
           <var>response</var>.
@@ -2620,6 +2646,9 @@
           that this never occurs.
           </li>
           <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
+          </li>
+          <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
+          boolean to false.
           </li>
           <li>Reject the promise <var>request</var>.<a>[[\acceptPromise]]</a>
           with an "<a>AbortError</a>" <a>DOMException</a>.
