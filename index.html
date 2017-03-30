@@ -6,8 +6,7 @@
     </title>
     <meta charset='utf-8'>
     <script src='https://www.w3.org/Tools/respec/respec-w3c-common' class=
-    'remove'>
-    </script>
+    'remove'></script>
     <script class='remove'>
     var respecConfig = {
       shortName: "payment-request",
@@ -248,14 +247,14 @@
         and begin the user interaction:
       </p>
       <pre class="example" title="Constructing a PaymentRequest object">
-        function validateResponse(response){
+        function validateResponse(response) {
           // check that the response is ok... throw if bad, for example.
         }
 
         async function doPaymentRequest() {
           const payment = new PaymentRequest(methodData, details, options);
           payment.addEventListener("shippingaddresschange", event =&gt; {
-              // Process shipping address change
+            // Process shipping address change
           });
           let paymentResponse;
           try {
@@ -316,19 +315,16 @@
           <pre class="example" title="The 'details' argument">
             const details = {
               id: "super-store-order-123-12312",
-              displayItems: [
-                {
-                  label: "Sub-total",
-                  amount: { currency: "USD", value : "55.00" }, // US$55.00
-                },
-                {
-                  label: "Sales Tax",
-                  amount: { currency: "USD", value : "5.00" }, // US$5.00
-                }
-              ],
+              displayItems: [{
+                label: "Sub-total",
+                amount: { currency: "USD", value: "55.00" }, // US$55.00
+              }, {
+                label: "Sales Tax",
+                amount: { currency: "USD", value: "5.00" }, // US$5.00
+              }],
               total: {
                 label: "Total due",
-                amount: { currency: "USD", value : "60.00" }, // US$60.00
+                amount: { currency: "USD", value: "60.00" }, // US$60.00
               }
             }
             const request = new PaymentRequest(methodData, details, options);
@@ -484,8 +480,8 @@
           <li data-link-for="PaymentDetailsBase">Process payment details
           modifiers:
             <ol>
-              <li>Let <var>modifiers</var> be an empty
-              <code>sequence</code>&lt;<a>PaymentDetailsModifier</a>&gt;.
+              <li>Let <var>modifiers</var> be an empty <code><a data-cite=
+              "WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentDetailsModifier</a>&gt;.
               </li>
               <li>If the <a>modifiers</a> member of <var>details</var> is
               present, then:
@@ -841,8 +837,8 @@
         </h2>
         <p>
           A <a>PaymentRequest</a>'s <a>onshippingaddresschange</a> attribute is
-          an <code>EventHandler</code> for an <code>Event</code> named
-          <code>shippingaddresschange</code>.
+          an <a>EventHandler</a> for an <a>Event</a> named
+          <a>shippingaddresschange</a>.
         </p>
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
@@ -862,8 +858,8 @@
         </h2>
         <p>
           A <a>PaymentRequest</a>'s <a>onshippingoptionchange</a> attribute is
-          an <code>EventHandler</code> for an <code>Event</code> named
-          <code>shippingoptionchange</code>.
+          an <a>EventHandler</a> for an <a>Event</a> named
+          <a>shippingoptionchange</a>.
         </p>
       </section>
       <section>
@@ -2712,6 +2708,10 @@
         <dd>
           The following are defined by [[!HTML]]:
           <ul>
+            <li>
+              <code><dfn data-cite=
+              "!HTML#eventhandler">EventHandler</dfn></code>
+            </li>
             <li>
               <dfn data-cite="!HTML#queuing">queue a task</dfn>
             </li>
