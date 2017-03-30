@@ -608,17 +608,16 @@
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object on
           which the method is called.
           </li>
-          <li>If the value of <var>request</var>.<a>[[\state]]</a> is not
-          "<a>created</a>" then <a>throw</a> an "<a>InvalidStateError</a>" <a>
+          <li>If <var>request</var>.<a>[[\state]]</a> is not "<a>created</a>"
+          then return a promise rejected with an "<a>InvalidStateError</a>" <a>
             DOMException</a>.
           </li>
-          <li>Set the value of <var>request</var>.<a>[[\state]]</a> to
-          "<a>interactive</a>".
+          <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>interactive</a>".
           </li>
           <li>Let <var>acceptPromise</var> be a new <a>Promise</a>.
           </li>
-          <li>Set <var>acceptPromise</var> in
-          <var>request</var>.<a>[[\acceptPromise]]</a>.
+          <li>Set <var>request</var>.<a>[[\acceptPromise]]</a> to
+          <var>acceptPromise</var>.
           </li>
           <li>
             <p>
@@ -630,7 +629,7 @@
               </li>
               <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
               </li>
-              <li>Abort this algorithm.
+              <li>Return <var>acceptPromise</var>.
               </li>
             </ol>
             <p class="note">
@@ -658,7 +657,7 @@
           </li>
           <li>If this consultation produced no supported method of paying, then
           reject <var>acceptPromise</var> with a "<a>NotSupportedError</a>" <a>
-            DOMException</a>, and abort this algorithm.
+            DOMException</a>, and abort these steps.
           </li>
           <li>
             <p>
