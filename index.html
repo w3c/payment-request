@@ -2502,7 +2502,8 @@
         <p>
           The <dfn data-lt="user accepts the payment request">user accepts the
           payment request algorithm</dfn> runs when the user accepts the
-          payment request and confirms that they want to pay. It MUST run the
+          payment request and confirms that they want to pay. It MUST <a>queue
+          a task</a> on the <a>user interaction task source</a> to perform the
           following steps:
         </p>
         <ol class="algorithm">
@@ -2602,8 +2603,9 @@
         <p>
           The <dfn data-lt="user aborts the payment request">user aborts the
           payment request algorithm</dfn> runs when the user aborts the payment
-          request through the currently interactive user interface. It MUST run
-          the following steps:
+          request through the currently interactive user interface. It MUST
+          <a>queue a task</a> on the <a>user interaction task source</a> to
+          perform the following steps:
         </p>
         <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
@@ -2618,17 +2620,10 @@
           further action. The <a>user agent</a> user interface should ensure
           that this never occurs.
           </li>
-          <li>
-            <a>Queue a task</a> on the <a>user interaction task source</a> to
-            perform the following steps:
-            <ol>
-              <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
-              </li>
-              <li>Reject the promise
-              <var>request</var>.<a>[[\acceptPromise]]</a> with an
-              "<a>AbortError</a>" <a>DOMException</a>.
-              </li>
-            </ol>
+          <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
+          </li>
+          <li>Reject the promise <var>request</var>.<a>[[\acceptPromise]]</a>
+          with an "<a>AbortError</a>" <a>DOMException</a>.
           </li>
         </ol>
       </section>
