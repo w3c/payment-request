@@ -47,16 +47,7 @@
       wgPatentURI: "https://www.w3.org/2004/01/pp-impl/83744/status",
 
       issueBase: "https://github.com/w3c/browser-payment-api/issues/",
-      localBiblio: {
-        "METHOD-IDENTIFIERS": {
-          title: "Payment Method Identifiers",
-          href: "https://www.w3.org/TR/payment-method-id/",
-          authors: [
-            "Adrian Bateman", "Zach Koch", "Roy McElmurry"
-          ],
-          status: "WD"
-        }
-      },
+
       otherLinks: [{
         key: "Version control",
         data: [{
@@ -429,7 +420,7 @@
           <li>Process shipping options:
             <ol>
               <li>Let <var>options</var> be an empty <code><a data-cite=
-              "WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
+              "WEBIDL-LS#idl-sequence">sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
               </li>
               <li>If the <a>shippingOptions</a> member of <var>details</var> is
               present, then:
@@ -481,7 +472,7 @@
           modifiers:
             <ol>
               <li>Let <var>modifiers</var> be an empty <code><a data-cite=
-              "WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentDetailsModifier</a>&gt;.
+              "WEBIDL-LS#idl-sequence">sequence</a></code>&lt;<a>PaymentDetailsModifier</a>&gt;.
               </li>
               <li>If the <a>modifiers</a> member of <var>details</var> is
               present, then:
@@ -2101,7 +2092,7 @@
                 </li>
                 <li>Let <var>shippingOptions</var> be an empty
                 <code><a data-cite=
-                "WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
+                "WEBIDL-LS#idl-sequence">sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
                 </li>
                 <li>Validate and canonicalize the details:
                   <ol>
@@ -2710,7 +2701,7 @@
         </dt>
         <dd>
           The term <dfn data-lt="payment method identifiers">payment method
-          identifier</dfn> is defined by [[!METHOD-IDENTIFIERS]].
+          identifier</dfn> is defined by [[!payment-method-id]].
         </dd>
         <dt>
           HTML
