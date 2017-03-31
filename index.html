@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="generator" content=
+    "HTML Tidy for HTML5 for Windows version 5.4.0">
     <title>
       Payment Request API
     </title>
@@ -1089,185 +1091,195 @@
 }
       </pre>
     </section>
-    <section data-dfn-for="PaymentDetailsBase" data-link-for=
-    "PaymentDetailsBase">
+    <section>
       <h2>
-        <dfn>PaymentDetailsBase</dfn> dictionary
+        Payment details dictionaries
       </h2>
-      <pre class="idl">
+      <section data-dfn-for="PaymentDetailsBase" data-link-for=
+      "PaymentDetailsBase">
+        <h2>
+          <dfn>PaymentDetailsBase</dfn> dictionary
+        </h2>
+        <pre class="idl">
         dictionary PaymentDetailsBase {
           sequence&lt;PaymentItem&gt; displayItems;
           sequence&lt;PaymentShippingOption&gt; shippingOptions;
           sequence&lt;PaymentDetailsModifier&gt; modifiers;
         };
       </pre>
-      <p>
-        The following members are part of the <a>PaymentDetailsBase</a>
-        dictionary:
-      </p>
-      <dl>
-        <dt>
-          <dfn>displayItems</dfn>
-        </dt>
-        <dd>
-          This sequence of <a>PaymentItem</a> dictionaries contains line items
-          for the payment request that the <a>user agent</a> MAY display. For
-          example, it might include details of products or breakdown of tax and
-          shipping. It is optional to provide this information.
-          <p class="note">
-            It is the developer's responsibility to verify that the <a data-lt=
-            "PaymentDetailsInit.total">total</a> amount is the sum of these
-            items.
-          </p>
-        </dd>
-        <dt>
-          <dfn>shippingOptions</dfn>
-        </dt>
-        <dd>
-          A sequence containing the different shipping options for the user to
-          choose from.
-          <p>
-            If the sequence is empty, then this indicates that the merchant
-            cannot ship to the current <a data-lt=
-            "PaymentRequest.shippingAddress">shippingAddress</a>.
-          </p>
-          <p>
-            If an item in the sequence has the <a data-lt=
-            "PaymentShippingOption.selected">selected</a> member set to true,
-            then this is the shipping option that will be used by default and
-            <a data-lt="PaymentRequest.shippingOption">shippingOption</a> will
-            be set to the <a data-lt="PaymentShippingOption.id">id</a> of this
-            option without running the <a>shipping option changed
-            algorithm</a>. Authors SHOULD NOT set <a data-lt=
-            "PaymentShippingOption.selected">selected</a> to true on more than
-            one item. If more than one item in the sequence has <a data-lt=
-            "PaymentShippingOption.selected">selected</a> set to true, then
-            <a>user agents</a> MUST select the last one in the sequence.
-          </p>
-          <p>
-            The <a>shippingOptions</a> member is only used if the
-            <a>PaymentRequest</a> was constructed with <a>PaymentOptions</a>
-            <a data-lt="PaymentOptions.requestShipping">requestShipping</a> set
-            to true.
-          </p>
-          <p class="note">
-            If the sequence has an item with the <a data-lt=
-            "PaymentShippingOption.selected">selected</a> member set to true,
-            then authors are responsible for ensuring that the <a data-lt=
-            "PaymentDetailsInit.total">total</a> member includes the cost of
-            the shipping option. This is because no <a>shippingoptionchange</a>
-            event will be fired for this option unless the user selects an
-            alternative option first.
-          </p>
-        </dd>
-        <dt>
-          <dfn>modifiers</dfn>
-        </dt>
-        <dd>
-          This sequence of <a>PaymentDetailsModifier</a> dictionaries contains
-          modifiers for particular payment method identifiers. For example, it
-          allows you to adjust the total amount based on payment method.
-        </dd>
-      </dl>
-    </section>
-    <section data-dfn-for="PaymentDetailsInit" data-link-for=
-    "PaymentDetailsInit">
-      <h2>
-        <dfn>PaymentDetailsInit</dfn> dictionary
-      </h2>
-      <pre class="idl">
+        <p>
+          The following members are part of the <a>PaymentDetailsBase</a>
+          dictionary:
+        </p>
+        <dl>
+          <dt>
+            <dfn>displayItems</dfn>
+          </dt>
+          <dd>
+            This sequence of <a>PaymentItem</a> dictionaries contains line
+            items for the payment request that the <a>user agent</a> MAY
+            display. For example, it might include details of products or
+            breakdown of tax and shipping. It is optional to provide this
+            information.
+            <p class="note">
+              It is the developer's responsibility to verify that the
+              <a data-lt="PaymentDetailsInit.total">total</a> amount is the sum
+              of these items.
+            </p>
+          </dd>
+          <dt>
+            <dfn>shippingOptions</dfn>
+          </dt>
+          <dd>
+            A sequence containing the different shipping options for the user
+            to choose from.
+            <p>
+              If the sequence is empty, then this indicates that the merchant
+              cannot ship to the current <a data-lt=
+              "PaymentRequest.shippingAddress">shippingAddress</a>.
+            </p>
+            <p>
+              If an item in the sequence has the <a data-lt=
+              "PaymentShippingOption.selected">selected</a> member set to true,
+              then this is the shipping option that will be used by default and
+              <a data-lt="PaymentRequest.shippingOption">shippingOption</a>
+              will be set to the <a data-lt="PaymentShippingOption.id">id</a>
+              of this option without running the <a>shipping option changed
+              algorithm</a>. Authors SHOULD NOT set <a data-lt=
+              "PaymentShippingOption.selected">selected</a> to true on more
+              than one item. If more than one item in the sequence has
+              <a data-lt="PaymentShippingOption.selected">selected</a> set to
+              true, then <a>user agents</a> MUST select the last one in the
+              sequence.
+            </p>
+            <p>
+              The <a>shippingOptions</a> member is only used if the
+              <a>PaymentRequest</a> was constructed with <a>PaymentOptions</a>
+              <a data-lt="PaymentOptions.requestShipping">requestShipping</a>
+              set to true.
+            </p>
+            <p class="note">
+              If the sequence has an item with the <a data-lt=
+              "PaymentShippingOption.selected">selected</a> member set to true,
+              then authors are responsible for ensuring that the <a data-lt=
+              "PaymentDetailsInit.total">total</a> member includes the cost of
+              the shipping option. This is because no
+              <a>shippingoptionchange</a> event will be fired for this option
+              unless the user selects an alternative option first.
+            </p>
+          </dd>
+          <dt>
+            <dfn>modifiers</dfn>
+          </dt>
+          <dd>
+            This sequence of <a>PaymentDetailsModifier</a> dictionaries
+            contains modifiers for particular payment method identifiers. For
+            example, it allows you to adjust the total amount based on payment
+            method.
+          </dd>
+        </dl>
+      </section>
+      <section data-dfn-for="PaymentDetailsInit" data-link-for=
+      "PaymentDetailsInit">
+        <h2>
+          <dfn>PaymentDetailsInit</dfn> dictionary
+        </h2>
+        <pre class="idl">
         dictionary PaymentDetailsInit : PaymentDetailsBase {
           DOMString id;
           required PaymentItem total;
         };
       </pre>
-      <p class="note">
-        The <a>PaymentDetailsInit</a> dictionary is used in the construction of
-        the payment request.
-      </p>
-      <p>
-        In addition to the members inherited from the <a>PaymentDetailsBase</a>
-        dictionary, the following members are part of the
-        <a>PaymentDetailsInit</a> dictionary:
-      </p>
-      <dl>
-        <dt>
-          <dfn>id</dfn>
-        </dt>
-        <dd>
-          <a>id</a> is a free-form identifier for this payment request.
-          <p class="note">
-            If an <a>id</a> member is not present, then the <a>user agent</a>
-            will generate a unique identifier for the payment request during
-            <a data-lt="PaymentRequest.PaymentRequest()">construction</a>.
-          </p>
-        </dd>
-        <dt>
-          <dfn>total</dfn>
-        </dt>
-        <dd>
-          This <a>PaymentItem</a> contains the non-negative total amount of the
-          payment request.
-          <p class="note">
-            Algorithms in this specification that accept a
-            <a>PaymentDetailsInit</a> dictionary will throw if the
-            <a>total</a>.<a data-lt="PaymentItem.amount">amount</a>.<a data-lt=
-            "PaymentCurrencyAmount.value">value</a> is a negative number.
-          </p>
-        </dd>
-      </dl>
-    </section>
-    <section data-dfn-for="PaymentDetailsUpdate" data-link-for=
-    "PaymentDetailsUpdate">
-      <h2>
-        <dfn>PaymentDetailsUpdate</dfn> dictionary
-      </h2>
-      <pre class="idl">
+        <p class="note">
+          The <a>PaymentDetailsInit</a> dictionary is used in the construction
+          of the payment request.
+        </p>
+        <p>
+          In addition to the members inherited from the
+          <a>PaymentDetailsBase</a> dictionary, the following members are part
+          of the <a>PaymentDetailsInit</a> dictionary:
+        </p>
+        <dl>
+          <dt>
+            <dfn>id</dfn>
+          </dt>
+          <dd>
+            <a>id</a> is a free-form identifier for this payment request.
+            <p class="note">
+              If an <a>id</a> member is not present, then the <a>user agent</a>
+              will generate a unique identifier for the payment request during
+              <a data-lt="PaymentRequest.PaymentRequest()">construction</a>.
+            </p>
+          </dd>
+          <dt>
+            <dfn>total</dfn>
+          </dt>
+          <dd>
+            This <a>PaymentItem</a> contains the non-negative total amount of
+            the payment request.
+            <p class="note">
+              Algorithms in this specification that accept a
+              <a>PaymentDetailsInit</a> dictionary will throw if the
+              <a>total</a>.<a data-lt=
+              "PaymentItem.amount">amount</a>.<a data-lt=
+              "PaymentCurrencyAmount.value">value</a> is a negative number.
+            </p>
+          </dd>
+        </dl>
+      </section>
+      <section data-dfn-for="PaymentDetailsUpdate" data-link-for=
+      "PaymentDetailsUpdate">
+        <h2>
+          <dfn>PaymentDetailsUpdate</dfn> dictionary
+        </h2>
+        <pre class="idl">
         dictionary PaymentDetailsUpdate : PaymentDetailsBase {
           DOMString error;
           PaymentItem total;
         };
       </pre>
-      <p>
-        The <a>PaymentDetailsUpdate</a> dictionary is used to update the
-        payment request using <a data-lt=
-        "PaymentRequestUpdateEvent.updateWith">updateWith()</a>.
-      </p>
-      <p>
-        In addition to the members inherited from the <a>PaymentDetailsBase</a>
-        dictionary, the following members are part of the
-        <a>PaymentDetailsUpdate</a> dictionary:
-      </p>
-      <dl>
-        <dt>
-          <dfn>error</dfn>
-        </dt>
-        <dd>
-          When the payment request is updated using <a data-lt=
-          "PaymentRequestUpdateEvent.updateWith">updateWith()</a>, the
-          <a>PaymentDetailsUpdate</a> can contain a message in the <a>error</a>
-          member that will be displayed to the user, if the
-          <a>PaymentDetailsUpdate</a> indicates that there are no valid
-          <a data-lt="PaymentDetailsBase.shippingOptions">shippingOptions</a>
-          (and the <a>PaymentRequest</a> was constructed with the <a data-lt=
-          "PaymentOptions.requestShipping">requestShipping</a> option set to
-          true). This can be used to explain why goods cannot be shipped to the
-          chosen shipping address, or any other reason why no shipping options
-          are available.
-        </dd>
-        <dt>
-          <dfn>total</dfn>
-        </dt>
-        <dd>
-          This <a>PaymentItem</a> contains the non-negative total amount.
-          <p class="note">
-            Algorithms in this specification that accept a
-            <a>PaymentDetailsUpdate</a> dictionary will throw if the
-            <a>total</a>.<a data-lt="PaymentItem.amount">amount</a>.<a data-lt=
-            "PaymentCurrencyAmount.value">value</a> is a negative number.
-          </p>
-        </dd>
-      </dl>
+        <p>
+          The <a>PaymentDetailsUpdate</a> dictionary is used to update the
+          payment request using <a data-lt=
+          "PaymentRequestUpdateEvent.updateWith">updateWith()</a>.
+        </p>
+        <p>
+          In addition to the members inherited from the
+          <a>PaymentDetailsBase</a> dictionary, the following members are part
+          of the <a>PaymentDetailsUpdate</a> dictionary:
+        </p>
+        <dl>
+          <dt>
+            <dfn>error</dfn>
+          </dt>
+          <dd>
+            When the payment request is updated using <a data-lt=
+            "PaymentRequestUpdateEvent.updateWith">updateWith()</a>, the
+            <a>PaymentDetailsUpdate</a> can contain a message in the
+            <a>error</a> member that will be displayed to the user, if the
+            <a>PaymentDetailsUpdate</a> indicates that there are no valid
+            <a data-lt="PaymentDetailsBase.shippingOptions">shippingOptions</a>
+            (and the <a>PaymentRequest</a> was constructed with the <a data-lt=
+            "PaymentOptions.requestShipping">requestShipping</a> option set to
+            true). This can be used to explain why goods cannot be shipped to
+            the chosen shipping address, or any other reason why no shipping
+            options are available.
+          </dd>
+          <dt>
+            <dfn>total</dfn>
+          </dt>
+          <dd>
+            This <a>PaymentItem</a> contains the non-negative total amount.
+            <p class="note">
+              Algorithms in this specification that accept a
+              <a>PaymentDetailsUpdate</a> dictionary will throw if the
+              <a>total</a>.<a data-lt=
+              "PaymentItem.amount">amount</a>.<a data-lt=
+              "PaymentCurrencyAmount.value">value</a> is a negative number.
+            </p>
+          </dd>
+        </dl>
+      </section>
     </section>
     <section data-dfn-for="PaymentDetailsModifier" data-link-for=
     "PaymentDetailsModifier">
