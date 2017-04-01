@@ -617,6 +617,20 @@
           </p>
         </div>
         <p>
+          The following algorithm provides an <dfn>extension point</dfn>: other
+          specifications that define more specific algorithms for matching the available 
+          <a>payment apps</a> to the provided <a>payment methods</a> are encouraged to
+          hook themselves into this specification at this point in the
+          algorithm.
+        </p>
+        <div class="note">
+          <p>
+            The <a>extension point</a> is meant to help avoid <a href=
+            "https://annevankesteren.nl/2014/02/monkey-patch">issues related to
+            monkey patching</a>.
+          </p>
+        </div>
+        <p>
           The <a>show()</a> method MUST act as follows:
         </p>
         <ol class="algorithm">
@@ -665,17 +679,22 @@
           <li>Return <var>acceptPromise</var> and perform the remaining steps
           <a>in parallel</a>.
           </li>
-          <li>For each <var>paymentMethod</var> in
-          <var>request</var>.<a>[[\serializedMethodData]]</a>:
-            <ol>
-              <li>Determine which <a>payment apps</a> support any of the
-              <a>payment method identifiers</a> given by the first element of
-              the <var>paymentMethod</var> tuple. For each resulting payment
-              app, if payment method specific capabilities supplied by the
-              payment app match those provided by the second element of the
-              tuple, the payment app matches.
-              </li>
-            </ol>
+          <li><p><a>Extension point</a>: process any proprietary and/or other
+            supported algorithms, for determining the available methods of paying,
+            at this point in the algorithm.</p>
+            <p>Alternatively, the following generic algorithm may be applied:</p>
+            <p>For each <var>paymentMethod</var> in <var>request</var>.
+            <a>[[\serializedMethodData]]</a>:
+              <ol>
+                <li>Determine which <a>payment apps</a> support any of the
+                <a>payment method identifiers</a> given by the first element of
+                the <var>paymentMethod</var> tuple. For each resulting payment
+                app, if payment method specific capabilities supplied by the
+                payment app match those provided by the second element of the
+                tuple, the payment app matches.
+                </li>
+              </ol>
+            </p>
           </li>
           <li>If this consultation produced no supported method of paying, then
           reject <var>acceptPromise</var> with a "<a>NotSupportedError</a>" <a>
