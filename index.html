@@ -623,13 +623,6 @@
           hook themselves into this specification at this point in the
           algorithm.
         </p>
-        <div class="note">
-          <p>
-            The <a>extension point</a> is meant to help avoid <a href=
-            "https://annevankesteren.nl/2014/02/monkey-patch">issues related to
-            monkey patching</a>.
-          </p>
-        </div>
         <p>
           The <a>show()</a> method MUST act as follows:
         </p>
@@ -679,22 +672,15 @@
           <li>Return <var>acceptPromise</var> and perform the remaining steps
           <a>in parallel</a>.
           </li>
-          <li><p><a>Extension point</a>: process any proprietary and/or other
-            supported algorithms, for determining the available methods of paying,
-            at this point in the algorithm.</p>
-            <p>Alternatively, the following generic algorithm may be applied:</p>
-            <p>For each <var>paymentMethod</var> in <var>request</var>.
-            <a>[[\serializedMethodData]]</a>:
-              <ol>
-                <li>Determine which <a>payment apps</a> support any of the
-                <a>payment method identifiers</a> given by the first element of
-                the <var>paymentMethod</var> tuple. For each resulting payment
-                app, if payment method specific capabilities supplied by the
-                payment app match those provided by the second element of the
-                tuple, the payment app matches.
-                </li>
-              </ol>
-            </p>
+          <li>
+            <p><a>Extension point</a>: process algorithms for determining the 
+          available methods of paying at this point.</p>
+            <p>The algorithms should process each item in 
+              <var>request</var>.<a>[[\serializedMethodData]]</a> and determine 
+            the set of <a>payment apps</a>, with the appropriate capabilities, 
+            that is available to fulfill the payment request.</p>
+            <p>The output of executing these algorithms is a list of <a>payment apps</a>,
+            and any other methods of paying, able to fulfill the payment request.</p>
           </li>
           <li>If this consultation produced no supported method of paying, then
           reject <var>acceptPromise</var> with a "<a>NotSupportedError</a>" <a>
@@ -704,12 +690,11 @@
           <li>
             <p>
               Otherwise, show a user interface to allow the user to interact
-              with the payment request process, using those <a>payment apps</a>
-              and <a>payment methods</a> which the above step identified as
-              feasible. The user agent MAY show payment methods in the order
-              given by <var>supportedMethods</var>, but SHOULD prioritize the
-              preference of the user when presenting payment methods and
-              applications.
+              with the payment request process, using those methods of paying
+              which the above step identified as supported. The user agent MAY 
+              show these methods of paying in the order given by 
+              <var>supportedMethods</var>, but SHOULD prioritize the
+              preference of the user.
             </p>
             <p>
               The <a>payment app</a> should be sent the appropriate data from
