@@ -798,8 +798,7 @@
             DOMException</a>.
           </li>
           <li>Optionally, at the <a>user agent</a>'s discretion, return a
-          promise rejected with a "<a>NotAllowedError</a>"
-          <a>DOMException</a>.
+          promise rejected with a "<a>NotAllowedError</a>" <a>DOMException</a>.
             <p class="note" data-link-for="PaymentRequest">
               This allows user agents to apply heuristics to detect and prevent
               abuse of the <a>canMakePayment()</a> method for fingerprinting
@@ -2690,8 +2689,10 @@
           Exposing user information
         </h2>
         <p>
-          The <a>user agent</a> MUST NOT share information about the user to
-          the web page (such as the shipping address) without user consent.
+          A page might try to call the payment request API to retrieve
+          information about the user. Information about the user (such as the
+          shipping address) should only be shared with the web page with user
+          consent.
         </p>
       </section>
       <section>
