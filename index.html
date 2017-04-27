@@ -623,6 +623,24 @@
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object on
           which the method is called.
           </li>
+          <li>
+            <p>
+              If the <a>user agent</a> rejects the call to <a>show()</a> to
+              protect the user, then return a promise rejected with a
+              "<a>SecurityError</a>" <a>DOMException</a>. For example, this
+              might occur if the <a>user agent</a> requires a user gesture to
+              allow a page to call <a>show()</a>, or the <a>user agent</a> may
+              limit the rate at which a page can call <a>show()</a>, as
+              described in the the <a href="#privacy">privacy
+              considerations</a> section.
+            </p>
+            <p class="note">
+              Implementations are expected to experiment in this area.
+              Developers using the payment request API should investigate and
+              anticipate such experiments and understand under what
+              circumstances a <a>SecurityError</a> might occur.
+            </p>
+          </li>
           <li>If <var>request</var>.<a>[[\state]]</a> is not "<a>created</a>"
           then return a promise rejected with an "<a>InvalidStateError</a>" <a>
             DOMException</a>.
@@ -798,8 +816,7 @@
             DOMException</a>.
           </li>
           <li>Optionally, at the <a>user agent</a>'s discretion, return a
-          promise rejected with a "<a>NotAllowedError</a>"
-          <a>DOMException</a>.
+          promise rejected with a "<a>NotAllowedError</a>" <a>DOMException</a>.
             <p class="note" data-link-for="PaymentRequest">
               This allows user agents to apply heuristics to detect and prevent
               abuse of the <a>canMakePayment()</a> method for fingerprinting
@@ -2677,7 +2694,7 @@
         </p>
       </section>
     </section>
-    <section class='informative'>
+    <section class='informative' id="privacy">
       <h2>
         Privacy Considerations
       </h2>
