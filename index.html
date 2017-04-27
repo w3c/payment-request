@@ -2033,10 +2033,10 @@
             <li>Let <var>event</var> be this <a>PaymentRequestUpdateEvent</a>
             instance.
             </li>
-            <li>Let <var>target</var> be the value of <var>event</var>'s
+            <li>Let <var>request</var> be the value of <var>event</var>'s
             <a data-cite="DOM#dom-event-target">target</a> attribute.
             </li>
-            <li>If <var>target</var> is not a <a>PaymentRequest</a> object,
+            <li>If <var>request</var> is not a <a>PaymentRequest</a> object,
             then <a>throw</a> a <a>TypeError</a>.
             </li>
             <li>If the <a>dispatch flag</a> is unset, then <a>throw</a> an
@@ -2045,11 +2045,11 @@
             <li>If <var>event</var>.<a>[[\waitForUpdate]]</a> is true, then <a>
               throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
-            <li>If <var>target</var>.<a>[[\state]]</a> is not
+            <li>If <var>request</var>.<a>[[\state]]</a> is not
             "<a>interactive</a>", then <a>throw</a> an
             "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
-            <li>If <var>target</var>.<a>[[\updating]]</a> is true, then
+            <li>If <var>request</var>.<a>[[\updating]]</a> is true, then
             <a>throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
             <li>Set <var>event</var>'s <a>stop propagation flag</a> and <a>stop
@@ -2057,7 +2057,7 @@
             </li>
             <li>Set <var>event</var>.<a>[[\waitForUpdate]]</a> to true.
             </li>
-            <li>Set <var>target</var>.<a>[[\updating]]</a> to true.
+            <li>Set <var>request</var>.<a>[[\updating]]</a> to true.
             </li>
             <li>The <a>user agent</a> SHOULD disable the user interface that
             allows the user to accept the payment request. This is to ensure
@@ -2149,7 +2149,7 @@
                     </li>
                     <li>If the <a>shippingOptions</a> member of
                     <var>details</var> is present, and
-                    <var>target</var>.<a>[[\options]]</a>.<a data-lt=
+                    <var>request</var>.<a>[[\options]]</a>.<a data-lt=
                     "PaymentOptions.requestShipping">requestShipping</a> is
                     true, then:
                       <ol>
@@ -2268,7 +2268,7 @@
                     <a>total</a> member of <var>details</var> is present, then:
                       <ol>
                         <li>Set
-                        <var>target</var>.<a>[[\details]]</a>.<a data-link-for="PaymentDetailsInit">total</a>
+                        <var>request</var>.<a>[[\details]]</a>.<a data-link-for="PaymentDetailsInit">total</a>
                           to <var>details</var>.<a>total</a>.
                         </li>
                       </ol>
@@ -2277,22 +2277,22 @@
                     is present, then:
                       <ol>
                         <li>Set
-                        <var>target</var>.<a>[[\details]]</a>.<a>displayItems</a>
+                        <var>request</var>.<a>[[\details]]</a>.<a>displayItems</a>
                         to <var>details</var>.<a>displayItems</a>.
                         </li>
                       </ol>
                     </li>
                     <li>If the <a>shippingOptions</a> member of
                     <var>details</var> is present, and
-                    <var>target</var>.<a>[[\options]]</a>.<a data-lt=
+                    <var>request</var>.<a>[[\options]]</a>.<a data-lt=
                     "PaymentOptions.requestShipping">requestShipping</a> is
                     true, then:
                       <ol>
                         <li>Set
-                        <var>target</var>.<a>[[\details]]</a>.<a>shippingOptions</a>
+                        <var>request</var>.<a>[[\details]]</a>.<a>shippingOptions</a>
                         to <var>shippingOptions</var>.
                         </li>
-                        <li>Set the value of <var>target</var>'s <a data-lt=
+                        <li>Set the value of <var>request</var>'s <a data-lt=
                         "PaymentRequest.shippingOption">shippingOption</a>
                         attribute to <var>selectedShippingOption</var>.
                         </li>
@@ -2302,22 +2302,22 @@
                     present, then:
                       <ol>
                         <li>Set
-                        <var>target</var>.<a>[[\details]]</a>.<a>modifiers</a>
+                        <var>request</var>.<a>[[\details]]</a>.<a>modifiers</a>
                         to <var>details</var>.<a>modifiers</a>.
                         </li>
                         <li>Set
-                        <var>target</var>.<a>[[\serializedModifierData]]</a> to
+                        <var>request</var>.<a>[[\serializedModifierData]]</a> to
                         <var>serializedModifierData</var>.
                         </li>
                       </ol>
                     </li>
-                    <li>If <var>target</var>.<a>[[\options]]</a>.<a data-lt=
+                    <li>If <var>request</var>.<a>[[\options]]</a>.<a data-lt=
                     "PaymentOptions.requestShipping">requestShipping</a> is
                     true, and
-                    <var>target</var>.<a>[[\details]]</a>.<a>shippingOptions</a>
+                    <var>request</var>.<a>[[\details]]</a>.<a>shippingOptions</a>
                     is empty, then the developer has signified that there are
                     no valid shipping options for the currently-chosen shipping
-                    address (given by <var>target</var>'s <a data-lt=
+                    address (given by <var>request</var>'s <a data-lt=
                     "PaymentRequest.shippingAddress">shippingAddress</a>). In
                     this case, the user agent SHOULD display an error
                     indicating this, and MAY indicate that that the
@@ -2337,10 +2337,10 @@
               <ol>
                 <li>Set <var>event</var>.<a>[[\waitForUpdate]]</a> to false.
                 </li>
-                <li>Set <var>target</var>.<a>[[\updating]]</a> to false.
+                <li>Set <var>request</var>.<a>[[\updating]]</a> to false.
                 </li>
                 <li>The <a>user agent</a> should update the user interface
-                based on any changed values in <var>target</var>. The user
+                based on any changed values in <var>request</var>. The user
                 agent SHOULD re-enable user interface elements that might have
                 been disabled in the steps above if appropriate.
                 </li>
@@ -2355,9 +2355,9 @@
             <li>Abort the current user interaction and close down any remaining
             user interface.
             </li>
-            <li>Set <var>target</var>.<a>[[\state]]</a> to "<a>closed</a>".
+            <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
             </li>
-            <li>Reject the promise <var>target</var>.<a>[[\acceptPromise]]</a>
+            <li>Reject the promise <var>request</var>.<a>[[\acceptPromise]]</a>
             with <var>exception</var>.
             </li>
             <li>Abort the algorithm.
