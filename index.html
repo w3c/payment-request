@@ -625,20 +625,20 @@
           </li>
           <li>
             <p>
-              If the <a>user agent</a> rejects the call to <a>show()</a> to
-              protect the user, then return a promise rejected with a
-              "<a>SecurityError</a>" <a>DOMException</a>. For example, this
-              might occur if the <a>user agent</a> requires a user gesture to
-              allow a page to call <a>show()</a>, or the <a>user agent</a> may
-              limit the rate at which a page can call <a>show()</a>, as
-              described in the the <a href="#privacy">privacy
-              considerations</a> section.
+              Optionally, if the <a>user agent</a> wishes to disallow the call
+              to <a>show()</a> to protect the user, then return a promise
+              rejected with a "<a>SecurityError</a>" <a>DOMException</a>. For
+              example, the <a>user agent</a> may require the call to be
+              <a>triggered by user activation</a>, or may limit the rate at
+              which a page can call <a>show()</a>, as described in the the
+              <a href="#privacy">privacy considerations</a> section.
             </p>
-            <p class="note">
+            <p>
               Implementations are expected to experiment in this area.
               Developers using the payment request API should investigate and
               anticipate such experiments and understand under what
-              circumstances a <a>SecurityError</a> might occur.
+              circumstances a "<a>SecurityError</a>" <a>DOMException</a> might
+              occur.
             </p>
           </li>
           <li>If <var>request</var>.<a>[[\state]]</a> is not "<a>created</a>"
@@ -2770,6 +2770,10 @@
             </li>
             <li>
               <dfn data-cite="!HTML#allowed-to-use">allowed to use</dfn>
+            </li>
+            <li>
+              <dfn data-cite="!HTML#triggered-by-user-activation">triggered by
+              user activation</dfn>
             </li>
             <li>
               <dfn data-cite="!HTML#in-parallel">in parallel</dfn>
