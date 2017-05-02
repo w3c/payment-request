@@ -1504,7 +1504,7 @@
       </h2>
       <pre class="idl">
         dictionary PaymentItem {
-          required DOMString label;
+          required LocalizableString label;
           required PaymentCurrencyAmount amount;
           boolean pending = false;
         };
@@ -1680,7 +1680,7 @@
       <pre class="idl">
         dictionary PaymentShippingOption {
           required DOMString id;
-          required DOMString label;
+          required LocalizableString label;
           required PaymentCurrencyAmount amount;
           boolean selected = false;
         };
@@ -2847,6 +2847,10 @@
           Web IDL
         </dt>
         <dd>
+          <p>
+            The <code><dfn>LocalizableString</dfn></code> <a data-cite=
+            "!WEBIDL-LS#dfn-typedef">typedef</a> is defined by [[!WEBIDL-LS]].
+          </p>
           <p>
             When this specification says to <dfn data-cite="!WEBIDL#dfn-throw"
             data-lt="throws">throw</dfn> an error, the <a>user agent</a> must
