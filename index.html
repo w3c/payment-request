@@ -99,6 +99,30 @@
           issues on GitHub (see links below). All comments are welcome.
         </p>
       </div>
+      <section>
+        <h2>
+          Features at risk
+        </h2>
+        <p>
+          As this specification enters the Candidate Recommendation phase of
+          the W3C standardization process, the working group has identified the
+          following feature(s) as being "<dfn>at risk</dfn>" of being removed
+          from the specification. The working group seeks input from
+          implementers, developers, and the general public on whether these
+          features should remain in the specification. If no compelling use
+          cases are received, these features will be removed from the
+          specification before proceeding along the W3C Recommendation track.
+        </p>
+        <ul>
+          <li>
+            <a data-lt=
+            "PaymentCurrencyAmount.currencySystem">currencySystem</a> (see
+            <a href=
+            "https://github.com/w3c/browser-payment-api/issues/490">issue
+            490</a>).
+          </li>
+        </ul>
+      </section>
     </section>
     <section class='informative'>
       <h2>
@@ -1054,6 +1078,7 @@
         dictionary PaymentCurrencyAmount {
           required DOMString currency;
           required DOMString value;
+          // Note: currencySystem is "at risk" of being removed!
           DOMString currencySystem = "urn:iso:std:iso:4217";
         };
       </pre>
@@ -1061,17 +1086,28 @@
         A <a>PaymentCurrencyAmount</a> dictionary is used to supply monetary
         amounts.
       </p>
+      <div class="issue atrisk">
+        <p>
+          This feature has been marked "<a>at risk</a>". If you'd like for this
+          feature to remain in the specification, please describe your use case
+          in <a href=
+          "https://github.com/w3c/browser-payment-api/issues/490">issue
+          490</a>.
+        </p>
+        <dl>
+          <dt>
+            <dfn>currencySystem</dfn>
+          </dt>
+          <dd>
+            A URL that indicates the currency system that the <a>currency</a>
+            identifier belongs to. By default, the value is
+            <code>urn:iso:std:iso:4217</code> indicating that <a>currency</a>
+            is defined by [[ISO4217]] (for example, <code>USD</code> for US
+            Dollars).
+          </dd>
+        </dl>
+      </div>
       <dl>
-        <dt>
-          <dfn>currencySystem</dfn>
-        </dt>
-        <dd>
-          A URL that indicates the currency system that the <a>currency</a>
-          identifier belongs to. By default, the value is
-          <code>urn:iso:std:iso:4217</code> indicating that <a>currency</a> is
-          defined by [[ISO4217]] (for example, <code>USD</code> for US
-          Dollars).
-        </dd>
         <dt>
           <dfn>currency</dfn>
         </dt>
