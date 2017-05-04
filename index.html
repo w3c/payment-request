@@ -422,7 +422,7 @@
           <li>Process shipping options:
             <ol>
               <li>Let <var>options</var> be an empty <code><a data-cite=
-              "WEBIDL-LS#idl-sequence">sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
+              "!WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
               </li>
               <li>If the <a>shippingOptions</a> member of <var>details</var> is
               present, then:
@@ -474,7 +474,7 @@
           modifiers:
             <ol>
               <li>Let <var>modifiers</var> be an empty <code><a data-cite=
-              "WEBIDL-LS#idl-sequence">sequence</a></code>&lt;<a>PaymentDetailsModifier</a>&gt;.
+              "!WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentDetailsModifier</a>&gt;.
               </li>
               <li>If the <a>modifiers</a> member of <var>details</var> is
               present, then:
@@ -1532,8 +1532,8 @@
         </h2>
         <p>
           Each attribute is <a data-cite=
-          "WEBIDL-LS#dfn-convert-to-serialized-value">converted to serialized
-          values</a> as per [[!WEBIDL-LS]].
+          "!WEBIDL#dfn-convert-to-serialized-value">converted to serialized
+          values</a> as per [[!WEBIDL]].
         </p>
       </section>
       <section>
@@ -1756,8 +1756,8 @@
         </h2>
         <p>
           Each attribute is <a data-cite=
-          "WEBIDL-LS#dfn-convert-to-serialized-value">converted to serialized
-          values</a> as per [[!WEBIDL-LS]].
+          "!WEBIDL#dfn-convert-to-serialized-value">converted to serialized
+          values</a> as per [[!WEBIDL]].
         </p>
       </section>
       <section>
@@ -2109,7 +2109,7 @@
                 </li>
                 <li>Let <var>shippingOptions</var> be an empty
                 <code><a data-cite=
-                "WEBIDL-LS#idl-sequence">sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
+                "!WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
                 </li>
                 <li>Validate and canonicalize the details:
                   <ol>
@@ -2810,40 +2810,39 @@
         </dt>
         <dd>
           <p>
-            When this specification says to <dfn data-cite=
-            "!WEBIDL-LS#dfn-throw" data-lt="throws">throw</dfn> an error, the
-            <a>user agent</a> must throw an error as described in
-            [[!WEBIDL-LS]]. When this occurs in a sub-algorithm, this results
-            in termination of execution of the sub-algorithm and all ancestor
-            algorithms until one is reached that explicitly describes
-            procedures for catching exceptions.
+            When this specification says to <dfn data-cite="!WEBIDL#dfn-throw"
+            data-lt="throws">throw</dfn> an error, the <a>user agent</a> must
+            throw an error as described in [[!WEBIDL]]. When this occurs in a
+            sub-algorithm, this results in termination of execution of the
+            sub-algorithm and all ancestor algorithms until one is reached that
+            explicitly describes procedures for catching exceptions.
           </p>
           <p>
             The algorithm for <dfn data-cite=
-            "!WEBIDL-LS#dfn-convert-idl-to-ecmascript-value" data-lt=
+            "!WEBIDL#dfn-convert-idl-to-ecmascript-value" data-lt=
             "converting">converting an ECMAScript value to a dictionary</dfn>
-            is defined by [[!WEBIDL-LS]].
+            is defined by [[!WEBIDL]].
           </p>
           <p>
             <code><dfn data-cite=
-            "!WEBIDL-LS#dfn-DOMException">DOMException</dfn></code> and the
-            following <a>DOMException</a> types from [[!WEBIDL-LS]] are used:
+            "!WEBIDL#dfn-DOMException">DOMException</dfn></code> and the
+            following <a>DOMException</a> types from [[!WEBIDL]] are used:
           </p>
           <ul>
             <li>"<code><dfn data-cite=
-            "!WEBIDL-LS#aborterror">AbortError</dfn></code>"
+            "!WEBIDL#aborterror">AbortError</dfn></code>"
             </li>
             <li>"<code><dfn data-cite=
-            "!WEBIDL-LS#invalidstateerror">InvalidStateError</dfn></code>"
+            "!WEBIDL#invalidstateerror">InvalidStateError</dfn></code>"
             </li>
             <li>"<code><dfn data-cite=
-            "!WEBIDL-LS#notallowederror">NotAllowedError</dfn></code>"
+            "!WEBIDL#notallowederror">NotAllowedError</dfn></code>"
             </li>
             <li>"<code><dfn data-cite=
-            "!WEBIDL-LS#notsupportederror">NotSupportedError</dfn></code>"
+            "!WEBIDL#notsupportederror">NotSupportedError</dfn></code>"
             </li>
             <li>"<code><dfn data-cite=
-            "!WEBIDL-LS#securityerror">SecurityError</dfn></code>"
+            "!WEBIDL#securityerror">SecurityError</dfn></code>"
             </li>
           </ul>
         </dd>
