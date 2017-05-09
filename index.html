@@ -215,12 +215,12 @@
         };
       </pre>
       <p>
-        A web page creates a <a>PaymentRequest</a> to make a payment request.
+        A developer creates a <a>PaymentRequest</a> to make a payment request.
         This is typically associated with the user initiating a payment process
         (e.g., by activating a "Buy," "Purchase," or "Checkout" button on a web
-        site, selecting a "Power Up" in an interactive game, or paying at a
-        kiosk in a parking structure). The <a>PaymentRequest</a> allows the web
-        page to exchange information with the <a>user agent</a> while the user
+        site, selecting a "Power Up" in an interactive game, or paying at a kiosk
+        in a parking structure). The <a>PaymentRequest</a> allows developers
+        to exchange information with the <a>user agent</a> while the user
         is providing input before approving or denying a payment request.
       </p>
       <p data-link-for="PaymentRequest">
@@ -323,8 +323,9 @@
             const request = new PaymentRequest(methodData, details, options);
           </pre>
           <p>
-            The <var>options</var> object contains information about what
-            options the web page wishes to use from the payment request system.
+            The <var>options</var> object contains information the developer
+            needs from the user to perform the payment (e.g., the payer's
+            name and shipping address).
           </p>
           <pre class="example" title="The 'options' argument">
             const options = {
@@ -597,7 +598,7 @@
         </h2>
         <div class="note">
           <p>
-            The <a>show()</a> method is called when the page wants to begin
+            The <a>show()</a> method is called when a developer wants to begin
             user interaction for the payment request. The <a>show()</a> method
             returns a <a>Promise</a> that will be resolved when the <a>user
             accepts the payment request</a>. Some kind of user interface will
@@ -709,13 +710,13 @@
         </h2>
         <div class="note">
           <p>
-            The <a>abort()</a> method is called if the web page wishes to tell
+            The <a>abort()</a> method is called if a developer wishes to tell
             the <a>user agent</a> to abort the payment <var>request</var> and
             to tear down any user interface that might be shown. The
             <a>abort()</a> can only be called after the <a>show()</a> method
             has been called (see <a data-lt="state">states</a>) and before this
             instance's <a>[[\acceptPromise]]</a> has been resolved. For
-            example, a web page might choose to do this if the goods they are
+            example, developers might choose to do this if the goods they are
             selling are only available for a limited amount of time. If the
             user does not accept the payment request within the allowed time
             period, then the request will be aborted.
@@ -1650,7 +1651,7 @@
       </pre>
       <p>
         The <a>PaymentShippingOption</a> dictionary has members describing a
-        shipping option. A web page can provide the user with one or more
+        shipping option. Developers can provide the user with one or more
         shipping options by calling the <a data-lt=
         "PaymentRequestUpdateEvent.updateWith">updateWith()</a> method in
         response to a change event.
@@ -1719,7 +1720,7 @@
           "<dfn>unknown</dfn>"
         </dt>
         <dd>
-          The web page did not indicate success or failure and the <a>user
+          The developer did not indicate success or failure and the <a>user
           agent</a> SHOULD NOT display UI indicating success or failure.
         </dd>
       </dl>
@@ -1867,16 +1868,16 @@
         </p>
         <p>
           After the payment request has been accepted and the
-          <a>PaymentResponse</a> returned to the page but before the page calls
-          <a>complete()</a> the payment request user interface remains in a
-          pending state. At this point the user interface ought not offer a
+          <a>PaymentResponse</a> returned to the caller but before the caller
+          calls <a>complete()</a> the payment request user interface remains in
+          a pending state. At this point the user interface ought not offer a
           cancel command because acceptance of the payment request has been
-          returned. However, if something goes wrong and the page never calls
-          <a>complete()</a> then the user interface is blocked.
+          returned. However, if something goes wrong and the developer never
+          calls <a>complete()</a> then the user interface is blocked.
         </p>
         <p>
-          For this reason, implementations MAY impose a timeout for the page to
-          call <a>complete()</a>. If the timeout expires then the
+          For this reason, implementations MAY impose a timeout for developers
+          to call <a>complete()</a>. If the timeout expires then the
           implementation will behave as if <a>complete()</a> was called with no
           arguments.
         </p>
@@ -1998,11 +1999,11 @@
           };
         </pre>
         <p>
-          The <a>PaymentRequestUpdateEvent</a> enables the web page to update
+          The <a>PaymentRequestUpdateEvent</a> enables developers to update
           the details of the payment request in response to a user interaction.
         </p>
         <p>
-          If the web page wishes to update the payment request then it should
+          If a developer wants to update the payment request, then they need to
           call <a>updateWith()</a> and provide a <a>PaymentDetailsUpdate</a>
           dictionary, or a promise for one, containing changed values that the
           <a>user agent</a> SHOULD present to the user.
@@ -2016,7 +2017,7 @@
             <dfn data-lt="updateWith(detailsPromise)">updateWith()</dfn> method
           </h2>
           <p class="note">
-            If the web page wishes to update the payment request then it should
+            If a developer wants to update the payment request, then they need to
             call <a>updateWith()</a> and provide a <a>PaymentDetailsUpdate</a>
             dictionary, or a promise for one, containing changed values that
             the <a>user agent</a> presents to the user.
@@ -2056,8 +2057,8 @@
             </li>
             <li>The <a>user agent</a> SHOULD disable the user interface that
             allows the user to accept the payment request. This is to ensure
-            that the payment is not accepted until the web page has made
-            changes required by the change. The web page MUST settle the <var>
+            that the payment is not accepted until developers have made
+            changes required by the change. Developers MUST settle the <var>
               detailsPromise</var> to indicate that the payment request is
               valid again.
               <p>
@@ -2365,7 +2366,7 @@
               request, such as the supplied <var>detailsPromise</var>
               rejecting, or its fulfillment value containing invalid data. This
               would potentially leave the payment request in an inconsistent
-              state since the web page hasn't successfully handled the change
+              state since the developer hasn't successfully handled the change
               event. Consequently, the <a>PaymentRequest</a> moves to a
               "<a>closed</a>" state. The error is signaled to the developer
               through the rejection of the <a>[[\acceptPromise]]</a>, i.e. the
@@ -2684,8 +2685,8 @@
           Exposing user information
         </h2>
         <p>
-          The <a>user agent</a> MUST NOT share information about the user to
-          the web page (such as the shipping address) without user consent.
+          The <a>user agent</a> MUST NOT share information about the user
+          with a developer (e.g., the shipping address) without user consent.
         </p>
       </section>
       <section>
@@ -2693,7 +2694,7 @@
           Exposing available payment methods
         </h2>
         <p>
-          A page might try to call the payment request API repeatedly with only
+          Developers might try to call the payment request API repeatedly with only
           one payment method identifier to try to determine what payment
           methods a <a>user agent</a> has installed. There may be legitimate
           scenarios for calling repeatedly (for example, to control the order
