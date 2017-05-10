@@ -50,6 +50,12 @@
       issueBase: "https://github.com/w3c/browser-payment-api/issues/",
 
       otherLinks: [{
+        key: "Can I use this API?",
+        data: [{
+          value: "caniuse.com",
+          href: "http://caniuse.com/#feat=payment-request",
+        }],
+      },{
         key: "Version control",
         data: [{
           value: "Github Repository",
@@ -57,7 +63,13 @@
         }, {
           value: "Issues",
           href: "https://github.com/w3c/browser-payment-api/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20-label%3A%22Priority%3A%20Postponed%22%20"
-        }]
+        }, {
+          value: "Substantive changes from FPWD to CR",
+          href: "https://github.com/w3c/browser-payment-api/pulls?q=is%3Apr+is%3Aclosed+label%3Acr-substantive",
+        },{
+          value: "Commit history",
+          href: "https://github.com/w3c/browser-payment-api/commits/gh-pages",
+        },]
       }]
     };
     </script>
@@ -88,9 +100,8 @@
         are strongly encouraged.
       </p>
       <p>
-        This specification was derived from a report published previously by
-        the <a href="https://www.w3.org/community/wicg/">Web Platform Incubator
-        Community Group</a>.
+        The deadline for comments for Candidate Recommendation is 30 September
+        2017.
       </p>
       <div class="note" title="Sending comments on this document">
         <p>
@@ -2901,7 +2912,31 @@
         way desired, so long as the end result is indistinguishable from the
         result that would be obtained by the specification's algorithms.
       </p>
+      <p>
+        The working group will demonstrate implementation experience by
+        creating a <a href=
+        "https://github.com/w3c/web-platform-tests/tree/master/payment-request">
+        test suite</a> and having at least two independent implementations pass
+        each mandatory test (i.e., each test the corresponds to a MUST
+        requirements of the specification). The working group hopes to
+        demonstrate, in the form of an implementation report, interoperability
+        from two or more vendors on both mobile and desktop web browsers.
+      </p>
+      <p>
+        There has been no change in dependencies on other workings groups
+        during the development of this specification.
+      </p>
     </section>
     <section id="idl-index" class="appendix"></section>
+    <section class="appendix">
+      <h2>
+        Acknowledgements
+      </h2>
+      <p>
+        This specification was derived from a report published previously by
+        the <a href="https://www.w3.org/community/wicg/">Web Platform Incubator
+        Community Group</a>.
+      </p>
+    </section>
   </body>
 </html>
