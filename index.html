@@ -181,6 +181,10 @@
           <li>Allow the user agent to act as intermediary between merchants,
           users, and <a>payment method</a> providers.
           </li>
+          <li>Enable user agents to streamline the user's payment experience by
+          taking into account user preferences, merchant information, security
+          considerations, and other factors.
+          </li>
           <li>Standardize (to the extent that it makes sense) the communication
           flow between a merchant, user agent, and <a>payment method</a>
           provider.
@@ -310,9 +314,7 @@
           The <a>PaymentRequest</a> is constructed using the supplied
           <var>methodData</var> list including any <a>payment method</a>
           specific <a data-lt="PaymentMethodData.data">data</a>, the payment
-          <var>details</var>, and the payment <var>options</var>. The
-          <var>methodData</var> supplied to the <a>PaymentRequest</a>
-          constructor SHOULD be in the order of preference of the caller.
+          <var>details</var>, and the payment <var>options</var>.
         </p>
         <div class="note">
           <p>
@@ -721,10 +723,8 @@
               Otherwise, show a user interface to allow the user to interact
               with the payment request process, using those <a>payment handlers</a>
               and <a>payment methods</a> which the above step identified as
-              feasible. The user agent MAY show payment methods in the order
-              given by <var>supportedMethods</var>, but SHOULD prioritize the
-              preference of the user when presenting payment methods and
-              applications.
+              feasible. The user agent SHOULD prioritize the preference of the
+              user when presenting payment methods and applications.
             </p>
             <p>
               The <a>payment handler</a> should be sent the appropriate data from
@@ -2746,8 +2746,8 @@
           A page might try to call the payment request API repeatedly with only
           one payment method identifier to try to determine what payment
           methods a <a>user agent</a> has installed. There may be legitimate
-          scenarios for calling repeatedly (for example, to control the order
-          of payment method selection). The fact that a successful match to a
+          scenarios for calling repeatedly (for example, to control the flow of
+          payment method selection). The fact that a successful match to a
           payment method causes a user interface to be displayed mitigates the
           disclosure risk. Implementations may also require a user action to
           initiate a payment request or they may choose to rate limit the calls
