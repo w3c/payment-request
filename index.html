@@ -2734,8 +2734,10 @@
           Exposing user information
         </h2>
         <p>
-          The <a>user agent</a> MUST NOT share information about the user to
-          the web page (such as the shipping address) without user consent.
+          A page might try to call the payment request API to retrieve
+          information about the user. Information about the user (such as the
+          shipping address) should only be shared with the web page with user
+          consent.
         </p>
       </section>
       <section>
