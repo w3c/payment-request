@@ -236,10 +236,10 @@
         A developer creates a <a>PaymentRequest</a> to make a payment request.
         This is typically associated with the user initiating a payment process
         (e.g., by activating a "Buy," "Purchase," or "Checkout" button on a web
-        site, selecting a "Power Up" in an interactive game, or paying at a kiosk
-        in a parking structure). The <a>PaymentRequest</a> allows developers
-        to exchange information with the <a>user agent</a> while the user
-        is providing input before approving or denying a payment request.
+        site, selecting a "Power Up" in an interactive game, or paying at a
+        kiosk in a parking structure). The <a>PaymentRequest</a> allows
+        developers to exchange information with the <a>user agent</a> while the
+        user is providing input before approving or denying a payment request.
       </p>
       <p data-link-for="PaymentRequest">
         The <a>user agent</a> as a whole has a single <dfn>payment request is
@@ -340,8 +340,8 @@
           </pre>
           <p>
             The <var>options</var> object contains information the developer
-            needs from the user to perform the payment (e.g., the payer's
-            name and shipping address).
+            needs from the user to perform the payment (e.g., the payer's name
+            and shipping address).
           </p>
           <pre class="example" title="The 'options' argument">
             const options = {
@@ -698,16 +698,17 @@
           <li>
             <p>
               Otherwise, show a user interface to allow the user to interact
-              with the payment request process, using those <a>payment handlers</a>
-              and <a>payment methods</a> which the above step identified as
-              feasible. The user agent SHOULD prioritize the preference of the
-              user when presenting payment methods and applications.
+              with the payment request process, using those <a>payment
+              handlers</a> and <a>payment methods</a> which the above step
+              identified as feasible. The user agent SHOULD prioritize the
+              preference of the user when presenting payment methods and
+              applications.
             </p>
             <p>
-              The <a>payment handler</a> should be sent the appropriate data from
-              <var>request</var> in order to guide the user through the payment
-              process. This includes the various attributes and internal slots
-              of <var>request</var>.
+              The <a>payment handler</a> should be sent the appropriate data
+              from <var>request</var> in order to guide the user through the
+              payment process. This includes the various attributes and
+              internal slots of <var>request</var>.
             </p>
             <p>
               The <var>acceptPromise</var> will later be resolved or rejected
@@ -832,9 +833,9 @@
               <li>If <var>methodData</var>.<a data-lt=
               "PaymentMethodData.supportedMethods">supportedMethods</a>
               contains a <a>payment method identifier</a> of a <a>payment
-              method</a> that some <a>payment handler</a> supports
-              (including its <a>payment method</a> specific capabilities),
-              resolve <var>promise</var> with true, and abort this algorithm.
+              method</a> that some <a>payment handler</a> supports (including
+              its <a>payment method</a> specific capabilities), resolve
+              <var>promise</var> with true, and abort this algorithm.
               </li>
             </ol>
           </li>
@@ -2025,8 +2026,8 @@
           };
         </pre>
         <p>
-          The <a>PaymentRequestUpdateEvent</a> enables developers to update
-          the details of the payment request in response to a user interaction.
+          The <a>PaymentRequestUpdateEvent</a> enables developers to update the
+          details of the payment request in response to a user interaction.
         </p>
         <p>
           If a developer wants to update the payment request, then they need to
@@ -2043,10 +2044,11 @@
             <dfn data-lt="updateWith(detailsPromise)">updateWith()</dfn> method
           </h2>
           <p class="note">
-            If a developer wants to update the payment request, then they need to
-            call <a>updateWith()</a> and provide a <a>PaymentDetailsUpdate</a>
-            dictionary, or a promise for one, containing changed values that
-            the <a>user agent</a> presents to the user.
+            If a developer wants to update the payment request, then they need
+            to call <a>updateWith()</a> and provide a
+            <a>PaymentDetailsUpdate</a> dictionary, or a promise for one,
+            containing changed values that the <a>user agent</a> presents to
+            the user.
           </p>
           <p>
             The <a>updateWith(detailsPromise)</a> method MUST act as follows:
@@ -2083,10 +2085,10 @@
             </li>
             <li>The <a>user agent</a> SHOULD disable the user interface that
             allows the user to accept the payment request. This is to ensure
-            that the payment is not accepted until developers have made
-            changes required by the change. Developers MUST settle the <var>
-              detailsPromise</var> to indicate that the payment request is
-              valid again.
+            that the payment is not accepted until developers have made changes
+            required by the change. Developers MUST settle the
+            <var>detailsPromise</var> to indicate that the payment request is
+            valid again.
               <p>
                 The <a>user agent</a> SHOULD disable any part of the user
                 interface that could cause another update event to be fired.
@@ -2711,8 +2713,8 @@
           Exposing user information
         </h2>
         <p>
-          The <a>user agent</a> MUST NOT share information about the user
-          with a developer (e.g., the shipping address) without user consent.
+          The <a>user agent</a> MUST NOT share information about the user with
+          a developer (e.g., the shipping address) without user consent.
         </p>
       </section>
       <section>
@@ -2720,8 +2722,8 @@
           Exposing available payment methods
         </h2>
         <p>
-          Developers might try to call the payment request API repeatedly with only
-          one payment method identifier to try to determine what payment
+          Developers might try to call the payment request API repeatedly with
+          only one payment method identifier to try to determine what payment
           methods a <a>user agent</a> has installed. There may be legitimate
           scenarios for calling repeatedly (for example, to control the flow of
           payment method selection). The fact that a successful match to a
