@@ -678,15 +678,20 @@
           <li>Return <var>acceptPromise</var> and perform the remaining steps
           <a>in parallel</a>.
           </li>
-          <li>For each <var>paymentMethod</var> in
+          <li>For each <var>paymentMethod</var> tuple in
           <var>request</var>.<a>[[\serializedMethodData]]</a>:
             <ol>
+              <li>Let <var>identifiers</var> be the first element in the <var>
+                paymentMethod</var> tuple.
+              </li>
+              <li>Let <var>data</var> be the second element in
+              <var>paymentMethod</var> tuple.
+              </li>
               <li>Determine which <a>payment handlers</a> support any of the
-              <a>payment method identifiers</a> given by the first element of
-              the <var>paymentMethod</var> tuple. For each resulting payment
-              handler, if payment method specific capabilities supplied by the
-              payment handler match those provided by the second element of the
-              tuple, the payment handler matches.
+              <a>payment method identifiers</a> given <var>identifiers</var>.
+              For each resulting payment handler, if payment method specific
+              capabilities supplied by the payment handler match those provided
+              by <var>data</var>, the payment handler matches.
               </li>
             </ol>
           </li>
