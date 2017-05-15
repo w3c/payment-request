@@ -188,19 +188,21 @@
       </h2>
       <section>
         <p>
-          A string is a <dfn>valid decimal monetary value</dfn> if it consists
-          of the following components in the given order:
+          A <dfn data-cite="INFRA#javascript-string">JavaScript string</dfn> is
+          a <dfn>valid decimal monetary value</dfn> if it consists of the
+          following <dfn data-lt="code point" data-cite="INFRA#code-point">code
+          points</dfn> in the given order: [[!INFRA]]
         </p>
         <ol>
-          <li>Optionally, a single U+002D HYPHEN-MINUS character (-), to
-          indicate that the amount is negative
+          <li>Optionally, a single U+002D HYPHEN-MINUS (-), to indicate that
+          the amount is negative.
           </li>
-          <li>One or more characters in the range U+0030 DIGIT ZERO (0) to
-          U+0039 DIGIT NINE (9)
+          <li>One or more <a>code points</a> in the range U+0030 DIGIT ZERO (0)
+          to U+0039 DIGIT NINE (9).
           </li>
-          <li>Optionally, a single U+002E FULL STOP character (.) followed by
-          one or more characters in the range U+0030 DIGIT ZERO (0) to U+0039
-          DIGIT NINE (9)
+          <li>Optionally, a single U+002E FULL STOP (.) followed by one or more
+          <a>code points</a> in the range U+0030 DIGIT ZERO (0) to U+0039 DIGIT
+          NINE (9).
           </li>
         </ol>
         <div class="note">
@@ -413,7 +415,7 @@
               monetary value</a>, then <a>throw</a> a <a>TypeError</a>;
               optionally informing the developer that the value is invalid.
               </li>
-              <li>If the first character of
+              <li>If the first <a>code point</a> of
               <var>details</var>.<a>total</a>.<a data-lt=
               "PaymentItem.amount">amount</a>.<a data-lt=
               "PaymentCurrencyAmount.value">value</a> is U+002D HYPHEN-MINUS,
@@ -514,10 +516,10 @@
                           optionally informing the developer that the value is
                           invalid.
                           </li>
-                          <li>If the first character of <var>value</var> is
-                          U+002D HYPHEN-MINUS, then throw a <a>TypeError</a>,
-                          optionally informing the developer that the value
-                          can't be negative.
+                          <li>If the first <a>code point</a> of
+                          <var>value</var> is U+002D HYPHEN-MINUS, then throw a
+                          <a>TypeError</a>, optionally informing the developer
+                          that the value can't be negative.
                           </li>
                         </ol>
                       </li>
@@ -2153,9 +2155,9 @@
                         monetary value</a>, then <a>abort the update</a> with a
                         <a>TypeError</a>.
                         </li>
-                        <li>If the first character of <var>value</var> is
-                        U+002D HYPHEN-MINUS, then <a>abort the update</a> with
-                        a <a>TypeError</a>.
+                        <li>If the first <a>code point</a> of <var>value</var>
+                        is U+002D HYPHEN-MINUS, then <a>abort the update</a>
+                        with a <a>TypeError</a>.
                         </li>
                       </ol>
                     </li>
@@ -2240,9 +2242,10 @@
                                 decimal monetary value</a>, then <a>abort the
                                 update</a> with a <a>TypeError</a>.
                                 </li>
-                                <li>If the first character of <var>value</var>
-                                is U+002D HYPHEN-MINUS, then <a>abort the
-                                update</a> with a <a>TypeError</a>.
+                                <li>If the first <a>code point</a> of
+                                <var>value</var> is U+002D HYPHEN-MINUS, then
+                                <a>abort the update</a> with a
+                                <a>TypeError</a>.
                                 </li>
                               </ol>
                             </li>
