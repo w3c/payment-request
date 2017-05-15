@@ -388,13 +388,13 @@
                   informing the developer that each <a>payment method</a> needs
                   to include at least one <a>payment method identifier</a>.
                   </li>
-                  <li>Let <var>serializedData</var> be the result of
+                  <li>If the <a data-lt="PaymentMethodData.data">data</a>
+                  member of <var>paymentMethod</var> is missing, let
+                  <var>serializedData</var> be null. Otherwise, let
+                  <var>serializedData</var> be the result of
                   <a>JSON-serializing</a>
                     <var>paymentMethod</var>.<a data-lt="PaymentMethodData.data">data</a>
-                    into a string, if the <a data-lt=
-                    "PaymentMethodData.data">data</a> member of
-                    <var>paymentMethod</var> is present, or null if it is not.
-                    Rethrow any exceptions.
+                    into a string. Rethrow any exceptions.
                   </li>
                   <li>Add the tuple (<var>paymentMethod</var>.<a data-lt=
                   "PaymentMethodData.supportedMethods">supportedMethods</a>,
@@ -539,12 +539,14 @@
                           </li>
                         </ol>
                       </li>
-                      <li>Let <var>serializedData</var> be the result of
+                      <li>If the <a data-lt=
+                      "PaymentDetailsModifier.data">data</a> member of
+                      <var>modifier</var> is missing, let
+                      <var>serializedData</var> be null. Otherwise, let
+                      <var>serializedData</var> be the result of
                       <a>JSON-serializing</a> <var>modifier</var>.<a data-lt=
-                      "PaymentDetailsModifier.data">data</a> into a string, if
-                      the <a data-lt="PaymentDetailsModifier.data">data</a>
-                      member of <var>modifier</var> is present, or null if it
-                      is not. Rethrow any exceptions.
+                      "PaymentDetailsModifier.data">data</a> into a string.
+                      Rethrow any exceptions.
                       </li>
                       <li>Add <var>serializedData</var> to
                       <var>serializedModifierData</var>.
