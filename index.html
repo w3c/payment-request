@@ -1915,11 +1915,11 @@
           <li>Let <var>promise</var> be a new <a>Promise</a>.
           </li>
           <li>If the value of the internal slot <a>[[\completeCalled]]</a> is
-          true, then <a>throw</a> an "<a>InvalidStateError</a>"
+          true, reject <var>promise</var> with an "<a>InvalidStateError</a>"
           <a>DOMException</a>.
           </li>
-          <li>Set the value of the internal slot <a>[[\completeCalled]]</a> to
-          true.
+          <li>Otherwise, set the value of the internal slot
+          <a>[[\completeCalled]]</a> to true.
           </li>
           <li>Return <var>promise</var> and perform the remaining steps <a>in
           parallel</a>.
