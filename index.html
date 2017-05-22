@@ -2281,7 +2281,9 @@
                             <a>JSON-serializing</a>
                             <var>method</var>.<a data-lt=
                             "PaymentDetailsModifier.data">data</a> into a
-                            string. Rethrow any exceptions.
+                            string. If <a>JSON-serializing</a> throws an
+                            exception, then <a>abort the update</a> with that
+                            exception.
                             </li>
                             <li>Add <var>serializedData</var> to
                             <var>serializedModifierData</var>.
