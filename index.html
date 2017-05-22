@@ -2135,10 +2135,11 @@
               <a>Upon fulfillment</a> of <var>detailsPromise</var> with value
               <var>value</var>:
               <ol data-link-for="PaymentDetailsBase">
-                <li>Let <var>details</var> be the result of <a>converting</a>
-                <var>value</var> to a <a>PaymentDetailsUpdate</a> dictionary.
-                If this <a>throws</a> an exception, <a>abort the update</a>
-                with the thrown exception.
+                <li>Let <var>details</var> be the result of <a data-cite=
+                "!WEBIDL#es-dictionary">converting</a> <var>value</var> to a
+                <a>PaymentDetailsUpdate</a> dictionary. If this <a>throws</a>
+                an exception, <a>abort the update</a> with the thrown
+                exception.
                 </li>
                 <li>Let <var>serializedModifierData</var> be an empty list.
                 </li>
