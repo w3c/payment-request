@@ -2273,16 +2273,15 @@
                                 </li>
                               </ol>
                             </li>
-                            <li>Let <var>serializedData</var> be the result of
-                            <a>JSON-serializing</a>
-                            <var>modifier</var>.<a data-lt=
-                            "PaymentDetailsModifier.data">data</a> into a
-                            string, if the <a data-lt=
+                            <li>If the <a data-lt=
                             "PaymentDetailsModifier.data">data</a> member of
-                            <var>modifier</var> is present, or null if it is
-                            not. If <a>JSON-serializing</a> throws an
-                            exception, then <a>abort the update</a> with that
-                            exception.
+                            <var>modifier</var> is missing, let
+                            <var>serializedData</var> be null. Otherwise, let
+                            <var>serializedData</var> be the result of
+                            <a>JSON-serializing</a>
+                            <var>method</var>.<a data-lt=
+                            "PaymentDetailsModifier.data">data</a> into a
+                            string. Rethrow any exceptions.
                             </li>
                             <li>Add <var>serializedData</var> to
                             <var>serializedModifierData</var>.
