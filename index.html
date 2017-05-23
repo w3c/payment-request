@@ -2135,10 +2135,11 @@
               <a>Upon fulfillment</a> of <var>detailsPromise</var> with value
               <var>value</var>:
               <ol data-link-for="PaymentDetailsBase">
-                <li>Let <var>details</var> be the result of <a>converting</a>
-                <var>value</var> to a <a>PaymentDetailsUpdate</a> dictionary.
-                If this <a>throws</a> an exception, <a>abort the update</a>
-                with the thrown exception.
+                <li>Let <var>details</var> be the result of <a data-cite=
+                "!WEBIDL#es-dictionary">converting</a> <var>value</var> to a
+                <a>PaymentDetailsUpdate</a> dictionary. If this <a>throws</a>
+                an exception, <a>abort the update</a> with the thrown
+                exception.
                 </li>
                 <li>Let <var>serializedModifierData</var> be an empty list.
                 </li>
@@ -2272,14 +2273,15 @@
                                 </li>
                               </ol>
                             </li>
-                            <li>Let <var>serializedData</var> be the result of
+                            <li>If the <a data-lt=
+                            "PaymentDetailsModifier.data">data</a> member of
+                            <var>modifier</var> is missing, let
+                            <var>serializedData</var> be null. Otherwise, let
+                            <var>serializedData</var> be the result of
                             <a>JSON-serializing</a>
                             <var>modifier</var>.<a data-lt=
                             "PaymentDetailsModifier.data">data</a> into a
-                            string, if the <a data-lt=
-                            "PaymentDetailsModifier.data">data</a> member of
-                            <var>modifier</var> is present, or null if it is
-                            not. If <a>JSON-serializing</a> throws an
+                            string. If <a>JSON-serializing</a> throws an
                             exception, then <a>abort the update</a> with that
                             exception.
                             </li>
@@ -2354,9 +2356,9 @@
                     address (given by <var>request</var>'s <a data-lt=
                     "PaymentRequest.shippingAddress">shippingAddress</a>). In
                     this case, the user agent SHOULD display an error
-                    indicating this, and MAY indicate that that the
-                    currently-chosen shipping address is invalid in some way.
-                    The user agent SHOULD use the <a data-lt=
+                    indicating this, and MAY indicate that the currently-chosen
+                    shipping address is invalid in some way. The user agent
+                    SHOULD use the <a data-lt=
                     "PaymentDetailsUpdate.error">error</a> member of
                     <var>details</var>, if it is present, to give more
                     information about why there are no valid shipping options
