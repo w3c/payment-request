@@ -700,7 +700,9 @@
                   <li>If required by the specification that defines the
                   <var>handler</var>, <a data-cite=
                   "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
-                  <var>data</var> to an IDL value. Rethrow any exceptions.
+                  <var>data</var> to an IDL value. If it results in a error,
+                  reject <var>acceptPromise</var> with that error an terminate
+                  this algorithm.
                   </li>
                   <li>If payment method specific capabilities supplied by the
                   payment handler match those provided by <var>data</var>, the
