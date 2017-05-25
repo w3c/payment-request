@@ -693,9 +693,20 @@
               </li>
               <li>Determine which <a>payment handlers</a> support any of the
               <a>payment method identifiers</a> given <var>identifiers</var>.
-              For each resulting payment handler, if payment method specific
-              capabilities supplied by the payment handler match those provided
-              by <var>data</var>, the payment handler matches.
+              </li>
+              <li>For each <var>handler</var> of the resulting payment
+              handlers:
+                <ol>
+                  <li>If required by the specification that defines the
+                  <var>handler</var>, <a data-cite=
+                  "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
+                  <var>data</var> to an IDL value. Rethrow any exceptions.
+                  </li>
+                  <li>If payment method specific capabilities supplied by the
+                  payment handler match those provided by <var>data</var>, the
+                  payment handler matches.
+                  </li>
+                </ol>
               </li>
             </ol>
           </li>
