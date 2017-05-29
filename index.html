@@ -1364,6 +1364,75 @@
         modify the <a>PaymentDetailsBase</a> based on a <a>payment method
         identifier</a>. It contains the following members:
       </p>
+      <p>
+        When presenting a payment request to an end-user, if there are multiple
+        <a>PaymentDetailsModifier</a> dictionaries in a sequence for the same
+        <a>payment method identifier</a>, then the user agent MUST use the
+        first entry to match a <a>payment method identifier</a> as its
+        modifier.
+      </p>
+      <div class="note">
+        <p>
+          In the following example, the developer has included multiple
+          <a>PaymentDetailsModifier</a> for the same payment method identifier
+          ("basic-card"). In such a case, the user agent chooses the first
+          matching modifier. However, the second modifier would be still be
+          used for by the payment handler for "https://example.com/bobpay".
+        </p>
+        <pre class="example js" title="Multiple modifiers">
+          const modifiers = [
+            // This one will be used a for "basic-card" payment, when paying
+            // with a "Example Card" credit card...
+            {
+              supportedMethods: ["basic-card"],
+              total: {
+                currency: "USD",
+                value: "80.00",
+              },
+              additionalDisplayItems: [
+                {
+                  label: "ExampleCard loyalty discount, 20% off!",
+                  amount: {
+                    currency: "USD",
+                    value: "-20.00",
+                  },
+                },
+              ],
+              data: {
+                supportedTypes: ["credit"],
+                supportedNetworks: ["example-card"],
+              },
+            },
+            // In the following, "basic-card" is ignored because only
+            // the first "basic-card" above will match. However,
+            // users of the "example.com/bobpay" payment handler
+            // wishing to pay with an "Example Card" credit card
+            // will receive the 30% discount.
+            {
+              supportedMethods: ["basic-card", "https://example.com/bobpay"],
+              total: {
+                currency: "USD",
+                value: "70.00",
+              },
+              additionalDisplayItems: [
+                {
+                  label: "ExampleCard loyalty discount, 30% off!",
+                  amount: {
+                    currency: "USD",
+                    value: "-30.00",
+                  },
+                },
+              ],
+              data: {
+                supportedTypes: ["credit"],
+                supportedNetworks: ["example-card"],
+              },
+            },
+          ];
+          const options = { modifiers };
+          const request = new PaymentRequest(methods, details, options);
+        </pre>
+      </div>
       <dl>
         <dt>
           <dfn>supportedMethods</dfn>
