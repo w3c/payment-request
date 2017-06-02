@@ -2926,6 +2926,16 @@
         result that would be obtained by the specification's algorithms.
       </p>
       <p>
+        User agents MAY impose implementation-specific limits on otherwise
+        unconstrained inputs, e.g., to prevent denial of service attacks, to
+        guard against running out of memory, or to work around
+        platform-specific limitations. When an input exceeds
+        implementation-specific limit, the user agent MUST throw, or, in the
+        context of a promise, reject with, a <a>TypeError</a> optionally
+        informing the developer of how a particular input exceeded an
+        implementation-specific limit.
+      </p>
+      <p>
         The working group will demonstrate implementation experience by
         creating a <a href=
         "https://github.com/w3c/web-platform-tests/tree/master/payment-request">
