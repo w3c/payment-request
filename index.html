@@ -2084,6 +2084,9 @@
             <li>Let <var>event</var> be this <a>PaymentRequestUpdateEvent</a>
             instance.
             </li>
+            <li>If <var>event</var>'s <a>isTrusted</a> attribute is false, then
+            then <a>throw</a> a "<a>NotAllowedError</a>" <a>DOMException</a>.
+            </li>
             <li>Let <var>request</var> be the value of <var>event</var>'s
             <a data-cite="DOM#dom-event-target">target</a> attribute.
             </li>
@@ -2863,9 +2866,10 @@
           terms <dfn data-cite="!DOM#concept-event-fire">fire an event</dfn>,
           <dfn data-cite="!DOM#dispatch-flag">dispatch flag</dfn>,
           <dfn data-cite="!DOM#stop-propagation-flag">stop propagation
-          flag</dfn>, and <dfn data-cite=
-          "!DOM#stop-immediate-propagation-flag">stop immediate propagation
-          flag</dfn> are defined by [[!DOM]].
+          flag</dfn>, <code><dfn data-cite=
+          "!DOM#dom-event-istrusted">isTrusted</dfn></code> attribute and
+          <dfn data-cite="!DOM#stop-immediate-propagation-flag">stop immediate
+          propagation flag</dfn> are defined by [[!DOM]].
         </dd>
         <dt>
           Web IDL
