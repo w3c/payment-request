@@ -302,13 +302,13 @@
           </p>
           <pre class="example" title="The 'methodData' argument">
             const methodData = [{
-              supportedMethods: ["basic-card"],
+              supportedMethods: "basic-card",
               data: {
                 supportedNetworks: ['visa, 'mastercard'],
                 supportedTypes: ['debit']
               }
             }, {
-              supportedMethods: ["https://example.com/bobpay"],
+              supportedMethods: "https://example.com/bobpay",
               data: {
                 merchantIdentifier: "XXXX",
                 bobPaySpecificField: true
@@ -382,12 +382,6 @@
               </li>
               <li>For each <var>paymentMethod</var> of <var>methodData</var>:
                 <ol>
-                  <li>If the length of the
-                  <var>paymentMethod</var>.<a>supportedMethods</a> sequence is
-                  zero, then <a>throw</a> a <a>TypeError</a>, optionally
-                  informing the developer that each <a>payment method</a> needs
-                  to include at least one <a>payment method identifier</a>.
-                  </li>
                   <li>If the <a data-lt="PaymentMethodData.data">data</a>
                   member of <var>paymentMethod</var> is missing, let
                   <var>serializedData</var> be null. Otherwise, let
@@ -856,10 +850,9 @@
           <var>request</var>.<a>[[\serializedMethodData]]</a>:
             <ol>
               <li>If <var>methodData</var>.<a data-lt=
-              "PaymentMethodData.supportedMethods">supportedMethods</a>
-              contains a <a>payment method identifier</a> of a <a>payment
-              method</a> that some <a>payment handler</a> supports (including
-              its <a>payment method</a> specific capabilities), resolve
+              "PaymentMethodData.supportedMethods">supportedMethods</a> is a
+              supported <a>payment method identifier</a> (including its
+              <a>payment method</a> specific capabilities), resolve
               <var>promise</var> with true, and abort this algorithm.
               </li>
             </ol>
@@ -1053,7 +1046,7 @@
       </h2>
       <pre class="idl">
         dictionary PaymentMethodData {
-          required sequence&lt;DOMString&gt; supportedMethods;
+          required DOMString supportedMethods;
           object data;
         };
       </pre>
@@ -1071,9 +1064,8 @@
           <dfn>supportedMethods</dfn> member
         </dt>
         <dd>
-          <a>supportedMethods</a> is a required sequence of strings containing
-          <a>payment method identifiers</a> for <a>payment methods</a> that the
-          merchant web site accepts.
+          <a>supportedMethods</a> is a <a>payment method identifier</a> for a
+          <a>payment method</a> that the merchant web site accepts.
         </dd>
         <dt>
           <dfn>data</dfn> member
@@ -1346,7 +1338,7 @@
       </h2>
       <pre class="idl">
         dictionary PaymentDetailsModifier {
-          required sequence&lt;DOMString&gt; supportedMethods;
+          required DOMString supportedMethods;
           PaymentItem total;
           sequence&lt;PaymentItem&gt; additionalDisplayItems;
           object data;
@@ -1354,18 +1346,17 @@
       </pre>
       <p>
         The <a>PaymentDetailsModifier</a> dictionary provides details that
-        modify the <a>PaymentDetailsBase</a> based on <a>payment method
-        identifier</a>. It contains the following fields:
+        modify the <a>PaymentDetailsBase</a> based on a <a>payment method
+        identifier</a>. It contains the following members:
       </p>
       <dl>
         <dt>
           <dfn>supportedMethods</dfn>
         </dt>
         <dd>
-          The <a>supportedMethods</a> member contains a sequence of <a>payment
-          method identifiers</a>. The remaining members in the
-          <a>PaymentDetailsModifier</a> apply only if the user selects a
-          <a>payment method</a> included in this sequence.
+          The <a>supportedMethods</a> is a <a>payment method identifier</a>.
+          The members of the <a>PaymentDetailsModifier</a> only apply if the
+          user select this <a>payment method</a>.
         </dd>
         <dt>
           <dfn>total</dfn>
@@ -1374,7 +1365,7 @@
           This <a>PaymentItem</a> value overrides the <a data-lt=
           "PaymentDetailsInit.total">total</a> member in the
           <a>PaymentDetailsInit</a> dictionary for the <a>payment method
-          identifiers</a> in the <a>supportedMethods</a> member.
+          identifiers</a> of the <a>supportedMethods</a> member.
         </dd>
         <dt>
           <dfn>additionalDisplayItems</dfn>
@@ -2772,7 +2763,8 @@
         </dt>
         <dd>
           The term <dfn data-lt="payment method identifiers">payment method
-          identifier</dfn> is defined by [[!payment-method-id]].
+          identifier</dfn> is defined by [[!payment-method-id]]. It's an unique
+          identifier for a <a>payment method</a>.
         </dd>
         <dt>
           HTML
