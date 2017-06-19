@@ -182,6 +182,255 @@
         </section>
       </section>
     </section>
+    <section class="informative">
+      <h2>
+        Examples of usage
+      </h2>
+      <p>
+        In order to use the API, the developer needs to provide and keep track
+        of a number of key pieces of information. These bits of
+        information are passed to the <a>PaymentRequest</a> constructor as
+        arguments, and subsequently used to update the payment request being
+        displayed to the user. Namely, these bits of information are:
+      </p>
+      <ul>
+        <li>The <var>methodData</var>: A sequence of <a>PaymentMethodData</a>s
+        that represents the <a>payment methods</a> that the site supports
+        (e.g., "we support card-based payments, but only Visa and MasterCard
+        credit cards.").
+        </li>
+        <li>The <var>details</var>: The details of the transaction, as a
+        <a>PaymentDetailsInit</a> dictionary. This includes total cost, and
+        optionally a list of goods or services being purchased, for physical
+        goods, and shipping options. Additionally, it can optionally include
+        "modifiers" to how payments are made. For example, "if you pay with a
+        credit card of type X, it incurs a US$3.00 processing fee".
+        </li>
+        <li>The <var>options</var>: Optionally, a list of things as
+        <a>PaymentOptions</a> that the site needs to deliver the good or
+        service (e.g., for physical goods, the merchant will typically need an
+        physical address to ship to. For digital goods, an email will usually
+        suffice).
+        </li>
+      </ul>
+      <p>
+        Once a <a>PaymentRequest</a> is constructed, it's presented to the end
+        user via the <a>show()</a> method. The <a>show()</a> returns a promise
+        that, once the user confirms request for payment, results in a
+        <a>PaymentResponse</a>.
+      </p>
+      <section>
+        <h3>
+          The <code>methodData</code> argument
+        </h3>
+        <p>
+          The <var>methodData</var> sequence contains <a>PaymentMethodData</a>
+          dictionaries containing the <a>payment method identifiers</a> for the
+          <a>payment methods</a> that the web site accepts and any associated
+          <a>payment method</a> specific data.
+        </p>
+        <pre class="example js" title="The `methodData` argument">
+          const methodData = [
+            {
+              supportedMethods: "basic-card",
+              data: {
+                supportedNetworks: ["visa", "mastercard"],
+                supportedTypes: ["debit", "credit"],
+              },
+            },
+            {
+              supportedMethods: "https://example.com/bobpay",
+              data: {
+                merchantIdentifier: "XXXX",
+                bobPaySpecificField: true,
+              },
+            },
+          ];
+        </pre>
+      </section>
+      <section>
+        <h3>
+          The <code>details</code> argument
+        </h3>
+        <p>
+          The <var>details</var> contains information about the transaction
+          that the user is being asked to complete, such as the line items in
+          an order.
+        </p>
+        <pre class="example js" title="The `details` argument">
+          const details = {
+            id: "super-store-order-123-12312",
+            displayItems: [
+              {
+                label: "Sub-total",
+                amount: { currency: "USD", value: "55.00" },
+              },
+              {
+                label: "Sales Tax",
+                amount: { currency: "USD", value: "5.00" },
+              },
+            ],
+            total: {
+              label: "Total due",
+              amount: { currency: "USD", value: "65.00" },
+            },
+          };
+        </pre>
+        <section>
+          <h4>
+            Shipping options
+          </h4>
+          <p>
+            Here we see an example of how to add two shipping options to the
+            <var>details</var>.
+          </p>
+          <pre class="example js" title="Adding shipping options">
+            const shippingOptions = [
+              {
+                id: "standard",
+                label: "🚛 Ground Shipping (2 days)",
+                amount: { currency: "USD", value: "5.00" },
+                selected: true,
+              },
+              {
+                id: "drone",
+                label: "🚀 Drone Express (2 hours)",
+                amount: { currency: "USD", value: "25.00" }
+              },
+            ];
+            Object.assign(details, { shippingOptions });
+          </pre>
+        </section>
+        <section>
+          <h4>
+            Conditional modifications to payment request
+          </h4>
+          <p>
+            Here we see how to add a processing fee for using a credit card.
+            Notice that it requires recalculating the total.
+          </p>
+          <pre class="example js" title=
+          "Modifying payment request based on card type">
+          // Credit card incurs a $3.00 processing fee.
+          const creditCardFee = {
+            label: "Credit card processing fee",
+            amount: { currency: "USD", value: "3.00" },
+          };
+
+          // Modifiers apply when the user chooses to pay with
+          // a credit card.
+          const modifiers = [
+            {
+              additionalDisplayItems: [creditCardFee],
+              supportedMethods: "basic-card",
+              total: {
+                label: "Total due",
+                amount: { currency: "USD", value: "68.00" },
+              },
+              data: {
+                supportedTypes: "credit",
+              },
+            },
+          ];
+          Object.assign(details, { modifiers });
+          </pre>
+        </section>
+      </section>
+      <section>
+        <h3>
+          The <code>options</code> argument
+        </h3>
+        <p>
+          The <var>options</var> dictionary contains information the developer
+          needs from the user to perform the payment (e.g., the payer's name
+          and shipping address).
+        </p>
+        <pre class="example" title="The `options` argument">
+          const options = {
+            requestPayerEmail: false,
+            requestPayerName: true,
+            requestPayerPhone: false,
+            requestShipping: true,
+          }
+        </pre>
+      </section>
+      <section>
+        <h3>
+          Constructing a <code>PaymentRequest</code>
+        </h3>
+        <p>
+          Having gathered all the prerequisite bits of information, we can now
+          construct a <a>PaymentRequest</a> and request that the browser
+          present it to the user:
+        </p>
+        <pre class="example" title="Constructing a `PaymentRequest`">
+          async function doPaymentRequest() {
+            try {
+              const request = new PaymentRequest(methodData, details, options);
+              // See below for a detailed example of handling these events
+              request.onshippingaddresschange = ev =&gt; ev.updateWith(details);
+              request.onshippingoptionchange = ev =&gt; ev.updateWith(details);
+              const response = await request.show();
+              await validateResponse(response);
+            } catch (err) {
+              // AbortError, SecurityError
+              console.error(err);
+            }
+          }
+          async function validateResponse(response) {
+            try {
+              if (await checkAllValuesAreGood(response)) {
+                await response.complete("success");
+              } else {
+                await response.complete("fail");
+              }
+            } catch (err) {
+              // Something went wrong...
+              response.complete("unknown");
+            }
+          }
+          doPaymentRequest();
+        </pre>
+      </section>
+      <section>
+        <h3>
+          Handling events and updating the payment request
+        </h3>
+        <p>
+          Prior to the user accepting to make payment, the site is given an
+          opportunity to update the payment request in response to user input.
+          This can include, for example, providing additional shipping options
+          (or modifying their cost), removing items that cannot ship to a
+          particular address, etc.
+        </p>
+        <pre class="example">
+          const request = new PaymentRequest(methodData, details, options);
+          request.onshippingaddresschange = async ev =&gt; {
+            // Can we ship here?
+            try {
+              const json = request.shippingAddress.toJSON();
+              const { shippingOptions, total } = await calculateShipping(json);
+              const newDetails = {...details, ...{ shippingOptions, total }};
+              ev.updateWith(newDetails);
+            } catch (err) {
+              ev.updateWith({ error: `Sorry! we can't ship to your address.` });
+            }
+          };
+          // update the total
+          request.onshippingoptionchange = ev =&gt; {
+            const shippingOption = shippingOptions.find(
+              option =&gt; option.id === request.id
+            );
+            const newTotal = {
+              currency: "USD",
+              value: calculateNewTotal(shippingOption),
+              label: "Total due",
+            };
+            ev.udpateWith({ ...details, total: newTotal });
+          };
+        </pre>
+      </section>
+    </section>
     <section>
       <h2>
         Definitions
@@ -253,35 +502,6 @@
         <a data-lt="PaymentOptions.requestShipping">requestShipping</a> flag is
         set.
       </p>
-      <p>
-        The following example shows how to construct a <a>PaymentRequest</a>
-        and begin the user interaction:
-      </p>
-      <pre class="example" title="Constructing a PaymentRequest object">
-        function validateResponse(response) {
-          // check that the response is ok... throw if bad, for example.
-        }
-
-        async function doPaymentRequest() {
-          const payment = new PaymentRequest(methodData, details, options);
-          payment.addEventListener("shippingaddresschange", event =&gt; {
-            // Process shipping address change
-          });
-          let paymentResponse;
-          try {
-            paymentResponse = await payment.show();
-            // paymentResponse.methodName contains the selected payment method.
-            // paymentResponse.details contains a payment method specific
-            // response.
-            validateResponse(paymentResponse);
-            paymentResponse.complete("success");
-          } catch (err) {
-            console.error("Uh oh, bad payment response!", err.message);
-            paymentResponse.complete("fail");
-          }
-        }
-        doPaymentRequest();
-      </pre>
       <section>
         <h2>
           Constructor
@@ -292,64 +512,6 @@
           specific <a data-lt="PaymentMethodData.data">data</a>, the payment
           <var>details</var>, and the payment <var>options</var>.
         </p>
-        <div class="note">
-          <p>
-            The <var>methodData</var> sequence contains
-            <a>PaymentMethodData</a> dictionaries containing the <a>payment
-            method identifiers</a> for the <a>payment methods</a> that the web
-            site accepts and any associated <a>payment method</a> specific
-            data.
-          </p>
-          <pre class="example" title="The 'methodData' argument">
-            const methodData = [{
-              supportedMethods: "basic-card",
-              data: {
-                supportedNetworks: ['visa', 'mastercard'],
-                supportedTypes: ['debit']
-              }
-            }, {
-              supportedMethods: "https://example.com/bobpay",
-              data: {
-                merchantIdentifier: "XXXX",
-                bobPaySpecificField: true
-              }
-            }];
-            const request = new PaymentRequest(methodData, details, options);
-          </pre>
-          <p>
-            The <var>details</var> object contains information about the
-            transaction that the user is being asked to complete such as the
-            line items in an order.
-          </p>
-          <pre class="example" title="The 'details' argument">
-            const details = {
-              id: "super-store-order-123-12312",
-              displayItems: [{
-                label: "Sub-total",
-                amount: { currency: "USD", value: "55.00" }, // US$55.00
-              }, {
-                label: "Sales Tax",
-                amount: { currency: "USD", value: "5.00" }, // US$5.00
-              }],
-              total: {
-                label: "Total due",
-                amount: { currency: "USD", value: "60.00" }, // US$60.00
-              }
-            }
-            const request = new PaymentRequest(methodData, details, options);
-          </pre>
-          <p>
-            The <var>options</var> object contains information the developer
-            needs from the user to perform the payment (e.g., the payer's name
-            and shipping address).
-          </p>
-          <pre class="example" title="The 'options' argument">
-            const options = {
-              requestShipping: true
-            }
-            const request = new PaymentRequest(methodData, details, options);
-          </pre>
-        </div>
         <p>
           The <a>PaymentRequest(methodData, details, options)</a> constructor
           MUST act as follows:
