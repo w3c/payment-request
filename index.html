@@ -6,8 +6,7 @@
     </title>
     <meta charset='utf-8'>
     <script src='https://www.w3.org/Tools/respec/respec-w3c-common' class=
-    'remove'>
-    </script>
+    'remove'></script>
     <script class='remove'>
     var respecConfig = {
       github: "https://github.com/w3c/browser-payment-api/",
@@ -704,11 +703,11 @@
               <var>acceptPromise</var> with that error and terminate this
               algorithm.
               </li>
-              <li>Determine which <a>payment handlers</a> support any of the
-              <a>payment method identifiers</a> given <var>identifier</var>.
-              For each resulting payment handler, if payment method specific
-              capabilities supplied by the payment handler match those provided
-              by <var>data</var>, the payment handler matches.
+              <li>Determine which <a>payment handlers</a> support
+              <var>identifier</var>. For each resulting payment handler, if
+              payment method specific capabilities supplied by the payment
+              handler match those provided by <var>data</var>, the payment
+              handler matches.
               </li>
             </ol>
           </li>
