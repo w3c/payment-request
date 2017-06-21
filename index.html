@@ -648,12 +648,15 @@
               which a page can call <a>show()</a>, as described in the the
               <a href="#privacy">privacy considerations</a> section.
             </p>
-            <p>
-              Implementations are expected to experiment in this area.
-              Developers using the payment request API should investigate and
-              anticipate such experiments and understand under what
-              circumstances a "<a>SecurityError</a>" <a>DOMException</a> might
-              occur.
+            <p class="note">
+              During the Candidate Recommendation phase, implementations are
+              expected to experiment in this area. Developers using this API
+              should investigate and anticipate such experiments and understand
+              under what circumstances a "<a>SecurityError</a>"
+              <a>DOMException</a> might occur. If interoperable behavior
+              emerges amongst user agents, then that behavior will be
+              standardized here before progressing the specification along the
+              W3C Recommendation Track.
             </p>
           </li>
           <li>If <var>request</var>.<a>[[\state]]</a> is not "<a>created</a>"
