@@ -685,34 +685,27 @@
           <li>For each <var>paymentMethod</var> tuple in
           <var>request</var>.<a>[[\serializedMethodData]]</a>:
             <ol>
-              <li>Let <var>identifiers</var> be the first element in the <var>
+              <li>Let <var>identifier</var> be the first element in the <var>
                 paymentMethod</var> tuple.
               </li>
               <li>Let <var>data</var> be the result of <a data-cite=
               "!ECMA-262-2015#sec-json.parse">JSON-parsing</a> the second
               element in <var>paymentMethod</var> tuple.
               </li>
-              <li>Let <var>methods</var> be a list of <a>payment methods</a>
-              that support <var>identifiers</var>.
+              <li>If required by the specification that defines the
+              <var>identifer</var>, then <a data-cite=
+              "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
+              <var>data</var> to an IDL value. Otherwise, <a data-cite=
+              "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
+              <a data-cite="!WEBIDL#idl-object">object</a>.
               </li>
-              <li>For each <var>paymentMethod</var> of <var>methods</var>:
-                <ol>
-                  <li>If required by the specification that defines the
-                  <var>paymentMethod</var>, then <a data-cite=
-                  "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
-                  <var>data</var> to an IDL value. Otherwise, <a data-cite=
-                  "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
-                  <a data-cite="!WEBIDL#idl-object">object</a>.
-                  </li>
-                  <li>If conversion results in an error, reject
-                  <var>acceptPromise</var> with that error and terminate this
-                  algorithm.
-                  </li>
-                  <li>If payment method specific capabilities supplied by the
-                  payment handler match those provided by <var>data</var>, the
-                  payment handler matches.
-                  </li>
-                </ol>
+              <li>If conversion results in an error, reject
+              <var>acceptPromise</var> with that error and terminate this
+              algorithm.
+              </li>
+              <li>If payment method specific capabilities supplied by the
+              payment handler match those provided by <var>data</var>, the
+              payment handler matches.
               </li>
             </ol>
           </li>
