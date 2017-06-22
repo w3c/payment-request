@@ -1567,7 +1567,7 @@
       <pre class="idl">
         [SecureContext]
         interface PaymentAddress {
-          serializer = { attribute };
+          [Default] object toJSON();
           readonly attribute DOMString country;
           readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
           readonly attribute DOMString region;
@@ -1583,12 +1583,11 @@
       </pre>
       <section>
         <h2>
-          <dfn>serializer</dfn>
+          <dfn>toJSON()</dfn> method
         </h2>
         <p>
-          Each attribute is <a data-cite=
-          "!WEBIDL#dfn-convert-to-serialized-value">converted to serialized
-          values</a> as per [[!WEBIDL]].
+          When called, run [[!WEBIDL]]'s <a data-cite=
+          "WEBIDL#default-tojson-operation">default toJSON operation</a>.
         </p>
       </section>
       <section>
@@ -1787,7 +1786,7 @@
       <pre class="idl">
         [SecureContext]
         interface PaymentResponse {
-          serializer = { attribute };
+          [Default] object toJSON();
 
           readonly attribute DOMString requestId;
           readonly attribute DOMString methodName;
@@ -1807,12 +1806,11 @@
       </p>
       <section>
         <h2>
-          <dfn>serializer</dfn>
+          <dfn>toJSON()</dfn> method
         </h2>
         <p>
-          Each attribute is <a data-cite=
-          "!WEBIDL#dfn-convert-to-serialized-value">converted to serialized
-          values</a> as per [[!WEBIDL]].
+          When called, run [[!WEBIDL]]'s <a data-cite=
+          "WEBIDL#default-tojson-operation">default toJSON operation</a>.
         </p>
       </section>
       <section>
