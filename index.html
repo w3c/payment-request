@@ -698,17 +698,29 @@
           <li>For each <var>paymentMethod</var> tuple in
           <var>request</var>.<a>[[\serializedMethodData]]</a>:
             <ol>
-              <li>Let <var>identifiers</var> be the first element in the <var>
-                paymentMethod</var> tuple.
-              </li>
-              <li>Let <var>data</var> be the second element in
+              <li>Let <var>identifier</var> be the first element in the
               <var>paymentMethod</var> tuple.
               </li>
-              <li>Determine which <a>payment handlers</a> support any of the
-              <a>payment method identifiers</a> given <var>identifiers</var>.
-              For each resulting payment handler, if payment method specific
-              capabilities supplied by the payment handler match those provided
-              by <var>data</var>, the payment handler matches.
+              <li>Let <var>data</var> be the result of <a data-cite=
+              "!ECMA-262-2015#sec-json.parse">JSON-parsing</a> the second
+              element in <var>paymentMethod</var> tuple.
+              </li>
+              <li>If required by the specification that defines the
+              <var>identifer</var>, then <a data-cite=
+              "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
+              <var>data</var> to an IDL value. Otherwise, <a data-cite=
+              "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
+              <a data-cite="!WEBIDL#idl-object">object</a>.
+              </li>
+              <li>If conversion results in an error, reject
+              <var>acceptPromise</var> with that error and terminate this
+              algorithm.
+              </li>
+              <li>Determine which <a>payment handlers</a> support
+              <var>identifier</var>. For each resulting payment handler, if
+              payment method specific capabilities supplied by the payment
+              handler match those provided by <var>data</var>, the payment
+              handler matches.
               </li>
             </ol>
           </li>
