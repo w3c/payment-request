@@ -239,13 +239,15 @@
         site, selecting a "Power Up" in an interactive game, or paying at a
         kiosk in a parking structure). The <a>PaymentRequest</a> allows
         developers to exchange information with the <a>user agent</a> while the
-        user is providing input before approving or denying a payment request.
+        user is providing input (up to the point of user approval or denial of
+        the payment request).
       </p>
       <p data-link-for="PaymentRequest">
-        The <a>user agent</a> as a whole has a single <dfn>payment request is
-        showing</dfn> boolean, initially false. This is used to prevent
-        multiple <a>PaymentRequest</a>s from being shown, via their
-        <a>show()</a> method, at the same time.
+        Because the simultaneous display of multiple <a>PaymentRequest</a> user
+        interfaces may confuse the user, this specification limits the <a>user
+        agent</a> to displaying one at a time via the <a>show()</a> method.
+        This is ensured by a <dfn>payment request is showing</dfn> boolean,
+        global to the browser and initially false.
       </p>
       <p data-link-for="PaymentRequest">
         The <a>shippingAddress</a>, <a>shippingOption</a>, and
@@ -619,10 +621,10 @@
           </p>
           <p>
             It is not possible to show multiple <a>PaymentRequest</a>s at the
-            same time within one <a>user agent</a>. Calling <a>show()</a> if
-            another <a>PaymentRequest</a> is already showing, even due to some
-            other site, will return a promise rejected with an
-            "<a>AbortError</a>" <a>DOMException</a>.
+            same time within one <a>user agent</a>. If a <a>PaymentRequest</a>
+            is already showing, calling <a>show()</a> —from any Web site— will
+            return a promise rejected with an "<a>AbortError</a>"
+            <a>DOMException</a>.
           </p>
         </div>
         <p>
@@ -775,6 +777,10 @@
             For example, if the <a>user agent</a> has delegated responsibility
             for the request to another app. In this situation, <a>abort()</a>
             will reject the returned <a>Promise</a>.
+          </p>
+          <p>
+            See also the algorithm when the <a>user aborts the payment
+            request</a>.
           </p>
         </div>
         <p>
@@ -1091,6 +1097,11 @@
           will be <a>JSON-serialized</a>.
         </dd>
       </dl>
+      <p class="note">
+        The value of <code>supportedMethods</code> was changed from array to
+        string, but the name was left as a plural to maintain compatibility
+        with deployed software.
+      </p>
     </section>
     <section data-dfn-for="PaymentCurrencyAmount" data-link-for=
     "PaymentCurrencyAmount">
@@ -1410,6 +1421,11 @@
           will be <a>JSON-serialized</a>.
         </dd>
       </dl>
+      <p class="note">
+        The value of <code>supportedMethods</code> was changed from array to
+        string, but the name was left as a plural to maintain compatibility
+        with deployed software.
+      </p>
     </section>
     <section data-dfn-for="PaymentShippingType">
       <h2>
@@ -1831,9 +1847,9 @@
         </h2>
         <p>
           An object that provides a <a>payment method</a> specific message used
-          by the merchant to process the transaction and determine successful
-          fund transfer. This data is returned by the <a>payment method</a>
-          specific code that satisfies the payment request.
+          by the merchant to process the transaction and determine payment
+          status. This data is returned by the <a>payment method</a> specific
+          code that satisfies the payment request.
         </p>
       </section>
       <section>
@@ -2426,7 +2442,7 @@
               state since the developer hasn't successfully handled the change
               event. Consequently, the <a>PaymentRequest</a> moves to a
               "<a>closed</a>" state. The error is signaled to the developer
-              through the rejection of the <a>[[\acceptPromise]]</a>, i.e. the
+              through the rejection of the <a>[[\acceptPromise]]</a>, i.e., the
               promise returned by <a data-lt="PaymentRequest.show">show()</a>.
             </p>
             <p>
@@ -2557,7 +2573,8 @@
         <ol class="algorithm">
           <li>If the <var>request</var>.<a>[[\updating]]</a> is true, then
           terminate this algorithm and take no further action. Only one update
-          may take place at a time. This should never occur.
+          may take place at a time. The <a>user agent</a> user interface should
+          ensure that this never occurs.
           </li>
           <li>If the <var>request</var>.<a>[[\state]]</a> is not set to
           "<a>interactive</a>", then terminate this algorithm and take no
@@ -2601,7 +2618,8 @@
           attribute of <var>request</var> is null or if the <a data-lt=
           "PaymentRequest.shippingOption">shippingOption</a> attribute of <var>
             request</var> is null, then terminate this algorithm and take no
-            further action. This should never occur.
+            further action. The <a>user agent</a> user interface should ensure
+            that this never occurs.
           </li>
           <li>Let <var>response</var> be a new <a>PaymentResponse</a>.
           </li>
