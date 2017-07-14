@@ -77,3 +77,5 @@ What we are ideally looking for in contributors is:
   example, DOM APIs and the async nature of most of those APIs
 
 - some existing experience with doing browser testing
+
+See also https://lists.w3.org/Archives/Public/public-payments-wg/2017Jun/0023.html
