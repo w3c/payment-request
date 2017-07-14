@@ -26,3 +26,8 @@ explain why in the spec-PR commit message, file a
 describing the limitation, and add the
 [`type:untestable`](https://github.com/w3c/web-platform-tests/issues?utf8=%E2%9C%93&q=label%3Atype%3Auntestable%20)
 label to the issue.
+
+## How to contribute to the test suite
+
+See [Testing the Payment Request API](https://github.com/w3c/webpayments/wiki/Testing-the-Payment-Request-API)
+for details on how you can contribute to the Payment Request API test suite.
