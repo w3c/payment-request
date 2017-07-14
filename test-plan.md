@@ -29,5 +29,51 @@ label to the issue.
 
 ## How to contribute to the test suite
 
-See [Testing the Payment Request API](https://github.com/w3c/webpayments/wiki/Testing-the-Payment-Request-API)
-for details on how you can contribute to the Payment Request API test suite.
+https://github.com/w3c/web-platform-tests/tree/master/payment-request
+has existing tests for the Payment Request API.
+
+https://w3c-test.org/payment-request is a Web mirror of those tests.
+
+You run the Payment Request API tests in a browser to check whether the browser
+passes the tests. So the tests are essentially browser tests—browser-conformance tests.
+
+The Payment Request API tests are part of the W3C master test suite
+maintained in https://github.com/w3c/web-platform-tests/ and we rely on `git` as
+our version-control mechanism, so we seek contributors who ideally have
+some general familiarity/experience in working with `git` (but that’s not a
+hard requirement—you can learn `git` as you go).
+
+The core of the W3C test infrastructure is a JavaScript-based test harness called
+ _`testharness.js`_. The documentation for `testharness.js` is at
+http://web-platform-tests.org/writing-tests/testharness-api.html
+
+For contributors, understanding how `testharness.js` works and how to write
+tests using it is the most important requirement.
+
+The general how-to docs for W3C test contributors are at
+http://web-platform-tests.org/ and
+https://github.com/w3c/web-platform-tests/blob/master/README.md has
+some other high-level getting-started info.
+
+The best place for contributors to ask questions and get help quickly is
+on the IRC channel `#testing` on the [`irc.w3.org`](http://irc.w3.org/)
+server. We also use the mailing list `public-test-infra@w3.org`, which
+contributors can subscribe to by sending a message with `Subject: Subscribe`
+to `public-test-infra-request@w3.org`.
+
+The best place for anyone to start reading in order to get familiar with
+what skill set we need from test contributors is the `testharness.js`
+documentation at
+http://web-platform-tests.org/writing-tests/testharness-api.html
+
+What we are ideally looking for in contributors is:
+
+- skill in JavaScript
+
+- general understanding about how JavaScript works in browsers (the
+  execution model, the event loop, etc.)
+
+- general understanding of core JavaScript APIs for the web runtime—for
+  example, DOM APIs and the async nature of most of those APIs
+
+- some existing experience with doing browser testing
