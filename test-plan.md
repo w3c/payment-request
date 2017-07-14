@@ -17,8 +17,8 @@ tests PR is approved but the spec PR hasn’t yet been OK’ed, add the
 [`status:needs-spec-decision`](https://github.com/w3c/web-platform-tests/issues?utf8=%E2%9C%93&q=label%3Astatus%3Aneeds-spec-decision%20)
 label to the tests PR.
 
-Note that a test change which doesn’t conform to the current spec source on the `master`
-branch should not be merged before the corresponding spec change is merged to `master`.
+Note that a test change which doesn’t conform to the current spec source on the `gh-pages`
+branch should not be merged before the corresponding spec change is merged to `gh-pages`.
 
 If testing a particular spec change isn’t practical due to web-platforms-tests limitations,
 explain why in the spec-PR commit message, file a
