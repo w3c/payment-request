@@ -1831,8 +1831,8 @@
         </h2>
         <p>
           An object that provides a <a>payment method</a> specific message used
-          by the merchant to process the transaction and determine successful
-          fund transfer. This data is returned by the <a>payment method</a>
+          by the merchant to process the transaction or validate the transaction
+          has been processed. This data is returned by the <a>payment method</a>
           specific code that satisfies the payment request.
         </p>
       </section>
@@ -1919,7 +1919,7 @@
           The <a>complete()</a> method is called after the user has accepted
           the payment request and the <a>[[\acceptPromise]]</a> has been
           resolved. Calling the <a>complete()</a> method tells the <a>user
-          agent</a> that the transaction is over (and SHOULD cause any
+          agent</a> that the payment interaction is over (and SHOULD cause any
           remaining user interface to be closed).
         </p>
         <p>
