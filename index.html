@@ -244,10 +244,10 @@
       </p>
       <p data-link-for="PaymentRequest">
         Because the simultaneous display of multiple <a>PaymentRequest</a> user
-        interfaces may confuse the user, this specification limits the <a>user
-        agent</a> to displaying one at a time via the <a>show()</a> method.
-        This is ensured by a <dfn>payment request is showing</dfn> boolean,
-        global to the browser and initially false.
+        interfaces might confuse the user, this specification limits the
+        <a>user agent</a> to displaying one at a time via the <a>show()</a>
+        method. This is ensured by a <dfn>payment request is showing</dfn>
+        boolean.
       </p>
       <p data-link-for="PaymentRequest">
         The <a>shippingAddress</a>, <a>shippingOption</a>, and
@@ -778,7 +778,7 @@
             for the request to another app. In this situation, <a>abort()</a>
             will reject the returned <a>Promise</a>.
           </p>
-          <p>
+          <p class="note">
             See also the algorithm when the <a>user aborts the payment
             request</a>.
           </p>
@@ -1100,7 +1100,7 @@
       <p class="note">
         The value of <code>supportedMethods</code> was changed from array to
         string, but the name was left as a plural to maintain compatibility
-        with deployed software.
+        with existing content on the Web.
       </p>
     </section>
     <section data-dfn-for="PaymentCurrencyAmount" data-link-for=
@@ -1421,11 +1421,6 @@
           will be <a>JSON-serialized</a>.
         </dd>
       </dl>
-      <p class="note">
-        The value of <code>supportedMethods</code> was changed from array to
-        string, but the name was left as a plural to maintain compatibility
-        with deployed software.
-      </p>
     </section>
     <section data-dfn-for="PaymentShippingType">
       <h2>
