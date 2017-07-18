@@ -27,46 +27,15 @@ describing the limitation, and add the
 [`type:untestable`](https://github.com/w3c/web-platform-tests/issues?utf8=%E2%9C%93&q=label%3Atype%3Auntestable%20)
 label to the issue.
 
-## How to contribute to the test suite
+## Running the Payment Request Test Suite
 
-https://github.com/w3c/web-platform-tests/tree/master/payment-request
-has existing tests for the Payment Request API.
+Run the Payment Request API tests in a browser to check whether the browser passes the tests. So the tests are essentially browser tests—browser-conformance tests. See the (not yet very useful) [dashboard](https://wptdashboard.appspot.com/payment-request).
 
-https://w3c-test.org/payment-request is a Web mirror of those tests.
+See [existing tests for the Payment Request API](https://github.com/w3c/web-platform-tests/tree/master/payment-request), which are also available on a [mirror](https://w3c-test.org/payment-request).
 
-You run the Payment Request API tests in a browser to check whether the browser
-passes the tests. So the tests are essentially browser tests—browser-conformance tests.
+## Contributing to W3C Test Suites
 
-The Payment Request API tests are part of the W3C master test suite
-maintained in https://github.com/w3c/web-platform-tests/ and we rely on `git` as
-our version-control mechanism, so we seek contributors who ideally have
-some general familiarity/experience in working with `git` (but that’s not a
-hard requirement—you can learn `git` as you go).
-
-The core of the W3C test infrastructure is a JavaScript-based test harness called
- _`testharness.js`_. The documentation for `testharness.js` is at
-http://web-platform-tests.org/writing-tests/testharness-api.html
-
-For contributors, understanding how `testharness.js` works and how to write
-tests using it is the most important requirement.
-
-The general how-to docs for W3C test contributors are at
-http://web-platform-tests.org/ and
-https://github.com/w3c/web-platform-tests/blob/master/README.md has
-some other high-level getting-started info.
-
-The best place for contributors to ask questions and get help quickly is
-on the IRC channel `#testing` on the [`irc.w3.org`](http://irc.w3.org/)
-server. We also use the mailing list `public-test-infra@w3.org`, which
-contributors can subscribe to by sending a message with `Subject: Subscribe`
-to `public-test-infra-request@w3.org`.
-
-The best place for anyone to start reading in order to get familiar with
-what skill set we need from test contributors is the `testharness.js`
-documentation at
-http://web-platform-tests.org/writing-tests/testharness-api.html
-
-What we are ideally looking for in contributors is:
+### Desired Skillset 
 
 - skill in JavaScript
 
@@ -79,3 +48,17 @@ What we are ideally looking for in contributors is:
 - some existing experience with doing browser testing
 
 See also [comments from Marcos on testing](https://lists.w3.org/Archives/Public/public-payments-wg/2017Jun/0023.html)
+
+### W3C Test Suite
+
+The Payment Request API tests are part of the [W3C master test suite](https://github.com/w3c/web-platform-tests/). We rely on `git` as our version-control mechanism, so we seek contributors who ideally have some general familiarity/experience in working with `git` (but that’s not a hard requirement—you can learn `git` as you go). The general how-to docs for W3C test contributors are at http://web-platform-tests.org/; the [README](https://github.com/w3c/web-platform-tests/blob/master/README.md) has
+some other high-level getting-started info.
+
+### W3C Test Suite Harness
+
+The core of the W3C test infrastructure is a JavaScript-based test harness called _`testharness.js`_; see the [documentation](http://web-platform-tests.org/writing-tests/testharness-api.html). For contributors, understanding how `testharness.js` works and how to write tests using it is the most important requirement.
+
+### Getting Help
+
+The best place for contributors to ask questions and get help quickly is on the IRC channel `#testing` on the [`irc.w3.org`](http://irc.w3.org/) server. We also use the mailing list `public-test-infra@w3.org`, which contributors can subscribe to by sending a message with `Subject: Subscribe` to `public-test-infra-request@w3.org`.
+
