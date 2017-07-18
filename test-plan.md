@@ -78,4 +78,4 @@ What we are ideally looking for in contributors is:
 
 - some existing experience with doing browser testing
 
-See also https://lists.w3.org/Archives/Public/public-payments-wg/2017Jun/0023.html
+See also [comments from Marcos on testing](https://lists.w3.org/Archives/Public/public-payments-wg/2017Jun/0023.html)
