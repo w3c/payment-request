@@ -3,7 +3,7 @@
 This document provides specific information about testing related to the
 Payment Request API spec.
 
-## Tests are required for all normative spec changes
+## Editing Policy as of Candidate Recommendation
 
 All PRs with normative changes to the spec source must have a corresponding PR in
 [the web-platform-tests Payment Request API test suite](https://github.com/w3c/web-platform-tests/tree/master/payment-request)
