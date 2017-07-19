@@ -2742,7 +2742,7 @@
         </p>
       </section>
     </section>
-    <section class='informative' id="privacy">
+    <section id="privacy">
       <h2>
         Privacy Considerations
       </h2>
@@ -2766,13 +2766,13 @@
         <p>
           Developers might try to call the payment request API repeatedly with
           only one payment method identifier to try to determine what payment
-          methods a <a>user agent</a> has installed. There may be legitimate
+          methods a <a>user agent</a> has installed. There are legitimate
           scenarios for calling repeatedly (for example, to control the flow of
           payment method selection). The fact that a successful match to a
           payment method causes a user interface to be displayed mitigates the
-          disclosure risk. Implementations may also require a user action to
-          initiate a payment request or they may choose to rate limit the calls
-          to the API to prevent too many repeated calls.
+          disclosure risk. Implementations MAY require a user action to
+          initiate a payment request or they MAY rate limit the calls to the
+          API to prevent too many repeated calls.
         </p>
       </section>
     </section>
