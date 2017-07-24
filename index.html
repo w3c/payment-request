@@ -424,10 +424,10 @@
             );
             const newTotal = {
               currency: "USD",
-              value: calculateNewTotal(shippingOption),
               label: "Total due",
+              value: calculateNewTotal(shippingOption),
             };
-            ev.udpateWith({ ...details, total: newTotal });
+            ev.updateWith({ ...details, total: newTotal });
           };
         </pre>
       </section>
