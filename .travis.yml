@@ -4,7 +4,7 @@ branches:
     - gh-pages
 env:
   global:
-    - URL="https://w3c.github.io/browser-payment-api/echidna-manifest.txt"
+    - URL="https://w3c.github.io/payment-request/echidna-manifest.txt"
     - DECISION="https://www.w3.org/2016/04/14-wpwg-minutes#item02"
     - secure: nZb5DRLNi1JYvO6WEmU/hgO0Kn7y7eiu0GC6A+6Bs2nx4lQiJdQXTcePMBYdeayqrMnnSiL8Tz7wzlV4CenwW58AU1XcRlnubZpPIHPWTNLIWO4ejhW90zSSfFSim83v2i5Nc/I11FbdTSCQxkTsDxdlNleA5Qj7LrDT29175lVOuwYRWcdmb3F+mGTslrsCODW+Oph+BmOo7dxegFwdtjfIbSQ8wHF09mjKlPXEdGGXFL0nxQc+IY5M7MNvEXp3/xM8zeiR4g+JpYRIX8kfvwXS36k+ijrA1v57LY72lZMtJJEngEDxz/fq16YYQ1WVQi00lgsMaV/zy//6EMREZ3dMgwT9ilJvjEVwi5/4Ank+ISbLjrCwm+TWmzF3I4OUnnRpEq9YoRGpgia3pf+DzbH/JcxbYLwKdUdqjgqwGqx6cZKdI2vn25EQ+5Gb8ZywyK86fAETIKLmVWKg5stWAM3x0X8YlK+fHItNZIrGsOoqxh6/BteItutRQvGHsUT85gQyvWE9pZm14CIV1LJAYUUW6g9NRSLPrYv3NQsBBuH6Awc6Qm9NCT7P8dm/mUba/R3U8sptuLrizK84MJJuoyxko0i01GXSAMItjIjAbRZJAVM+wsTeAnBptvK+X4XcNxixQhYVRCdPs6084XVxKUafUGcJ+yFWHWJVcN70J1M=
 script:

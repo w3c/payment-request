@@ -1,5 +1,5 @@
- {
-    "group":      ["83744"]
-,   "contacts":   ["ianbjacobs"]
-,   "shortName":  "browser-payment-api"
+{
+  "group": ["83744"],
+  "contacts": ["ianbjacobs"],
+  "shortName": "payment-request"
 }
