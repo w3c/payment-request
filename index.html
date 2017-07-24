@@ -547,6 +547,24 @@
               </li>
               <li>For each <var>paymentMethod</var> of <var>methodData</var>:
                 <ol>
+                  <li>Let <var>isValidString</var> be the result of
+                  <a data-cite=
+                  "!payment-method-id#dfn-validate-a-standardized-payment-method-identifier">
+                    validating</a> <var>paymentMethod</var>'s
+                    <a>supportedMethods</a> member as a standardized method
+                    identifer.
+                  </li>
+                  <li>If <var>isValidString</var> is false, <a data-cite=
+                  "!payment-method-id#dfn-validate-a-url-based-payment-method-identifier">
+                    validate</a> <var>paymentMethod</var>'s
+                    <a>supportedMethods</a> member as a URL-based payment
+                    method identifer. If the result is again false, remove this
+                    <var>paymentMethod</var> from <var>methodData</var> and
+                    continue to the next <var>paymentMethod</var> (if any)
+                    ignoring the sub-steps below and optionally informing the
+                    developer that <var>paymentMethod</var>'s
+                    <a>supportedMethods</a> member is invalid.
+                  </li>
                   <li>If the <a data-lt="PaymentMethodData.data">data</a>
                   member of <var>paymentMethod</var> is missing, let
                   <var>serializedData</var> be null. Otherwise, let
