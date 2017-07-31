@@ -431,34 +431,6 @@
         </pre>
       </section>
     </section>
-    <section>
-      <h2>
-        Definitions
-      </h2>
-      <p>
-        A <dfn data-cite="INFRA#javascript-string">JavaScript string</dfn> is a
-        <dfn>valid decimal monetary value</dfn> if it consists of the following
-        <dfn data-lt="code point" data-cite="INFRA#code-point">code
-        points</dfn> in the given order: [[!INFRA]]
-      </p>
-      <ol>
-        <li>Optionally, a single U+002D HYPHEN-MINUS (-), to indicate that the
-        amount is negative.
-        </li>
-        <li>One or more <a>code points</a> in the range U+0030 DIGIT ZERO (0)
-        to U+0039 DIGIT NINE (9).
-        </li>
-        <li>Optionally, a single U+002E FULL STOP (.) followed by one or more
-        <a>code points</a> in the range U+0030 DIGIT ZERO (0) to U+0039 DIGIT
-        NINE (9).
-        </li>
-      </ol>
-      <div class="note">
-        The following regular expression is an implementation of the above
-        definition.
-        <pre class="hljs">^-?[0-9]+(\.[0-9]+)?$</pre>
-      </div>
-    </section>
     <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
       <h2>
         <dfn>PaymentRequest</dfn> interface
@@ -565,18 +537,13 @@
           </li>
           <li data-link-for="PaymentDetailsInit">Process the total:
             <ol>
-              <li>If <var>details</var>.<a>total</a>.<a data-lt=
-              "PaymentItem.amount">amount</a>.<a data-lt=
-              "PaymentCurrencyAmount.value">value</a> is not a <a>valid decimal
-              monetary value</a>, then <a>throw</a> a <a>TypeError</a>;
-              optionally informing the developer that the value is invalid.
-              </li>
-              <li>If the first <a>code point</a> of
+              <li>Let <var>total</var> be
               <var>details</var>.<a>total</a>.<a data-lt=
-              "PaymentItem.amount">amount</a>.<a data-lt=
-              "PaymentCurrencyAmount.value">value</a> is U+002D HYPHEN-MINUS,
-              then <a>throw</a> a <a>TypeError</a>, optionally informing the
-              developer that the total can't be negative.
+              "PaymentItem.amount">amount</a>.
+              </li>
+              <li>
+                <a>Check and canonicalize <var>total</var></a>. Rethrow any
+                exceptions.
               </li>
             </ol>
           </li>
@@ -584,11 +551,12 @@
           present, then for each <var>item</var> in
           <var>details</var>.<a>displayItems</a>:
             <ol>
-              <li>If <var>item</var>.<a data-lt=
-              "PaymentItem.amount">amount</a>.<a data-lt=
-              "PaymentCurrencyAmount.value">value</a> is not a <a>valid decimal
-              monetary value</a>, then <a>throw</a> a <a>TypeError</a>,
-              optionally informing the developer that the value is invalid.
+              <li>Let <var>amount</var> be <var>item</var>.<a data-lt=
+              "PaymentItem.amount">amount</a>.
+              </li>
+              <li>
+                <a>Check and canonicalize <var>amount</var></a>. Rethrow any
+                exceptions.
               </li>
             </ol>
           </li>
@@ -610,11 +578,12 @@
                   </li>
                   <li>For each <var>option</var> in <var>options</var>:
                     <ol>
-                      <li>If
-                        <var>option</var>.<a>amount</a>.<a data-link-for="PaymentCurrencyAmount">value</a>
-                        is not a <a>valid decimal monetary value</a>, then
-                        <a>throw</a> a <a>TypeError</a>, optionally informing
-                        the developer that the value is invalid.
+                      <li>Let <var>amount</var> be
+                        <var>item</var>.<a data-lt="PaymentItem.amount">amount</a>.
+                      </li>
+                      <li>
+                        <a>Check and canonicalize <var>amount</var></a>.
+                        Rethrow any exceptions.
                       </li>
                       <li>If <var>seenIDs</var> contains
                       <var>option</var>.<a>id</a>, then set <var>options</var>
@@ -663,19 +632,13 @@
                       "PaymentDetailsModifier.total">total</a> member of <var>
                         modifier</var> is present, then:
                         <ol>
-                          <li>Let <var>value</var> be
+                          <li>Let <var>total</var> be
                           <var>modifier</var>.<a data-lt=
-                          "PaymentDetailsModifier.total">total</a>.<a data-lt="PaymentItem.amount">amount</a>.<a data-lt="PaymentCurrencyAmount.value">value</a>.
+                          "PaymentDetailsModifier.total">total</a>.<a data-lt="PaymentItem.amount">amount</a>
                           </li>
-                          <li>If <var>value</var> is not a <a>valid decimal
-                          monetary value</a>, then throw a <a>TypeError</a>,
-                          optionally informing the developer that the value is
-                          invalid.
-                          </li>
-                          <li>If the first <a>code point</a> of
-                          <var>value</var> is U+002D HYPHEN-MINUS, then throw a
-                          <a>TypeError</a>, optionally informing the developer
-                          that the value can't be negative.
+                          <li>
+                            <a>Check and canonicalize <var>total</var></a>.
+                            Rethrow any exceptions.
                           </li>
                         </ol>
                       </li>
@@ -685,15 +648,13 @@
                       <var>item</var> of <var>modifier</var>.<a data-lt=
                       "PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>:
                         <ol>
-                          <li>Let <var>value</var> be
+                          <li>Let <var>amount</var> be
                           <var>item</var>.<a data-lt=
-                          "PaymentItem.amount">amount</a>.<a data-lt=
-                          "PaymentCurrencyAmount.value">value</a>.
+                          "PaymentItem.amount">amount</a>.
                           </li>
-                          <li>If <var>value</var> is not a <a>valid decimal
-                          monetary value</a>, then throw a <a>TypeError</a>,
-                          optionally informing the developer that the value is
-                          invalid.
+                          <li>
+                            <a>Check and canonicalize <var>amount</var></a>.
+                            Rethrow any exceptions.
                           </li>
                         </ol>
                       </li>
@@ -866,8 +827,8 @@
               <var>paymentMethod</var> tuple.
               </li>
               <li>Let <var>data</var> be the result of <a data-cite=
-              "!ECMA-262-2015#sec-json.parse">JSON-parsing</a> the second
-              element in <var>paymentMethod</var> tuple.
+              "!ECMASCRIPT#sec-json.parse">JSON-parsing</a> the second element
+              in <var>paymentMethod</var> tuple.
               </li>
               <li>If required by the specification that defines the
               <var>identifer</var>, then <a data-cite=
@@ -1297,7 +1258,7 @@
             A URL that indicates the currency system that the <a>currency</a>
             identifier belongs to. By default, the value is
             <code>urn:iso:std:iso:4217</code> indicating that <a>currency</a>
-            is defined by [[ISO4217]] (for example, <code>USD</code> for US
+            is defined by [[!ISO4217]] (for example, <code>USD</code> for US
             Dollars).
           </dd>
         </dl>
@@ -1307,9 +1268,21 @@
           <dfn>currency</dfn>
         </dt>
         <dd>
-          A string containing a currency identifier. The value of
-          <a>currency</a> can be any string that is valid within the currency
-          system indicated by <a>currencySystem</a>.
+          <p>
+            A string containing a currency identifier. The value of
+            <a>currency</a> can be any string that is valid within the currency
+            system indicated by <a>currencySystem</a>.
+          </p>
+          <p>
+            When using [[!ISO4217]], all <a data-cite=
+            "!ecma-402#sec-iswellformedcurrencycode">well-formed</a> 3-letter
+            currency codes are allowed. Their canonical form is upper case.
+            However, the set of combinations of currency code for which
+            localized currency symbols are available is implementation
+            dependent. Where a localized currency symbol is not available, a
+            user agent SHOULD us the [[!ISO4217]] currency code SHOULD be used
+            for formatting.
+          </p>
         </dd>
         <dt>
           <dfn>value</dfn>
@@ -1321,12 +1294,85 @@
       <p>
         The following example shows how to represent US$55.00.
       </p>
-      <pre class="example">
-{
-  "currency": "USD",
-  "value" : "55.00"
-}
+      <pre class="example js">
+        {
+          "currency": "USD",
+          "value" : "55.00"
+        }
       </pre>
+      <section>
+        <h3>
+          Validity checkers
+        </h3>
+        <p>
+          A <dfn data-cite="INFRA#javascript-string">JavaScript string</dfn> is
+          a <dfn>valid decimal monetary value</dfn> if it consists of the
+          following <dfn data-lt="code point" data-cite="INFRA#code-point">code
+          points</dfn> in the given order: [[!INFRA]]
+        </p>
+        <ol>
+          <li>Optionally, a single U+002D HYPHEN-MINUS (-), to indicate that
+          the amount is negative.
+          </li>
+          <li>One or more <a>code points</a> in the range U+0030 DIGIT ZERO (0)
+          to U+0039 DIGIT NINE (9).
+          </li>
+          <li>Optionally, a single U+002E FULL STOP (.) followed by one or more
+          <a>code points</a> in the range U+0030 DIGIT ZERO (0) to U+0039 DIGIT
+          NINE (9).
+          </li>
+        </ol>
+        <div class="note">
+          The following regular expression is an implementation of the above
+          definition.
+          <pre class="hljs">^-?[0-9]+(\.[0-9]+)?$</pre>
+        </div>
+        <p>
+          To <dfn data-lt="check and canonicalize amount">check and
+          canonicalize <var>amount</var> <a>PaymentCurrencyAmount</a></dfn>,
+          run the following steps:
+        </p>
+        <ol data-link-for="PaymentCurrencyAmount">
+          <li>If <a>currencySystem</a> is not
+          <code>urn:iso:std:iso:4217</code>, terminate this algorithm.
+          </li>
+          <li>let <var>isValidCurrency</var> be the result of calling
+          <a data-cite=
+          "!ecma-402#sec-iswellformedcurrencycode">IsWellFormedCurrencyCode</a>
+          abstract operation with <a>currency</a> as the argument.
+          </li>
+          <li>If <var>isValidCurrency</var> returns false, then throw a
+          <a>RangeError</a> exception and terminate this algorithm, optionally
+          informing the developer that the currency is invalid.
+          </li>
+          <li>Let <var>value</var> be <var>amount</var>'s <a>value</a>.
+          </li>
+          <li>If <var>value</var> is not a <a>valid decimal monetary value</a>,
+          throw a <a>TypeError</a>, optionally informing the developer that the
+          currency is invalid.
+          </li>
+          <li>Canonicalize <a>currency</a> by converting it to upper case.
+          </li>
+        </ol>
+        <p>
+          To <dfn data-lt="check and canonicalize total">check and canonicalize
+          <var>total</var> <a>PaymentCurrencyAmount</a></dfn>, run the
+          following steps:
+        </p>
+        <ol data-link-for="PaymentCurrencyAmount">
+          <li>If <a>currencySystem</a> is not
+          <code>urn:iso:std:iso:4217</code>, terminate this algorithm.
+          </li>
+          <li>
+            <a>Check and canonicalize <var>amount</var></a>. Rethrow any
+            exceptions.
+          </li>
+          <li>If the first <a>code point</a> of <var>value</var> is U+002D
+          HYPHEN-MINUS, then throw a <a>TypeError</a> optionally informing the
+          developer that a total can't be a negative number.
+          </li>
+        </ol>
+      </section>
     </section>
     <section>
       <h2>
@@ -2343,18 +2389,14 @@
                     <li data-link-for="PaymentDetailsUpdate">If the
                     <a>total</a> member of <var>details</var> is present, then:
                       <ol>
-                        <li>Let <var>value</var> be
+                        <li>Let <var>total</var> be
                         <var>details</var>.<a>total</a>.<a data-lt=
-                        "PaymentItem.amount">amount</a>.<a data-lt=
-                        "PaymentCurrencyAmount.value">value</a>.
+                        "PaymentItem.amount">amount</a>.
                         </li>
-                        <li>If <var>value</var> is not a <a>valid decimal
-                        monetary value</a>, then <a>abort the update</a> with a
-                        <a>TypeError</a>.
-                        </li>
-                        <li>If the first <a>code point</a> of <var>value</var>
-                        is U+002D HYPHEN-MINUS, then <a>abort the update</a>
-                        with a <a>TypeError</a>.
+                        <li>
+                          <a>Check and canonicalize <var>total</var></a>. If an
+                          exception is thrown, then <a>abort the update</a>
+                          with that exception.
                         </li>
                       </ol>
                     </li>
@@ -2362,11 +2404,13 @@
                     is present, then for each <var>item</var> in
                     <var>details</var>.<a>displayItems</a>:
                       <ol>
-                        <li>If <var>item</var>.<a data-lt=
-                        "PaymentItem.amount">amount</a>.<a data-lt=
-                        "PaymentCurrencyAmount.value">value</a> is not a
-                        <a>valid decimal monetary value</a>, then <a>abort the
-                        update</a> with a <a>TypeError</a>.
+                        <li>Let <var>amount</var> be
+                          <var>item</var>.<a data-lt="PaymentItem.amount">amount</a>.
+                        </li>
+                        <li>
+                          <a>Check and canonicalize <var>amount</var></a>. If
+                          an exception is thrown, then <a>abort the update</a>
+                          with that exception.
                         </li>
                       </ol>
                     </li>
@@ -2384,11 +2428,14 @@
                         <li>For each <var>option</var> in
                         <var>shippingOptions</var>:
                           <ol>
-                            <li>If <var>option</var>.<a data-lt=
-                            "PaymentShippingOption.amount">amount</a>.<a data-lt="PaymentCurrencyAmount.value">value</a>
-                              is not a <a>valid decimal monetary value</a>,
-                              then <a>abort the update</a> with a
-                              <a>TypeError</a>.
+                            <li>Let <var>amount</var> be
+                            <var>option</var>.<a data-lt=
+                            "PaymentShippingOption.amount">amount</a>.
+                            </li>
+                            <li>
+                              <a>Check and canonicalize <var>amount</var></a>.
+                              If an exception is thrown, then <a>abort the
+                              update</a> with that exception.
                             </li>
                             <li>If <var>seenIDs</var> contains
                             <var>option</var>.<a data-lt=
@@ -2430,19 +2477,15 @@
                             <li>If the <a>total</a> member of
                             <var>modifier</var> is present, then:
                               <ol>
-                                <li>Let <var>value</var> be
+                                <li>Let <var>total</var> be
                                 <var>modifier</var>.<a>total</a>.<a data-lt=
-                                "PaymentItem.amount">amount</a>.<a data-lt=
-                                "PaymentCurrencyAmount.value">value</a>.
+                                "PaymentItem.amount">amount</a>.
                                 </li>
-                                <li>If <var>value</var> is not a <a>valid
-                                decimal monetary value</a>, then <a>abort the
-                                update</a> with a <a>TypeError</a>.
-                                </li>
-                                <li>If the first <a>code point</a> of
-                                <var>value</var> is U+002D HYPHEN-MINUS, then
-                                <a>abort the update</a> with a
-                                <a>TypeError</a>.
+                                <li>
+                                  <a>Check and canonicalize
+                                  <var>total</var></a>. If an exception is
+                                  thrown, then <a>abort the update</a> with
+                                  that exception.
                                 </li>
                               </ol>
                             </li>
@@ -2451,14 +2494,15 @@
                             <a>PaymentItem</a> <var>item</var> in
                             <var>modifier</var>.<a>additionalDisplayItems</a>:
                               <ol>
-                                <li>Let <var>amountValue</var> be
+                                <li>Let <var>amount</var> be
                                 <var>item</var>.<a data-lt=
-                                "PaymentItem.amount">amount</a>.<a data-lt=
-                                "PaymentCurrencyAmount.value">value</a>.
+                                "PaymentItem.amount">amount</a>.
                                 </li>
-                                <li>If <var>amountValue</var> is not a <a>valid
-                                decimal monetary value</a>, then <a>abort the
-                                update</a> with a <a>TypeError</a>.
+                                <li>
+                                  <a>Check and canonicalize
+                                  <var>amount</var></a>. If an exception is
+                                  thrown, then <a>abort the update</a> with
+                                  that exception.
                                 </li>
                               </ol>
                             </li>
@@ -3002,13 +3046,15 @@
         </dt>
         <dd>
           The terms <dfn data-cite=
-          "!ECMA-262-2015#sec-promise-objects">Promise</dfn>, <dfn data-cite=
-          "!ECMA-262-2015#sec-object-internal-methods-and-internal-slots">internal
+          "!ECMASCRIPT#sec-promise-objects">Promise</dfn>, <dfn data-cite=
+          "!ECMASCRIPT#sec-object-internal-methods-and-internal-slots">internal
           slot</dfn>, <code><dfn data-cite=
-          "!ECMA-262-2015#sec-native-error-types-used-in-this-standard-typeerror">
-          TypeError</dfn></code>, and <code><dfn data-cite=
-          "!ECMA-262-2015#sec-json.stringify">JSON.stringify</dfn></code> are
-          defined by [[!ECMA-262-2015]].
+          "!ECMASCRIPT#sec-native-error-types-used-in-this-standard-rangeerror">
+          RangeError</dfn></code>, <code><dfn data-cite=
+          "!ECMASCRIPT#sec-native-error-types-used-in-this-standard-typeerror">TypeError</dfn></code>,
+          and <code><dfn data-cite=
+          "!ECMASCRIPT#sec-json.stringify">JSON.stringify</dfn></code> are
+          defined by [[!ECMASCRIPT]].
           <p>
             The term <dfn data-lt=
             "JSON-serialized|JSON-serializing">JSON-serialize</dfn> applied to
