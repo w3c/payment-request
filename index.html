@@ -486,14 +486,15 @@
           specific <a data-lt="PaymentMethodData.data">data</a>, the payment
           <var>details</var>, and the payment <var>options</var>.
         </p>
-        <p>
+        <p data-tests="payment-request-constructor.https.html">
           The <code><dfn data-lt=
           "PaymentRequest.PaymentRequest()">PaymentRequest(<var>methodData</var>,
           <var>details</var>, <var>options</var>)</dfn></code> constructor MUST
           act as follows:
         </p>
         <ol data-link-for="PaymentDetailsBase" class="algorithm">
-          <li>If the <a>current settings object</a>'s <a data-cite=
+          <li data-tests="payment-allowed-by-feature-policy.https.sub.html">If
+          the <a>current settings object</a>'s <a data-cite=
           "!HTML#responsible-document">responsible document</a> is not
           <a>allowed to use</a> the feature indicated by attribute name
           <a>allowpaymentrequest</a>, then <a>throw</a> a
