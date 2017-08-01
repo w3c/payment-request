@@ -515,8 +515,10 @@
           <var>details</var>, and the payment <var>options</var>.
         </p>
         <p>
-          The <a>PaymentRequest(methodData, details, options)</a> constructor
-          MUST act as follows:
+          The <code><dfn data-lt=
+          "PaymentRequest.PaymentRequest()">PaymentRequest(<var>methodData</var>,
+          <var>details</var>, <var>options</var>)</dfn></code> constructor MUST
+          act as follows:
         </p>
         <ol data-link-for="PaymentDetailsBase" class="algorithm">
           <li>If the <a>current settings object</a>'s <a data-cite=
@@ -1053,6 +1055,20 @@
           populated when the user provides a shipping address. It is null by
           default. When a user provides a shipping address, the <a>shipping
           address changed algorithm</a> runs.
+        </p>
+      </section>
+      <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
+        <h2>
+          <dfn>shippingType</dfn> attribute
+        </h2>
+        <p>
+          A <a>PaymentRequest</a>'s <a>shippingType</a> attribute is the type
+          of shipping used to fulfill the transaction. Its value is either a
+          <a>PaymentShippingType</a> enum value, or null if none is provided by
+          the developer during <a data-lt=
+          "PaymentRequest.PaymentRequest()">construction</a> (see
+          <a>PaymentOptions</a>'s <a data-lt=
+          "PaymentOptions.shippingType">shippingType</a> member).
         </p>
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
