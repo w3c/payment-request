@@ -832,8 +832,8 @@
               <var>paymentMethod</var> tuple.
               </li>
               <li>Let <var>data</var> be the result of <a data-cite=
-              "!ECMASCRIPT#sec-json.parse">JSON-parsing</a> the second element
-              in <var>paymentMethod</var> tuple.
+              "!ECMASCRIPT#sec-json.parse">JSON-parsing</a> the second item in
+              the <var>paymentMethod</var> tuple.
               </li>
               <li>If required by the specification that defines the
               <var>identifer</var>, then <a data-cite=
@@ -1285,8 +1285,7 @@
             However, the set of combinations of currency code for which
             localized currency symbols are available is implementation
             dependent. Where a localized currency symbol is not available, a
-            user agent SHOULD us the [[!ISO4217]] currency code SHOULD be used
-            for formatting.
+            user agent SHOULD use U+00A4 (¤) for formatting.
           </p>
         </dd>
         <dt>
@@ -1316,8 +1315,8 @@
           points</dfn> in the given order: [[!INFRA]]
         </p>
         <ol>
-          <li>Optionally, a single U+002D HYPHEN-MINUS (-), to indicate that
-          the amount is negative.
+          <li>Optionally, a single U+002D (-), to indicate that the amount is
+          negative.
           </li>
           <li>One or more <a>code points</a> in the range U+0030 DIGIT ZERO (0)
           to U+0039 DIGIT NINE (9).
@@ -1338,25 +1337,28 @@
           run the following steps:
         </p>
         <ol data-link-for="PaymentCurrencyAmount">
-          <li>If <a>currencySystem</a> is not
-          <code>urn:iso:std:iso:4217</code>, terminate this algorithm.
+          <li>If <var>amount</var>.<a>currencySystem</a> is not
+          "<code>urn:iso:std:iso:4217</code>", terminate this algorithm.
           </li>
-          <li>let <var>isValidCurrency</var> be the result of calling
+          <li>Let <var>isValidCurrency</var> be the result of calling
           <a data-cite=
           "!ecma-402#sec-iswellformedcurrencycode">IsWellFormedCurrencyCode</a>
-          abstract operation with <a>currency</a> as the argument.
+          abstract operation with <var>amount</var>.<a>currency</a> as the
+          argument.
           </li>
-          <li>If <var>isValidCurrency</var> returns false, then throw a
+          <li>If <var>isValidCurrency</var> is false, then throw a
           <a>RangeError</a> exception and terminate this algorithm, optionally
           informing the developer that the currency is invalid.
           </li>
-          <li>Let <var>value</var> be <var>amount</var>'s <a>value</a>.
+          <li>Let <var>value</var> be <var>amount</var>.<a>value</a>.
           </li>
           <li>If <var>value</var> is not a <a>valid decimal monetary value</a>,
           throw a <a>TypeError</a>, optionally informing the developer that the
           currency is invalid.
           </li>
-          <li>Canonicalize <a>currency</a> by converting it to upper case.
+          <li>Set <var>amount</var>.<a>currency</a> to the result of
+          <a data-cite="!infra#ascii-uppercase">ASCII uppercasing</a>
+          <var>amount</var>.<a>currency</a>.
           </li>
         </ol>
         <p>
@@ -1365,7 +1367,7 @@
           following steps:
         </p>
         <ol data-link-for="PaymentCurrencyAmount">
-          <li>If <a>currencySystem</a> is not
+          <li>If <var>total</var>.<a>currencySystem</a> is not
           <code>urn:iso:std:iso:4217</code>, terminate this algorithm.
           </li>
           <li>
