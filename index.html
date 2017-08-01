@@ -537,14 +537,11 @@
           </li>
           <li data-link-for="PaymentDetailsInit">Process the total:
             <ol>
-              <li>Let <var>total</var> be
-              <var>details</var>.<a>total</a>.<a data-lt=
-              "PaymentItem.amount">amount</a>.
-              </li>
               <li data-tests=
               "payment-request-ctor-currency-code-checks.https.html">
-                <a>Check and canonicalize <var>total</var></a>. Rethrow any
-                exceptions.
+                <a>Check and canonicalize total</a>
+                <var>details</var>.<a>total</a>.<a data-lt=
+                "PaymentItem.amount">amount</a>. Rethrow any exceptions.
               </li>
             </ol>
           </li>
@@ -552,13 +549,11 @@
           present, then for each <var>item</var> in
           <var>details</var>.<a>displayItems</a>:
             <ol>
-              <li>Let <var>amount</var> be <var>item</var>.<a data-lt=
-              "PaymentItem.amount">amount</a>.
-              </li>
               <li data-tests=
               "payment-request-ctor-currency-code-checks.https.html">
-                <a>Check and canonicalize <var>amount</var></a>. Rethrow any
-                exceptions.
+                <a>Check and canonicalize amount</a>
+                <var>item</var>.<a data-lt="PaymentItem.amount">amount</a>.
+                Rethrow any exceptions.
               </li>
             </ol>
           </li>
@@ -580,13 +575,12 @@
                   </li>
                   <li>For each <var>option</var> in <var>options</var>:
                     <ol>
-                      <li>Let <var>amount</var> be
-                        <var>item</var>.<a data-lt="PaymentItem.amount">amount</a>.
-                      </li>
                       <li data-tests=
                       "payment-request-ctor-currency-code-checks.https.html">
-                        <a>Check and canonicalize <var>amount</var></a>.
-                        Rethrow any exceptions.
+                        <a>Check and canonicalize amount</a>
+                        <var>item</var>.<a data-lt=
+                        "PaymentItem.amount">amount</a>. Rethrow any
+                        exceptions.
                       </li>
                       <li>If <var>seenIDs</var> contains
                       <var>option</var>.<a>id</a>, then set <var>options</var>
@@ -635,13 +629,11 @@
                       "PaymentDetailsModifier.total">total</a> member of <var>
                         modifier</var> is present, then:
                         <ol>
-                          <li>Let <var>total</var> be
-                          <var>modifier</var>.<a data-lt=
-                          "PaymentDetailsModifier.total">total</a>.<a data-lt="PaymentItem.amount">amount</a>
-                          </li>
                           <li data-tests=
                           "payment-request-ctor-currency-code-checks.https.html">
-                            <a>Check and canonicalize <var>total</var></a>.
+                            <a>Check and canonicalize total</a>
+                            <var>modifier</var>.<a data-lt=
+                            "PaymentDetailsModifier.total">total</a>.<a data-lt="PaymentItem.amount">amount</a>.
                             Rethrow any exceptions.
                           </li>
                         </ol>
@@ -652,14 +644,12 @@
                       <var>item</var> of <var>modifier</var>.<a data-lt=
                       "PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>:
                         <ol>
-                          <li>Let <var>amount</var> be
-                          <var>item</var>.<a data-lt=
-                          "PaymentItem.amount">amount</a>.
-                          </li>
                           <li data-tests=
                           "payment-request-ctor-currency-code-checks.https.html">
-                            <a>Check and canonicalize <var>amount</var></a>.
-                            Rethrow any exceptions.
+                            <a>Check and canonicalize amount</a>
+                            <var>item</var>.<a data-lt=
+                            "PaymentItem.amount">amount</a>. Rethrow any
+                            exceptions.
                           </li>
                         </ol>
                       </li>
@@ -1370,7 +1360,7 @@
           <code>urn:iso:std:iso:4217</code>, terminate this algorithm.
           </li>
           <li>
-            <a>Check and canonicalize <var>amount</var></a>. Rethrow any
+            <a>Check and canonicalize amount</a> <var>amount</var>. Rethrow any
             exceptions.
           </li>
           <li>If the first <a>code point</a> of <var>value</var> is U+002D (-),
@@ -2395,14 +2385,12 @@
                     <li data-link-for="PaymentDetailsUpdate">If the
                     <a>total</a> member of <var>details</var> is present, then:
                       <ol>
-                        <li>Let <var>total</var> be
-                        <var>details</var>.<a>total</a>.<a data-lt=
-                        "PaymentItem.amount">amount</a>.
-                        </li>
                         <li>
-                          <a>Check and canonicalize <var>total</var></a>. If an
-                          exception is thrown, then <a>abort the update</a>
-                          with that exception.
+                          <a>Check and canonicalize total</a>
+                          <var>details</var>.<a>total</a>.<a data-lt=
+                          "PaymentItem.amount">amount</a>. If an exception is
+                          thrown, then <a>abort the update</a> with that
+                          exception.
                         </li>
                       </ol>
                     </li>
@@ -2410,13 +2398,12 @@
                     is present, then for each <var>item</var> in
                     <var>details</var>.<a>displayItems</a>:
                       <ol>
-                        <li>Let <var>amount</var> be
-                          <var>item</var>.<a data-lt="PaymentItem.amount">amount</a>.
-                        </li>
                         <li>
-                          <a>Check and canonicalize <var>amount</var></a>. If
-                          an exception is thrown, then <a>abort the update</a>
-                          with that exception.
+                          <a>Check and canonicalize amount</a>
+                          <var>item</var>.<a data-lt=
+                          "PaymentItem.amount">amount</a>. If an exception is
+                          thrown, then <a>abort the update</a> with that
+                          exception.
                         </li>
                       </ol>
                     </li>
@@ -2434,14 +2421,12 @@
                         <li>For each <var>option</var> in
                         <var>shippingOptions</var>:
                           <ol>
-                            <li>Let <var>amount</var> be
-                            <var>option</var>.<a data-lt=
-                            "PaymentShippingOption.amount">amount</a>.
-                            </li>
                             <li>
-                              <a>Check and canonicalize <var>amount</var></a>.
-                              If an exception is thrown, then <a>abort the
-                              update</a> with that exception.
+                              <a>Check and canonicalize amount</a>
+                              <var>option</var>.<a data-lt=
+                              "PaymentShippingOption.amount">amount</a>. If an
+                              exception is thrown, then <a>abort the update</a>
+                              with that exception.
                             </li>
                             <li>If <var>seenIDs</var> contains
                             <var>option</var>.<a data-lt=
@@ -2483,15 +2468,12 @@
                             <li>If the <a>total</a> member of
                             <var>modifier</var> is present, then:
                               <ol>
-                                <li>Let <var>total</var> be
-                                <var>modifier</var>.<a>total</a>.<a data-lt=
-                                "PaymentItem.amount">amount</a>.
-                                </li>
                                 <li>
-                                  <a>Check and canonicalize
-                                  <var>total</var></a>. If an exception is
-                                  thrown, then <a>abort the update</a> with
-                                  that exception.
+                                  <a>Check and canonicalize total</a>
+                                  <var>modifier</var>.<a>total</a>.<a data-lt=
+                                  "PaymentItem.amount">amount</a>. If an
+                                  exception is thrown, then <a>abort the
+                                  update</a> with that exception.
                                 </li>
                               </ol>
                             </li>
@@ -2500,15 +2482,12 @@
                             <a>PaymentItem</a> <var>item</var> in
                             <var>modifier</var>.<a>additionalDisplayItems</a>:
                               <ol>
-                                <li>Let <var>amount</var> be
-                                <var>item</var>.<a data-lt=
-                                "PaymentItem.amount">amount</a>.
-                                </li>
                                 <li>
-                                  <a>Check and canonicalize
-                                  <var>amount</var></a>. If an exception is
-                                  thrown, then <a>abort the update</a> with
-                                  that exception.
+                                  <a>Check and canonicalize amount</a>
+                                  <var>item</var>.<a data-lt=
+                                  "PaymentItem.amount">amount</a>. If an
+                                  exception is thrown, then <a>abort the
+                                  update</a> with that exception.
                                 </li>
                               </ol>
                             </li>
