@@ -1266,7 +1266,7 @@
         </p>
         <dl>
           <dt>
-            <dfn>currencySystem</dfn>
+            <dfn>currencySystem</dfn> member
           </dt>
           <dd>
             A URL that indicates the currency system that the <a>currency</a>
@@ -1279,7 +1279,7 @@
       </div>
       <dl>
         <dt>
-          <dfn>currency</dfn>
+          <dfn>currency</dfn> member
         </dt>
         <dd>
           <p>
@@ -1409,7 +1409,7 @@
         </p>
         <dl>
           <dt>
-            <dfn>displayItems</dfn>
+            <dfn>displayItems</dfn> member
           </dt>
           <dd>
             This sequence of <a>PaymentItem</a> dictionaries contains line
@@ -1424,7 +1424,7 @@
             </p>
           </dd>
           <dt>
-            <dfn>shippingOptions</dfn>
+            <dfn>shippingOptions</dfn> member
           </dt>
           <dd>
             A sequence containing the different shipping options for the user
@@ -1465,7 +1465,7 @@
             </p>
           </dd>
           <dt>
-            <dfn>modifiers</dfn>
+            <dfn>modifiers</dfn> member
           </dt>
           <dd>
             This sequence of <a>PaymentDetailsModifier</a> dictionaries
@@ -1497,7 +1497,7 @@
         </p>
         <dl>
           <dt>
-            <dfn>id</dfn>
+            <dfn>id</dfn> member
           </dt>
           <dd>
             <a>id</a> is a free-form identifier for this payment request.
@@ -1508,7 +1508,7 @@
             </p>
           </dd>
           <dt>
-            <dfn>total</dfn>
+            <dfn>total</dfn> member
           </dt>
           <dd>
             This <a>PaymentItem</a> contains the non-negative total amount of
@@ -1546,7 +1546,7 @@
         </p>
         <dl>
           <dt>
-            <dfn>error</dfn>
+            <dfn>error</dfn> member
           </dt>
           <dd>
             When the payment request is updated using <a data-lt=
@@ -1562,7 +1562,7 @@
             options are available.
           </dd>
           <dt>
-            <dfn>total</dfn>
+            <dfn>total</dfn> member
           </dt>
           <dd>
             This <a>PaymentItem</a> contains the non-negative total amount.
@@ -1597,7 +1597,7 @@
       </p>
       <dl>
         <dt>
-          <dfn>supportedMethods</dfn>
+          <dfn>supportedMethods</dfn> member
         </dt>
         <dd>
           The <a>supportedMethods</a> member is a <a>payment method
@@ -1605,7 +1605,7 @@
           apply if the user select this <a>payment method</a>.
         </dd>
         <dt>
-          <dfn>total</dfn>
+          <dfn>total</dfn> member
         </dt>
         <dd>
           This <a>PaymentItem</a> value overrides the <a data-lt=
@@ -1614,7 +1614,7 @@
           identifiers</a> of the <a>supportedMethods</a> member.
         </dd>
         <dt>
-          <dfn>additionalDisplayItems</dfn>
+          <dfn>additionalDisplayItems</dfn> member
         </dt>
         <dd>
           This sequence of <a>PaymentItem</a> dictionaries provides additional
@@ -1633,7 +1633,7 @@
           </p>
         </dd>
         <dt>
-          <dfn>data</dfn>
+          <dfn>data</dfn> member
         </dt>
         <dd>
           <a>data</a> is an object that provides optional information that
@@ -1655,14 +1655,14 @@
       </pre>
       <dl>
         <dt>
-          <dfn>shipping</dfn>
+          "<dfn>shipping</dfn>"
         </dt>
         <dd>
           This is the default and refers to the address being collected as the
           destination for shipping.
         </dd>
         <dt>
-          <dfn>delivery</dfn>
+          "<dfn>delivery</dfn>"
         </dt>
         <dd>
           This refers to the address being collected as being used for
@@ -1670,7 +1670,7 @@
           might be used for food delivery.
         </dd>
         <dt>
-          <dfn>pickup</dfn>
+          "<dfn>pickup</dfn>"
         </dt>
         <dd>
           This refers to the address being collected as part of a service
@@ -1698,7 +1698,7 @@
       </p>
       <dl>
         <dt>
-          <dfn>requestPayerName</dfn>
+          <dfn>requestPayerName</dfn> member
         </dt>
         <dd>
           This boolean value indicates whether the <a>user agent</a> should
@@ -1707,7 +1707,7 @@
           booking in the payer's name.
         </dd>
         <dt>
-          <dfn>requestPayerEmail</dfn>
+          <dfn>requestPayerEmail</dfn> member
         </dt>
         <dd>
           This boolean value indicates whether the <a>user agent</a> should
@@ -1716,7 +1716,7 @@
           to email a receipt.
         </dd>
         <dt>
-          <dfn>requestPayerPhone</dfn>
+          <dfn>requestPayerPhone</dfn> member
         </dt>
         <dd>
           This boolean value indicates whether the <a>user agent</a> should
@@ -1725,7 +1725,7 @@
           to phone a customer with a billing enquiry.
         </dd>
         <dt>
-          <dfn>requestShipping</dfn>
+          <dfn>requestShipping</dfn> member
         </dt>
         <dd>
           This boolean value indicates whether the <a>user agent</a> should
@@ -1735,7 +1735,7 @@
           an online-only electronic purchase transaction.
         </dd>
         <dt>
-          <dfn>shippingType</dfn>
+          <dfn>shippingType</dfn> member
         </dt>
         <dd>
           Some transactions require an address for delivery but the term
@@ -1769,21 +1769,21 @@
       </p>
       <dl>
         <dt>
-          <dfn>label</dfn>
+          <dfn>label</dfn> member
         </dt>
         <dd>
           This is a human-readable description of the item. The <a>user
           agent</a> may display this to the user.
         </dd>
         <dt>
-          <dfn>amount</dfn>
+          <dfn>amount</dfn> member
         </dt>
         <dd>
           A <a>PaymentCurrencyAmount</a> containing the monetary amount for the
           item.
         </dd>
         <dt>
-          <dfn>pending</dfn>
+          <dfn>pending</dfn> member
         </dt>
         <dd>
           When set to true this flag means that the <a>amount</a> member is not
