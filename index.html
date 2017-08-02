@@ -1946,7 +1946,7 @@
       </p>
       <dl>
         <dt>
-          <dfn>id</dfn>
+          <dfn>id</dfn> member
         </dt>
         <dd>
           This is a string identifier used to reference this
@@ -1954,7 +1954,7 @@
           <a>PaymentRequest</a>.
         </dd>
         <dt>
-          <dfn>label</dfn>
+          <dfn>label</dfn> member
         </dt>
         <dd>
           This is a human-readable description of the item. The <a>user
@@ -1962,14 +1962,14 @@
           the user.
         </dd>
         <dt>
-          <dfn>amount</dfn>
+          <dfn>amount</dfn> member
         </dt>
         <dd>
           A <a>PaymentCurrencyAmount</a> containing the monetary amount for the
           item.
         </dd>
         <dt>
-          <dfn>selected</dfn>
+          <dfn>selected</dfn> member
         </dt>
         <dd>
           This is set to true to indicate that this is the default selected
@@ -2320,11 +2320,11 @@
             <li>If <var>event</var>'s <a>isTrusted</a> attribute is false, then
             then <a>throw</a> a "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
-            <li>Let <var>request</var> be the value of <var>event</var>'s
-            <a data-cite="DOM#dom-event-target">target</a> attribute.
-            </li>
             <li>If <var>event</var>.<a>[[\waitForUpdate]]</a> is true, then <a>
               throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
+            </li>
+            <li>Let <var>request</var> be the value of <var>event</var>'s
+            <a data-cite="DOM#dom-event-target">target</a> attribute.
             </li>
             <li>If <var>request</var>.<a>[[\state]]</a> is not
             "<a>interactive</a>", then <a>throw</a> an
