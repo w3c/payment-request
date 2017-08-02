@@ -1321,9 +1321,9 @@
           <pre class="hljs">^-?[0-9]+(\.[0-9]+)?$</pre>
         </div>
         <p>
-          To <dfn data-lt="check and canonicalize amount">check and
-          canonicalize <var>amount</var> <a>PaymentCurrencyAmount</a></dfn>,
-          run the following steps:
+          To <dfn>check and canonicalize amount</dfn> given a
+          <a>PaymentCurrencyAmount</a> <var>amount</var>, run the following
+          steps:
         </p>
         <ol data-link-for="PaymentCurrencyAmount">
           <li>If <var>amount</var>.<a>currencySystem</a> is not
@@ -1339,11 +1339,9 @@
           <a>RangeError</a> exception and terminate this algorithm, optionally
           informing the developer that the currency is invalid.
           </li>
-          <li>Let <var>value</var> be <var>amount</var>.<a>value</a>.
-          </li>
-          <li>If <var>value</var> is not a <a>valid decimal monetary value</a>,
-          throw a <a>TypeError</a>, optionally informing the developer that the
-          currency is invalid.
+          <li>If <var>amount</var>.<a>value</a> is not a <a>valid decimal
+          monetary value</a>, throw a <a>TypeError</a>, optionally informing
+          the developer that the currency is invalid.
           </li>
           <li>Set <var>amount</var>.<a>currency</a> to the result of
           <a data-cite="!INFRA#ascii-uppercase">ASCII uppercasing</a>
@@ -1351,13 +1349,13 @@
           </li>
         </ol>
         <p>
-          To <dfn data-lt="check and canonicalize total">check and canonicalize
-          <var>total</var> <a>PaymentCurrencyAmount</a></dfn>, run the
-          following steps:
+          To <dfn>check and canonicalize total</dfn> given a
+          <a>PaymentCurrencyAmount</a> <var>total</var>, run the following
+          steps:
         </p>
         <ol data-link-for="PaymentCurrencyAmount">
           <li>If <var>total</var>.<a>currencySystem</a> is not
-          <code>urn:iso:std:iso:4217</code>, terminate this algorithm.
+          "<code>urn:iso:std:iso:4217</code>", terminate this algorithm.
           </li>
           <li>
             <a>Check and canonicalize amount</a> <var>amount</var>. Rethrow any
@@ -3027,7 +3025,7 @@
           </ul>
         </dd>
         <dt>
-          ECMA-262 6th Edition, The ECMAScript 2015 Language Specification
+          ECMAScript
         </dt>
         <dd>
           The terms <dfn data-cite=
