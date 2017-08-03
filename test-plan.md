@@ -62,3 +62,8 @@ The core of the W3C test infrastructure is a JavaScript-based test harness calle
 
 The best place for contributors to ask questions and get help quickly is on the IRC channel `#testing` on the [`irc.w3.org`](http://irc.w3.org/) server. We also use the mailing list `public-test-infra@w3.org`, which contributors can subscribe to by sending a message with `Subject: Subscribe` to `public-test-infra-request@w3.org`.
 
+# Notes from Ian who set things up
+* Cloned https://github.com/w3c/web-platform-tests
+* Edited Hosts file per the [W3C Test Readme](https://github.com/w3c/web-platform-tests/blob/master/README.md)
+* To test in Chrome on Mac desktop, enabled "experiment web features" in about:config.
+* Open up tests, e.g., with http://localhost:8000/payment-request/
