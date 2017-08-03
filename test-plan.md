@@ -69,3 +69,4 @@ The best place for contributors to ask questions and get help quickly is on the 
 * To test in Chrome on Mac desktop, enabled "experiment web features" in about:config.
 * Open http://localhost:8000/payment-request/
 * Filenames matter (e.g., https in payment-request-show-method.https.html).
+* Look at existing test files for how they reference testharness.js and testharnessreport.js. The latter relates to machine readable reporting.
