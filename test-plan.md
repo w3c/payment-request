@@ -68,3 +68,4 @@ The best place for contributors to ask questions and get help quickly is on the 
 * Start local server by running web-platform-tests/wpt serve
 * To test in Chrome on Mac desktop, enabled "experiment web features" in about:config.
 * Open http://localhost:8000/payment-request/
+* Filenames matter (e.g., https in payment-request-show-method.https.html).
