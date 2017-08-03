@@ -65,5 +65,6 @@ The best place for contributors to ask questions and get help quickly is on the 
 # Notes from Ian who set things up
 * Cloned https://github.com/w3c/web-platform-tests
 * Edited Hosts file per the [W3C Test Readme](https://github.com/w3c/web-platform-tests/blob/master/README.md)
+* Start local server by running web-platform-tests/wpt serve
 * To test in Chrome on Mac desktop, enabled "experiment web features" in about:config.
 * Open up tests, e.g., with http://localhost:8000/payment-request/
