@@ -841,9 +841,9 @@
               </li>
               <li>Determine which <a>payment handlers</a> support
               <var>identifier</var>. For each resulting payment handler, if
-              payment method specific capabilities supplied by the payment
-              handler match those provided by <var>data</var>, the payment
-              handler matches.
+              <var>data</var> contains filters that exclude the payment
+              handler, then the payment handler does not match, otherwise the
+              payment handler matches.
               </li>
             </ol>
           </li>
