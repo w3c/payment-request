@@ -755,6 +755,14 @@
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object on
           which the method is called.
           </li>
+          <li>Let <var>document</var> be <var>request</var>'s <a data-cite=
+          "!HTML#concept-relevant-global">relevant global object</a>'s
+            <a href="!HTML#concept-document-window">associated Document</a>.
+          </li>
+          <li>If <var>document</var> is not <a data-cite="!HTML#fully-active">
+            fully active</a>, then return a promise rejected with an
+            "<a>AbortError</a>" <a>DOMException</a>.
+          </li>
           <li>
             <p>
               Optionally, if the <a>user agent</a> wishes to disallow the call
@@ -872,6 +880,14 @@
               by either the <a>user accepts the payment request algorithm</a>
               or the <a>user aborts the payment request algorithm</a>, which
               are triggered through interaction with the user interface.
+            </p>
+            <p>
+              If <var>document</var> stops being <a data-cite=
+              "!HTML#fully-active">fully active</a> while the user interface is
+              being shown, or no longer is by the time this step is reached,
+              then the user interface should be hidden, and
+              <var>acceptPromise</var> should be rejected with an
+              "<a>AbortError</a>" <a>DOMException</a>.
             </p>
           </li>
         </ol>
