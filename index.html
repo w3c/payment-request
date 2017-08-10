@@ -818,6 +818,8 @@
           <li>Return <var>acceptPromise</var> and perform the remaining steps
           <a>in parallel</a>.
           </li>
+          <li>Let <var>handlers</var> be an empty unordered set.
+          </li>
           <li>For each <var>paymentMethod</var> tuple in
           <var>request</var>.<a>[[\serializedMethodData]]</a>:
             <ol>
@@ -825,8 +827,8 @@
               <var>paymentMethod</var> tuple.
               </li>
               <li>Let <var>data</var> be the result of <a data-cite=
-              "!ECMASCRIPT#sec-json.parse">JSON-parsing</a> the second item in
-              the <var>paymentMethod</var> tuple.
+              "!ECMASCRIPT#sec-json.parse">JSON-parsing</a> the second element
+              in the <var>paymentMethod</var> tuple.
               </li>
               <li>If required by the specification that defines the
               <var>identifer</var>, then <a data-cite=
@@ -839,33 +841,36 @@
               <var>acceptPromise</var> with that error and terminate this
               algorithm.
               </li>
-              <li>Determine which <a>payment handlers</a> support
-              <var>identifier</var>. For each resulting payment handler, if
-              payment method specific capabilities supplied by the payment
-              handler match those provided by <var>data</var>, the payment
-              handler matches.
+              <li>If the user agent has a registered <a>payment handler</a>
+              that supports <var>identifier</var>, then check if the payment
+              handler is authorized and capable of handling the payment request
+              with <var>data</var>. If the check returns in the affirmative,
+              then add payment handler to <a>handlers</a>.
               </li>
             </ol>
           </li>
-          <li>If this consultation produced no supported method of paying, then
-          reject <var>acceptPromise</var> with a "<a>NotSupportedError</a>" <a>
-            DOMException</a>, and set the <a>user agent</a>'s <a>payment
-            request is showing</a> boolean to false.
+          <li>If <var>handlers</var> is empty, then reject
+          <var>acceptPromise</var> with a "<a>NotSupportedError</a>"
+          <a>DOMException</a>, and set the <a>user agent</a>'s <a>payment
+          request is showing</a> boolean to false.
           </li>
           <li>
             <p>
-              Otherwise, show a user interface to allow the user to interact
-              with the payment request process, using those <a>payment
-              handlers</a> and <a>payment methods</a> which the above step
-              identified as feasible. The user agent SHOULD prioritize the
-              preference of the user when presenting payment methods and
-              applications.
+              Otherwise, present a user interface to allow the user to interact
+              with the <var>handlers</var>. The user agent SHOULD prioritize
+              the preference of the user when presenting payment methods.
             </p>
             <p>
-              The <a>payment handler</a> should be sent the appropriate data
-              from <var>request</var> in order to guide the user through the
-              payment process. This includes the various attributes and
-              internal slots of <var>request</var>.
+              For the <a>payment handler</a> selected by the end-user, the user
+              agent MUST pass the <a data-cite=
+              "!WEBIDL#dfn-convert-ecmascript-to-idl-value">converted</a>
+              second element in the <var>paymentMethod</var> tuple. Optionally,
+              the user agent SHOULD send the appropriate data from
+              <var>request</var> to the user-selected <a>payment handler</a> in
+              order to guide the user through the payment process. This
+              includes the various attributes and internal slots of
+              <var>request</var> (some MAY be excluded for privacy reasons
+              where appropriate).
             </p>
             <p>
               The <var>acceptPromise</var> will later be resolved or rejected
