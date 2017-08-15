@@ -566,7 +566,7 @@
               then <a>throw</a> a <a>TypeError</a>, optionally informing the
               developer that at least one <a>payment method</a> is required.
               </li>
-              <li>Let <var>seenPMIs</var> be an emtpy list.
+              <li>Let <var>seenPMIs</var> be an empty list.
               </li>
               <li>For each <var>paymentMethod</var> of <var>methodData</var>:
                 <ol>
@@ -582,7 +582,7 @@
                     the developer that the payment method identifier is
                     invalid.
                   </li>
-                  <li>If <a>seenPMIs</a> contains
+                  <li>If <var>seenPMIs</var> contains
                   <var>paymentMethod</var>.<a data-lt=
                   "PaymentMethodData.supportedMethods">supportedMethods</a>,
                   continue to the next <var>paymentMethod</var> of
@@ -2627,7 +2627,7 @@
                             exception, then <a>abort the update</a> with that
                             exception.
                             </li>
-                            <li>If <a>seenPMIs</a> contains
+                            <li>If <var>seenPMIs</var> contains
                             <var>modifier</var>.<a data-lt=
                             "PaymentDetailsModifier.supportedMethods">supportedMethods</a>,
                             continue to the next <var>modifier</var> of
