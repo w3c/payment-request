@@ -430,6 +430,38 @@
           };
         </pre>
       </section>
+      <section data-link-for="PaymentResponse">
+        <h3>
+          POSTing payment response back to a server
+        </h3>
+        <p>
+          It's expected that data in a <a>PaymentResponse</a> will be POSTed
+          back to a server for processing. To make this as easy as possible,
+          <a>PaymentResponse</a> provides a <a>toJSON()</a> method that
+          serializes the object directly into JSON. This makes it trivial to
+          POST the resulting JSON back to a server using the <a data-cite=
+          "fetch">Fetch API</a>:
+        </p>
+        <pre class="example">
+          async function doPaymentRequest() {
+            const payRequest = new PaymentRequest(methodData, details, options);
+            const payResponse = await payRequest.show();
+            let result = "unknown";
+            try {
+              const httpResponse = await fetch("/process-payment", {
+                method: "POST",
+                headers: new Headers({ "Content-Type": "application/json" }),
+                body: payResponse.toJSON(),
+              });
+              result = httpResponse.ok ? "success" : "fail";
+            } catch (err) {
+              console.error(err);
+            }
+            await payResponse.complete(result);
+          }
+          doPaymentRequest();
+        </pre>
+      </section>
     </section>
     <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
       <h2>
