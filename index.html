@@ -450,7 +450,7 @@
             try {
               const httpResponse = await fetch("/process-payment", {
                 method: "POST",
-                headers: new Headers({ "Content-Type": "application/json" }),
+                headers: { "Content-Type": "application/json" },
                 body: payResponse.toJSON(),
               });
               result = httpResponse.ok ? "success" : "fail";
