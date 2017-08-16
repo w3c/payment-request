@@ -446,7 +446,7 @@
           async function doPaymentRequest() {
             const payRequest = new PaymentRequest(methodData, details, options);
             const payResponse = await payRequest.show();
-            let result = "unknown";
+            let result = "";
             try {
               const httpResponse = await fetch("/process-payment", {
                 method: "POST",
@@ -456,6 +456,7 @@
               result = httpResponse.ok ? "success" : "fail";
             } catch (err) {
               console.error(err);
+              result = "fail";
             }
             await payResponse.complete(result);
           }
