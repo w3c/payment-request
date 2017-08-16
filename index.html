@@ -520,8 +520,8 @@
       <p data-link-for="PaymentRequest">
         The <a>shippingAddress</a>, <a>shippingOption</a>, and
         <a>shippingType</a> attributes are populated during processing if the
-        <a data-lt="PaymentOptions.requestShipping">requestShipping</a> flag is
-        set.
+        <a data-lt="PaymentOptions.requestShipping">requestShipping</a> member
+        is set.
       </p>
       <section>
         <h2>
@@ -1854,11 +1854,11 @@
           <dfn>pending</dfn> member
         </dt>
         <dd>
-          When set to true this flag means that the <a>amount</a> member is not
-          final. This is commonly used to show items such as shipping or tax
-          amounts that depend upon selection of shipping address or shipping
-          option. <a>User agents</a> MAY indicate pending fields in the user
-          interface for the payment request.
+          When set to true this member means that the <a>amount</a> member is
+          not final. This is commonly used to show items such as shipping or
+          tax amounts that depend upon selection of shipping address or
+          shipping option. <a>User agents</a> MAY indicate pending fields in
+          the user interface for the payment request.
         </dd>
       </dl>
     </section>
@@ -2141,9 +2141,9 @@
         </h2>
         <p>
           If the <a data-lt=
-          "PaymentOptions.requestShipping">requestShipping</a> flag was set to
-          true in the <a>PaymentOptions</a> passed to the <a>PaymentRequest</a>
-          constructor, then <a data-lt=
+          "PaymentOptions.requestShipping">requestShipping</a> member was set
+          to true in the <a>PaymentOptions</a> passed to the
+          <a>PaymentRequest</a> constructor, then <a data-lt=
           "PaymentRequest.shippingAddress">shippingAddress</a> will be the full
           and final shipping address chosen by the user.
         </p>
@@ -2154,9 +2154,9 @@
         </h2>
         <p>
           If the <a data-lt=
-          "PaymentOptions.requestShipping">requestShipping</a> flag was set to
-          true in the <a>PaymentOptions</a> passed to the <a>PaymentRequest</a>
-          constructor, then <a data-lt=
+          "PaymentOptions.requestShipping">requestShipping</a> member was set
+          to true in the <a>PaymentOptions</a> passed to the
+          <a>PaymentRequest</a> constructor, then <a data-lt=
           "PaymentRequest.shippingOption">shippingOption</a> will be the
           <a data-lt="PaymentShippingOption.id">id</a> attribute of the
           selected shipping option.
@@ -2168,7 +2168,7 @@
         </h2>
         <p>
           If the <a data-lt=
-          "PaymentOptions.requestPayerName">requestPayerName</a> flag was set
+          "PaymentOptions.requestPayerName">requestPayerName</a> member was set
           to true in the <a>PaymentOptions</a> passed to the
           <a>PaymentRequest</a> constructor, then <a data-lt=
           "PaymentResponse.payerName">payerName</a> will be the name provided
@@ -2181,8 +2181,8 @@
         </h2>
         <p>
           If the <a data-lt=
-          "PaymentOptions.requestPayerEmail">requestPayerEmail</a> flag was set
-          to true in the <a>PaymentOptions</a> passed to the
+          "PaymentOptions.requestPayerEmail">requestPayerEmail</a> member was
+          set to true in the <a>PaymentOptions</a> passed to the
           <a>PaymentRequest</a> constructor, then <a data-lt=
           "PaymentResponse.payerEmail">payerEmail</a> will be the email address
           chosen by the user.
@@ -2194,8 +2194,8 @@
         </h2>
         <p>
           If the <a data-lt=
-          "PaymentOptions.requestPayerPhone">requestPayerPhone</a> flag was set
-          to true in the <a>PaymentOptions</a> passed to the
+          "PaymentOptions.requestPayerPhone">requestPayerPhone</a> member was
+          set to true in the <a>PaymentOptions</a> passed to the
           <a>PaymentRequest</a> constructor, then <a data-lt=
           "PaymentResponse.payerPhone">payerPhone</a> will be the phone number
           chosen by the user.
