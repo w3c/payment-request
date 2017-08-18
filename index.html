@@ -566,8 +566,6 @@
               then <a>throw</a> a <a>TypeError</a>, optionally informing the
               developer that at least one <a>payment method</a> is required.
               </li>
-              <li>Let <var>seenPMIs</var> be an empty list.
-              </li>
               <li>For each <var>paymentMethod</var> of <var>methodData</var>:
                 <ol>
                   <li data-tests=
@@ -581,19 +579,6 @@
                     exception and terminate this algorithm. Optionally, inform
                     the developer that the payment method identifier is
                     invalid.
-                  </li>
-                  <li>If <var>seenPMIs</var> contains
-                  <var>paymentMethod</var>.<a data-lt=
-                  "PaymentMethodData.supportedMethods">supportedMethods</a>,
-                  continue to the next <var>paymentMethod</var> of
-                  <var>methodData</var> (if any). Optionally, inform the
-                  developer that <var>paymentMethod</var>.<a data-lt=
-                  "PaymentMethodData.supportedMethods">supportedMethods</a> was
-                  already seen and <var>paymentMethod</var> will be ignored.
-                  </li>
-                  <li>Append <var>paymentMethod</var>.<a data-lt=
-                  "PaymentMethodData.supportedMethods">supportedMethods</a> to
-                  <var>seenPMI</var>.
                   </li>
                   <li>If the <a data-lt="PaymentMethodData.data">data</a>
                   member of <var>paymentMethod</var> is missing, let
@@ -2574,8 +2559,6 @@
                         <li>Let <var>serializedModifierData</var> be an empty
                         list.
                         </li>
-                        <li>Let <var>seenPMIs</var> be an empty list.
-                        </li>
                         <li>For each <a>PaymentDetailsModifier</a>
                         <var>modifier</var> in <var>modifiers</var>:
                           <ol data-link-for="PaymentDetailsModifier">
@@ -2626,20 +2609,6 @@
                             string. If <a>JSON-serializing</a> throws an
                             exception, then <a>abort the update</a> with that
                             exception.
-                            </li>
-                            <li>If <var>seenPMIs</var> contains
-                            <var>modifier</var>.<a data-lt=
-                            "PaymentDetailsModifier.supportedMethods">supportedMethods</a>,
-                            continue to the next <var>modifier</var> of
-                            <var>modifiers</var> (if any). Optionally, inform
-                            the developer that
-                              <var>modifier</var>.<a data-lt="PaymentDetailsModifier.supportedMethods">supportedMethods</a>
-                              was already seen and <var>modifier</var> will be
-                              ignored.
-                            </li>
-                            <li>Append <var>modifier</var>.<a data-lt=
-                            "PaymentDetailsModifier.supportedMethods">supportedMethods</a>
-                            to <var>seenPMI</var>.
                             </li>
                             <li>Add <var>serializedData</var> to
                             <var>serializedModifierData</var>.
