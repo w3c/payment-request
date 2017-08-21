@@ -500,29 +500,31 @@
           attribute EventHandler onshippingoptionchange;
         };
       </pre>
-      <p>
-        A developer creates a <a>PaymentRequest</a> to make a payment request.
-        This is typically associated with the user initiating a payment process
-        (e.g., by activating a "Buy," "Purchase," or "Checkout" button on a web
-        site, selecting a "Power Up" in an interactive game, or paying at a
-        kiosk in a parking structure). The <a>PaymentRequest</a> allows
-        developers to exchange information with the <a>user agent</a> while the
-        user is providing input (up to the point of user approval or denial of
-        the payment request).
-      </p>
-      <p data-link-for="PaymentRequest">
-        Because the simultaneous display of multiple <a>PaymentRequest</a> user
-        interfaces might confuse the user, this specification limits the
-        <a>user agent</a> to displaying one at a time via the <a>show()</a>
-        method. This is ensured by a <dfn>payment request is showing</dfn>
-        boolean.
-      </p>
-      <p data-link-for="PaymentRequest">
-        The <a>shippingAddress</a>, <a>shippingOption</a>, and
-        <a>shippingType</a> attributes are populated during processing if the
-        <a data-lt="PaymentOptions.requestShipping">requestShipping</a> member
-        is set.
-      </p>
+      <div class="note">
+        <p>
+          A developer creates a <a>PaymentRequest</a> to make a payment
+          request. This is typically associated with the user initiating a
+          payment process (e.g., by activating a "Buy," "Purchase," or
+          "Checkout" button on a web site, selecting a "Power Up" in an
+          interactive game, or paying at a kiosk in a parking structure). The
+          <a>PaymentRequest</a> allows developers to exchange information with
+          the <a>user agent</a> while the user is providing input (up to the
+          point of user approval or denial of the payment request).
+        </p>
+        <p data-link-for="PaymentRequest">
+          Because the simultaneous display of multiple <a>PaymentRequest</a>
+          user interfaces might confuse the user, this specification limits the
+          <a>user agent</a> to displaying one at a time via the <a>show()</a>
+          method. This is ensured by a <dfn>payment request is showing</dfn>
+          boolean.
+        </p>
+        <p data-link-for="PaymentRequest">
+          The <a>shippingAddress</a>, <a>shippingOption</a>, and
+          <a>shippingType</a> attributes are populated during processing if the
+          <a data-lt="PaymentOptions.requestShipping">requestShipping</a>
+          member is set.
+        </p>
+      </div>
       <section>
         <h2>
           Constructor
