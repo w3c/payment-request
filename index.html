@@ -2417,6 +2417,9 @@
             <li>If <var>event</var>'s <a>isTrusted</a> attribute is false, then
             then <a>throw</a> a "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
+            <li>If <var>event</var>.<a>[[\didUpdate]]</a> is true, then
+            <a>throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
+            </li>
             <li>If <var>event</var>.<a>[[\waitForUpdate]]</a> is true, then <a>
               throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
@@ -2443,11 +2446,6 @@
             required by the change. Developers MUST settle the
             <var>detailsPromise</var> to indicate that the payment request is
             valid again.
-              <p>
-                The <a>user agent</a> SHOULD disable any part of the user
-                interface that could cause another update event to be fired.
-                Only one update may be processed at a time.
-              </p>
             </li>
             <li>
               <p>
@@ -2705,6 +2703,8 @@
               <ol>
                 <li>Set <var>event</var>.<a>[[\waitForUpdate]]</a> to false.
                 </li>
+                <li>Set <var>event</var>.<a>[[\didUpdate]]</a> to to true.
+                </li>
                 <li>Set <var>request</var>.<a>[[\updating]]</a> to false.
                 </li>
                 <li>The <a>user agent</a> should update the user interface
@@ -2774,6 +2774,14 @@
               <td>
                 A boolean indicating whether an <a>updateWith()</a>-initiated
                 update is currently in progress.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <dfn>[[\didUpdate]]</dfn>
+              </td>
+              <td>
+                A boolean indicating whether the event performed an update.
               </td>
             </tr>
           </table>
@@ -2880,9 +2888,19 @@
           further action. The <a>user agent</a> user interface should ensure
           that this never occurs.
           </li>
-          <li>
-            <a>Fire an event</a> named <var>name</var> at <var>request</var>
-            using <a>PaymentRequestUpdateEvent</a>.
+          <li>Let <var>event</var> be the result of <a>fire an event</a> named
+          <var>name</var> at <var>request</var> using
+          <a>PaymentRequestUpdateEvent</a>.
+          </li>
+          <li data-link-for="PaymentRequestUpdateEvent">If
+          <var>event</var>.<a>[[\waitForUpdate]]</a> is true, disable any part
+          of the user interface that could cause another update event to be
+          fired. Wait for <var>event</var>.<a>updateWith()</a> method's
+          <var>detailsPromise</var> to settle.
+          </li>
+          <li>Otherwise, <var>event</var>.<a>[[\waitForUpdate]]</a> is false,
+          then set <var>event</var>.<a>[[\didUpdate]]</a> to true and update
+          the user interface based on any changed values.
           </li>
         </ol>
       </section>
