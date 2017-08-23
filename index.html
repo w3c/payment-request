@@ -400,7 +400,7 @@
               }
             } catch (err) {
               // Something went wrong...
-              response.complete("unknown");
+              await response.complete("fail");
             }
           }
           doPaymentRequest();
@@ -419,18 +419,11 @@
         </p>
         <pre class="example" title="Registering event handlers">
           const request = new PaymentRequest(methodData, details, options);
-          request.onshippingaddresschange = async ev =&gt; {
-            // Can we ship here?
-            try {
-              const json = request.shippingAddress.toJSON();
-              const { shippingOptions, total } = await calculateShipping(json);
-              const newDetails = {...details, ...{ shippingOptions, total }};
-              ev.updateWith(newDetails);
-            } catch (err) {
-              ev.updateWith({ error: `Sorry! we can't ship to your address.` });
-            }
+          // Async update to details
+          request.onshippingaddresschange = ev =&gt;{
+            ev.updateWith(checkShipping(request))
           };
-          // update the total
+          // Sync update to the total
           request.onshippingoptionchange = ev =&gt; {
             const shippingOption = shippingOptions.find(
               option =&gt; option.id === request.id
@@ -442,6 +435,18 @@
             };
             ev.updateWith({ ...details, total: newTotal });
           };
+          async function checkShipping(request) {
+            const newDetails = { ...details };
+            try {
+              const json = request.shippingAddress.toJSON();
+              // E.g., Check if we can actually ship to this address...
+              const { shippingOptions, total } = await calculateShipping(json);
+              Object.assign(newDetails, { shippingOptions, total });
+            } catch (err) {
+              Object.assign(newDetails, { error: `Sorry! we can't ship to your address.` });
+            }
+            return newDetails;
+          }
         </pre>
       </section>
       <section data-link-for="PaymentResponse">
