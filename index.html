@@ -420,8 +420,8 @@
         <pre class="example" title="Registering event handlers">
           const request = new PaymentRequest(methodData, details, options);
           // Async update to details
-          request.onshippingaddresschange = ev =&gt;{
-            ev.updateWith(checkShipping(request))
+          request.onshippingaddresschange = ev =&gt; {
+            ev.updateWith(checkShipping(request));
           };
           // Sync update to the total
           request.onshippingoptionchange = ev =&gt; {
@@ -443,7 +443,9 @@
               const { shippingOptions, total } = await calculateShipping(json);
               Object.assign(newDetails, { shippingOptions, total });
             } catch (err) {
-              Object.assign(newDetails, { error: `Sorry! we can't ship to your address.` });
+              Object.assign(newDetails, {
+                error: `Sorry! we can't ship to your address.`,
+              });
             }
             return newDetails;
           }
