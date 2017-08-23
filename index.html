@@ -2458,13 +2458,14 @@
                 The remaining steps are conditional on the
                 <var>detailsPromise</var> settling. If
                 <var>detailsPromise</var> never settles then the payment
-                request is blocked. Users SHOULD always be able to cancel a
-                payment request. Implementations MAY choose to implement a
-                timeout for pending updates if <var>detailsPromise</var>
-                doesn't settle in a reasonable amount of time. If an
-                implementation chooses to implement a timeout, they must
-                execute the steps listed below in the "upon rejection" path.
-                Such a timeout is a fatal error for the payment request.
+                request is blocked. A user agent SHOULD allow the user to
+                cancel a payment request. Implementations MAY choose to
+                implement a timeout for pending updates if
+                <var>detailsPromise</var> doesn't settle in a reasonable amount
+                of time. If an implementation chooses to implement a timeout,
+                they must execute the steps listed below in the "upon
+                rejection" path. Such a timeout is a fatal error for the
+                payment request.
               </p>
             </li>
             <li>
