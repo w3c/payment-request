@@ -939,8 +939,8 @@
               If <var>document</var> stops being <a data-cite=
               "!HTML#fully-active">fully active</a> while the user interface is
               being shown, or no longer is by the time this step is reached,
-              then the user interface should be hidden, and
-              <var>acceptPromise</var> should be rejected with an
+              then the user interface SHOULD be hidden, and
+              <var>acceptPromise</var> SHOULD be rejected with an
               "<a>AbortError</a>" <a>DOMException</a>.
             </p>
           </li>
@@ -1772,7 +1772,7 @@
           <dfn>requestPayerName</dfn> member
         </dt>
         <dd>
-          This boolean value indicates whether the <a>user agent</a> should
+          This boolean value indicates whether the <a>user agent</a> SHOULD
           collect and return the payer's name as part of the payment request.
           For example, this would be set to true to allow a merchant to make a
           booking in the payer's name.
@@ -1781,7 +1781,7 @@
           <dfn>requestPayerEmail</dfn> member
         </dt>
         <dd>
-          This boolean value indicates whether the <a>user agent</a> should
+          This boolean value indicates whether the <a>user agent</a> SHOULD
           collect and return the payer's email address as part of the payment
           request. For example, this would be set to true to allow a merchant
           to email a receipt.
@@ -1790,7 +1790,7 @@
           <dfn>requestPayerPhone</dfn> member
         </dt>
         <dd>
-          This boolean value indicates whether the <a>user agent</a> should
+          This boolean value indicates whether the <a>user agent</a> SHOULD
           collect and return the payer's phone number as part of the payment
           request. For example, this would be set to true to allow a merchant
           to phone a customer with a billing enquiry.
@@ -1799,7 +1799,7 @@
           <dfn>requestShipping</dfn> member
         </dt>
         <dd>
-          This boolean value indicates whether the <a>user agent</a> should
+          This boolean value indicates whether the <a>user agent</a> SHOULD
           collect and return a shipping address as part of the payment request.
           For example, this would be set to true when physical goods need to be
           shipped by the merchant to the user. This would be set to false for
@@ -2707,7 +2707,7 @@
                 </li>
                 <li>Set <var>request</var>.<a>[[\updating]]</a> to false.
                 </li>
-                <li>The <a>user agent</a> should update the user interface
+                <li>The <a>user agent</a> SHOULD update the user interface
                 based on any changed values in <var>request</var>. The user
                 agent SHOULD re-enable user interface elements that might have
                 been disabled in the steps above if appropriate.
@@ -2872,12 +2872,12 @@
         <ol class="algorithm">
           <li>If the <var>request</var>.<a>[[\updating]]</a> is true, then
           terminate this algorithm and take no further action. Only one update
-          may take place at a time. The <a>user agent</a> should ensure that
+          may take place at a time. The <a>user agent</a> SHOULD ensure that
           this never occurs.
           </li>
           <li>If the <var>request</var>.<a>[[\state]]</a> is not set to
           "<a>interactive</a>", then terminate this algorithm and take no
-          further action. The <a>user agent</a> user interface should ensure
+          further action. The <a>user agent</a> user interface SHOULD ensure
           that this never occurs.
           </li>
           <li>
@@ -2903,11 +2903,11 @@
           </li>
           <li>If the <var>request</var>.<a>[[\updating]]</a> is true, then
           terminate this algorithm and take no further action. The <a>user
-          agent</a> user interface should ensure that this never occurs.
+          agent</a> user interface SHOULD ensure that this never occurs.
           </li>
           <li>If <var>request</var>.<a>[[\state]]</a> is not
           "<a>interactive</a>", then terminate this algorithm and take no
-          further action. The <a>user agent</a> user interface should ensure
+          further action. The <a>user agent</a> user interface SHOULD ensure
           that this never occurs.
           </li>
           <li>If the <a data-lt=
@@ -2917,7 +2917,7 @@
           attribute of <var>request</var> is null or if the <a data-lt=
           "PaymentRequest.shippingOption">shippingOption</a> attribute of <var>
             request</var> is null, then terminate this algorithm and take no
-            further action. The <a>user agent</a> should ensure that this never
+            further action. The <a>user agent</a> SHOULD ensure that this never
             occurs.
           </li>
           <li>Let <var>response</var> be a new <a>PaymentResponse</a>.
@@ -3008,11 +3008,11 @@
           </li>
           <li>If the <var>request</var>.<a>[[\updating]]</a> is true, then
           terminate this algorithm and take no further action. The <a>user
-          agent</a> user interface should ensure that this never occurs.
+          agent</a> user interface SHOULD ensure that this never occurs.
           </li>
           <li>If <var>request</var>.<a>[[\state]]</a> is not
           "<a>interactive</a>", then terminate this algorithm and take no
-          further action. The <a>user agent</a> user interface should ensure
+          further action. The <a>user agent</a> user interface SHOULD ensure
           that this never occurs.
           </li>
           <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
