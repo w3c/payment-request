@@ -436,18 +436,16 @@
             ev.updateWith({ ...details, total: newTotal });
           };
           async function checkShipping(request) {
-            const newDetails = { ...details };
             try {
               const json = request.shippingAddress.toJSON();
-              // E.g., Check if we can actually ship to this address...
+
+              await ensureCanShipTo(json);
               const { shippingOptions, total } = await calculateShipping(json);
-              Object.assign(newDetails, { shippingOptions, total });
+
+              return { ...details, shippingOptions, total };
             } catch (err) {
-              Object.assign(newDetails, {
-                error: `Sorry! we can't ship to your address.`,
-              });
+              return { ...details, error: `Sorry! we can't ship to your address.` };
             }
-            return newDetails;
           }
         </pre>
       </section>
