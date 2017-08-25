@@ -2424,7 +2424,7 @@
             <pre class="example" title="how to use `updateWith()` correctly.">
               // ❌ Bad - this won't work!
               request.onshippingaddresschange = async ev =&gt; {
-                // Next tick, so [[didUpdate]] is now true.
+                // `await` goes to next tick, so [[didUpdate]] is now true.
                 const details = await Promise.resolve({ ...details, ...updatedProps });
                 // 💥 Too late, throws "InvalidStateError".
                 ev.updateWith(details);
