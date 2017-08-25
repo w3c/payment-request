@@ -2442,14 +2442,14 @@
               <a>PaymentRequestUpdateEvent</a>.
             </p>
             <pre class="example" title="can only call `upadteWith()` once">
-               // ❌ Bad - calling updateWith() doesn't work!
+              // ❌ Bad - calling updateWith() doesn't work!
               request.addEventListener("shippingaddresschange", async ev =&gt; {
                 ev.updateWith(details); // this is ok.
                 // 💥 [[waitForUpdate]] is true, throws an "InvalidStateError".
                 ev.updateWith(otherDetails);
               });
 
-               // ❌ Bad - this won't work either!
+              // ❌ Bad - this won't work either!
               request.addEventListener("shippingaddresschange", async ev =&gt; {
                 const p = Promise.resolve({ ...details });
                 ev.updateWith(p);
