@@ -2426,11 +2426,11 @@
               request.onshippingaddresschange = async ev =&gt; {
                 // Next tick, so [[didUpdate]] is now true.
                 const details = await Promise.resolve({ ...details, ...updatedProps });
-                // 💥 Too late, throws "InvalidStateError"
+                // 💥 Too late, throws "InvalidStateError".
                 ev.updateWith(details);
               };
 
-              // ✅ Good - UI will wait
+              // ✅ Good - UI will wait.
               request.onshippingaddresschange = async ev =&gt; {
                 //  This is fine, of course.
                 const promiseForNewDetails = getNewDetails(oldDetails);
@@ -2445,7 +2445,7 @@
                // ❌ Bad - calling updateWith() doesn't work!
               request.addEventListener("shippingaddresschange", async ev =&gt; {
                 ev.updateWith(details); // this is ok.
-                // 💥 [[waitForUpdate]] is true, throws an "InvalidStateError"!
+                // 💥 [[waitForUpdate]] is true, throws an "InvalidStateError".
                 ev.updateWith(otherDetails);
               });
 
@@ -2454,7 +2454,7 @@
                 const p = Promise.resolve({ ...details });
                 ev.updateWith(p);
                 await p;
-                // 💥 [[didUpdate]] is now true, throws "InvalidStateError"!
+                // 💥 [[didUpdate]] is now true, throws "InvalidStateError".
                 ev.updateWith({ ...newDetails });
               });
             </pre>
