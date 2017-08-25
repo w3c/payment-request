@@ -2554,8 +2554,8 @@
                             <li>If <var>seenIDs</var> contains
                             <var>option</var>.<a data-lt=
                             "PaymentShippingOption.id">id</a>, then <a>abort
-                            the update</a> with a "<a>ConstraintError</a>"
-                            <a>DOMException</a>.
+                            the update</a> with a "<a>ConstraintError</a>" <a>
+                              DOMException</a>.
                             </li>
                             <li>Otherwise, append
                               <var>option</var>.<a data-lt="PaymentShippingOption.id">id</a>
@@ -2704,10 +2704,11 @@
                     <li>If <var>request</var>.<a>[[\options]]</a>.<a data-lt=
                     "PaymentOptions.requestShipping">requestShipping</a> is
                     true, and the <a data-lt=
-                    "PaymentDetailsUpdate.error">error</a> is present, the user
-                    agent SHOULD request that the user selected an alternative
-                    shipping address, or be given the option abort the payment
-                    request. The user agent SHOULD display the <a data-lt=
+                    "PaymentDetailsUpdate.error">error</a> member of
+                    <var>details</var> is present, the user agent SHOULD
+                    request that the user selected an alternative shipping
+                    address, or be given the option abort the payment request.
+                    The user agent SHOULD display the <a data-lt=
                     "PaymentDetailsUpdate.error">error</a> member of
                     <var>details</var> to give more information about why the
                     address can't be used to complete the transaction.
