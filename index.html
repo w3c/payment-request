@@ -2909,9 +2909,15 @@
           further action. The <a>user agent</a> user interface SHOULD ensure
           that this never occurs.
           </li>
-          <li>Let <var>event</var> be the result of <a>fire an event</a> named
-          <var>name</var> at <var>request</var> using
+          <li>Let <var>event</var> be the result of <a data-cite=
+          "!DOM#concept-event-create">creating an event</a> using
           <a>PaymentRequestUpdateEvent</a>.
+          </li>
+          <li>Initialize <var>event</var>'s type attribute to <var>name</var>.
+          </li>
+          <li>
+            <a data-cite="!DOM#concept-event-dispatch">Dispatch</a>
+            <var>event</var> at <var>request</var>.
           </li>
           <li data-link-for="PaymentRequestUpdateEvent">If
           <var>event</var>.<a>[[\waitForUpdate]]</a> is true, disable any part
