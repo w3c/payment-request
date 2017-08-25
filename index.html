@@ -2426,7 +2426,7 @@
               request.onshippingaddresschange = async ev =&gt; {
                 // Next tick, so [[didUpdate]] is now true.
                 const details = await Promise.resolve({ ...details, ...updatedProps });
-                // 💥 Too late, will throw an "InvalidStateError"
+                // 💥 Too late, throws "InvalidStateError"
                 ev.updateWith(details);
               };
 
@@ -2442,14 +2442,21 @@
               <a>PaymentRequestUpdateEvent</a>.
             </p>
             <pre class="example" title="can only call `upadteWith()` once">
-              request.onshippingaddresschange = async ev =&gt; {
+               // ❌ Bad - calling updateWith() doesn't work!
+              request.addEventListener("shippingaddresschange", async ev =&gt; {
+                ev.updateWith(details); // this is ok.
+                // 💥 [[waitForUpdate]] is true, throws an "InvalidStateError"!
+                ev.updateWith(otherDetails);
+              });
+
+               // ❌ Bad - this won't work either!
+              request.addEventListener("shippingaddresschange", async ev =&gt; {
                 const p = Promise.resolve({ ...details });
                 ev.updateWith(p);
                 await p;
-                // 💥 [[didUpdate]] is true, this would throw an "InvalidStateError"
-                const q = Promise.resolve({ ...details });
-                ev.updateWith(q);
-              };
+                // 💥 [[didUpdate]] is now true, throws "InvalidStateError"!
+                ev.updateWith({ ...newDetails });
+              });
             </pre>
           </aside>
           <p>
