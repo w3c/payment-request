@@ -2406,13 +2406,52 @@
           <h2>
             <dfn data-lt="updateWith(detailsPromise)">updateWith()</dfn> method
           </h2>
-          <p class="note">
-            If a developer wants to update the payment request, then they need
-            to call <a>updateWith()</a> and provide a
-            <a>PaymentDetailsUpdate</a> dictionary, or a promise for one,
-            containing changed values that the <a>user agent</a> presents to
-            the user.
-          </p>
+          <aside class="note">
+            <p>
+              If a developer wants to update the payment request, then they
+              need to call <a>updateWith()</a> and provide a
+              <a>PaymentDetailsUpdate</a> dictionary, or a promise for one,
+              containing changed values that the <a>user agent</a> presents to
+              the user.
+            </p>
+            <p>
+              To prevent the user interface from blocking (and to reflect
+              changes made by the end-user through the UI), developers need to
+              immediately call <a>updateWith()</a>. If they don't,
+              <a>[[\didUpdate]]</a> becomes true and <a>updateWith()</a>
+              will throw.
+            </p>
+            <pre class="example" title="how to use `updateWith()` correctly.">
+              // ❌ Bad - this won't work!
+              request.onshippingaddresschange = async ev =&gt; {
+                // Next tick, so [[didUpdate]] is now true.
+                const details = await Promise.resolve({ ...details, ...updatedProps });
+                // 💥 Too late, will throw an "InvalidStateError"
+                ev.updateWith(details);
+              };
+
+              // ✅ Good - UI will wait
+              request.onshippingaddresschange = async ev =&gt; {
+                //  This is fine, of course.
+                const promiseForNewDetails = getNewDetails(oldDetails);
+                ev.updateWith(promiseForNewDetails);
+              };
+            </pre>
+            <p>
+              Additionally, <a>[[\didUpdate]]</a> prevents reuse of
+              <a>PaymentRequestUpdateEvent</a>.
+            </p>
+            <pre class="example" title="can only call `upadteWith()` once">
+              request.onshippingaddresschange = async ev =&gt; {
+                const p = Promise.resolve({ ...details });
+                ev.updateWith(p);
+                await p;
+                // 💥 [[didUpdate]] is true, this would throw an "InvalidStateError"
+                const q = Promise.resolve({ ...details });
+                ev.updateWith(q);
+              };
+            </pre>
+          </aside>
           <p>
             The <a>updateWith(detailsPromise)</a> method MUST act as follows:
           </p>
