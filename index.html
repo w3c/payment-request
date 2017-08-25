@@ -647,10 +647,12 @@
                         exceptions.
                       </li>
                       <li>If <var>seenIDs</var> contains
-                      <var>option</var>.<a>id</a>, then set <var>options</var>
-                      to an empty sequence and break.
+                      <var>option</var>.<a>id</a>, then throw a
+                      "<a>ConstraintError</a>" <a>DOMException</a>. Optionally,
+                      inform the developer that shipping option IDs must be
+                      unique.
                       </li>
-                      <li>Append <var>option</var>.<a>id</a> to
+                      <li>Otherwise, append <var>option</var>.<a>id</a> to
                       <var>seenIDs</var>.
                       </li>
                     </ol>
@@ -1512,11 +1514,6 @@
           <dd>
             A sequence containing the different shipping options for the user
             to choose from.
-            <p>
-              If the sequence is empty, then this indicates that the merchant
-              cannot ship to the current <a data-lt=
-              "PaymentRequest.shippingAddress">shippingAddress</a>.
-            </p>
             <p>
               If an item in the sequence has the <a data-lt=
               "PaymentShippingOption.selected">selected</a> member set to true,
@@ -2556,12 +2553,13 @@
                             </li>
                             <li>If <var>seenIDs</var> contains
                             <var>option</var>.<a data-lt=
-                            "PaymentShippingOption.id">id</a>, then set
-                            <var>options</var> to an empty sequence and break.
+                            "PaymentShippingOption.id">id</a>, then <a>abort
+                            the update</a> with a "ConstraintError"
+                            DOMException.
                             </li>
-                            <li>Append <var>option</var>.<a data-lt=
-                            "PaymentShippingOption.id">id</a> to
-                            <var>seenIDs</var>.
+                            <li>Otherwise, append
+                              <var>option</var>.<a data-lt="PaymentShippingOption.id">id</a>
+                              to <var>seenIDs</var>.
                             </li>
                           </ol>
                         </li>
@@ -2705,20 +2703,14 @@
                     </li>
                     <li>If <var>request</var>.<a>[[\options]]</a>.<a data-lt=
                     "PaymentOptions.requestShipping">requestShipping</a> is
-                    true, and
-                    <var>request</var>.<a>[[\details]]</a>.<a>shippingOptions</a>
-                    is empty, then the developer has signified that there are
-                    no valid shipping options for the currently-chosen shipping
-                    address (given by <var>request</var>'s <a data-lt=
-                    "PaymentRequest.shippingAddress">shippingAddress</a>). In
-                    this case, the user agent SHOULD display an error
-                    indicating this, and MAY indicate that the currently-chosen
-                    shipping address is invalid in some way. The user agent
-                    SHOULD use the <a data-lt=
+                    true, and the <a data-lt=
+                    "PaymentDetailsUpdate.error">error</a> is present, the user
+                    agent SHOULD request that the user selected an alternative
+                    shipping address, or be given the option abort the payment
+                    request. The user agent SHOULD display the <a data-lt=
                     "PaymentDetailsUpdate.error">error</a> member of
-                    <var>details</var>, if it is present, to give more
-                    information about why there are no valid shipping options
-                    for that address.
+                    <var>details</var> to give more information about why the
+                    address can't be used to complete the transaction.
                     </li>
                   </ol>
                 </li>
@@ -3229,6 +3221,8 @@
             following <a>DOMException</a> types from [[!WEBIDL]] are used:
             "<code><dfn data-cite=
             "!WEBIDL#aborterror">AbortError</dfn></code>",
+            "<code><dfn data-cite=
+            "!WEBIDL#constrainterror">ConstraintError</dfn></code>",
             "<code><dfn data-cite=
             "!WEBIDL#invalidstateerror">InvalidStateError</dfn></code>",
             "<code><dfn data-cite=
