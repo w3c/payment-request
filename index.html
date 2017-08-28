@@ -2393,12 +2393,6 @@
           details of the payment request in response to a user interaction.
         </p>
         <p>
-          If a developer wants to update the payment request, then they need to
-          call <a>updateWith()</a> and provide a <a>PaymentDetailsUpdate</a>
-          dictionary, or a promise for one, containing changed values that the
-          <a>user agent</a> SHOULD present to the user.
-        </p>
-        <p>
           The <a>PaymentRequestUpdateEvent</a> constructor MUST set the
           internal slot <a>[[\waitForUpdate]]</a> to false.
         </p>
@@ -2418,32 +2412,33 @@
               To prevent the user interface from blocking (and to reflect
               changes made by the end-user through the UI), developers need to
               immediately call <a>updateWith()</a>. If they don't,
-              <a>[[\didUpdate]]</a> becomes true and <a>updateWith()</a>
-              will throw.
+              <a>[[\updatedUI]]</a> becomes true and <a>updateWith()</a> will
+              throw.
             </p>
             <pre class="example" title="how to use `updateWith()` correctly.">
               // ❌ Bad - this won't work!
               request.onshippingaddresschange = async ev =&gt; {
-                // `await` goes to next tick, so [[didUpdate]] is now true.
-                const details = await Promise.resolve({ ...details, ...updatedProps });
+                // await goes to next tick, and updateWith() was not
+                // called before that, so [[updatedUI]] gets set to true.
+                const details = await getNewDetails(oldDetails);
                 // 💥 Too late, throws "InvalidStateError".
                 ev.updateWith(details);
               };
 
               // ✅ Good - UI will wait.
-              request.onshippingaddresschange = async ev =&gt; {
-                //  This is fine, of course.
+              request.onshippingaddresschange = ev =&gt; {
+                // Calling updateWith() with a promise is ok 👍
                 const promiseForNewDetails = getNewDetails(oldDetails);
                 ev.updateWith(promiseForNewDetails);
               };
             </pre>
             <p>
-              Additionally, <a>[[\didUpdate]]</a> prevents reuse of
-              <a>PaymentRequestUpdateEvent</a>.
+              Additionally, <a>[[\updatedUI]]</a> and <a>[[\waitForUpdate]]</a>
+              together prevent reuse of <a>PaymentRequestUpdateEvent</a>.
             </p>
-            <pre class="example" title="can only call `upadteWith()` once">
+            <pre class="example" title="can only call `updateWith()` once">
               // ❌ Bad - calling updateWith() doesn't work!
-              request.addEventListener("shippingaddresschange", async ev =&gt; {
+              request.addEventListener("shippingaddresschange", ev =&gt; {
                 ev.updateWith(details); // this is ok.
                 // 💥 [[waitForUpdate]] is true, throws an "InvalidStateError".
                 ev.updateWith(otherDetails);
@@ -2454,7 +2449,8 @@
                 const p = Promise.resolve({ ...details });
                 ev.updateWith(p);
                 await p;
-                // 💥 [[didUpdate]] is now true, throws "InvalidStateError".
+                // 💥 the update has now completed, so [[updatedUI]] gets set to
+                // true; this throws "InvalidStateError"
                 ev.updateWith({ ...newDetails });
               });
             </pre>
@@ -2469,7 +2465,7 @@
             <li>If <var>event</var>'s <a>isTrusted</a> attribute is false, then
             then <a>throw</a> a "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
-            <li>If <var>event</var>.<a>[[\didUpdate]]</a> is true, then
+            <li>If <var>event</var>.<a>[[\updatedUI]]</a> is true, then
             <a>throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
             <li>If <var>event</var>.<a>[[\waitForUpdate]]</a> is true, then <a>
@@ -2768,7 +2764,7 @@
               <ol>
                 <li>Set <var>event</var>.<a>[[\waitForUpdate]]</a> to false.
                 </li>
-                <li>Set <var>event</var>.<a>[[\didUpdate]]</a> to true.
+                <li>Set <var>event</var>.<a>[[\updatedUI]]</a> to true.
                 </li>
                 <li>Set <var>request</var>.<a>[[\updating]]</a> to false.
                 </li>
@@ -2843,7 +2839,7 @@
             </tr>
             <tr>
               <td>
-                <dfn>[[\didUpdate]]</dfn>
+                <dfn>[[\updatedUI]]</dfn>
               </td>
               <td>
                 A boolean indicating whether the event performed an update.
@@ -2959,7 +2955,8 @@
           "!DOM#concept-event-create">creating an event</a> using
           <a>PaymentRequestUpdateEvent</a>.
           </li>
-          <li>Initialize <var>event</var>'s type attribute to <var>name</var>.
+          <li>Initialize <var>event</var>'s <a data-cite="!DOM#dom-event-type">
+            type</a> attribute to <var>name</var>.
           </li>
           <li>
             <a data-cite="!DOM#concept-event-dispatch">Dispatch</a>
@@ -2968,10 +2965,9 @@
           <li data-link-for="PaymentRequestUpdateEvent">If
           <var>event</var>.<a>[[\waitForUpdate]]</a> is true, disable any part
           of the user interface that could cause another update event to be
-          fired. Wait for <var>event</var>.<a>updateWith()</a> method's
-          <var>detailsPromise</var> to settle.
+          fired.
           </li>
-          <li>Otherwise, set <var>event</var>.<a>[[\didUpdate]]</a> to true and
+          <li>Otherwise, set <var>event</var>.<a>[[\updatedUI]]</a> to true and
           update the user interface based on any changed values.
           </li>
         </ol>
