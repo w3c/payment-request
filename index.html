@@ -570,6 +570,18 @@
               </li>
               <li>For each <var>paymentMethod</var> of <var>methodData</var>:
                 <ol>
+                  <li data-tests=
+                  "payment-request-ctor-pmi-handling.https.html">Run the steps
+                  to <a data-cite=
+                  "payment-method-id#dfn-validate-a-payment-method-identifier">
+                    validate a payment method identifier</a> with
+                    <var>paymentMethod</var>.<a data-lt=
+                    "PaymentMethodData.supportedMethods">supportedMethods</a>.
+                    If it returns false, then throw a <a>RangeError</a>
+                    exception and terminate this algorithm. Optionally, inform
+                    the developer that the payment method identifier is
+                    invalid.
+                  </li>
                   <li>If the <a data-lt="PaymentMethodData.data">data</a>
                   member of <var>paymentMethod</var> is missing, let
                   <var>serializedData</var> be null. Otherwise, let
@@ -2579,6 +2591,18 @@
                         <li>For each <a>PaymentDetailsModifier</a>
                         <var>modifier</var> in <var>modifiers</var>:
                           <ol data-link-for="PaymentDetailsModifier">
+                            <li data-tests=
+                            "updateWith-method-pmi-handling-manual.https.html">
+                            Run the steps to <a data-cite=
+                            "payment-method-id#dfn-validate-a-payment-method-identifier">
+                              validate a payment method identifier</a> with
+                              <var>modifier</var>.<a data-lt=
+                              "PaymentDetailsModifier.supportedMethods">supportedMethods</a>.
+                              If it returns false, then <a>abort the update</a>
+                              with a <a>RangeError</a> exception. Optional,
+                              inform the developer that the payment method
+                              identifier is invalid.
+                            </li>
                             <li>If the <a>total</a> member of
                             <var>modifier</var> is present, then:
                               <ol>
