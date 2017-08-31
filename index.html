@@ -648,7 +648,7 @@
                       </li>
                       <li>If <var>seenIDs</var> contains
                       <var>option</var>.<a>id</a>, then throw a
-                      "<a>ConstraintError</a>" <a>DOMException</a>. Optionally,
+                      "<a>TypeError</a>" <a>DOMException</a>. Optionally,
                       inform the developer that shipping option IDs must be
                       unique.
                       </li>
@@ -2554,7 +2554,7 @@
                             <li>If <var>seenIDs</var> contains
                             <var>option</var>.<a data-lt=
                             "PaymentShippingOption.id">id</a>, then <a>abort
-                            the update</a> with a "<a>ConstraintError</a>" <a>
+                            the update</a> with a "<a>TypeError</a>" <a>
                               DOMException</a>.
                             </li>
                             <li>Otherwise, append
@@ -3223,8 +3223,6 @@
             "<code><dfn data-cite=
             "!WEBIDL#aborterror">AbortError</dfn></code>",
             "<code><dfn data-cite=
-            "!WEBIDL#constrainterror">ConstraintError</dfn></code>",
-            "<code><dfn data-cite=
             "!WEBIDL#invalidstateerror">InvalidStateError</dfn></code>",
             "<code><dfn data-cite=
             "!WEBIDL#notallowederror">NotAllowedError</dfn></code>",
@@ -3253,7 +3251,7 @@
       </p>
       <p>
         User agents MAY impose implementation-specific limits on otherwise
-        unconstrained inputs, e.g., to prevent denial of service attacks, to
+        unTypeError inputs, e.g., to prevent denial of service attacks, to
         guard against running out of memory, or to work around
         platform-specific limitations. When an input exceeds
         implementation-specific limit, the user agent MUST throw, or, in the
