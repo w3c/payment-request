@@ -2550,7 +2550,9 @@
                               exception is thrown, then <a>abort the update</a>
                               with that exception.
                             </li>
-                            <li>If <var>seenIDs</var> contains
+                            <li data-tests=
+                            "PaymentRequestUpdateEvent/updateWith-duplicate-shipping-options-manual.https.html">
+                            If <var>seenIDs</var> contains
                             <var>option</var>.<a data-lt=
                             "PaymentShippingOption.id">id</a>, then <a>abort
                             the update</a> with a <a>TypeError</a>.
