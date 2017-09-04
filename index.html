@@ -647,17 +647,16 @@
                         exceptions.
                       </li>
                       <li>If <var>seenIDs</var> contains
-                      <var>option</var>.<a>id</a>, then set <var>options</var>
-                      to an empty sequence and break.
+                      <var>option</var>.<a>id</a>, then throw a
+                      <a>TypeError</a>. Optionally, inform the developer that
+                      shipping option IDs must be unique.
                       </li>
-                      <li>Append <var>option</var>.<a>id</a> to
+                      <li>Otherwise, append <var>option</var>.<a>id</a> to
                       <var>seenIDs</var>.
                       </li>
                     </ol>
                   </li>
-                  <li>For each <var>option</var> in <var>options</var> (which
-                  may have been reset to the empty sequence in the previous
-                  step):
+                  <li>For each <var>option</var> in <var>options</var>:
                     <ol>
                       <li>If <var>option</var>.<a>selected</a> is true, then
                       set <var>selectedShippingOption</var> to
@@ -1512,11 +1511,6 @@
           <dd>
             A sequence containing the different shipping options for the user
             to choose from.
-            <p>
-              If the sequence is empty, then this indicates that the merchant
-              cannot ship to the current <a data-lt=
-              "PaymentRequest.shippingAddress">shippingAddress</a>.
-            </p>
             <p>
               If an item in the sequence has the <a data-lt=
               "PaymentShippingOption.selected">selected</a> member set to true,
@@ -2555,20 +2549,21 @@
                               exception is thrown, then <a>abort the update</a>
                               with that exception.
                             </li>
-                            <li>If <var>seenIDs</var> contains
+                            <li data-tests=
+                            "PaymentRequestUpdateEvent/updateWith-duplicate-shipping-options-manual.https.html">
+                            If <var>seenIDs</var> contains
                             <var>option</var>.<a data-lt=
-                            "PaymentShippingOption.id">id</a>, then set
-                            <var>options</var> to an empty sequence and break.
+                            "PaymentShippingOption.id">id</a>, then <a>abort
+                            the update</a> with a <a>TypeError</a>.
                             </li>
-                            <li>Append <var>option</var>.<a data-lt=
-                            "PaymentShippingOption.id">id</a> to
-                            <var>seenIDs</var>.
+                            <li>Otherwise, append
+                              <var>option</var>.<a data-lt="PaymentShippingOption.id">id</a>
+                              to <var>seenIDs</var>.
                             </li>
                           </ol>
                         </li>
                         <li>For each <var>option</var> in
-                        <var>shippingOptions</var> (which may have been reset
-                        to the empty sequence in the previous step):
+                        <var>shippingOptions</var>:
                           <ol>
                             <li>If <var>option</var>.<a data-lt=
                             "PaymentShippingOption.selected">selected</a> is
