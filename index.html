@@ -417,7 +417,7 @@
           (or modifying their cost), removing items that cannot ship to a
           particular address, etc.
         </p>
-        <pre class="example">
+        <pre class="example" title="Registering event handlers">
           const request = new PaymentRequest(methodData, details, options);
           request.onshippingaddresschange = async ev =&gt; {
             // Can we ship here?
@@ -456,7 +456,7 @@
           POST the resulting JSON back to a server using the <a data-cite=
           "fetch">Fetch API</a>:
         </p>
-        <pre class="example">
+        <pre class="example" title="POSTing with `fetch()`">
           async function doPaymentRequest() {
             const payRequest = new PaymentRequest(methodData, details, options);
             const payResponse = await payRequest.show();
@@ -512,19 +512,19 @@
           point of user approval or denial of the payment request).
         </p>
         <p data-link-for="PaymentRequest">
-          Because the simultaneous display of multiple <a>PaymentRequest</a>
-          user interfaces might confuse the user, this specification limits the
-          <a>user agent</a> to displaying one at a time via the <a>show()</a>
-          method. This is ensured by a <dfn>payment request is showing</dfn>
-          boolean.
-        </p>
-        <p data-link-for="PaymentRequest">
           The <a>shippingAddress</a>, <a>shippingOption</a>, and
           <a>shippingType</a> attributes are populated during processing if the
           <a data-lt="PaymentOptions.requestShipping">requestShipping</a>
           member is set.
         </p>
       </div>
+      <p data-link-for="PaymentRequest">
+        Because the simultaneous display of multiple <a>PaymentRequest</a> user
+        interfaces might confuse the user, this specification limits the
+        <a>user agent</a> to displaying one at a time via the <a>show()</a>
+        method. This is ensured by a <dfn>payment request is showing</dfn>
+        boolean.
+      </p>
       <section>
         <h2>
           Constructor
