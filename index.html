@@ -2411,9 +2411,7 @@
             <p>
               To prevent the user interface from blocking (and to reflect
               changes made by the end-user through the UI), developers need to
-              immediately call <a>updateWith()</a>. If they don't,
-              <a>[[\updatedUI]]</a> becomes true and <a>updateWith()</a> will
-              throw.
+              immediately call <a>updateWith()</a>.
             </p>
             <pre class="example" title="how to use `updateWith()` correctly.">
               // ❌ Bad - this won't work!
@@ -2433,8 +2431,8 @@
               };
             </pre>
             <p>
-              Additionally, <a>[[\updatedUI]]</a> and <a>[[\waitForUpdate]]</a>
-              together prevent reuse of <a>PaymentRequestUpdateEvent</a>.
+              Additionally, <a>[[\waitForUpdate]]</a> prevents reuse of
+              <a>PaymentRequestUpdateEvent</a>.
             </p>
             <pre class="example" title="can only call `updateWith()` once">
               // ❌ Bad - calling updateWith() doesn't work!
