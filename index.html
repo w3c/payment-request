@@ -1294,25 +1294,21 @@
         supported <a>payment methods</a> and any associated <a>payment
         method</a> specific data for those methods.
       </p>
-      <p>
-        The following members are part of the <a>PaymentMethodData</a>
-        dictionary:
-      </p>
       <dl>
         <dt>
           <dfn>supportedMethods</dfn> member
         </dt>
         <dd>
-          <a>supportedMethods</a> is a <a>payment method identifier</a> for a
-          <a>payment method</a> that the merchant web site accepts.
+          A <a>payment method identifier</a> for a <a>payment method</a> that
+          the merchant web site accepts.
         </dd>
         <dt>
           <dfn>data</dfn> member
         </dt>
         <dd>
-          <a>data</a> is an object that provides optional information that
-          might be needed by the supported payment methods. If supplied, it
-          will be <a>JSON-serialized</a>.
+          An object that provides optional information that might be needed by
+          the supported payment methods. If supplied, it will be
+          <a>JSON-serialized</a>.
         </dd>
       </dl>
       <p class="note">
@@ -1484,33 +1480,30 @@
           sequence&lt;PaymentShippingOption&gt; shippingOptions;
           sequence&lt;PaymentDetailsModifier&gt; modifiers;
         };
-      </pre>
-        <p>
-          The following members are part of the <a>PaymentDetailsBase</a>
-          dictionary:
-        </p>
+        </pre>
         <dl>
           <dt>
             <dfn>displayItems</dfn> member
           </dt>
           <dd>
-            This sequence of <a>PaymentItem</a> dictionaries contains line
-            items for the payment request that the <a>user agent</a> MAY
-            display. For example, it might include details of products or
-            breakdown of tax and shipping. It is optional to provide this
-            information.
-            <p class="note">
+            A sequence of <a>PaymentItem</a> dictionaries contains line items
+            for the payment request that the <a>user agent</a> MAY display. For
+            example, it might include details of products or breakdown of tax
+            and shipping. It is optional to provide this information.
+            <aside class="note">
               It is the developer's responsibility to verify that the
               <a data-lt="PaymentDetailsInit.total">total</a> amount is the sum
               of these items.
-            </p>
+            </aside>
           </dd>
           <dt>
             <dfn>shippingOptions</dfn> member
           </dt>
           <dd>
-            A sequence containing the different shipping options for the user
-            to choose from.
+            <p>
+              A sequence containing the different shipping options for the user
+              to choose from.
+            </p>
             <p>
               If an item in the sequence has the <a data-lt=
               "PaymentShippingOption.selected">selected</a> member set to true,
@@ -1531,7 +1524,7 @@
               <a data-lt="PaymentOptions.requestShipping">requestShipping</a>
               set to true.
             </p>
-            <p class="note">
+            <aside class="note">
               If the sequence has an item with the <a data-lt=
               "PaymentShippingOption.selected">selected</a> member set to true,
               then authors are responsible for ensuring that the <a data-lt=
@@ -1539,13 +1532,13 @@
               the shipping option. This is because no
               <a>shippingoptionchange</a> event will be fired for this option
               unless the user selects an alternative option first.
-            </p>
+            </aside>
           </dd>
           <dt>
             <dfn>modifiers</dfn> member
           </dt>
           <dd>
-            This sequence of <a>PaymentDetailsModifier</a> dictionaries
+            A sequence of <a>PaymentDetailsModifier</a> dictionaries that
             contains modifiers for particular payment method identifiers. For
             example, it allows you to adjust the total amount based on payment
             method.
@@ -1558,15 +1551,15 @@
           <dfn>PaymentDetailsInit</dfn> dictionary
         </h2>
         <pre class="idl">
-        dictionary PaymentDetailsInit : PaymentDetailsBase {
-          DOMString id;
-          required PaymentItem total;
-        };
-      </pre>
-        <p class="note">
+          dictionary PaymentDetailsInit : PaymentDetailsBase {
+            DOMString id;
+            required PaymentItem total;
+          };
+        </pre>
+        <aside class="note">
           The <a>PaymentDetailsInit</a> dictionary is used in the construction
           of the payment request.
-        </p>
+        </aside>
         <p>
           In addition to the members inherited from the
           <a>PaymentDetailsBase</a> dictionary, the following members are part
@@ -1577,26 +1570,26 @@
             <dfn>id</dfn> member
           </dt>
           <dd>
-            <a>id</a> is a free-form identifier for this payment request.
-            <p class="note">
+            A free-form identifier for this payment request.
+            <aside class="note">
               If an <a>id</a> member is not present, then the <a>user agent</a>
               will generate a unique identifier for the payment request during
               <a data-lt="PaymentRequest.PaymentRequest()">construction</a>.
-            </p>
+            </aside>
           </dd>
           <dt>
             <dfn>total</dfn> member
           </dt>
           <dd>
-            This <a>PaymentItem</a> contains the non-negative total amount of
-            the payment request.
-            <p class="note">
+            A <a>PaymentItem</a> containing a non-negative total amount for the
+            payment request.
+            <aside class="note">
               Algorithms in this specification that accept a
               <a>PaymentDetailsInit</a> dictionary will throw if the
               <a>total</a>.<a data-lt=
               "PaymentItem.amount">amount</a>.<a data-lt=
               "PaymentCurrencyAmount.value">value</a> is a negative number.
-            </p>
+            </aside>
           </dd>
         </dl>
       </section>
@@ -1606,11 +1599,11 @@
           <dfn>PaymentDetailsUpdate</dfn> dictionary
         </h2>
         <pre class="idl">
-        dictionary PaymentDetailsUpdate : PaymentDetailsBase {
-          DOMString error;
-          PaymentItem total;
-        };
-      </pre>
+          dictionary PaymentDetailsUpdate : PaymentDetailsBase {
+            DOMString error;
+            PaymentItem total;
+          };
+        </pre>
         <p>
           The <a>PaymentDetailsUpdate</a> dictionary is used to update the
           payment request using <a data-lt=
@@ -1626,9 +1619,9 @@
             <dfn>error</dfn> member
           </dt>
           <dd>
-            When the payment request is updated using <a data-lt=
-            "PaymentRequestUpdateEvent.updateWith">updateWith()</a>, the
-            <a>PaymentDetailsUpdate</a> can contain a message in the
+            A human-readable string. When the payment request is updated using
+            <a data-lt="PaymentRequestUpdateEvent.updateWith">updateWith()</a>,
+            the <a>PaymentDetailsUpdate</a> can contain a message in the
             <a>error</a> member that will be displayed to the user, if the
             <a>PaymentDetailsUpdate</a> indicates that there are no valid
             <a data-lt="PaymentDetailsBase.shippingOptions">shippingOptions</a>
@@ -1642,7 +1635,8 @@
             <dfn>total</dfn> member
           </dt>
           <dd>
-            This <a>PaymentItem</a> contains the non-negative total amount.
+            A <a>PaymentItem</a> contains the non-negative <a data-lt=
+            "PaymentItem.amount">amount</a>.
             <p class="note">
               Algorithms in this specification that accept a
               <a>PaymentDetailsUpdate</a> dictionary will throw if the
@@ -1677,15 +1671,15 @@
           <dfn>supportedMethods</dfn> member
         </dt>
         <dd>
-          The <a>supportedMethods</a> member is a <a>payment method
-          identifier</a>. The members of the <a>PaymentDetailsModifier</a> only
-          apply if the user select this <a>payment method</a>.
+          A <a>payment method identifier</a>. The members of the
+          <a>PaymentDetailsModifier</a> only apply if the user select this
+          <a>payment method</a>.
         </dd>
         <dt>
           <dfn>total</dfn> member
         </dt>
         <dd>
-          This <a>PaymentItem</a> value overrides the <a data-lt=
+          A <a>PaymentItem</a> value that overrides the <a data-lt=
           "PaymentDetailsInit.total">total</a> member in the
           <a>PaymentDetailsInit</a> dictionary for the <a>payment method
           identifiers</a> of the <a>supportedMethods</a> member.
@@ -1694,7 +1688,7 @@
           <dfn>additionalDisplayItems</dfn> member
         </dt>
         <dd>
-          This sequence of <a>PaymentItem</a> dictionaries provides additional
+          A sequence of <a>PaymentItem</a> dictionaries provides additional
           display items that are appended to the <a data-lt=
           "PaymentDetailsBase.displayItems">displayItems</a> member in the
           <a>PaymentDetailsBase</a> dictionary for the <a>payment method
@@ -1713,9 +1707,8 @@
           <dfn>data</dfn> member
         </dt>
         <dd>
-          <a>data</a> is an object that provides optional information that
-          might be needed by the supported payment methods. If supplied, it
-          will be <a>JSON-serialized</a>.
+          An object that provides optional information that might be needed by
+          the supported payment methods.
         </dd>
       </dl>
     </section>
@@ -1778,36 +1771,36 @@
           <dfn>requestPayerName</dfn> member
         </dt>
         <dd>
-          This boolean value indicates whether the <a>user agent</a> SHOULD
-          collect and return the payer's name as part of the payment request.
-          For example, this would be set to true to allow a merchant to make a
+          A boolean that indicates whether the <a>user agent</a> SHOULD collect
+          and return the payer's name as part of the payment request. For
+          example, this would be set to true to allow a merchant to make a
           booking in the payer's name.
         </dd>
         <dt>
           <dfn>requestPayerEmail</dfn> member
         </dt>
         <dd>
-          This boolean value indicates whether the <a>user agent</a> SHOULD
-          collect and return the payer's email address as part of the payment
-          request. For example, this would be set to true to allow a merchant
-          to email a receipt.
+          A boolean that indicates whether the <a>user agent</a> SHOULD collect
+          and return the payer's email address as part of the payment request.
+          For example, this would be set to true to allow a merchant to email a
+          receipt.
         </dd>
         <dt>
           <dfn>requestPayerPhone</dfn> member
         </dt>
         <dd>
-          This boolean value indicates whether the <a>user agent</a> SHOULD
-          collect and return the payer's phone number as part of the payment
-          request. For example, this would be set to true to allow a merchant
-          to phone a customer with a billing enquiry.
+          A boolean that indicates whether the <a>user agent</a> SHOULD collect
+          and return the payer's phone number as part of the payment request.
+          For example, this would be set to true to allow a merchant to phone a
+          customer with a billing enquiry.
         </dd>
         <dt>
           <dfn>requestShipping</dfn> member
         </dt>
         <dd>
-          This boolean value indicates whether the <a>user agent</a> SHOULD
-          collect and return a shipping address as part of the payment request.
-          For example, this would be set to true when physical goods need to be
+          A boolean that indicates whether the <a>user agent</a> SHOULD collect
+          and return a shipping address as part of the payment request. For
+          example, this would be set to true when physical goods need to be
           shipped by the merchant to the user. This would be set to false for
           an online-only electronic purchase transaction.
         </dd>
@@ -1815,12 +1808,13 @@
           <dfn>shippingType</dfn> member
         </dt>
         <dd>
-          Some transactions require an address for delivery but the term
-          "shipping" isn't appropriate. For example, "pizza delivery" not
-          "pizza shipping" and "laundry pickup" not "laundry shipping". If
-          <a>requestShipping</a> is set to true, then the <a>shippingType</a>
-          member may be used to influence the way the <a>user agent</a>
-          presents the user interface for gathering the shipping address.
+          A <a>ShippingType</a> enum value. Some transactions require an
+          address for delivery but the term "shipping" isn't appropriate. For
+          example, "pizza delivery" not "pizza shipping" and "laundry pickup"
+          not "laundry shipping". If <a>requestShipping</a> is set to true,
+          then the <a>shippingType</a> member can influence the way the <a>user
+          agent</a> presents the user interface for gathering the shipping
+          address.
           <p>
             The <a>shippingType</a> member only affects the user interface for
             the payment request.
@@ -1849,8 +1843,8 @@
           <dfn>label</dfn> member
         </dt>
         <dd>
-          This is a human-readable description of the item. The <a>user
-          agent</a> may display this to the user.
+          A human-readable description of the item. The <a>user agent</a> may
+          display this to the user.
         </dd>
         <dt>
           <dfn>amount</dfn> member
@@ -1863,7 +1857,7 @@
           <dfn>pending</dfn> member
         </dt>
         <dd>
-          When set to true this member means that the <a>amount</a> member is
+          A boolean. When set to true it means that the <a>amount</a> member is
           not final. This is commonly used to show items such as shipping or
           tax amounts that depend upon selection of shipping address or
           shipping option. <a>User agents</a> MAY indicate pending fields in
@@ -2026,7 +2020,7 @@
           <dfn>id</dfn> member
         </dt>
         <dd>
-          This is a string identifier used to reference this
+          A string identifier used to reference this
           <a>PaymentShippingOption</a>. It MUST be unique for a given
           <a>PaymentRequest</a>.
         </dd>
@@ -2034,7 +2028,7 @@
           <dfn>label</dfn> member
         </dt>
         <dd>
-          This is a human-readable description of the item. The <a>user
+          A human-readable string description of the item. The <a>user
           agent</a> SHOULD use this string to display the shipping option to
           the user.
         </dd>
@@ -2049,7 +2043,7 @@
           <dfn>selected</dfn> member
         </dt>
         <dd>
-          This is set to true to indicate that this is the default selected
+          A boolean. When true, it indicates that this is the default selected
           <a>PaymentShippingOption</a> in a sequence. <a>User agents</a> SHOULD
           display this option by default in the user interface.
         </dd>
