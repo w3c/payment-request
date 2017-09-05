@@ -623,7 +623,9 @@
           </li>
           <li>Let <var>selectedShippingOption</var> be null.
           </li>
-          <li>Process shipping options:
+          <li>If the <a data-lt=
+          "PaymentOptions.requestShipping">requestShipping</a> member of <var>
+            options</var> is present and set to true, process shipping options:
             <ol>
               <li>Let <var>options</var> be an empty <code><a data-cite=
               "!WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
