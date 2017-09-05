@@ -2829,10 +2829,66 @@
           <li>
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
-            <ol>
+            <ol data-link-for="PaymentAddress">
+              <li>Let <var>address</var> be a new instance of
+              <a>PaymentAddress</a>.
+              </li>
+              <li>Set the <a>addressLine</a> attribute of <var>address</var> to
+              the result of splitting the end user's address line into a
+              <a data-cite="!WEBIDL#dfn-frozen-array-type">frozen array</a>. If
+              none was provided, set it to the empty <a data-cite=
+              "!WEBIDL#dfn-frozen-array-type">frozen array</a>.
+                <aside class="note">
+                  How to split an address line is locale dependent and beyond
+                  the scope of this specification.
+                </aside>
+              </li>
+              <li>Set the <a>country</a> attribute of <var>address</var> to the
+              end user's country as an upper case [[!ISO3166]] alpha-2 code or
+              to the empty string if none was provided.
+              </li>
+              <li>If <var>request</var>.<a>[[\options]]</a>.<a data-lt=
+              "PaymentOptions.requestPayerPhone">requestPayerPhone</a> is
+              false, set the <a>phone</a> attribute of <var>address</var> to
+              the empty string. Otherwise, set the <a>phone</a> attribute of
+              <var>address</var> to a user provided phone number, optionally
+              formatted to adhere to [[!E.164]], or to the empty string if none
+              was provided.
+              </li>
+              <li>Set the <a>languageCode</a> attribute of <var>address</var>
+              to a <a data-cite="!BCP47#section-4.5">canonicalized language
+              tag</a>, or to the empty sting if none was provided.
+              </li>
+              <li>Set the <a>city</a> attribute of <var>address</var> attribute
+              of <var>address</var> to the end user's city, or to the empty
+              string if none was provided.
+              </li>
+              <li>Set the <a>dependentLocality</a> attribute of
+              <var>address</var> to the end user's dependent locality, or to
+              the empty string if none was provided.
+              </li>
+              <li>Set the <a>organization</a> attribute of <var>address</var>
+              to the end user's organization, or to the empty string if none
+              was provided.
+              </li>
+              <li>Set the <a>postalCode</a> attribute of <var>address</var> to
+              the end user's postal code, or to the empty string if none was
+              provided.
+              </li>
+              <li>Set the <a>recipient</a> attribute of <var>address</var> to
+              the end user's recipient, or to the empty string if none was
+              provided.
+              </li>
+              <li>Set the <a>region</a> attribute of <var>address</var> to the
+              end user's region, or to the empty string if none was provided.
+              </li>
+              <li>Set the <a>sortingCode</a> attribute of <var>address</var> to
+              the end user's sorting code, or to the empty string if none was
+              provided.
+              </li>
               <li>Set the <a data-lt=
               "PaymentRequest.shippingAddress">shippingAddress</a> attribute on
-              <var>request</var> to the shipping address provided by the user.
+              <var>request</var> to <var>address</var>.
               </li>
               <li>Run the <a>PaymentRequest updated algorithm</a> with
               <var>request</var> and <var>name</var>.
