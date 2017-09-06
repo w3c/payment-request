@@ -1866,7 +1866,7 @@
         </dd>
       </dl>
     </section>
-    <section data-dfn-for="PaymentAddress">
+    <section data-dfn-for="PaymentAddress" data-link-for="PaymentAddress">
       <h2>
         <dfn>PaymentAddress</dfn> interface
       </h2>
@@ -1901,8 +1901,8 @@
           <dfn>country</dfn> attribute
         </h2>
         <p>
-          An [[!ISO3166]] alpha-2 code. The canonical form is upper case. For
-          example, "JP".
+          When getting, returns the <a>PaymentAddress</a>'s <a>[[\country]]</a>
+          internal slot.
         </p>
       </section>
       <section>
@@ -1910,9 +1910,8 @@
           <dfn>addressLine</dfn> attribute
         </h2>
         <p>
-          The most specific part of the address. It can include, for example, a
-          street name, a house number, apartment number, a rural delivery
-          route, descriptive instructions, or a post office box number.
+          When getting, returns the <a>PaymentAddress</a>'s
+          <a>[[\addressLine]]</a> internal slot.
         </p>
       </section>
       <section>
@@ -1920,8 +1919,8 @@
           <dfn>region</dfn> attribute
         </h2>
         <p>
-          The top level administrative subdivision of the country. For example,
-          this can be a state, a province, an oblast, or a prefecture.
+          When getting, returns the <a>PaymentAddress</a>'s <a>[[\region]]</a>
+          internal slot.
         </p>
       </section>
       <section>
@@ -1929,7 +1928,8 @@
           <dfn>city</dfn> attribute
         </h2>
         <p>
-          The city/town portion of the address.
+          When getting, returns the <a>PaymentAddress</a>'s <a>[[\city]]</a>
+          internal slot.
         </p>
       </section>
       <section>
@@ -1937,9 +1937,8 @@
           <dfn>dependentLocality</dfn> attribute
         </h2>
         <p>
-          The dependent locality or sublocality within a city. For example,
-          used for neighborhoods, boroughs, districts, or UK dependent
-          localities.
+          When getting, returns the <a>PaymentAddress</a>'s
+          <a>[[\dependentLocality]]</a> internal slot.
         </p>
       </section>
       <section>
@@ -1947,7 +1946,8 @@
           <dfn>postalCode</dfn> attribute
         </h2>
         <p>
-          The postal code or ZIP code, also known as PIN code in India.
+          When getting, returns the <a>PaymentAddress</a>'s
+          <a>[[\postalCode]]</a> internal slot.
         </p>
       </section>
       <section>
@@ -1955,7 +1955,8 @@
           <dfn>sortingCode</dfn> attribute
         </h2>
         <p>
-          The sorting code as used in, for example, France.
+          When getting, returns the <a>PaymentAddress</a>'s
+          <a>[[\sortingCode]]</a> internal slot.
         </p>
       </section>
       <section>
@@ -1963,10 +1964,8 @@
           <dfn>languageCode</dfn> attribute
         </h2>
         <p>
-          The [[!BCP47]] language tag for the address, in <a data-cite=
-          "BCP47#section-4.5">canonical form</a>. It's used to determine the
-          field separators and the order of fields when formatting the address
-          for display.
+          When getting, the <a>languageCode</a> attribute returns this
+          <a>PaymentAddress</a>'s <a>[[\languageCode]]</a> internal slot.
         </p>
       </section>
       <section>
@@ -1974,7 +1973,8 @@
           <dfn>organization</dfn> attribute
         </h2>
         <p>
-          The organization, firm, company, or institution at this address.
+          When getting, the <a>organization</a> attribute returns this
+          <a>PaymentAddress</a>'s <a>[[\organization]]</a> internal slot.
         </p>
       </section>
       <section>
@@ -1982,9 +1982,8 @@
           <dfn>recipient</dfn> attribute
         </h2>
         <p>
-          The name of the recipient or contact person. This member may, under
-          certain circumstances, contain multiline information. For example, it
-          might contain "care of" information.
+          When getting, the <a>recipient</a> attribute returns this
+          <a>PaymentAddress</a>'s <a>[[\recipient]]</a> internal slot.
         </p>
       </section>
       <section>
@@ -1992,8 +1991,125 @@
           <dfn>phone</dfn> attribute
         </h2>
         <p>
-          The phone number of the recipient or contact person.
+          When getting, the <a>phone</a> attribute returns this
+          <a>PaymentAddress</a>'s <a>[[\phone]]</a> internal slot.
         </p>
+      </section>
+      <section>
+        <h2>
+          Internal slots
+        </h2>
+        <table>
+          <tr>
+            <th>
+              Internal slot
+            </th>
+            <th>
+              Description
+            </th>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\country]]</dfn>
+            </td>
+            <td>
+              An [[!ISO3166]] alpha-2 code. The canonical form is upper case.
+              For example, "JP".
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\addressLine]]</dfn>
+            </td>
+            <td>
+              The most specific part of the address. It can include, for
+              example, a street name, a house number, apartment number, a rural
+              delivery route, descriptive instructions, or a post office box
+              number.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\region]]</dfn>
+            </td>
+            <td>
+              The top level administrative subdivision of the country. For
+              example, this can be a state, a province, an oblast, or a
+              prefecture.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\city]]</dfn>
+            </td>
+            <td>
+              The city/town portion of the address.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\dependentLocality]]</dfn>
+            </td>
+            <td>
+              The dependent locality or sublocality within a city. For example,
+              used for neighborhoods, boroughs, districts, or UK dependent
+              localities.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\postalCode]]</dfn>
+            </td>
+            <td>
+              The postal code or ZIP code, also known as PIN code in India.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\sortingCode]]</dfn>
+            </td>
+            <td>
+              The sorting code as used in, for example, France.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\languageCode]]</dfn>
+            </td>
+            <td>
+              The [[!BCP47]] language tag for the address, in <a data-cite=
+              "BCP47#section-4.5">canonical form</a>. It's used to determine
+              the field separators and the order of fields when formatting the
+              address for display.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\organization]]</dfn>
+            </td>
+            <td>
+              The organization, firm, company, or institution at this address.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\recipient]]</dfn>
+            </td>
+            <td>
+              The name of the recipient or contact person. This member may,
+              under certain circumstances, contain multiline information. For
+              example, it might contain "care of" information.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\phone]]</dfn>
+            </td>
+            <td>
+              The phone number of the recipient or contact person.
+            </td>
+          </tr>
+        </table>
       </section>
     </section>
     <section data-dfn-for="PaymentShippingOption">
@@ -2833,58 +2949,62 @@
               <li>Let <var>address</var> be a new instance of
               <a>PaymentAddress</a>.
               </li>
-              <li>Set the <a>addressLine</a> attribute of <var>address</var> to
-              the result of splitting the end user's address line into a
-              <a data-cite="!WEBIDL#dfn-frozen-array-type">frozen array</a>. If
-              none was provided, set it to the empty <a data-cite=
-              "!WEBIDL#dfn-frozen-array-type">frozen array</a>.
+              <li>Set the <a>[[\addressLine]]</a> internal slot of
+              <var>address</var> to the result of splitting the end user's
+              address line into a <a data-cite="!WEBIDL#dfn-frozen-array-type">
+                frozen array</a>. If none was provided, set it to the empty
+                <a data-cite="!WEBIDL#dfn-frozen-array-type">frozen array</a>.
                 <aside class="note">
                   How to split an address line is locale dependent and beyond
                   the scope of this specification.
                 </aside>
               </li>
-              <li>Set the <a>country</a> attribute of <var>address</var> to the
-              end user's country as an upper case [[!ISO3166]] alpha-2 code or
-              to the empty string if none was provided.
+              <li>Set the <a>[[\country]]</a> internal slot of
+              <var>address</var> to the end user's country as an upper case
+              [[!ISO3166]] alpha-2 code, or to the empty string if none was
+              provided.
               </li>
               <li>If <var>request</var>.<a>[[\options]]</a>.<a data-lt=
               "PaymentOptions.requestPayerPhone">requestPayerPhone</a> is
-              false, set the <a>phone</a> attribute of <var>address</var> to
-              the empty string. Otherwise, set the <a>phone</a> attribute of
-              <var>address</var> to a user provided phone number, optionally
-              formatted to adhere to [[!E.164]], or to the empty string if none
-              was provided.
+              false, set the <a>[[\phone]]</a> internal slot of
+              <var>address</var> to the empty string. Otherwise, set the
+              <a>[[\phone]]</a> internal slot of <var>address</var> to a user
+              provided phone number, optionally formatted to adhere to
+              [[!E.164]], or to the empty string if none was provided.
               </li>
-              <li>Set the <a>languageCode</a> attribute of <var>address</var>
-              to a <a data-cite="!BCP47#section-4.5">canonicalized language
-              tag</a>, or to the empty sting if none was provided.
+              <li>Set the <a>[[\languageCode]]</a> internal slot of
+              <var>address</var> to a <a data-cite=
+              "!BCP47#section-4.5">canonicalized language tag</a>, or to the
+              empty sting if none was provided.
+                <div class="issue" data-number="608"></div>
               </li>
-              <li>Set the <a>city</a> attribute of <var>address</var> attribute
-              of <var>address</var> to the end user's city, or to the empty
+              <li>Set the <a>[[\city]]</a> internal slot of <var>address</var>
+              attribute of <var>address</var> to the end user's city, or to the
+              empty string if none was provided.
+              </li>
+              <li>Set the <a>[[\dependentLocality]]</a> internal slot of <var>
+                address</var> to the end user's dependent locality, or to the
+                empty string if none was provided.
+              </li>
+              <li>Set the <a>[[\organization]]</a> internal slot of
+              <var>address</var> to the end user's organization, or to the
+              empty string if none was provided.
+              </li>
+              <li>Set the <a>[[\postalCode]]</a> internal slot of
+              <var>address</var> to the end user's postal code, or to the empty
               string if none was provided.
               </li>
-              <li>Set the <a>dependentLocality</a> attribute of
-              <var>address</var> to the end user's dependent locality, or to
-              the empty string if none was provided.
+              <li>Set the <a>[[\recipient]]</a> internal slot of
+              <var>address</var> to the end user's recipient, or to the empty
+              string if none was provided.
               </li>
-              <li>Set the <a>organization</a> attribute of <var>address</var>
-              to the end user's organization, or to the empty string if none
-              was provided.
+              <li>Set the <a>[[\region]]</a> internal slot of
+              <var>address</var> to the end user's region, or to the empty
+              string if none was provided.
               </li>
-              <li>Set the <a>postalCode</a> attribute of <var>address</var> to
-              the end user's postal code, or to the empty string if none was
-              provided.
-              </li>
-              <li>Set the <a>recipient</a> attribute of <var>address</var> to
-              the end user's recipient, or to the empty string if none was
-              provided.
-              </li>
-              <li>Set the <a>region</a> attribute of <var>address</var> to the
-              end user's region, or to the empty string if none was provided.
-              </li>
-              <li>Set the <a>sortingCode</a> attribute of <var>address</var> to
-              the end user's sorting code, or to the empty string if none was
-              provided.
+              <li>Set the <a>[[\sortingCode]]</a> internal slot of
+              <var>address</var> to the end user's sorting code, or to the
+              empty string if none was provided.
               </li>
               <li>Set the <a data-lt=
               "PaymentRequest.shippingAddress">shippingAddress</a> attribute on
