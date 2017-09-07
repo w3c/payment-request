@@ -484,7 +484,7 @@
       </h2>
       <pre class="idl">
         [Constructor(sequence&lt;PaymentMethodData&gt; methodData, PaymentDetailsInit details, optional PaymentOptions options),
-        SecureContext]
+        SecureContext, Exposed=Window]
         interface PaymentRequest : EventTarget {
           Promise&lt;PaymentResponse&gt; show();
           Promise&lt;void&gt; abort();
@@ -1871,7 +1871,7 @@
         <dfn>PaymentAddress</dfn> interface
       </h2>
       <pre class="idl">
-        [SecureContext]
+        [SecureContext, Exposed=Window]
         interface PaymentAddress {
           [Default] object toJSON();
           readonly attribute DOMString country;
@@ -2089,7 +2089,7 @@
         <dfn>PaymentResponse</dfn> interface
       </h2>
       <pre class="idl">
-        [SecureContext]
+        [SecureContext, Exposed=Window]
         interface PaymentResponse {
           [Default] object toJSON();
 
@@ -2378,7 +2378,7 @@
           <dfn>PaymentRequestUpdateEvent</dfn> interface
         </h2>
         <pre class="idl">
-          [Constructor(DOMString type, optional PaymentRequestUpdateEventInit eventInitDict),SecureContext]
+          [Constructor(DOMString type, optional PaymentRequestUpdateEventInit eventInitDict), SecureContext, Exposed=Window]
           interface PaymentRequestUpdateEvent : Event {
             void updateWith(Promise&lt;PaymentDetailsUpdate&gt; detailsPromise);
           };
