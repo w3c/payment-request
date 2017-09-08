@@ -1892,7 +1892,7 @@
           <dfn>toJSON()</dfn> method
         </h2>
         <p>
-          When called, run [[!WEBIDL]]'s <a data-cite=
+          When called, runs [[!WEBIDL]]'s <a data-cite=
           "WEBIDL#default-tojson-operation">default toJSON operation</a>.
         </p>
       </section>
@@ -2005,7 +2005,7 @@
               Internal slot
             </th>
             <th>
-              Description
+              Description (<em>non-normative</em>)
             </th>
           </tr>
           <tr>
@@ -2230,7 +2230,7 @@
           <dfn>toJSON()</dfn> method
         </h2>
         <p>
-          When called, run [[!WEBIDL]]'s <a data-cite=
+          When called, runs [[!WEBIDL]]'s <a data-cite=
           "WEBIDL#default-tojson-operation">default toJSON operation</a>.
         </p>
       </section>
@@ -2949,62 +2949,65 @@
               <li>Let <var>address</var> be a new instance of
               <a>PaymentAddress</a>.
               </li>
-              <li>Set the <a>[[\addressLine]]</a> internal slot of
-              <var>address</var> to the result of splitting the end user's
-              address line into a <a data-cite="!WEBIDL#dfn-frozen-array-type">
-                frozen array</a>. If none was provided, set it to the empty
+              <li>Set <var>address</var>.<a>[[\addressLine]]</a> to the result
+              of splitting the user-provided address line into a
                 <a data-cite="!WEBIDL#dfn-frozen-array-type">frozen array</a>.
+                If none was provided, set it to the empty <a data-cite=
+                "!WEBIDL#dfn-frozen-array-type">frozen array</a>.
                 <aside class="note">
                   How to split an address line is locale dependent and beyond
                   the scope of this specification.
                 </aside>
               </li>
-              <li>Set the <a>[[\country]]</a> internal slot of
-              <var>address</var> to the end user's country as an upper case
-              [[!ISO3166]] alpha-2 code, or to the empty string if none was
-              provided.
+              <li>Set <var>address</var>.<a>[[\country]]</a> to the
+              user-provided <a>country</a> as an upper case [[!ISO3166]]
+              alpha-2 code, or to the empty string if none was provided.
               </li>
-              <li>If <var>request</var>.<a>[[\options]]</a>.<a data-lt=
-              "PaymentOptions.requestPayerPhone">requestPayerPhone</a> is
-              false, set the <a>[[\phone]]</a> internal slot of
-              <var>address</var> to the empty string. Otherwise, set the
-              <a>[[\phone]]</a> internal slot of <var>address</var> to a user
-              provided phone number, optionally formatted to adhere to
-              [[!E.164]], or to the empty string if none was provided.
+              <li>Set the <var>address</var>.<a>[[\phone]]</a> to the
+              user-provided phone number for this shipping address, optionally
+              formatted to adhere to [[!E.164]], or to the empty string if none
+              was provided.
+                <aside class="note" title="Privacy of phone number">
+                  <p>
+                    To maintain user's privacy, implementers need to be mindful
+                    that a shipping address's associated phone number might be
+                    different or the same from that of the end-user's. As such,
+                    need to take care to not provide the end user's phone
+                    number to the merchant without the end user's consent.
+                  </p>
+                </aside>
               </li>
-              <li>Set the <a>[[\languageCode]]</a> internal slot of
-              <var>address</var> to a <a data-cite=
-              "!BCP47#section-4.5">canonicalized language tag</a>, or to the
-              empty sting if none was provided.
+              <li>Set <var>address</var>.<a>[[\languageCode]]</a> to a
+              <a data-cite="!BCP47#section-4.5">canonicalized language tag</a>,
+              or to the empty string if none was provided.
                 <div class="issue" data-number="608"></div>
               </li>
-              <li>Set the <a>[[\city]]</a> internal slot of <var>address</var>
-              attribute of <var>address</var> to the end user's city, or to the
-              empty string if none was provided.
+              <li>Set <var>address</var>.<a>[[\city]]</a> to the user-provided
+              city, or to the empty string if none was provided.
               </li>
-              <li>Set the <a>[[\dependentLocality]]</a> internal slot of <var>
-                address</var> to the end user's dependent locality, or to the
-                empty string if none was provided.
+              <li>Set <var>address</var>.<a>[[\dependentLocality]]</a> to the
+              user-provided dependent locality, or to the empty string if none
+              was provided.
               </li>
-              <li>Set the <a>[[\organization]]</a> internal slot of
-              <var>address</var> to the end user's organization, or to the
-              empty string if none was provided.
+              <li>Set <var>address</var>.<a>[[\organization]]</a> to the
+              recipient organization, or to the empty string if none was
+              provided.
               </li>
-              <li>Set the <a>[[\postalCode]]</a> internal slot of
-              <var>address</var> to the end user's postal code, or to the empty
+              <li>Set <var>address</var>.<a>[[\postalCode]]</a> to the
+              user-provided postal code, or to the empty string if none was
+              provided.
+              </li>
+              <li>Set <var>address</var>.<a>[[\recipient]]</a> to the
+              user-provided recipient of the transaction, or to the empty
               string if none was provided.
               </li>
-              <li>Set the <a>[[\recipient]]</a> internal slot of
-              <var>address</var> to the end user's recipient, or to the empty
-              string if none was provided.
+              <li>Set <var>address</var>.<a>[[\region]]</a> to the
+              user-provided region, or to the empty string if none was
+              provided.
               </li>
-              <li>Set the <a>[[\region]]</a> internal slot of
-              <var>address</var> to the end user's region, or to the empty
-              string if none was provided.
-              </li>
-              <li>Set the <a>[[\sortingCode]]</a> internal slot of
-              <var>address</var> to the end user's sorting code, or to the
-              empty string if none was provided.
+              <li>Set <var>address</var>.<a>[[\sortingCode]]</a> to the
+              user-provided sorting code, or to the empty string if none was
+              provided.
               </li>
               <li>Set the <a data-lt=
               "PaymentRequest.shippingAddress">shippingAddress</a> attribute on
