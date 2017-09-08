@@ -400,7 +400,7 @@
               }
             } catch (err) {
               // Something went wrong...
-              response.complete("unknown");
+              await response.complete("fail");
             }
           }
           doPaymentRequest();
@@ -419,18 +419,11 @@
         </p>
         <pre class="example" title="Registering event handlers">
           const request = new PaymentRequest(methodData, details, options);
-          request.onshippingaddresschange = async ev =&gt; {
-            // Can we ship here?
-            try {
-              const json = request.shippingAddress.toJSON();
-              const { shippingOptions, total } = await calculateShipping(json);
-              const newDetails = {...details, ...{ shippingOptions, total }};
-              ev.updateWith(newDetails);
-            } catch (err) {
-              ev.updateWith({ error: `Sorry! we can't ship to your address.` });
-            }
+          // Async update to details
+          request.onshippingaddresschange = ev =&gt; {
+            ev.updateWith(checkShipping(request));
           };
-          // update the total
+          // Sync update to the total
           request.onshippingoptionchange = ev =&gt; {
             const shippingOption = shippingOptions.find(
               option =&gt; option.id === request.id
@@ -442,6 +435,18 @@
             };
             ev.updateWith({ ...details, total: newTotal });
           };
+          async function checkShipping(request) {
+            try {
+              const json = request.shippingAddress.toJSON();
+
+              await ensureCanShipTo(json);
+              const { shippingOptions, total } = await calculateShipping(json);
+
+              return { ...details, shippingOptions, total };
+            } catch (err) {
+              return { ...details, error: `Sorry! we can't ship to your address.` };
+            }
+          }
         </pre>
       </section>
       <section data-link-for="PaymentResponse">
@@ -2390,12 +2395,6 @@
           details of the payment request in response to a user interaction.
         </p>
         <p>
-          If a developer wants to update the payment request, then they need to
-          call <a>updateWith()</a> and provide a <a>PaymentDetailsUpdate</a>
-          dictionary, or a promise for one, containing changed values that the
-          <a>user agent</a> SHOULD present to the user.
-        </p>
-        <p>
           The <a>PaymentRequestUpdateEvent</a> constructor MUST set the
           internal slot <a>[[\waitForUpdate]]</a> to false.
         </p>
@@ -2403,13 +2402,59 @@
           <h2>
             <dfn data-lt="updateWith(detailsPromise)">updateWith()</dfn> method
           </h2>
-          <p class="note">
-            If a developer wants to update the payment request, then they need
-            to call <a>updateWith()</a> and provide a
-            <a>PaymentDetailsUpdate</a> dictionary, or a promise for one,
-            containing changed values that the <a>user agent</a> presents to
-            the user.
-          </p>
+          <aside class="note">
+            <p>
+              If a developer wants to update the payment request, then they
+              need to call <a>updateWith()</a> and provide a
+              <a>PaymentDetailsUpdate</a> dictionary, or a promise for one,
+              containing changed values that the <a>user agent</a> presents to
+              the user.
+            </p>
+            <p>
+              To prevent the user interface from blocking (and to reflect
+              changes made by the end-user through the UI), developers need to
+              immediately call <a>updateWith()</a>.
+            </p>
+            <pre class="example" title="how to use `updateWith()` correctly.">
+              // ❌ Bad - this won't work!
+              request.onshippingaddresschange = async ev =&gt; {
+                // await goes to next tick, and updateWith() was not
+                // called before that, so [[updatedUI]] gets set to true.
+                const details = await getNewDetails(oldDetails);
+                // 💥 Too late, throws "InvalidStateError".
+                ev.updateWith(details);
+              };
+
+              // ✅ Good - UI will wait.
+              request.onshippingaddresschange = ev =&gt; {
+                // Calling updateWith() with a promise is ok 👍
+                const promiseForNewDetails = getNewDetails(oldDetails);
+                ev.updateWith(promiseForNewDetails);
+              };
+            </pre>
+            <p>
+              Additionally, <a>[[\waitForUpdate]]</a> prevents reuse of
+              <a>PaymentRequestUpdateEvent</a>.
+            </p>
+            <pre class="example" title="can only call `updateWith()` once">
+              // ❌ Bad - calling updateWith() doesn't work!
+              request.addEventListener("shippingaddresschange", ev =&gt; {
+                ev.updateWith(details); // this is ok.
+                // 💥 [[waitForUpdate]] is true, throws an "InvalidStateError".
+                ev.updateWith(otherDetails);
+              });
+
+              // ❌ Bad - this won't work either!
+              request.addEventListener("shippingaddresschange", async ev =&gt; {
+                const p = Promise.resolve({ ...details });
+                ev.updateWith(p);
+                await p;
+                // 💥 the update has now completed, so [[updatedUI]] gets set to
+                // true; this throws "InvalidStateError"
+                ev.updateWith({ ...newDetails });
+              });
+            </pre>
+          </aside>
           <p>
             The <a>updateWith(detailsPromise)</a> method MUST act as follows:
           </p>
@@ -2424,7 +2469,8 @@
               throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
             <li>Let <var>request</var> be the value of <var>event</var>'s
-            <a data-cite="DOM#dom-event-target">target</a> attribute.
+            <code><a data-cite="DOM#dom-event-target">target</a></code>
+            attribute.
             </li>
             <li>If <var>request</var>.<a>[[\state]]</a> is not
             "<a>interactive</a>", then <a>throw</a> an
@@ -2446,11 +2492,6 @@
             required by the change. Developers MUST settle the
             <var>detailsPromise</var> to indicate that the payment request is
             valid again.
-              <p>
-                The <a>user agent</a> SHOULD disable any part of the user
-                interface that could cause another update event to be fired.
-                Only one update may be processed at a time.
-              </p>
             </li>
             <li>
               <p>
@@ -2719,8 +2760,6 @@
             <li>In either case, run the following steps, after either the upon
             rejection or upon fulfillment steps have concluded:
               <ol>
-                <li>Set <var>event</var>.<a>[[\waitForUpdate]]</a> to false.
-                </li>
                 <li>Set <var>request</var>.<a>[[\updating]]</a> to false.
                 </li>
                 <li>The <a>user agent</a> SHOULD update the user interface
@@ -2895,9 +2934,21 @@
           further action. The <a>user agent</a> user interface SHOULD ensure
           that this never occurs.
           </li>
+          <li>Let <var>event</var> be the result of <a data-cite=
+          "!DOM#concept-event-create">creating an event</a> using
+          <a>PaymentRequestUpdateEvent</a>.
+          </li>
+          <li>Initialize <var>event</var>'s <code><a data-cite=
+          "!DOM#dom-event-type">type</a></code> attribute to <var>name</var>.
+          </li>
           <li>
-            <a>Fire an event</a> named <var>name</var> at <var>request</var>
-            using <a>PaymentRequestUpdateEvent</a>.
+            <a data-cite="!DOM#concept-event-dispatch">Dispatch</a>
+            <var>event</var> at <var>request</var>.
+          </li>
+          <li data-link-for="PaymentRequestUpdateEvent">If
+          <var>event</var>.<a>[[\waitForUpdate]]</a> is true, disable any part
+          of the user interface that could cause another update event to be
+          fired.
           </li>
         </ol>
       </section>
