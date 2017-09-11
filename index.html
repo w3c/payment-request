@@ -825,9 +825,10 @@
           "!HTML#concept-relevant-global">relevant global object</a>'s
             <a href="!HTML#concept-document-window">associated Document</a>.
           </li>
-          <li>If <var>document</var> is not <a data-cite="!HTML#fully-active">
-            fully active</a>, then return a promise rejected with an
-            "<a>AbortError</a>" <a>DOMException</a>.
+          <li data-tests="throw_if_not_active.https.html">If
+          <var>document</var> is not <a data-cite="!HTML#fully-active">fully
+          active</a>, then return a promise rejected with an
+          "<a>AbortError</a>" <a>DOMException</a>.
           </li>
           <li>
             <p>
