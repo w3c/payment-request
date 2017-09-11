@@ -953,7 +953,7 @@
               or the <a>user aborts the payment request algorithm</a>, which
               are triggered through interaction with the user interface.
             </p>
-            <p>
+            <p data-test="throw_if_not_active.https.html">
               If <var>document</var> stops being <a data-cite=
               "!HTML#fully-active">fully active</a> while the user interface is
               being shown, or no longer is by the time this step is reached,
@@ -1121,7 +1121,7 @@
           <dfn>onshippingaddresschange</dfn> attribute
         </h2>
         <p data-tests=
-        "payment-request-onshippingaddresschange-attribute.https.html">
+        "payment-request-onshippingaddresschange-attribute.https.html, algorithms-manual.https.html#shipping-address-changed-algo">
           A <a>PaymentRequest</a>'s <a>onshippingaddresschange</a> attribute is
           an <a>EventHandler</a> for a <a>PaymentRequestUpdateEvent</a> named
           <a>shippingaddresschange</a>.
@@ -1131,7 +1131,8 @@
         <h2>
           <dfn>shippingOption</dfn> attribute
         </h2>
-        <p data-tests="payment-request-shippingOption-attribute.https.html">
+        <p data-tests=
+        "payment-request-shippingOption-attribute.https.html, change-shipping-option-manual.https.html">
           A <a>PaymentRequest</a>'s <a>shippingOption</a> attribute is
           populated when the user chooses a shipping option. It is null by
           default. When a user chooses a shipping option, the <a>shipping
