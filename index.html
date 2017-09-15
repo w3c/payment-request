@@ -825,7 +825,7 @@
           "!HTML#concept-relevant-global">relevant global object</a>'s
           <a data-cite="!HTML#concept-document-window">associated Document</a>.
           </li>
-          <li data-tests="throw_if_not_active.https.html">If
+          <li data-tests="rejects_if_not_active.https.html">If
           <var>document</var> is not <a data-cite="!HTML#fully-active">fully
           active</a>, then return a promise rejected with an
           "<a>AbortError</a>" <a>DOMException</a>.
@@ -953,7 +953,7 @@
               or the <a>user aborts the payment request algorithm</a>, which
               are triggered through interaction with the user interface.
             </p>
-            <p data-test="throw_if_not_active.https.html">
+            <p data-test="rejects_if_not_active.https.html">
               If <var>document</var> stops being <a data-cite=
               "!HTML#fully-active">fully active</a> while the user interface is
               being shown, or no longer is by the time this step is reached,
