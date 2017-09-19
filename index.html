@@ -285,7 +285,10 @@
             ],
             total: {
               label: "Total due",
-              amount: { currency: "USD", value: "60.00" },
+              // The total is USD$65.00 here because we need to
+              // add shipping (below). The selected shipping
+              // costs USD$5.00.  
+              amount: { currency: "USD", value: "65.00" },
             },
           };
         </pre>
