@@ -1391,6 +1391,9 @@
         </dt>
         <dd>
           A <a>valid decimal monetary value</a> containing a monetary amount.
+          User agents should not alter values provided as input; for example,
+          they should not change "55" into "55.00". User agents may display the
+          value according to the user's local settings.
         </dd>
       </dl>
       <p>
@@ -2577,7 +2580,8 @@
               });
             </pre>
           </aside>
-          <p data-tests="payment-request-update-event-updatewith-method.https.html">
+          <p data-tests=
+          "payment-request-update-event-updatewith-method.https.html">
             The <a>updateWith(detailsPromise)</a> method MUST act as follows:
           </p>
           <ol class="algorithm">
