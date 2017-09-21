@@ -121,8 +121,8 @@
           <li>
             <a data-lt=
             "PaymentCurrencyAmount.currencySystem">currencySystem</a> (see
-            <a href="https://github.com/w3c/payment-request/issues/490">issue
-            490</a>).
+            <a href="https://github.com/w3c/payment-request/issues/617">issue
+            617</a>).
           </li>
         </ul>
       </section>
@@ -285,6 +285,9 @@
             ],
             total: {
               label: "Total due",
+              // The total is USD$65.00 here because we need to
+              // add shipping (below). The selected shipping
+              // costs USD$5.00.  
               amount: { currency: "USD", value: "65.00" },
             },
           };
@@ -825,7 +828,7 @@
           "!HTML#concept-relevant-global">relevant global object</a>'s
           <a data-cite="!HTML#concept-document-window">associated Document</a>.
           </li>
-          <li data-tests="throw_if_not_active.https.html">If
+          <li data-tests="rejects_if_not_active.https.html">If
           <var>document</var> is not <a data-cite="!HTML#fully-active">fully
           active</a>, then return a promise rejected with an
           "<a>AbortError</a>" <a>DOMException</a>.
@@ -953,7 +956,7 @@
               or the <a>user aborts the payment request algorithm</a>, which
               are triggered through interaction with the user interface.
             </p>
-            <p data-test="throw_if_not_active.https.html">
+            <p data-test="rejects_if_not_active.https.html">
               If <var>document</var> stops being <a data-cite=
               "!HTML#fully-active">fully active</a> while the user interface is
               being shown, or no longer is by the time this step is reached,
@@ -2289,7 +2292,7 @@
         <h2>
           <dfn>shippingAddress</dfn> attribute
         </h2>
-        <p class=
+        <p data-tests=
         "payment-response/shippingAddress-attribute-manual.https.html">
           If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> member was set
@@ -2512,7 +2515,8 @@
           The <a>PaymentRequestUpdateEvent</a> enables developers to update the
           details of the payment request in response to a user interaction.
         </p>
-        <p>
+        <p data-tests=
+        "payment-request-update-event-constructor.https.html, payment-request-update-event-constructor.http.html">
           The <a>PaymentRequestUpdateEvent</a> constructor MUST set the
           internal slot <a>[[\waitForUpdate]]</a> to false.
         </p>
@@ -2573,7 +2577,7 @@
               });
             </pre>
           </aside>
-          <p>
+          <p data-tests="payment-request-update-event-updatewith-method.https.html">
             The <a>updateWith(detailsPromise)</a> method MUST act as follows:
           </p>
           <ol class="algorithm">
@@ -2581,7 +2585,8 @@
             instance.
             </li>
             <li>If <var>event</var>'s <a>isTrusted</a> attribute is false, then
-            then <a>throw</a> a "<a>InvalidStateError</a>" <a>DOMException</a>.
+            then <a>throw</a> an "<a>InvalidStateError</a>"
+            <a>DOMException</a>.
             </li>
             <li>If <var>event</var>.<a>[[\waitForUpdate]]</a> is true, then <a>
               throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
@@ -3138,7 +3143,7 @@
         <h2>
           User accepts the payment request algorithm
         </h2>
-        <p>
+        <p data-tests="user-accepts-payment-request-algo-manual.https.html">
           The <dfn data-lt="user accepts the payment request">user accepts the
           payment request algorithm</dfn> runs when the user accepts the
           payment request and confirms that they want to pay. It MUST <a>queue
