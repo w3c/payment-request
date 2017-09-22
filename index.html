@@ -1393,8 +1393,6 @@
         </dt>
         <dd>
           A <a>valid decimal monetary value</a> containing a monetary amount.
-          User agents should not alter values provided as input; for example,
-          they should not change "55" into "55.00".
         </dd>
       </dl>
       <p>
@@ -1478,6 +1476,13 @@
           a total can't be a negative number.
           </li>
         </ol>
+        <div class="note" title="No alteration of values">
+          <p>
+            One feature of this algorithm is that user agents do not alter the
+            <var>amount</var>.<a>value</a>. For example, a user agent would not
+            change "55" into "55.00".
+          </p>
+        </div>
       </section>
     </section>
     <section>
