@@ -1383,7 +1383,9 @@
             combinations of currency code for which localized currency symbols
             are available is implementation dependent. Where a localized
             currency symbol is not available, a user agent SHOULD use U+00A4
-            (¤) for formatting.
+            (¤) for formatting. User agents MAY format the display of the
+            <a>currency</a> member to adhere to OS conventions (e.g., for
+            localization purposes).
           </p>
         </dd>
         <dt>
@@ -1474,6 +1476,14 @@
           a total can't be a negative number.
           </li>
         </ol>
+        <aside class="note" title="No alteration of values">
+          <p>
+            The algorithm does not alter or canonicalize the
+            <var>amount</var>.<a>value</a>. For example, a user agent will not
+            change "55" into "55.00". Payment handlers need to be prepared to
+            deal with such values.
+          </p>
+        </aside>
       </section>
     </section>
     <section>
@@ -2577,7 +2587,8 @@
               });
             </pre>
           </aside>
-          <p data-tests="payment-request-update-event-updatewith-method.https.html">
+          <p data-tests=
+          "payment-request-update-event-updatewith-method.https.html">
             The <a>updateWith(detailsPromise)</a> method MUST act as follows:
           </p>
           <ol class="algorithm">
