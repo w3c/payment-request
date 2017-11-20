@@ -1991,322 +1991,637 @@
     </div>
     <section data-dfn-for="PaymentAddress" data-link-for="PaymentAddress">
       <h2>
-        <dfn>PaymentAddress</dfn> interface
+        Physical Addresses
       </h2>
-      <pre class="idl">
-        [SecureContext, Exposed=Window]
-        interface PaymentAddress {
-          [Default] object toJSON();
-          readonly attribute DOMString country;
-          readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
-          readonly attribute DOMString region;
-          readonly attribute DOMString city;
-          readonly attribute DOMString dependentLocality;
-          readonly attribute DOMString postalCode;
-          readonly attribute DOMString sortingCode;
-          readonly attribute DOMString languageCode;
-          readonly attribute DOMString organization;
-          readonly attribute DOMString recipient;
-          readonly attribute DOMString phone;
-        };
-      </pre>
-      <section>
+      <p>
+        A <dfn>physical address</dfn> is composed of the following concepts.
+      </p>
+      <dl data-sort="">
+        <dt>
+          <dfn>Country</dfn>
+        </dt>
+        <dd>
+          The country corresponding to this address.
+        </dd>
+        <dt>
+          <dfn>Address line</dfn>
+        </dt>
+        <dd>
+          The most specific part of the address. It can include, for example, a
+          street name, a house number, apartment number, a rural delivery
+          route, descriptive instructions, or a post office box number.
+        </dd>
+        <dt>
+          <dfn>Region</dfn>
+        </dt>
+        <dd>
+          The top level administrative subdivision of the country. For example,
+          this can be a state, a province, an oblast, or a prefecture.
+        </dd>
+        <dt>
+          <dfn>City</dfn>
+        </dt>
+        <dd>
+          The city/town portion of the address.
+        </dd>
+        <dt>
+          <dfn>Dependent locality</dfn>
+        </dt>
+        <dd>
+          The dependent locality or sublocality within a city. For example,
+          used for neighborhoods, boroughs, districts, or UK dependent
+          localities.
+        </dd>
+        <dt>
+          <dfn>Postal code</dfn>
+        </dt>
+        <dd>
+          The postal code or ZIP code, also known as PIN code in India.
+        </dd>
+        <dt>
+          <dfn>Sorting code</dfn>
+        </dt>
+        <dd>
+          The sorting code as used in, for example, France.
+        </dd>
+        <dt>
+          <dfn>Language code</dfn>
+        </dt>
+        <dd>
+          The language in which the address is provided. It's used to determine
+          the field separators and the order of fields when formatting the
+          address for display.
+        </dd>
+        <dt>
+          <dfn>organization</dfn>
+        </dt>
+        <dd>
+          The organization, firm, company, or institution at this address.
+        </dd>
+        <dt>
+          <dfn>recipient</dfn>
+        </dt>
+        <dd>
+          The name of the recipient or contact person. This member may, under
+          certain circumstances, contain multiline information. For example, it
+          might contain "care of" information.
+        </dd>
+        <dt>
+          <dfn>phone number</dfn>
+        </dt>
+        <dd>
+          The phone number of the recipient or contact person at this address.
+        </dd>
+      </dl>
+      <section data-dfn-for="PaymentAddress" data-link-for="PaymentAddress">
         <h2>
-          Creating a <code>PaymentAddress</code>
+          <dfn>PaymentAddress</dfn> interface
         </h2>
+        <pre class="idl">
+          [SecureContext, Exposed=(Window,Worker), Constructor(optional AddressInit details)]
+          interface PaymentAddress {
+            [Default] object toJSON();
+            readonly attribute DOMString country;
+            readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
+            readonly attribute DOMString region;
+            readonly attribute DOMString city;
+            readonly attribute DOMString dependentLocality;
+            readonly attribute DOMString postalCode;
+            readonly attribute DOMString sortingCode;
+            readonly attribute DOMString languageCode;
+            readonly attribute DOMString organization;
+            readonly attribute DOMString recipient;
+            readonly attribute DOMString phone;
+          };
+        </pre>
         <p>
-          The steps to <dfn>create a payment address</dfn> from user-provided
-          input are given by the following algorithm.
+          The <a>PaymentAddress</a> interface represents a <a>physical
+          address</a> on the Web.
         </p>
-        <ol data-link-for="PaymentAddress">
-          <li>Let <var>address</var> be a new instance of
-          <a>PaymentAddress</a>.
-          </li>
-          <li>Set <var>address</var>.<a>[[\addressLine]]</a> to the result of
-          splitting the user-provided address line into a <a data-cite=
-          "!WEBIDL#dfn-frozen-array-type">frozen array</a>. If none was
-          provided, set it to the empty <a data-cite=
-          "!WEBIDL#dfn-frozen-array-type">frozen array</a>.
-            <aside class="note">
-              How to split an address line is locale dependent and beyond the
-              scope of this specification.
-            </aside>
-          </li>
-          <li>Set <var>address</var>.<a>[[\country]]</a> to the user-provided
-          country as an upper case [[!ISO3166]] alpha-2 code, or to the empty
-          string if none was provided.
-          </li>
-          <li>Set the <var>address</var>.<a>[[\phone]]</a> to the user-provided
-          phone number for this shipping address, optionally formatted to
-          adhere to [[!E.164]], or to the empty string if none was provided.
-            <aside class="note" title="Privacy of phone number">
-              <p>
-                To maintain user's privacy, implementers need to be mindful
-                that a shipping address's associated phone number might be
-                different or the same from that of the end-user's. As such,
-                implementers need to take care to not provide the end user's
-                phone number to the merchant without the end user's consent.
-              </p>
-            </aside>
-          </li>
-          <li>Set <var>address</var>.<a>[[\languageCode]]</a> to a
+        <section>
+          <h2>
+            Constructor
+          </h2>
+          <p>
+            The steps to <dfn data-lt="PaymentAddress.PaymentAddress()"
+            data-no-default="">construct a <code>PymentAddress</code></dfn>
+            with <a>AddressInit</a> <var>details</var> are given by the
+            following algorithm:
+          </p>
+          <ol data-link-for="AddressInit">
+            <li>Let <var>address</var> be a new instance of
+            <a>PaymentAddress</a> with <a>[[\addressLine]]</a> set to an empty
+            <code><a data-cite=
+            "!WEBIDL#idl-sequence">sequence</a>&lt;<a data-cite=
+            "WEBIDL#idl-DOMString">DOMString</a>&gt;</code>, and all other
+            internal slots set to the empty string.
+            </li>
+            <li>If <var>details</var> was not passed to the constructor, return
+            <var>address</var> and terminate this algorithm.
+            </li>
+            <li>If <var>details</var>["<a>country</a>"] is present:
+              <ol>
+                <li>Let <var>country</var> be the result of <a data-cite=
+                "!INFRA#ascii-uppercase">ASCII uppercasing</a>
+                <var>details</var>["<a>country</a>"].
+                </li>
+                <li>If <var>country</var> is not a valid [[!ISO3166]] alpha-2
+                code, throw a <a>RangeError</a>.
+                </li>
+              </ol>
+            </li>
+            <li>If <var>details</var>["<a>addressLine</a>"] is present:
+              <ol>
+                <li>Push each item of <var>details</var>["<a>addressLine</a>"]
+                in order into <var>address</var>.<a>[[\addressLine]]</a>.
+                </li>
+              </ol>
+            </li>
+            <li>Freeze <var>details</var>["<a>addressLine</a>"].
+            </li>
+            <li>If <var>details</var>["<a>region</a>"] is present, set
+            <var>address</var>.<a>[[\region]]</a> to the result of trimming
+            <var>details</var>["<a>region</a>"]
+            </li>
+            <li>If <var>details</var>["<a>phone</a>"] is present:
+              <ol>
+                <li>Check if <var>details</var>["<a>phone</a>"] is a
+                <a>structurally valid phone number</a>, throw a
+                <a>RangeError</a>.
+                </li>
+                <li>Set <var>address</var>.<a>[[\phone]]</a> to the result of
+                <a>canonicalize a phone number</a>
+                <var>details</var>["<a>phone</a>"].
+                </li>
+              </ol>
+            </li>
+            <li>If <var>details</var>["<a>city</a>"] is present, set
+            <var>address</var>.<a>[[\city]]</a> to the result of trimming <var>
+              details</var>["<a>city</a>"].
+            </li>
+            <li>If <var>details</var>["<a>dependentLocality</a>"] is present,
+            set <var>address</var>.<a>[[\dependentLocality]]</a> to the result
+            of trimming <var>details</var>["<a>dependentLocality</a>"].
+            </li>
+            <li>If <var>details</var>["<a>postalCode</a>"] is present, set
+            <var>address</var>.<a>[[\postalCode]]</a> to the result of trimming
+            <var>details</var>["<a>postalCode</a>"].
+            </li>
+            <li>If <var>details</var>["<a>sortingCode</a>"] is present, set
+            <var>address</var>.<a>[[\sortingCode]]</a> to the result of
+            trimming <var>details</var>["<a>sortingCode</a>"].
+            </li>
+            <li>If <var>details</var>["<a>languageCode</a>"] is present:
+              <ol>
+                <li>If <a data-cite=
+                "ecma-402#sec-isstructurallyvalidlanguagetag">IsStructurallyValidLanguageTag</a>(<var>details</var>["<a>languageCode</a>"])
+                is false, throw a <a>RangeError</a> exception.
+                </li>
+                <li>Set <var>address</var>.<a>[[\languageCode]]</a> to
+                <a data-cite=
+                "ecma-402#sec-canonicalizelanguagetag">CanonicalizeLanguageTag</a>(<var>details</var>["<a>languageCode</a>"]).
+                </li>
+              </ol>
+            </li>
+            <li>If <var>details</var>["<a>organization</a>"] is present, set
+            <var>address</var>.<a>[[\organization]]</a> to the result of
+            trimming <var>details</var>["<a>organization</a>"].
+            </li>
+            <li>If <var>details</var>["<a>recipient</a>"] is present, set <var>
+              address</var>.<a>[[\recipient]]</a> to the result of trimming
+              <var>details</var>["<a>recipient</a>"].
+            </li>
+            <li>Return <var>address</var>.
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2>
+            Creating a <code>PaymentAddress</code>
+          </h2>
+          <p>
+            The steps to <dfn>create a payment address from user-provided
+            input</dfn> are given by the following algorithm.
+          </p>
+          <ol data-link-for="PaymentAddress">
+            <li>Let <var>address</var> be a new instance of
+            <a>PaymentAddress</a>.
+            </li>
+            <li>Set <var>address</var>.<a>[[\addressLine]]</a> to the result of
+            splitting the user-provided address line into a <a data-cite=
+            "!WEBIDL#dfn-frozen-array-type">frozen array</a>. If none was
+            provided, set it to the empty <a data-cite=
+            "!WEBIDL#dfn-frozen-array-type">frozen array</a>.
+              <aside class="note">
+                How to split an address line is locale dependent and beyond the
+                scope of this specification.
+              </aside>
+            </li>
+            <li>Set <var>address</var>.<a>[[\country]]</a> to the user-provided
+            country as an upper case [[!ISO3166]] alpha-2 code, or to the empty
+            string if none was provided.
+            </li>
+            <li>Set the <var>address</var>.<a>[[\phone]]</a> to the
+            user-provided phone number for this shipping address, optionally
+            formatted to adhere to [[!E.164]], or to the empty string if none
+            was provided.
+              <aside class="note" title="Privacy of phone number">
+                <p>
+                  To maintain user's privacy, implementers need to be mindful
+                  that a shipping address's associated phone number might be
+                  different or the same from that of the end-user's. As such,
+                  implementers need to take care to not provide the end user's
+                  phone number to the merchant without the end user's consent.
+                </p>
+              </aside>
+            </li>
+            <li>Set <var>address</var>.<a>[[\languageCode]]</a> to a
             <a data-cite="!BCP47#section-4.5">canonicalized language tag</a>,
             or to the empty string if none was provided.
-            <div class="issue" data-number="608"></div>
-          </li>
-          <li>Set <var>address</var>.<a>[[\city]]</a> to the user-provided
-          city, or to the empty string if none was provided.
-          </li>
-          <li>Set <var>address</var>.<a>[[\dependentLocality]]</a> to the
-          user-provided dependent locality, or to the empty string if none was
-          provided.
-          </li>
-          <li>Set <var>address</var>.<a>[[\organization]]</a> to the
-          user-provided recipient organization, or to the empty string if none
-          was provided.
-          </li>
-          <li>Set <var>address</var>.<a>[[\postalCode]]</a> to the
-          user-provided postal code, or to the empty string if none was
-          provided.
-          </li>
-          <li>Set <var>address</var>.<a>[[\recipient]]</a> to the user-provided
-          recipient of the transaction, or to the empty string if none was
-          provided.
-          </li>
-          <li>Set <var>address</var>.<a>[[\region]]</a> to the user-provided
-          region, or to the empty string if none was provided.
-          </li>
-          <li>Set <var>address</var>.<a>[[\sortingCode]]</a> to the
-          user-provided sorting code, or to the empty string if none was
-          provided.
-          </li>
-          <li>Return <var>address</var>.
-          </li>
-        </ol>
+              <div class="issue" data-number="608"></div>
+            </li>
+            <li>Set <var>address</var>.<a>[[\city]]</a> to the user-provided
+            city, or to the empty string if none was provided.
+            </li>
+            <li>Set <var>address</var>.<a>[[\dependentLocality]]</a> to the
+            user-provided dependent locality, or to the empty string if none
+            was provided.
+            </li>
+            <li>Set <var>address</var>.<a>[[\organization]]</a> to the
+            user-provided recipient organization, or to the empty string if
+            none was provided.
+            </li>
+            <li>Set <var>address</var>.<a>[[\postalCode]]</a> to the
+            user-provided postal code, or to the empty string if none was
+            provided.
+            </li>
+            <li>Set <var>address</var>.<a>[[\recipient]]</a> to the
+            user-provided recipient of the transaction, or to the empty string
+            if none was provided.
+            </li>
+            <li>Set <var>address</var>.<a>[[\region]]</a> to the user-provided
+            region, or to the empty string if none was provided.
+            </li>
+            <li>Set <var>address</var>.<a>[[\sortingCode]]</a> to the
+            user-provided sorting code, or to the empty string if none was
+            provided.
+            </li>
+            <li>Return <var>address</var>.
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2>
+            <dfn>toJSON()</dfn> method
+          </h2>
+          <p>
+            When called, runs [[!WEBIDL]]'s <a data-cite=
+            "WEBIDL#default-tojson-operation">default toJSON operation</a>.
+          </p>
+        </section>
+        <section>
+          <h2>
+            <dfn>country</dfn> attribute
+          </h2>
+          <p>
+            When getting, returns the value of the <a>PaymentAddress</a>'s
+            <a>[[\country]]</a> internal slot.
+          </p>
+        </section>
+        <section>
+          <h2>
+            <dfn>addressLine</dfn> attribute
+          </h2>
+          <p>
+            When getting, returns the value of the <a>PaymentAddress</a>'s
+            <a>[[\addressLine]]</a> internal slot.
+          </p>
+        </section>
+        <section>
+          <h2>
+            <dfn>region</dfn> attribute
+          </h2>
+          <p>
+            When getting, returns the value of the <a>PaymentAddress</a>'s
+            <a>[[\region]]</a> internal slot.
+          </p>
+        </section>
+        <section>
+          <h2>
+            <dfn>city</dfn> attribute
+          </h2>
+          <p>
+            When getting, returns the value of the <a>PaymentAddress</a>'s
+            <a>[[\city]]</a> internal slot.
+          </p>
+        </section>
+        <section>
+          <h2>
+            <dfn>dependentLocality</dfn> attribute
+          </h2>
+          <p>
+            When getting, returns the value of the <a>PaymentAddress</a>'s
+            <a>[[\dependentLocality]]</a> internal slot.
+          </p>
+        </section>
+        <section>
+          <h2>
+            <dfn>postalCode</dfn> attribute
+          </h2>
+          <p>
+            When getting, returns the value of the <a>PaymentAddress</a>'s
+            <a>[[\postalCode]]</a> internal slot.
+          </p>
+        </section>
+        <section>
+          <h2>
+            <dfn>sortingCode</dfn> attribute
+          </h2>
+          <p>
+            When getting, returns the value of the <a>PaymentAddress</a>'s
+            <a>[[\sortingCode]]</a> internal slot.
+          </p>
+        </section>
+        <section>
+          <h2>
+            <dfn>languageCode</dfn> attribute
+          </h2>
+          <p>
+            When getting, returns the value of the <a>PaymentAddress</a>'s
+            <a>[[\languageCode]]</a> internal slot.
+          </p>
+        </section>
+        <section>
+          <h2>
+            <dfn>organization</dfn> attribute
+          </h2>
+          <p>
+            When getting, returns the value of the <a>PaymentAddress</a>'s
+            <a>[[\organization]]</a> internal slot.
+          </p>
+        </section>
+        <section>
+          <h2>
+            <dfn>recipient</dfn> attribute
+          </h2>
+          <p>
+            When getting, returns the value of the <a>PaymentAddress</a>'s
+            <a>[[\recipient]]</a> internal slot.
+          </p>
+        </section>
+        <section>
+          <h2>
+            <dfn>phone</dfn> attribute
+          </h2>
+          <p>
+            When getting, returns the value of the <a>PaymentAddress</a>'s
+            <a>[[\phone]]</a> internal slot.
+          </p>
+        </section>
+        <section data-link-for="">
+          <h2>
+            Internal slots
+          </h2>
+          <table>
+            <tr>
+              <th>
+                Internal slot
+              </th>
+              <th>
+                Description (<em>non-normative</em>)
+              </th>
+            </tr>
+            <tr>
+              <td>
+                <dfn>[[\country]]</dfn>
+              </td>
+              <td>
+                A <a>country</a> as an [[!ISO3166]] alpha-2 code or the empty
+                string. The canonical form is upper case. For example, "JP".
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <dfn>[[\addressLine]]</dfn>
+              </td>
+              <td>
+                A frozen array, possibly of zero length, representing an
+                <a>address line</a>.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <dfn>[[\region]]</dfn>
+              </td>
+              <td>
+                A <a>region</a> or the empty string.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <dfn>[[\city]]</dfn>
+              </td>
+              <td>
+                A <a>city</a> or the empty string.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <dfn>[[\dependentLocality]]</dfn>
+              </td>
+              <td>
+                A <a>dependent locality</a> or the empty string.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <dfn>[[\postalCode]]</dfn>
+              </td>
+              <td>
+                A <a>postal code</a> or the empty string.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <dfn>[[\sortingCode]]</dfn>
+              </td>
+              <td>
+                A <a>sorting code</a> or the empty string.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <dfn>[[\languageCode]]</dfn>
+              </td>
+              <td>
+                A <a data-cite="!BCP47#section-2">language tag</a> representing
+                the <a>language code</a>, or the empty string.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <dfn>[[\organization]]</dfn>
+              </td>
+              <td>
+                An <a>organization</a> or the empty string.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <dfn>[[\recipient]]</dfn>
+              </td>
+              <td>
+                A <a>recipient</a> or the empty string.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <dfn>[[\phone]]</dfn>
+              </td>
+              <td>
+                A <a>phone number</a> or the empty string.
+              </td>
+            </tr>
+          </table>
+        </section>
       </section>
       <section>
         <h2>
-          <dfn>toJSON()</dfn> method
+          <dfn>AddressInit</dfn> dictionary
         </h2>
+        <pre class="idl">
+          dictionary AddressInit {
+            DOMString country;
+            sequence&lt;DOMString&gt; addressLine;
+            DOMString region;
+            DOMString city;
+            DOMString dependentLocality;
+            DOMString postalCode;
+            DOMString sortingCode;
+            DOMString languageCode;
+            DOMString organization;
+            DOMString recipient;
+            DOMString phone;
+          };
+        </pre>
         <p>
-          When called, runs [[!WEBIDL]]'s <a data-cite=
-          "WEBIDL#default-tojson-operation">default toJSON operation</a>.
+          A <a>AddressInit</a> is passed when <a data-lt=
+          "PaymentAddress.PaymentAddress()">constructing</a> a
+          <a>PaymentAddress</a>. Its members are as follows.
         </p>
+        <dl data-dfn-for="AddressInit" data-sort="ascending">
+          <dt>
+            <dfn>country</dfn> member
+          </dt>
+          <dd>
+            A <a>country</a>.
+          </dd>
+          <dt>
+            <dfn>addressLine</dfn> member
+          </dt>
+          <dd>
+            A sequence representing the <a>address line</a>.
+          </dd>
+          <dt>
+            <dfn>region</dfn> member
+          </dt>
+          <dd>
+            A <a>region</a>.
+          </dd>
+          <dt>
+            <dfn>city</dfn> member
+          </dt>
+          <dd>
+            A <a>city</a>.
+          </dd>
+          <dt>
+            <dfn>dependentLocality</dfn> member
+          </dt>
+          <dd>
+            A <a>dependent locality</a>.
+          </dd>
+          <dt>
+            <dfn>postalCode</dfn> member
+          </dt>
+          <dd>
+            A <a>postal code</a>.
+          </dd>
+          <dt>
+            <dfn>sortingCode</dfn> member
+          </dt>
+          <dd>
+            A <a>sorting code</a>
+          </dd>
+          <dt>
+            <dfn>languageCode</dfn> member
+          </dt>
+          <dd>
+            A <a data-cite="!BCP47#section-2">language tag</a> representing the
+            <a>language code</a>.
+          </dd>
+          <dt>
+            <dfn>organization</dfn> member
+          </dt>
+          <dd>
+            An <a>organization</a>.
+          </dd>
+          <dt>
+            <dfn>recipient</dfn> member
+          </dt>
+          <dd>
+            A <a>recipient</a>.
+          </dd>
+          <dt>
+            <dfn>phone</dfn> member
+          </dt>
+          <dd>
+            A <a>phone number</a>.
+          </dd>
+        </dl>
       </section>
       <section>
         <h2>
-          <dfn>country</dfn> attribute
+          Phone-related algorithms
         </h2>
-        <p>
-          When getting, returns the value of the <a>PaymentAddress</a>'s
-          <a>[[\country]]</a> internal slot.
-        </p>
-      </section>
-      <section>
-        <h2>
-          <dfn>addressLine</dfn> attribute
-        </h2>
-        <p>
-          When getting, returns the value of the <a>PaymentAddress</a>'s
-          <a>[[\addressLine]]</a> internal slot.
-        </p>
-      </section>
-      <section>
-        <h2>
-          <dfn>region</dfn> attribute
-        </h2>
-        <p>
-          When getting, returns the value of the <a>PaymentAddress</a>'s
-          <a>[[\region]]</a> internal slot.
-        </p>
-      </section>
-      <section>
-        <h2>
-          <dfn>city</dfn> attribute
-        </h2>
-        <p>
-          When getting, returns the value of the <a>PaymentAddress</a>'s
-          <a>[[\city]]</a> internal slot.
-        </p>
-      </section>
-      <section>
-        <h2>
-          <dfn>dependentLocality</dfn> attribute
-        </h2>
-        <p>
-          When getting, returns the value of the <a>PaymentAddress</a>'s
-          <a>[[\dependentLocality]]</a> internal slot.
-        </p>
-      </section>
-      <section>
-        <h2>
-          <dfn>postalCode</dfn> attribute
-        </h2>
-        <p>
-          When getting, returns the value of the <a>PaymentAddress</a>'s
-          <a>[[\postalCode]]</a> internal slot.
-        </p>
-      </section>
-      <section>
-        <h2>
-          <dfn>sortingCode</dfn> attribute
-        </h2>
-        <p>
-          When getting, returns the value of the <a>PaymentAddress</a>'s
-          <a>[[\sortingCode]]</a> internal slot.
-        </p>
-      </section>
-      <section>
-        <h2>
-          <dfn>languageCode</dfn> attribute
-        </h2>
-        <p>
-          When getting, returns the value of the <a>PaymentAddress</a>'s
-          <a>[[\languageCode]]</a> internal slot.
-        </p>
-      </section>
-      <section>
-        <h2>
-          <dfn>organization</dfn> attribute
-        </h2>
-        <p>
-          When getting, returns the value of the <a>PaymentAddress</a>'s
-          <a>[[\organization]]</a> internal slot.
-        </p>
-      </section>
-      <section>
-        <h2>
-          <dfn>recipient</dfn> attribute
-        </h2>
-        <p>
-          When getting, returns the value of the <a>PaymentAddress</a>'s
-          <a>[[\recipient]]</a> internal slot.
-        </p>
-      </section>
-      <section>
-        <h2>
-          <dfn>phone</dfn> attribute
-        </h2>
-        <p>
-          When getting, returns the value of the <a>PaymentAddress</a>'s
-          <a>[[\phone]]</a> internal slot.
-        </p>
-      </section>
-      <section>
-        <h2>
-          Internal slots
-        </h2>
-        <table>
-          <tr>
-            <th>
-              Internal slot
-            </th>
-            <th>
-              Description (<em>non-normative</em>)
-            </th>
-          </tr>
-          <tr>
-            <td>
-              <dfn>[[\country]]</dfn>
-            </td>
-            <td>
-              An [[!ISO3166]] alpha-2 code. The canonical form is upper case.
-              For example, "JP".
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <dfn>[[\addressLine]]</dfn>
-            </td>
-            <td>
-              The most specific part of the address. It can include, for
-              example, a street name, a house number, apartment number, a rural
-              delivery route, descriptive instructions, or a post office box
-              number.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <dfn>[[\region]]</dfn>
-            </td>
-            <td>
-              The top level administrative subdivision of the country. For
-              example, this can be a state, a province, an oblast, or a
-              prefecture.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <dfn>[[\city]]</dfn>
-            </td>
-            <td>
-              The city/town portion of the address.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <dfn>[[\dependentLocality]]</dfn>
-            </td>
-            <td>
-              The dependent locality or sublocality within a city. For example,
-              used for neighborhoods, boroughs, districts, or UK dependent
-              localities.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <dfn>[[\postalCode]]</dfn>
-            </td>
-            <td>
-              The postal code or ZIP code, also known as PIN code in India.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <dfn>[[\sortingCode]]</dfn>
-            </td>
-            <td>
-              The sorting code as used in, for example, France.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <dfn>[[\languageCode]]</dfn>
-            </td>
-            <td>
-              The [[!BCP47]] language tag for the address, in <a data-cite=
-              "BCP47#section-4.5">canonical form</a>. It's used to determine
-              the field separators and the order of fields when formatting the
-              address for display.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <dfn>[[\organization]]</dfn>
-            </td>
-            <td>
-              The organization, firm, company, or institution at this address.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <dfn>[[\recipient]]</dfn>
-            </td>
-            <td>
-              The name of the recipient or contact person. This member may,
-              under certain circumstances, contain multiline information. For
-              example, it might contain "care of" information.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <dfn>[[\phone]]</dfn>
-            </td>
-            <td>
-              The phone number of the recipient or contact person.
-            </td>
-          </tr>
-        </table>
+        <section>
+          <h3>
+            Structurally valid phone numbers
+          </h3>
+          <p>
+            The steps to check if a <a data-cite=
+            "WEBIDL#idl-DOMString">DOMString</a> <var>tel</var> is
+            <dfn>structurally valid phone number</dfn> is given by the
+            following algorithm.
+          </p>
+          <p class="note">
+            The algorithm checks that a phone number conforms to [[!E.164]].
+          </p>
+          <ol class="algorithm">
+            <li>If <var>tel</var> contains U+000A LINE FEED (LF) or U+000D
+            CARRIAGE RETURN (CR) characters, return false.
+            </li>
+            <li>Strip and collapse ASCII whitespace in <var>tel</var>.
+            </li>
+            <li>If the length is greater 15, return false.
+            </li>
+            <li>If the first code point is not U+002B PLUS SIGN, return false.
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h3>
+            Canonicalize a phone number
+          </h3>
+          <p>
+            The steps to <dfn>canonicalize a phone number</dfn> given a
+            <a data-cite="WEBIDL#idl-DOMString">DOMString</a> <var>tel</var> is
+            given by the following algorithm.
+          </p>
+          <ol class="algorithm">
+            <li>TBW...
+            </li>
+          </ol>
+        </section>
       </section>
     </section>
     <section data-dfn-for="PaymentShippingOption">
@@ -2896,7 +3211,7 @@
             run the following steps:
             <ol>
               <li>Let <var>address</var> be the result of running the steps to
-              <a>create a payment address</a>.
+              <a>create a payment address from user-provided input</a>.
               </li>
               <li>Set the <a data-lt=
               "PaymentRequest.shippingAddress">shippingAddress</a> attribute on
