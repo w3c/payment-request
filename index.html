@@ -839,6 +839,10 @@
           MUST act as follows:
         </p>
         <ol class="algorithm">
+          <li>If the method was not <a>triggered by user activation</a>, return
+          a promise rejected with a "<a>SecurityError</a>" <a>DOMException</a>
+          and terminate this algorithm.
+          </li>
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object on
           which the method is called.
           </li>
@@ -856,19 +860,9 @@
               Optionally, if the <a>user agent</a> wishes to disallow the call
               to <a>show()</a> to protect the user, then return a promise
               rejected with a "<a>SecurityError</a>" <a>DOMException</a>. For
-              example, the <a>user agent</a> may require the call to be
-              <a>triggered by user activation</a>, or may limit the rate at
-              which a page can call <a>show()</a>.
-            </p>
-            <p class="note">
-              During the Candidate Recommendation phase, implementations are
-              expected to experiment in this area. Developers using this API
-              should investigate and anticipate such experiments and understand
-              under what circumstances a "<a>SecurityError</a>"
-              <a>DOMException</a> might occur. If interoperable behavior
-              emerges amongst user agents, then that behavior will be
-              standardized here before progressing the specification along the
-              W3C Recommendation Track.
+              example, the <a>user agent</a> may limit the rate at which a page
+              can call <a>show()</a>, as described in the <a href=
+              "#privacy">privacy considerations</a> section.
             </p>
           </li>
           <li>If <var>request</var>.<a>[[\state]]</a> is not "<a>created</a>"
