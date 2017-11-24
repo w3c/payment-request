@@ -751,7 +751,23 @@
               </li>
             </ol>
           </li>
+          <li>Let <var>uiLang</var> be null.
+          </li>
+          <li data-link-for="PaymentDetailsInit">If
+          <var>details</var>["<a>lang</a>"] is present:
+            <ol>
+              <li>If <a data-cite=
+              "ecma-402#sec-isstructurallyvalidlanguagetag">IsStructurallyValidLanguageTag</a>(<var>details</var>["<a>lang</a>"])
+              is false, throw a <a>RangeError</a>.
+              </li>
+              <li>Set <var>uiLang</var> to <a data-cite=
+              "ecma-402#sec-canonicalizelanguagetag">CanonicalizeLanguageTag</a>(<var>details</var>["<a>lang</a>"]).
+              </li>
+            </ol>
+          </li>
           <li>Let <var>request</var> be a new <a>PaymentRequest</a>.
+          </li>
+          <li>Set <var>request</var>.<a>[[\uiLang]]</a> to <var>uiLang</var>.
           </li>
           <li>Set <var>request</var>.<a>[[\options]]</a> to <var>options</var>.
           </li>
@@ -937,6 +953,15 @@
               Otherwise, present a user interface to allow the user to interact
               with the <var>handlers</var>. The user agent SHOULD prioritize
               the preference of the user when presenting payment methods.
+            </p>
+            <p>
+              Optionally, if <var>request</var>.<a>[[\uiLang]]</a> is not null,
+              localize the user interface to match, as closely as possible, the
+              language of <a>[[\uiLang]]</a>. Otherwise, if
+              <var>request</var>.<a>[[\uiLang]]</a> is null, it is RECOMMENDED
+              that the language of the user interface match the <a data-cite=
+              "!HTML#language">language</a> of <a data-cite=
+              "html#the-body-element-2">the body element</a>.
             </p>
             <p>
               For the <a>payment handler</a> selected by the end-user, the user
@@ -1286,6 +1311,15 @@
               accepts the payment request.
             </td>
           </tr>
+          <tr>
+            <td>
+              <dfn>[[\uiLang]]</dfn>
+            </td>
+            <td>
+              The merchant-preferred language in which to localize the UI when
+              <a>show()</a> is called.
+            </td>
+          </tr>
         </table>
       </section>
     </section>
@@ -1573,6 +1607,7 @@
           dictionary PaymentDetailsInit : PaymentDetailsBase {
             DOMString id;
             required PaymentItem total;
+            DOMString lang;
           };
         </pre>
         <aside class="note">
@@ -1584,7 +1619,17 @@
           <a>PaymentDetailsBase</a> dictionary, the following members are part
           of the <a>PaymentDetailsInit</a> dictionary:
         </p>
-        <dl>
+        <dl data-sort="">
+          <dt>
+            <dfn>lang</dfn> member
+          </dt>
+          <dd>
+            A [[!BCP47]] language tag representing the merchant preferred
+            language of the financial transaction. The <a>lang</a> member
+            serves as a hint to the user agent, optionally allowing the user
+            agent to localize the payment UI to be in the same language as the
+            document that made the request for payment.
+          </dd>
           <dt>
             <dfn>id</dfn> member
           </dt>
