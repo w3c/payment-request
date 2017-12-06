@@ -1996,6 +1996,10 @@
       <p>
         A <dfn>physical address</dfn> is composed of the following concepts.
       </p>
+      <p class="note">
+        Developers wanting to represent a <a>physical address</a> can use the
+        <a>PaymentAddress</a> interface.
+      </p>
       <dl data-sort="">
         <dt>
           <dfn>Country</dfn>
@@ -2053,13 +2057,13 @@
           address for display.
         </dd>
         <dt>
-          <dfn>organization</dfn>
+          <dfn>Organization</dfn>
         </dt>
         <dd>
           The organization, firm, company, or institution at this address.
         </dd>
         <dt>
-          <dfn>recipient</dfn>
+          <dfn>Recipient</dfn>
         </dt>
         <dd>
           The name of the recipient or contact person. This member may, under
@@ -2067,7 +2071,7 @@
           might contain "care of" information.
         </dd>
         <dt>
-          <dfn>phone number</dfn>
+          <dfn>Phone number</dfn>
         </dt>
         <dd>
           The phone number of the recipient or contact person at this address.
@@ -2078,20 +2082,20 @@
           <dfn>PaymentAddress</dfn> interface
         </h2>
         <pre class="idl">
-          [SecureContext, Exposed=(Window,Worker), Constructor(optional AddressInit details)]
+          [SecureContext, Exposed=(Window), Constructor(optional AddressInit details)]
           interface PaymentAddress {
             [Default] object toJSON();
-            readonly attribute DOMString country;
-            readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
-            readonly attribute DOMString region;
             readonly attribute DOMString city;
+            readonly attribute DOMString country;
             readonly attribute DOMString dependentLocality;
-            readonly attribute DOMString postalCode;
-            readonly attribute DOMString sortingCode;
             readonly attribute DOMString languageCode;
             readonly attribute DOMString organization;
-            readonly attribute DOMString recipient;
             readonly attribute DOMString phone;
+            readonly attribute DOMString postalCode;
+            readonly attribute DOMString recipient;
+            readonly attribute DOMString region;
+            readonly attribute DOMString sortingCode;
+            readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
           };
         </pre>
         <p>
@@ -2103,10 +2107,10 @@
             Constructor
           </h2>
           <p>
-            The steps to <dfn data-lt="PaymentAddress.PaymentAddress()"
-            data-no-default="">construct a <code>PymentAddress</code></dfn>
-            with <a>AddressInit</a> <var>details</var> are given by the
-            following algorithm:
+            The steps to <dfn data-lt=
+            "PaymentAddress.PaymentAddress()">construct a
+            <code>PaymentAddress</code></dfn> with <a>AddressInit</a>
+            <var>details</var> are given by the following algorithm:
           </p>
           <ol data-link-for="AddressInit">
             <li>Let <var>address</var> be a new instance of
@@ -2130,46 +2134,18 @@
                 </li>
               </ol>
             </li>
-            <li>If <var>details</var>["<a>addressLine</a>"] is present:
-              <ol>
-                <li>Push each item of <var>details</var>["<a>addressLine</a>"]
-                in order into <var>address</var>.<a>[[\addressLine]]</a>.
-                </li>
-              </ol>
-            </li>
-            <li>Freeze <var>details</var>["<a>addressLine</a>"].
-            </li>
-            <li>If <var>details</var>["<a>region</a>"] is present, set
-            <var>address</var>.<a>[[\region]]</a> to the result of trimming
-            <var>details</var>["<a>region</a>"]
-            </li>
             <li>If <var>details</var>["<a>phone</a>"] is present:
               <ol>
-                <li>Check if <var>details</var>["<a>phone</a>"] is a
+                <li>If <var>details</var>["<a>phone</a>"] is not a
                 <a>structurally valid phone number</a>, throw a
                 <a>RangeError</a>.
                 </li>
-                <li>Set <var>address</var>.<a>[[\phone]]</a> to the result of
-                <a>canonicalize a phone number</a>
-                <var>details</var>["<a>phone</a>"].
+                <li>
+                  <a>Canonicalize a phone number</a>
+                  <var>details</var>["<a>phone</a>"] and set
+                  <var>address</var>.<a>[[\phone]]</a> to the result.
                 </li>
               </ol>
-            </li>
-            <li>If <var>details</var>["<a>city</a>"] is present, set
-            <var>address</var>.<a>[[\city]]</a> to the result of trimming <var>
-              details</var>["<a>city</a>"].
-            </li>
-            <li>If <var>details</var>["<a>dependentLocality</a>"] is present,
-            set <var>address</var>.<a>[[\dependentLocality]]</a> to the result
-            of trimming <var>details</var>["<a>dependentLocality</a>"].
-            </li>
-            <li>If <var>details</var>["<a>postalCode</a>"] is present, set
-            <var>address</var>.<a>[[\postalCode]]</a> to the result of trimming
-            <var>details</var>["<a>postalCode</a>"].
-            </li>
-            <li>If <var>details</var>["<a>sortingCode</a>"] is present, set
-            <var>address</var>.<a>[[\sortingCode]]</a> to the result of
-            trimming <var>details</var>["<a>sortingCode</a>"].
             </li>
             <li>If <var>details</var>["<a>languageCode</a>"] is present:
               <ol>
@@ -2183,13 +2159,49 @@
                 </li>
               </ol>
             </li>
-            <li>If <var>details</var>["<a>organization</a>"] is present, set
-            <var>address</var>.<a>[[\organization]]</a> to the result of
-            trimming <var>details</var>["<a>organization</a>"].
+            <li>If <var>details</var>["<a>addressLine</a>"] is present, set
+            <var>address</var>.<a>[[\addressLine]]</a> to a new frozen array
+            created from <var>details</var>.["<a>addressLine</a>"].
             </li>
-            <li>If <var>details</var>["<a>recipient</a>"] is present, set <var>
-              address</var>.<a>[[\recipient]]</a> to the result of trimming
-              <var>details</var>["<a>recipient</a>"].
+            <li>If <var>details</var>["<a>region</a>"] is present, <a>strip
+            leading and trailing ASCII whitespace</a> from
+            <var>details</var>["<a>region</a>"] and set
+            <var>address</var>.<a>[[\region]]</a> to the result.
+            </li>
+            <li>If <var>details</var>["<a>city</a>"] is present, <a>strip
+            leading and trailing ASCII whitespace</a> from
+            <var>details</var>["<a>city</a>"] and set
+            <var>address</var>.<a>[[\city]]</a> to the result.
+            </li>
+            <li>If <var>details</var>["<a>dependentLocality</a>"] is present,
+            <a>strip leading and trailing ASCII whitespace</a> from
+            <var>details</var>["<a>dependentLocality</a>"] and set
+            <var>address</var>.<a>[[\dependentLocality]]</a> to the result.
+            </li>
+            <li>If <var>details</var>["<a>postalCode</a>"] is present, <a>strip
+            leading and trailing ASCII whitespace</a> from
+            <var>details</var>["<a>postalCode</a>"] and set
+            <var>address</var>.<a>[[\postalCode]]</a> to the result.
+            </li>
+            <li>If <var>details</var>["<a>sortingCode</a>"] is present,
+            <a>strip leading and trailing ASCII whitespace</a> from
+            <var>details</var>["<a>sortingCode</a>"] and set
+            <var>address</var>.<a>[[\sortingCode]]</a> to the result.
+            </li>
+            <li>If <var>details</var>["<a>sortingCode</a>"] is present,
+            <a>strip leading and trailing ASCII whitespace</a> from
+            <var>details</var>["<a>sortingCode</a>"] and set
+            <var>address</var>.<a>[[\sortingCode]]</a> to the result.
+            </li>
+            <li>If <var>details</var>["<a>organization</a>"] is present,
+            <a>strip leading and trailing ASCII whitespace</a> from
+            <var>details</var>["<a>organization</a>"] and set
+            <var>address</var>.<a>[[\organization]]</a> to the result.
+            </li>
+            <li>If <var>details</var>["<a>recipient</a>"] is present, <a>strip
+            leading and trailing ASCII whitespace</a> from
+            <var>details</var>["<a>recipient</a>"] and set
+            <var>address</var>.<a>[[\recipient]]</a> to the result.
             </li>
             <li>Return <var>address</var>.
             </li>
@@ -2197,34 +2209,38 @@
         </section>
         <section>
           <h2>
-            Creating a <code>PaymentAddress</code>
+            Creating a <code>PaymentAddress</code> from user-provided input
           </h2>
           <p>
-            The steps to <dfn>create a payment address from user-provided
-            input</dfn> are given by the following algorithm.
+            The steps to <dfn>create a <code>PaymentAddress</code> from
+            user-provided input</dfn> are given by the following algorithm. The
+            algorithm takes a <a>list</a> <var>excludeList</var>, which
+            includes zero or more members identifier for which user input is
+            not gathered.
           </p>
-          <ol data-link-for="PaymentAddress">
-            <li>Let <var>address</var> be a new instance of
-            <a>PaymentAddress</a>.
+          <ol data-link-for="AddressInit">
+            <li>Let <var>details</var> be an object with no members that will
+            serve as a <a>AddressInit</a> dictionary.
             </li>
-            <li>Set <var>address</var>.<a>[[\addressLine]]</a> to the result of
+            <li>If "addressLine" is not in <var>excludeList</var>, set
+            <var>details</var>.<a>["addressLine"]</a> to the result of
             splitting the user-provided address line into a <a data-cite=
             "!WEBIDL#dfn-frozen-array-type">frozen array</a>. If none was
-            provided, set it to the empty <a data-cite=
-            "!WEBIDL#dfn-frozen-array-type">frozen array</a>.
+            provided, set it to the empty <a>list</a>.
               <aside class="note">
                 How to split an address line is locale dependent and beyond the
                 scope of this specification.
               </aside>
             </li>
-            <li>Set <var>address</var>.<a>[[\country]]</a> to the user-provided
-            country as an upper case [[!ISO3166]] alpha-2 code, or to the empty
-            string if none was provided.
+            <li>If "country" is not in <var>excludeList</var>, set
+            <var>details</var>.<a>[[\country]]</a> to the user-provided country
+            as an upper case [[!ISO3166]] alpha-2 code, or to the empty string
+            if none was provided.
             </li>
-            <li>Set the <var>address</var>.<a>[[\phone]]</a> to the
-            user-provided phone number for this shipping address, optionally
-            formatted to adhere to [[!E.164]], or to the empty string if none
-            was provided.
+            <li>If "phone" is not in <var>excludeList</var>, set
+            <var>details</var>.["<a>phone</a>"] to the user-provided phone
+            number for this shipping address, optionally formatted to adhere to
+            [[!E.164]], or to the empty string if none was provided.
               <aside class="note" title="Privacy of phone number">
                 <p>
                   To maintain user's privacy, implementers need to be mindful
@@ -2235,38 +2251,47 @@
                 </p>
               </aside>
             </li>
-            <li>Set <var>address</var>.<a>[[\languageCode]]</a> to a
-            <a data-cite="!BCP47#section-4.5">canonicalized language tag</a>,
-            or to the empty string if none was provided.
+            <li>If "languageCode" is not in <var>excludeList</var>, set
+            <var>details</var>.["<a>languageCode</a>"] to a <a data-cite=
+            "!BCP47#section-4.5">canonicalized language tag</a>, or to the
+            empty string if none was provided.
               <div class="issue" data-number="608"></div>
             </li>
-            <li>Set <var>address</var>.<a>[[\city]]</a> to the user-provided
-            city, or to the empty string if none was provided.
+            <li>If "city" is not in <var>excludeList</var>, set
+            <var>details</var>.["<a>city</a>"] to the user-provided city, or to
+            the empty string if none was provided.
             </li>
-            <li>Set <var>address</var>.<a>[[\dependentLocality]]</a> to the
+            <li>If "dependentLocality" is not in <var>excludeList</var>, set
+            <var>details</var>.["<a>dependentLocality</a>"] to the
             user-provided dependent locality, or to the empty string if none
             was provided.
             </li>
-            <li>Set <var>address</var>.<a>[[\organization]]</a> to the
-            user-provided recipient organization, or to the empty string if
-            none was provided.
-            </li>
-            <li>Set <var>address</var>.<a>[[\postalCode]]</a> to the
-            user-provided postal code, or to the empty string if none was
+            <li>If "organization" is not in <var>excludeList</var>, set
+            <var>details</var>.["<a>organization</a>"] to the user-provided
+            recipient organization, or to the empty string if none was
             provided.
             </li>
-            <li>Set <var>address</var>.<a>[[\recipient]]</a> to the
-            user-provided recipient of the transaction, or to the empty string
-            if none was provided.
+            <li>If "postalCode" is not in <var>excludeList</var>, set
+            <var>details</var>.["<a>postalCode</a>"] to the user-provided
+            postal code, or to the empty string if none was provided.
             </li>
-            <li>Set <var>address</var>.<a>[[\region]]</a> to the user-provided
-            region, or to the empty string if none was provided.
-            </li>
-            <li>Set <var>address</var>.<a>[[\sortingCode]]</a> to the
-            user-provided sorting code, or to the empty string if none was
+            <li>If "recipient" is not in <var>excludeList</var>, set
+            <var>details</var>.["<a>recipient</a>"] to the user-provided
+            recipient of the transaction, or to the empty string if none was
             provided.
             </li>
-            <li>Return <var>address</var>.
+            <li>If "region" is not in <var>excludeList</var>, set
+            <var>details</var>.["<a>region</a>"] to the user-provided region,
+            or to the empty string if none was provided.
+            </li>
+            <li>If "sortingCode" is not in <var>excludeList</var>, set
+            <var>details</var>.["<a>sortingCode</a>"] to the user-provided
+            sorting code, or to the empty string if none was provided.
+            </li>
+            <li>
+              <a data-lt="PaymentAddress.PaymentAddress()">Construct a new
+              <code>PaymentAddress</code></a> with <var>details</var> and
+              return the result.
             </li>
           </ol>
         </section>
@@ -2397,7 +2422,8 @@
               </td>
               <td>
                 A <a>country</a> as an [[!ISO3166]] alpha-2 code or the empty
-                string. The canonical form is upper case. For example, "JP".
+                string stored in its canonical uppercase form. For example,
+                "JP".
               </td>
             </tr>
             <tr>
@@ -2602,7 +2628,7 @@
             </li>
             <li>Strip and collapse ASCII whitespace in <var>tel</var>.
             </li>
-            <li>If the length is greater 15, return false.
+            <li>If <var>tel</var>'s the length is greater 15, return false.
             </li>
             <li>If the first code point is not U+002B PLUS SIGN, return false.
             </li>
@@ -3210,8 +3236,12 @@
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
             <ol>
+              <li>Let excludeList be the list « "organization", "phoneNumber",
+              "recipient", "" »
+              </li>
               <li>Let <var>address</var> be the result of running the steps to
-              <a>create a payment address from user-provided input</a>.
+              <a>create a <code>PaymentAddress</code> from user-provided
+              input</a>.
               </li>
               <li>Set the <a data-lt=
               "PaymentRequest.shippingAddress">shippingAddress</a> attribute on
@@ -3801,7 +3831,15 @@
       <p>
         This specification relies on several other underlying specifications.
       </p>
-      <dl>
+      <dl data-sort="">
+        <dt>
+          Infra
+        </dt>
+        <dd>
+          The [[!INFRA] specification defines how to <dfn data-cite=
+          "!INFRA#strip-leading-and-trailing-ascii-whitespace">strip leading
+          and trailing ascii whitespace</dfn>.
+        </dd>
         <dt>
           Payment Method Identifiers
         </dt>
