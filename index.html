@@ -2214,16 +2214,15 @@
           <p>
             The steps to <dfn>create a <code>PaymentAddress</code> from
             user-provided input</dfn> are given by the following algorithm. The
-            algorithm takes a <a>list</a> <var>excludeList</var>, which
-            includes zero or more members identifier for which user input is
-            not gathered.
+            algorithm takes a <a>AddressField</a> <a>list</a>
+            <var>excludeList</var>, for which user input is not gathered.
           </p>
           <ol data-link-for="AddressInit">
             <li>Let <var>details</var> be an object with no members that will
             serve as a <a>AddressInit</a> dictionary.
             </li>
             <li>If "addressLine" is not in <var>excludeList</var>, set
-            <var>details</var>.<a>["addressLine"]</a> to the result of
+            <var>details</var>.["<a>addressLine</a>"] to the result of
             splitting the user-provided address line into a <a data-cite=
             "!WEBIDL#dfn-frozen-array-type">frozen array</a>. If none was
             provided, set it to the empty <a>list</a>.
@@ -2511,7 +2510,7 @@
           </table>
         </section>
       </section>
-      <section>
+      <section data-dfn-for="AddressInit" data-link-for="AddressInit">
         <h2>
           <dfn>AddressInit</dfn> dictionary
         </h2>
@@ -2604,6 +2603,35 @@
             A <a>phone number</a>.
           </dd>
         </dl>
+      </section>
+      <section data-dfn-for="AddressField" data-link-for="AddressField">
+        <h2>
+          <dfn>AddressField</dfn> enum
+        </h2>
+        <pre class="idl">
+          enum AddressField {
+            "addressLine",
+            "city",
+            "country",
+            "dependentLocality",
+            "languageCode",
+            "organization",
+            "phone",
+            "postalCode",
+            "recipient",
+            "region",
+            "sortingCode"
+          };
+        </pre>
+        <p>
+          The "<dfn>addressLine</dfn>", "<dfn>city</dfn>",
+          "<dfn>country</dfn>", "<dfn>dependentLocality</dfn>",
+          "<dfn>languageCode</dfn>", "<dfn>organization</dfn>",
+          "<dfn>phone</dfn>", "<dfn>postalCode</dfn>", "<dfn>recipient</dfn>",
+          "<dfn>region</dfn>", and "<dfn>sortingCode</dfn>" enum values
+          correspond to attributes with the same identifiers in the
+          <a>PaymentAddress</a> interface.
+        </p>
       </section>
       <section>
         <h2>
@@ -3238,8 +3266,8 @@
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
             <ol>
-              <li>Let excludeList be the list « "organization", "phoneNumber",
-              "recipient", "" »
+              <li>Let <var>excludeList</var> be the list « "organization",
+              "phoneNumber", "recipient" ».
               </li>
               <li>Let <var>address</var> be the result of running the steps to
               <a>create a <code>PaymentAddress</code> from user-provided
@@ -3840,7 +3868,8 @@
         <dd>
           The [[!INFRA] specification defines how to <dfn data-cite=
           "!INFRA#strip-leading-and-trailing-ascii-whitespace">strip leading
-          and trailing ascii whitespace</dfn>.
+          and trailing ascii whitespace</dfn>. It also defines the concpet of a
+          <dfn data-cite="!INFRA#list">list</dfn>.
         </dd>
         <dt>
           Payment Method Identifiers
