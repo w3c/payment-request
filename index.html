@@ -2242,9 +2242,8 @@
             </li>
             <li>If "<a data-link-for="AddressField">phone</a>" is not in <var>
               excludeList</var>, set <var>details</var>["<a>phone</a>"] to the
-              user-provided phone number for this shipping address, optionally
-              formatted to adhere to [[!E.164]], or to the empty string if none
-              was provided.
+              user-provided <a>structurally valid phone number</a>, or to the
+              empty string if none was provided.
               <aside class="note" title="Privacy of phone number">
                 <p>
                   To maintain user's privacy, implementers need to be mindful
