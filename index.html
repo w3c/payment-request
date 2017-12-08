@@ -2114,12 +2114,10 @@
           </p>
           <ol data-link-for="AddressInit">
             <li>Let <var>address</var> be a new instance of
-            <a>PaymentAddress</a> with <a>[[\addressLine]]</a> set to an empty
-            <code><a data-cite=
-            "!WEBIDL#idl-sequence">sequence</a>&lt;<a data-cite=
-            "WEBIDL#idl-DOMString">DOMString</a>&gt;</code>, and all other
-            internal slots set to the empty string.
-            </li>
+            <a>PaymentAddress</a>.
+            </li>Set <var>address</var>.<a>[[\addressLine]]</a>to the empty
+            frozen array, and all other <a data-lt=
+            "PaymentAddress slots">internal slots</a>set to the empty string.
             <li>If <var>details</var> was not passed to the constructor, return
             <var>address</var> and terminate this algorithm.
             </li>
@@ -2218,7 +2216,7 @@
             The steps to <dfn>create a <code>PaymentAddress</code> from
             user-provided input</dfn> are given by the following algorithm. The
             algorithm takes a <a>AddressField</a> <a>list</a>
-            <var>excludeList</var>, for which user input is not gathered.
+            <var>excludeList</var>, for which user input will not be gathered.
           </p>
           <ol data-link-for="AddressInit">
             <li>Let <var>details</var> be an object with no members that will
@@ -2414,7 +2412,8 @@
         </section>
         <section data-link-for="">
           <h2>
-            Internal slots
+            <dfn data-lt="PaymentAddress slots" data-no-default="">Internal
+            slots</dfn>
           </h2>
           <table>
             <tr>
