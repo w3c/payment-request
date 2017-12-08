@@ -2453,7 +2453,7 @@
           "PaymentAddress.PaymentAddress()">constructing</a> a
           <a>PaymentAddress</a>. Its members are as follows.
         </p>
-        <dl data-dfn-for="AddressInit" data-sort="ascending">
+        <dl data-dfn-for="AddressInit" data-link-for="" data-sort="ascending">
           <dt>
             <dfn>country</dfn> member
           </dt>
@@ -2494,7 +2494,7 @@
             <dfn>sortingCode</dfn> member
           </dt>
           <dd>
-            A <a>sorting code</a>
+            A <a>sorting code</a>.
           </dd>
           <dt>
             <dfn>languageCode</dfn> member
@@ -2583,7 +2583,8 @@
           </li>
           <li>If "<a data-link-for="AddressField">phone</a>" is not in
           <var>excludeList</var>, set <var>details</var>["<a>phone</a>"] to the
-          user-provided <a>structurally valid phone number</a>, or to the empty
+          user-provided <a>structurally valid phone number</a> in <a data-lt=
+          "canonicalize a phone number">canonical form</a>, or to the empty
           string if none was provided.
             <aside class="note" title="Privacy of phone number">
               <p>
@@ -2618,7 +2619,19 @@
           <li>If "<a data-link-for="AddressField">postalCode</a>" is not in
           <var>excludeList</var>, set <var>details</var>["<a>postalCode</a>"]
           to the user-provided postal code, or to the empty string if none was
-          provided.
+          provided. Optionally, redact part of
+          <var>details</var>["<a>postalCode</a>"].
+            <div class="note" title="Privacy of Postal Codes">
+              <p>
+                <a>Postal codes</a> in certain countries can be so specific as to
+                uniquely identify an individual. This being a privacy concern,
+                some user agents only return the part of a postal code that they
+                deem sufficient for a merchant to calculate shipping costs. This
+                varies across countries and regions, and so the choice to redact
+                part, or all, of the postal code is left to the discretion of
+                implementers in the interest of protecting users' privacy.
+              </p>
+            </div>
           </li>
           <li>If "<a data-link-for="AddressField">recipient</a>" is not in
           <var>excludeList</var>, set <var>details</var>["<a>recipient</a>"] to
@@ -3276,7 +3289,7 @@
             run the following steps:
             <ol>
               <li data-link-for="AddressField">Let <var>excludeList</var> be
-              the list « "<a>organization</a>", "<a>phoneNumber</a>",
+              the list « "<a>organization</a>", "<a>phone</a>",
               "<a>recipient</a>", "<a>addressLine</a>" ».
               </li>
               <li>Let <var>address</var> be the result of running the steps to
@@ -3418,11 +3431,12 @@
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> value of
-          <var>request</var>.<a>[[\options]]</a> is true, then set the
-          <a data-lt="PaymentResponse.shippingAddress">shippingAddress</a>
-          attribute of <var>response</var> to the value of the <a data-lt=
-          "PaymentRequest.shippingAddress">shippingAddress</a> attribute of
-          <var>request</var>. Otherwise, set it to null.
+          <var>request</var>.<a>[[\options]]</a> is true, then <a>create a
+          <code>PaymentAddress</code> from user-provided input</a> passing the
+          empty list as the <var>excludeList</var> and set the <a data-lt=
+          "PaymentResponse.shippingAddress">shippingAddress</a> attribute of
+          <var>response</var> to the resulting <a>PaymentAddress</a>.
+          Otherwise, set it to null.
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> value of
@@ -3450,11 +3464,9 @@
           "PaymentOptions.requestPayerPhone">requestPayerPhone</a> value of
           <var>request</var>.<a>[[\options]]</a> is true, then set the
           <a data-lt="PaymentResponse.payerPhone">payerPhone</a> attribute of
-          <var>response</var> to the payer's phone number provided by the user,
-          or to null if none was provided. When setting the <a data-lt=
-          "PaymentResponse.payerPhone">payerPhone</a> value, the user agent
-          SHOULD format the phone number to adhere to [[!E.164]]. Otherwise,
-          set it to null.
+          <var>response</var> to a <a>structurally valid phone number</a> in
+          <a data-lt="canonicalize a phone number">canonical form</a> provided
+          by the user, or to null if none was provided.
           </li>
           <li>Set <var>response</var>.<a>[[\completeCalled]]</a> to false.
           </li>
