@@ -281,6 +281,7 @@
               {
                 label: "Sales Tax",
                 amount: { currency: "USD", value: "5.00" },
+                type: "tax"
               },
             ],
             total: {
@@ -1848,6 +1849,7 @@
           required DOMString label;
           required PaymentCurrencyAmount amount;
           boolean pending = false;
+          PaymentItemType type;
         };
       </pre>
       <p>
@@ -1879,6 +1881,39 @@
           tax amounts that depend upon selection of shipping address or
           shipping option. <a>User agents</a> MAY indicate pending fields in
           the user interface for the payment request.
+        </dd>
+        <dt>
+          <dfn>type</dfn> member
+        </dt>
+        <dd>
+          A <a>PaymentItemType</a> enum value. A the value of <a>type</a> to
+          assist in the presentation of <a>PaymentItem</a> by, for example,
+          visually grouping types together or other otherwise distinguishing
+          them from other types (or from items that have no associated type).
+        </dd>
+      </dl>
+    </section>
+    <section data-dfn-for="PaymentItemType">
+      <h2>
+        <dfn>PaymentItemType</dfn> enum
+      </h2>
+      <pre class="idl">
+        enum PaymentItemType {
+          "tax"
+        };
+      </pre>
+      <p>
+        The <a>PaymentItemType</a> serves to categorize a <a>PaymentItem</a>
+        into particular types.
+      </p>
+      <dl>
+        <dt>
+          "<dfn>tax</dfn>"
+        </dt>
+        <dd>
+          Indicates that the corresponding <a>PaymentItem</a> represents a form
+          of tax (e.g., sales tax, goods and services tax, value added tax,
+          etc.).
         </dd>
       </dl>
     </section>
