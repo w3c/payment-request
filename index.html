@@ -940,11 +940,22 @@
               <li>Set <var>request</var>.<a>[[\updating]]</a> to true.
               </li>
               <li>
-                <a>In parallel</a>, run the <a>update a
+                <a>In parallel</a>, disable the user interface user interface
+                that will allow the user to interact with the
+                <var>handlers</var> and run the <a>update a
                 <code>PaymentRequest</code>'s details algorithm</a> with
                 <var>detailsPromise</var> and <var>request</var>.
               </li>
-              <li>Wait for <var>detailsPromise</var> to settle.
+              <li>Wait for the <var>detailsPromise</var> to settle.
+                <p class="note">
+                  Based on how the <var>detailsPromise</var> settles, the
+                  <a>update a <code>PaymentRequest</code>'s details
+                  algorithm</a> determines how the payment UI behaves. That is,
+                  <a>upon rejection</a> of the <var>detailsPromise</var>, the
+                  payment request aborts. Otherwise, <a>upon fulfillment</a>
+                  <var>detailsPromise</var>, the user agent re-enables the
+                  payment request UI and the payment flow can continue.
+                </p>
               </li>
             </ol>
           </li>
