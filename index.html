@@ -2651,10 +2651,11 @@
             <pre class="example" title="how to use `updateWith()` correctly.">
               // ❌ Bad - this won't work!
               request.onshippingaddresschange = async ev =&gt; {
-                // await goes to next tick, and updateWith() was not
-                // called before that, so [[updatedUI]] gets set to true.
+                // await goes to next tick, and updateWith()
+                // was not called.
                 const details = await getNewDetails(oldDetails);
-                // 💥 Too late, throws "InvalidStateError".
+                // 💥 So it's now too late! updateWith()
+                // throws "InvalidStateError".
                 ev.updateWith(details);
               };
 
@@ -2673,7 +2674,7 @@
               // ❌ Bad - calling updateWith() doesn't work!
               request.addEventListener("shippingaddresschange", ev =&gt; {
                 ev.updateWith(details); // this is ok.
-                // 💥 [[waitForUpdate]] is true, throws an "InvalidStateError".
+                // 💥 [[waitForUpdate]] is true, throws "InvalidStateError".
                 ev.updateWith(otherDetails);
               });
 
@@ -2682,8 +2683,8 @@
                 const p = Promise.resolve({ ...details });
                 ev.updateWith(p);
                 await p;
-                // 💥 the update has now completed, so [[updatedUI]] gets set to
-                // true; this throws "InvalidStateError"
+                // 💥 Only one call to updateWith() is allowed,
+                // so the following throws "InvalidStateError"
                 ev.updateWith({ ...newDetails });
               });
             </pre>
