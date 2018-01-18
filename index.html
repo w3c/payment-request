@@ -3041,7 +3041,7 @@
           execute the steps listed below in the "upon rejection" path. Such a
           timeout is a fatal error for the payment request.
         </p>
-        <ul>
+        <ol class="algorithm">
           <li>
             <a>Upon rejection</a> of <var>detailsPromise</var>:
             <ol>
@@ -3296,41 +3296,41 @@
               </li>
             </ol>
           </li>
+        </ol>
+        <p>
+          If any of the above steps say to <dfn>abort the update</dfn> with an
+          exception <var>exception</var>, then:
+        </p>
+        <ol>
+          <li>Abort the current user interaction and close down any remaining
+          user interface.
+          </li>
+          <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
+          </li>
+          <li>Reject the promise <var>request</var>.<a>[[\acceptPromise]]</a>
+          with <var>exception</var>.
+          </li>
+          <li>Abort the algorithm.
+          </li>
+        </ol>
+        <div class="note">
           <p>
-            If any of the above steps say to <dfn>abort the update</dfn> with
-            an exception <var>exception</var>, then:
+            <a data-lt="abort the update">Aborting the update</a> is performed
+            when there is a fatal error updating the payment request, such as
+            the supplied <var>detailsPromise</var> rejecting, or its
+            fulfillment value containing invalid data. This would potentially
+            leave the payment request in an inconsistent state since the
+            developer hasn't successfully handled the change event.
+            Consequently, the <a>PaymentRequest</a> moves to a "<a>closed</a>"
+            state. The error is signaled to the developer through the rejection
+            of the <a>[[\acceptPromise]]</a>, i.e., the promise returned by
+            <a data-lt="PaymentRequest.show">show()</a>.
           </p>
-          <ol>
-            <li>Abort the current user interaction and close down any remaining
-            user interface.
-            </li>
-            <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
-            </li>
-            <li>Reject the promise <var>request</var>.<a>[[\acceptPromise]]</a>
-            with <var>exception</var>.
-            </li>
-            <li>Abort the algorithm.
-            </li>
-          </ol>
-          <div class="note">
-            <p>
-              <a data-lt="abort the update">Aborting the update</a> is
-              performed when there is a fatal error updating the payment
-              request, such as the supplied <var>detailsPromise</var>
-              rejecting, or its fulfillment value containing invalid data. This
-              would potentially leave the payment request in an inconsistent
-              state since the developer hasn't successfully handled the change
-              event. Consequently, the <a>PaymentRequest</a> moves to a
-              "<a>closed</a>" state. The error is signaled to the developer
-              through the rejection of the <a>[[\acceptPromise]]</a>, i.e., the
-              promise returned by <a data-lt="PaymentRequest.show">show()</a>.
-            </p>
-            <p>
-              <a>User agents</a> might show an error message to the user when
-              this occurs.
-            </p>
-          </div>
-        </ul>
+          <p>
+            <a>User agents</a> might show an error message to the user when
+            this occurs.
+          </p>
+        </div>
       </section>
     </section>
     <section class="informative">
