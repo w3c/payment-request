@@ -1849,7 +1849,7 @@
           required DOMString label;
           required PaymentCurrencyAmount amount;
           boolean pending = false;
-          PaymentItemType type;
+          PaymentItemType? type;
         };
       </pre>
       <p>
@@ -1886,10 +1886,11 @@
           <dfn>type</dfn> member
         </dt>
         <dd>
-          A <a>PaymentItemType</a> enum value. A the value of <a>type</a> to
-          assist in the presentation of <a>PaymentItem</a> by, for example,
-          visually grouping types together or other otherwise distinguishing
-          them from other types (or from items that have no associated type).
+          A <a>PaymentItemType</a> enum value or null. A user agent MAY use the
+          value of <a>type</a> to assist in the presentation of
+          <a>PaymentItem</a> by, for example, visually grouping types together
+          or other otherwise distinguishing them from other types (or from
+          items that have no associated type).
         </dd>
       </dl>
     </section>
