@@ -3054,8 +3054,17 @@
           </li>
           <li>
             <a>Upon fulfillment</a> of <var>detailsPromise</var> with value
-            <var>value</var>:
+            <var>source</var>:
             <ol data-link-for="PaymentDetailsBase">
+              <li>Let <var>excludedNames</var> be a new empty List.
+              </li>
+              <li>Let <var>value</var> be the result of converting
+              <var>request</var>.<a>[[\details]]</a> to an ECMAScript object.
+              </li>
+              <li>
+                <a>CopyDataProperties</a>(<var>value</var>, <var>source</var>,
+                <var>excludedNames</var>).
+              </li>
               <li>Let <var>details</var> be the result of <a data-cite=
               "!WEBIDL#es-dictionary">converting</a> <var>value</var> to a <a>
                 PaymentDetailsUpdate</a> dictionary. If this <a>throws</a> an
@@ -3456,6 +3465,11 @@
             passing the supplied object as the sole argument, and return the
             resulting string. This can throw an exception.
           </p>
+        </dd>
+        <dd>
+          The <dfn data-lt="CopyDataProperties" data-cite=
+          "!ECMASCRIPT#AbstractOperations-CopyDataProperties">CopyDataProperties(<var>target</var>,
+          <var>source</var>, <var>excluded</var>)</dfn> abstract operation.
         </dd>
         <dt>
           Writing Promise-Using Specifications
