@@ -1508,9 +1508,7 @@
           </dt>
           <dd>
             A sequence of <a>PaymentItem</a> dictionaries contains line items
-            for the payment request that the <a>user agent</a> MAY display. For
-            example, it might include details of products or breakdown of tax
-            and shipping. It is optional to provide this information.
+            for the payment request that the <a>user agent</a> MAY display.
             <aside class="note">
               It is the developer's responsibility to verify that the
               <a data-lt="PaymentDetailsInit.total">total</a> amount is the sum
@@ -3344,6 +3342,11 @@
         <p>
           The <a>user agent</a> MUST NOT share information about the user with
           a developer (e.g., the shipping address) without user consent.
+        </p>
+        <p>
+          The <a>user agent</a> MUST NOT share the values of the
+          <a>displayItems</a> member or <a>additionalDisplayItems</a> member
+          with a third-party <a>payment handler</a> without user consent.
         </p>
       </section>
       <section>
