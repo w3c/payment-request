@@ -818,7 +818,8 @@
           </p>
         </div>
         <p data-tests="payment-request-show-method.https.html">
-          The <a>show()</a> method MUST act as follows:
+          The <code><a data-lt="show()">show(detailsPromise)</a></code> method
+          MUST act as follows:
         </p>
         <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object on
@@ -933,18 +934,18 @@
           request is showing</a> boolean to false.
           </li>
           <li>Otherwise, present a user interface that will allow the user to
-          interact with the <var>handlers</var>.
+          interact with the <var>handlers</var>. The user agent SHOULD
+          prioritize the preference of the user when presenting payment
+          methods.
           </li>
           <li>If <var>detailsPromise</var> was passed, then:
             <ol>
               <li>Set <var>request</var>.<a>[[\updating]]</a> to true.
               </li>
-              <li>
-                <a>In parallel</a>, disable the user interface user interface
-                that will allow the user to interact with the
-                <var>handlers</var> and run the <a>update a
-                <code>PaymentRequest</code>'s details algorithm</a> with
-                <var>detailsPromise</var> and <var>request</var>.
+              <li>Disable the user interface user interface that will allow the
+              user to interact with the <var>handlers</var> and run the
+              <a>update a <code>PaymentRequest</code>'s details algorithm</a>
+              with <var>detailsPromise</var> and <var>request</var>.
               </li>
               <li>Wait for the <var>detailsPromise</var> to settle.
                 <p class="note">
@@ -960,11 +961,6 @@
             </ol>
           </li>
           <li>
-            <p>
-              Present <var>handlers</var> to the user. The user agent SHOULD
-              prioritize the preference of the user when presenting the
-              <var>handlers</var>.
-            </p>
             <p>
               For the <a>payment handler</a> selected by the end-user, the user
               agent MUST pass the <a data-cite=
@@ -2728,9 +2724,9 @@
             <var>detailsPromise</var> to indicate that the payment request is
             valid again.
             </li>
-            <li>Return from the method and, <a>in parallel</a>, run the
-            <a>update a <code>PaymentRequest</code>'s details algorithm</a>
-            with <var>detailsPromise</var> and <var>request</var>.
+            <li>Run the <a>update a <code>PaymentRequest</code>'s details
+            algorithm</a> with <var>detailsPromise</var> and
+            <var>request</var>.
             </li>
           </ol>
         </section>
