@@ -1886,11 +1886,12 @@
           <dfn>type</dfn> member
         </dt>
         <dd data-tests="PaymentItem/type_member.https.html">
-          A <a>PaymentItemType</a> enum value. A user agent MAY use the value
-          of <a>type</a> to assist in the presentation of <a>PaymentItem</a>
-          by, for example, visually grouping types together or other otherwise
-          distinguishing them from other types (or from items that have no
-          associated type).
+          A <a>PaymentItemType</a> enum value, which a developer can use to
+          explicitly indicate that this member is of a particular type. A user
+          agent MAY use the value of <a>type</a> to assist in the presentation
+          of <a>PaymentItem</a> by, for example, visually grouping types
+          together or other otherwise distinguishing them from other types (or
+          from items that have no associated type).
         </dd>
       </dl>
     </section>
@@ -1913,8 +1914,8 @@
         </dt>
         <dd>
           Indicates that the corresponding <a>PaymentItem</a> represents a form
-          of tax (e.g., sales tax, goods and services tax, value added tax,
-          etc.).
+          of taxation. Examples include sales tax, goods and services tax,
+          value added tax, an so on.
         </dd>
       </dl>
     </section>
