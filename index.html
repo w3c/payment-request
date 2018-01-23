@@ -3457,7 +3457,7 @@
         </section>
         <section>
           <h3>
-            <dfn>details</dfn> member
+            <dfn>details</dfn> attribute
           </h3>
           <p>
             An <a data-cite="!WEBIDL#idl-object">object</a> or <a data-cite=
@@ -3468,7 +3468,7 @@
         </section>
         <section>
           <h3>
-            <dfn>methodName</dfn> member
+            <dfn>methodName</dfn> attribute
           </h3>
           <p>
             The <a>payment method identifier</a> for the <a>payment method</a>
@@ -3742,9 +3742,8 @@
           Payment option changed algorithm
         </h2>
         <p>
-        <p>
           The <dfn>payment option changed algorithm</dfn> runs when the user
-          chooses a new payment method. It MUST run the following steps:
+          selects a new payment method. It MUST run the following steps:
         </p>
         <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
@@ -3762,7 +3761,6 @@
             </ol>
           </li>
         </ol>
-        </p>
       </section>
       <section>
         <h2>
@@ -3792,7 +3790,10 @@
           <li>Initialize <var>event</var>'s <code><a data-cite=
           "!DOM#dom-event-type">type</a></code> attribute to <var>name</var>.
           </li>
-          <li>Initialize <var>event</var>'s <a>type</a> attribute Set the methodName attribute value of response to the payment method identifier for the payment method that the user selected to accept the payment..
+          <li>Initialize <var>event</var>'s <a>type</a> attribute Set the
+          methodName attribute value of response to the payment method
+          identifier for the payment method that the user selected to accept
+          the payment..
           </li>
           <li>
             <a data-cite="!DOM#concept-event-dispatch">Dispatch</a>
