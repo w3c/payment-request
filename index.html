@@ -840,8 +840,7 @@
               rejected with a "<a>SecurityError</a>" <a>DOMException</a>. For
               example, the <a>user agent</a> may require the call to be
               <a>triggered by user activation</a>, or may limit the rate at
-              which a page can call <a>show()</a>, as described in the <a href=
-              "#privacy">privacy considerations</a> section.
+              which a page can call <a>show()</a>.
             </p>
             <p class="note">
               During the Candidate Recommendation phase, implementations are
@@ -3350,22 +3349,6 @@
           "PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>
           member with a third-party <a>payment handler</a> without user
           consent.
-        </p>
-      </section>
-      <section>
-        <h2>
-          Exposing available payment methods
-        </h2>
-        <p>
-          Developers might try to call the payment request API repeatedly with
-          only one payment method identifier to try to determine what payment
-          methods a <a>user agent</a> has installed. There are legitimate
-          scenarios for calling repeatedly (for example, to control the flow of
-          payment method selection). The fact that a successful match to a
-          payment method causes a user interface to be displayed mitigates the
-          disclosure risk. Implementations MAY require a user action to
-          initiate a payment request or they MAY rate limit the calls to the
-          API to prevent too many repeated calls.
         </p>
       </section>
     </section>
