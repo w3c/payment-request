@@ -837,10 +837,8 @@
             <p>
               Optionally, if the <a>user agent</a> wishes to disallow the call
               to <a>show()</a> to protect the user, then return a promise
-              rejected with a "<a>SecurityError</a>" <a>DOMException</a>. For
-              example, the <a>user agent</a> may require the call to be
-              <a>triggered by user activation</a>, or may limit the rate at
-              which a page can call <a>show()</a>.
+              rejected with a "<a>SecurityError</a>" <a>DOMException</a>. See
+              <a href="#sec-enhancements">mechanisms to enhance security</a>.
             </p>
             <p class="note">
               During the Candidate Recommendation phase, implementations are
@@ -3325,6 +3323,43 @@
       <h2>
         Security Considerations
       </h2>
+      <section class="informative" id="sec-enhancements">
+        <h2>
+          Mechanisms to Enhance Security
+        </h2>
+        <p>
+          This specification includes a number of mechanisms to enhance the
+          security of the API:
+        </p>
+        <ul>
+          <li>Explicit user action is required as part of calling
+          <a>show()</a>.
+          </li>
+          <li>The API can only be called from a <a>SecureContext</a>, helping
+          to prevent man-in-the-middle attacks.
+          </li>
+          <li>To allow the common scenario where a merchant includes an
+          <a>iframe</a> from a payment service provider and that origin calls
+          this API, the <a>allowpaymentrequest</a> attribute helps ensure only
+          authorized parties can do so.
+          </li>
+          <li>In the definition of <a>canMakePayment()</a> the Working Group
+          seeks a balance between user experience and date protection. As
+          defined, <a>canMakePayment()</a> provides the party that calls the
+          API with information about the user's environment. To reduce the
+          potential for abuse, implementers plan a number of mitigations,
+          including rate-limiting <a>canMakePayment()</a> calls from the same
+          origin.
+          </li>
+          <li>A user agent can limit matching (in <a>show()</a> and
+          <a>canMakePayment()</a>) to <a>payment handlers</a> from the same
+          <a data-cite="rfc6454#section-3.2">origin</a> as a URL <a>payment
+          method identifier</a>. User agents can also use information provided
+          by a <a>payment method</a> owner to match <a>payment handlers</a>
+          from other origins.
+          </li>
+        </ul>
+      </section>
       <section class="informative">
         <h2>
           Encryption of data fields
@@ -3334,19 +3369,6 @@
           data fields. Individual <a>payment methods</a> may choose to include
           support for encrypted data but it is not mandatory that all
           <a>payment methods</a> support this.
-        </p>
-      </section>
-      <section>
-        <h2>
-          Payment Handler Matching
-        </h2>
-        <p data-link-for="PaymentRequest">
-          For security reasons, a user agent can limit matching (in
-          <a>show()</a> and <a>canMakePayment()</a>) to <a>payment handlers</a>
-          from the same <a data-cite="rfc6454#section-3.2">origin</a> as a URL
-          <a>payment method identifier</a>. User agents can also use
-          information provided by a <a>payment method</a> owner to match
-          <a>payment handlers</a> from other origins.
         </p>
       </section>
     </section>
