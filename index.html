@@ -3332,9 +3332,10 @@
           security of the API:
         </p>
         <ul data-link-for="PaymentRequest">
-          <li>Explicit user action is required to call <a>PaymentRquest</a>'s
-          <a>show()</a> method. This reduces content's ability to unexpectedly
-          cause a request for payment to be displayed to the end-user.
+          <li>The <a>PaymentRquest</a>'s <a>show()</a> method needs to
+          <a>triggered by user activation</a>. This reduces content's ability
+          to unexpectedly cause a request for payment to be displayed to the
+          end-user.
           </li>
           <li>Interfaces are <a data-cite=
           "WEBIDL#dfn-available-only-in-secure-contexts">available only in a
