@@ -2141,7 +2141,8 @@
                 </li>
               </ol>
             </li>
-            <li>If <var>details</var>["<a>regionCode</a>"] is present:
+            <li>If <var>details</var>["<a>regionCode</a>"] is present and not
+            the empty string:
               <ol>
                 <li>Let <var>regionCode</var> be the result of <a data-cite=
                 "!INFRA#ascii-uppercase">ASCII uppercasing</a>
@@ -2404,10 +2405,10 @@
                 <dfn>[[\regionCode]]</dfn>
               </td>
               <td>
-                A <a>region</a> as a [[!ISO3166-2]] subdivision code or the
-                empty string stored in its canonical uppercase form. For
-                example, "<code>PT-11</code>" represents the Lisbon district of
-                Portugal.
+                A <a>region</a> represented as a [[!ISO3166-2]] subdivision
+                code or the empty string, stored in its canonical uppercase
+                form. For example, "<code>PT-11</code>" represents the Lisbon
+                district of Portugal.
               </td>
             </tr>
             <tr>
