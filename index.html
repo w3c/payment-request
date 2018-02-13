@@ -838,7 +838,7 @@
               Optionally, if the <a>user agent</a> wishes to disallow the call
               to <a>show()</a> to protect the user, then return a promise
               rejected with a "<a>SecurityError</a>" <a>DOMException</a>. See
-              <a href="#sec-enhancements">mechanisms to enhance security</a>.
+              <a href="#sec-enhancements"></a>.
             </p>
             <p class="note">
               During the Candidate Recommendation phase, implementations are
@@ -3323,25 +3323,30 @@
       <h2>
         Security Considerations
       </h2>
-      <section class="informative" id="sec-enhancements">
-        <h2>
-          Mechanisms to Enhance Security
+      <section class="informative">
+        <h2 id="sec-enhancements">
+          Mechanisms to enhance security
         </h2>
         <p>
           This specification includes a number of mechanisms to enhance the
           security of the API:
         </p>
-        <ul>
-          <li>Explicit user action is required as part of calling
-          <a>show()</a>.
+        <ul data-link-for="PaymentRequest">
+          <li>Explicit user action is required to call <a>PaymentRquest</a>'s
+          <a>show()</a> method. This reduces content's ability to unexpectedly
+          cause a request for payment to be displayed to the end-user.
           </li>
-          <li>The API can only be called from a <a>SecureContext</a>, helping
-          to prevent man-in-the-middle attacks.
+          <li>Interfaces are <a data-cite=
+          "WEBIDL#dfn-available-only-in-secure-contexts">available only in a
+          secure context</a>, to reduce the possibly that credentials will be
+          acquired and transferrer through insecure communication protocols.
           </li>
-          <li>To allow the common scenario where a merchant includes an
-          <a>iframe</a> from a payment service provider and that origin calls
-          this API, the <a>allowpaymentrequest</a> attribute helps ensure only
-          authorized parties can do so.
+          <li>A <a>top-level browsing context</a> need to explicitly grant an
+          <a>iframe</a> the ability to access the <a>PaymentRequest</a>
+          interface via the <a>allowpaymentrequest</a> attribute. This prevents
+          embedded third-party content from accessing the interfaces of the
+          <cite>Payment Request API</cite> without the <a>top-level browsing
+          context</a>'s permission.
           </li>
           <li>In the definition of <a>canMakePayment()</a> the Working Group
           seeks a balance between user experience and date protection. As
