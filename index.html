@@ -3354,14 +3354,18 @@
           <a>payment methods</a> support this.
         </p>
       </section>
-      <section>
+      <section class="informative">
         <h2>
-          Payment Handler Matching
+          How user agents match payment handlers
         </h2>
         <p>
-          A user agent's payment handler matching algorithm takes into account
-          the requirements of this specification as well as matching defined in
-          payment methods and other specifications.
+          As part of <a>show()</a>, the user agent typically displays a list of
+          matching <a>payment handlers</a> that satisfy the <a>payment
+          methods</a> accepted by the merchant and other conditions. Matching
+          can take into account information provided by the merchant,
+          information provided by the <a>payment method</a> owner, the
+          <a>payment handlers</a> registered by the user, user preferences, and
+          other considerations.
         </p>
         <p data-link-for="PaymentRequest">
           For security reasons, a user agent can limit matching (in
