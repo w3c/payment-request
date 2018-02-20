@@ -838,7 +838,7 @@
               Optionally, if the <a>user agent</a> wishes to disallow the call
               to <a>show()</a> to protect the user, then return a promise
               rejected with a "<a>SecurityError</a>" <a>DOMException</a>. See
-              <a href="#sec-enhancements"></a>.
+              <a href="#security"></a>.
             </p>
             <p class="note">
               During the Candidate Recommendation phase, implementations are
@@ -3320,52 +3320,45 @@
       </section>
     </section>
     <section class="informative">
-      <h2>
-        Security Considerations
+      <h2 id="security">
+        Security and Privacy Considerations
       </h2>
-      <section class="informative">
-        <h2 id="sec-enhancements">
-          Mechanisms to enhance security
-        </h2>
-        <p>
-          This specification includes a number of mechanisms to enhance the
-          security of the API:
-        </p>
-        <ul data-link-for="PaymentRequest">
-          <li>The <a>PaymentRquest</a>'s <a>show()</a> method needs to
-          <a>triggered by user activation</a>. This reduces content's ability
-          to unexpectedly cause a request for payment to be displayed to the
-          end-user.
-          </li>
-          <li>Interfaces are <a data-cite=
-          "WEBIDL#dfn-available-only-in-secure-contexts">available only in a
-          secure context</a>, to reduce the possibly that credentials will be
-          acquired and transferrer through insecure communication protocols.
-          </li>
-          <li>A <a>top-level browsing context</a> need to explicitly grant an
-          <a>iframe</a> the ability to access the <a>PaymentRequest</a>
-          interface via the <a>allowpaymentrequest</a> attribute. This prevents
-          embedded third-party content from accessing the interfaces of the
-          <cite>Payment Request API</cite> without the <a>top-level browsing
-          context</a>'s permission.
-          </li>
-          <li>In the definition of <a>canMakePayment()</a> the Working Group
-          seeks a balance between user experience and date protection. As
-          defined, <a>canMakePayment()</a> provides the party that calls the
-          API with information about the user's environment. To reduce the
-          potential for abuse, implementers plan a number of mitigations,
-          including rate-limiting <a>canMakePayment()</a> calls from the same
-          origin.
-          </li>
-          <li>A user agent can limit matching (in <a>show()</a> and
-          <a>canMakePayment()</a>) to <a>payment handlers</a> from the same
-          <a data-cite="rfc6454#section-3.2">origin</a> as a URL <a>payment
-          method identifier</a>. User agents can also use information provided
-          by a <a>payment method</a> owner to match <a>payment handlers</a>
-          from other origins.
-          </li>
-        </ul>
-      </section>
+      <p>
+        This specification includes a number of mechanisms to mitigate security
+        threats and support user privacy:
+      </p>
+      <ul data-link-for="PaymentRequest">
+        <li>The <a>PaymentRequest</a>'s <a>show()</a> method needs to
+        <a>triggered by user activation</a>. This reduces the ability to
+        surprise the user by triggering an unexpected request for payment.
+        </li>
+        <li>Interfaces are <a data-cite=
+        "WEBIDL#dfn-available-only-in-secure-contexts">available only in a
+        secure context</a>, to reduce the possibility that credentials will be
+        acquired and transferred through insecure communication protocols.
+        </li>
+        <li>A <a>top-level browsing context</a> needs to explicitly grant an
+        <a>iframe</a> access to the <a>PaymentRequest</a> interface via the <a>
+          allowpaymentrequest</a> attribute. This prevents embedded third-party
+          content from accessing the interfaces of the <cite>Payment Request
+          API</cite> without permission from the <a>top-level browsing
+          context</a>.
+        </li>
+        <li>In the definition of <a>canMakePayment()</a> the Working Group
+        seeks a balance between user experience and data protection. As
+        defined, <a>canMakePayment()</a> provides the party that calls the API
+        with information about the user's environment. To reduce the potential
+        for abuse, implementers plan a number of mitigations, including
+        rate-limiting <a>canMakePayment()</a> calls from the same origin.
+        </li>
+        <li>A user agent can limit matching (in <a>show()</a> and
+        <a>canMakePayment()</a>) to <a>payment handlers</a> from the same
+        <a data-cite="rfc6454#section-3.2">origin</a> as a URL <a>payment
+        method identifier</a>. User agents can also use information provided by
+        a <a>payment method</a> owner to match <a>payment handlers</a> from
+        other origins.
+        </li>
+      </ul>
       <section class="informative">
         <h2>
           Encryption of data fields
