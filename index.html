@@ -2156,19 +2156,6 @@
                 </li>
               </ol>
             </li>
-            <li>If <var>details</var>["<a>phone</a>"] is present:
-              <ol>
-                <li>If <var>details</var>["<a>phone</a>"] is not a
-                <a>structurally valid phone number</a>, throw a
-                <a>RangeError</a> exception.
-                </li>
-                <li>
-                  <a>Canonicalize a phone number</a>
-                  <var>details</var>["<a>phone</a>"] and set
-                  <var>address</var>.<a>[[\phone]]</a> to the result.
-                </li>
-              </ol>
-            </li>
             <li>If <var>details</var>["<a>languageCode</a>"] is present:
               <ol>
                 <li>If <a data-cite=
@@ -2224,6 +2211,11 @@
             leading and trailing ASCII whitespace</a> from
             <var>details</var>["<a>recipient</a>"] and set
             <var>address</var>.<a>[[\recipient]]</a> to the result.
+            </li>
+            <li>If <var>details</var>["<a>phone</a>"] is present, <a>strip
+            leading and trailing ASCII whitespace</a> from
+            <var>details</var>["<a>phone</a>"] and set
+            <var>address</var>.<a>[[\phone]]</a> to the result.
             </li>
             <li>Return <var>address</var>.
             </li>
@@ -2610,10 +2602,8 @@
           none was provided.
           </li>
           <li>If "phone" is not in <var>excludeList</var>, set
-          <var>details</var>["<a>phone</a>"] to the user-provided
-          <a>structurally valid phone number</a> in <a data-lt=
-          "canonicalize a phone number">canonical form</a>, or to the empty
-          string if none was provided.
+          <var>details</var>["<a>phone</a>"] to the user-provided phone number,
+          or to the empty string if none was provided.
             <aside class="note" title="Privacy of phone number">
               <p>
                 To maintain user's privacy, implementers need to be mindful
@@ -2684,52 +2674,6 @@
             return the result.
           </li>
         </ol>
-      </section>
-      <section>
-        <h2>
-          Phone-related algorithms
-        </h2>
-        <section>
-          <h3>
-            Structurally valid phone numbers
-          </h3>
-          <p>
-            The steps to check if a <a data-cite=
-            "WEBIDL#idl-DOMString">DOMString</a> <var>tel</var> is
-            <dfn>structurally valid phone number</dfn> is given by the
-            following algorithm.
-          </p>
-          <p class="note">
-            The algorithm checks that a phone number conforms to [[!E.164]].
-          </p>
-          <ol class="algorithm">
-            <li>If <var>tel</var> contains U+000A LINE FEED (LF) or U+000D
-            CARRIAGE RETURN (CR) characters, return false.
-            </li>
-            <li>
-              <a data-cite="!INFRA#strip-and-collapse-ascii-whitespace">Strip
-              and collapse ASCII whitespace</a> in <var>tel</var>.
-            </li>
-            <li>If <var>tel</var>'s the length is greater 15, return false.
-            </li>
-            <li>If the first code point is not U+002B PLUS SIGN, return false.
-            </li>
-          </ol>
-        </section>
-        <section>
-          <h3>
-            Canonicalize a phone number
-          </h3>
-          <p>
-            The steps to <dfn>canonicalize a phone number</dfn> given a
-            <a data-cite="WEBIDL#idl-DOMString">DOMString</a> <var>tel</var> is
-            given by the following algorithm.
-          </p>
-          <ol class="algorithm">
-            <li>TBW...
-            </li>
-          </ol>
-        </section>
       </section>
     </section>
     <section data-dfn-for="PaymentShippingOption">
@@ -3494,9 +3438,10 @@
           "PaymentOptions.requestPayerPhone">requestPayerPhone</a> value of
           <var>request</var>.<a>[[\options]]</a> is true, then set the
           <a data-lt="PaymentResponse.payerPhone">payerPhone</a> attribute of
-          <var>response</var> to a <a>structurally valid phone number</a> in
-          <a data-lt="canonicalize a phone number">canonical form</a> provided
-          by the user, or to null if none was provided.
+          <var>response</var> to the payer's phone number provided by the user,
+          or to null if none was provided. When setting the <a data-lt=
+          "PaymentResponse.payerPhone">payerPhone</a> value, the user agent
+          SHOULD format the phone number to adhere to [[!E.164]].
           </li>
           <li>Set <var>response</var>.<a>[[\completeCalled]]</a> to false.
           </li>
