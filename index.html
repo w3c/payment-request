@@ -2576,36 +2576,6 @@
           </dd>
         </dl>
       </section>
-      <section data-dfn-for="AddressField" data-link-for="AddressField">
-        <h2>
-          <dfn>AddressField</dfn> enum
-        </h2>
-        <pre class="idl">
-          enum AddressField {
-            "addressLine",
-            "city",
-            "country",
-            "dependentLocality",
-            "languageCode",
-            "organization",
-            "phone",
-            "postalCode",
-            "recipient",
-            "region",
-            "regionCode",
-            "sortingCode"
-          };
-        </pre>
-        <p>
-          The "<dfn>addressLine</dfn>", "<dfn>city</dfn>",
-          "<dfn>country</dfn>", "<dfn>dependentLocality</dfn>",
-          "<dfn>languageCode</dfn>", "<dfn>organization</dfn>",
-          "<dfn>phone</dfn>", "<dfn>postalCode</dfn>", "<dfn>recipient</dfn>",
-          "<dfn>region</dfn>", "<dfn>regionCode</dfn>" and
-          "<dfn>sortingCode</dfn>" enum values correspond to attributes with
-          the same identifiers in the <a>PaymentAddress</a> interface.
-        </p>
-      </section>
       <section>
         <h2>
           Creating a <code>PaymentAddress</code> from user-provided input
@@ -2613,31 +2583,31 @@
         <p>
           The steps to <dfn>create a <code>PaymentAddress</code> from
           user-provided input</dfn> are given by the following algorithm. The
-          algorithm takes a <a>AddressField</a> <a>list</a>
-          <var>excludeList</var>, for which user input will not be gathered.
+          algorithm takes a <a>list</a> <var>excludeList</var>, for which user
+          input will not be gathered.
         </p>
         <ol data-link-for="AddressInit">
           <li>Let <var>details</var> be an object with no members that will
           serve as a <a>AddressInit</a> dictionary.
           </li>
-          <li>If "<a data-link-for="AddressField">addressLine</a>" is not in
-          <var>excludeList</var>, set <var>details</var>["<a>addressLine</a>"]
-          to the result of splitting the user-provided address line into a
-          <a data-cite="!WEBIDL#dfn-frozen-array-type">frozen array</a>. If
-          none was provided, set it to the empty <a>list</a>.
+          <li>If "addressLine" is not in <var>excludeList</var>, set
+          <var>details</var>["<a>addressLine</a>"] to the result of splitting
+          the user-provided address line into a <a data-cite=
+          "!WEBIDL#dfn-frozen-array-type">frozen array</a>. If none was
+          provided, set it to the empty <a>list</a>.
             <aside class="note">
               How to split an address line is locale dependent and beyond the
               scope of this specification.
             </aside>
           </li>
-          <li>If "<a data-link-for="AddressField">country</a>" is not in <var>
-            excludeList</var>, set <var>details</var>["<a>country</a>"] to the
-            user-provided country as an upper case [[!ISO3166-1]] alpha-2 code,
-            or to the empty string if none was provided.
+          <li>If "country" is not in <var>excludeList</var>, set
+          <var>details</var>["<a>country</a>"] to the user-provided country as
+          an upper case [[!ISO3166-1]] alpha-2 code, or to the empty string if
+          none was provided.
           </li>
-          <li>If "<a data-link-for="AddressField">phone</a>" is not in
-          <var>excludeList</var>, set <var>details</var>["<a>phone</a>"] to the
-          user-provided <a>structurally valid phone number</a> in <a data-lt=
+          <li>If "phone" is not in <var>excludeList</var>, set
+          <var>details</var>["<a>phone</a>"] to the user-provided
+          <a>structurally valid phone number</a> in <a data-lt=
           "canonicalize a phone number">canonical form</a>, or to the empty
           string if none was provided.
             <aside class="note" title="Privacy of phone number">
@@ -2650,31 +2620,28 @@
               </p>
             </aside>
           </li>
-          <li>If "<a data-link-for="AddressField">languageCode</a>" is not in
-          <var>excludeList</var>, set <var>details</var>["<a>languageCode</a>"]
-          to a <a data-cite="!BCP47#section-4.5">canonicalized language
-          tag</a>, or to the empty string if none was provided.
+          <li>If "languageCode" is not in <var>excludeList</var>, set
+          <var>details</var>["<a>languageCode</a>"] to a <a data-cite=
+          "!BCP47#section-4.5">canonicalized language tag</a>, or to the empty
+          string if none was provided.
             <div class="issue" data-number="608"></div>
           </li>
-          <li>If "<a data-link-for="AddressField">city</a>" is not in
-          <var>excludeList</var>, set <var>details</var>["<a>city</a>"] to the
-          user-provided city, or to the empty string if none was provided.
+          <li>If "city" is not in <var>excludeList</var>, set
+          <var>details</var>["<a>city</a>"] to the user-provided city, or to
+          the empty string if none was provided.
           </li>
-          <li>If "<a data-link-for="AddressField">dependentLocality</a>" is not
-          in <var>excludeList</var>, set
+          <li>If "dependentLocality" is not in <var>excludeList</var>, set
           <var>details</var>["<a>dependentLocality</a>"] to the user-provided
           dependent locality, or to the empty string if none was provided.
           </li>
-          <li>If "<a data-link-for="AddressField">organization</a>" is not in
-          <var>excludeList</var>, set <var>details</var>["<a>organization</a>"]
-          to the user-provided recipient organization, or to the empty string
-          if none was provided.
+          <li>If "organization" is not in <var>excludeList</var>, set
+          <var>details</var>["<a>organization</a>"] to the user-provided
+          recipient organization, or to the empty string if none was provided.
           </li>
-          <li>If "<a data-link-for="AddressField">postalCode</a>" is not in
-          <var>excludeList</var>, set <var>details</var>["<a>postalCode</a>"]
-          to the user-provided postal code, or to the empty string if none was
-          provided. Optionally, redact part of
-          <var>details</var>["<a>postalCode</a>"].
+          <li>If "postalCode" is not in <var>excludeList</var>, set
+          <var>details</var>["<a>postalCode</a>"] to the user-provided postal
+          code, or to the empty string if none was provided. Optionally, redact
+          part of <var>details</var>["<a>postalCode</a>"].
             <div class="note" title="Privacy of Postal Codes">
               <p>
                 <a>Postal codes</a> in certain countries can be so specific as
@@ -2688,13 +2655,11 @@
               </p>
             </div>
           </li>
-          <li>If "<a data-link-for="AddressField">recipient</a>" is not in
-          <var>excludeList</var>, set <var>details</var>["<a>recipient</a>"] to
-          the user-provided recipient of the transaction, or to the empty
-          string if none was provided.
+          <li>If "recipient" is not in <var>excludeList</var>, set
+          <var>details</var>["<a>recipient</a>"] to the user-provided recipient
+          of the transaction, or to the empty string if none was provided.
           </li>
-          <li>If "<a data-link-for="AddressField">region</a>" is not in
-          <var>excludeList</var>:
+          <li>If "region" is not in <var>excludeList</var>:
             <ol>
               <li>Set <var>details</var>["<a>region</a>"] to the user-provided
               region, or to the empty string if none was provided.
@@ -2705,10 +2670,9 @@
               </li>
             </ol>
           </li>
-          <li>If "<a data-link-for="AddressField">sortingCode</a>" is not in
-          <var>excludeList</var>, set <var>details</var>["<a>sortingCode</a>"]
-          to the user-provided sorting code, or to the empty string if none was
-          provided.
+          <li>If "sortingCode" is not in <var>excludeList</var>, set
+          <var>details</var>["<a>sortingCode</a>"] to the user-provided sorting
+          code, or to the empty string if none was provided.
           </li>
           <li>
             <a data-lt="PaymentAddress.PaymentAddress()">Internally construct a
@@ -3350,10 +3314,9 @@
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
             <ol>
-              <li data-link-for="AddressField">Let <var>excludeList</var> be
-              the empty list. Optionally, append the following items to
-              <var>excludeList</var>: « "<a>organization</a>", "<a>phone</a>",
-              "<a>recipient</a>", "<a>addressLine</a>" ».
+              <li>Let <var>excludeList</var> be the empty list. Optionally,
+              append the following items to <var>excludeList</var>: «
+              "organization", "phone", "recipient", "addressLine" ».
               </li>
               <li>Let <var>address</var> be the result of running the steps to
               <a>create a <code>PaymentAddress</code> from user-provided
