@@ -1989,7 +1989,7 @@
         </dl>
       </section>
     </div>
-    <section data-dfn-for="PaymentAddress" data-link-for="PaymentAddress">
+    <section>
       <h2>
         Physical Addresses
       </h2>
@@ -2082,7 +2082,7 @@
           <dfn>PaymentAddress</dfn> interface
         </h2>
         <pre class="idl">
-          [SecureContext, Exposed=(Window), Constructor(optional AddressInit details)]
+          [SecureContext, Exposed=(Window)]
           interface PaymentAddress {
             [Default] object toJSON();
             readonly attribute DOMString city;
@@ -2105,11 +2105,15 @@
         </p>
         <section>
           <h2>
-            Constructor
+            Internal Constructor
           </h2>
+          <p class="note">
+            This constructor algorithm is used internally by the user agent.
+            It's not available to scripts.
+          </p>
           <p>
             The steps to <dfn data-lt=
-            "PaymentAddress.PaymentAddress()">construct a
+            "PaymentAddress.PaymentAddress()">internally construct a
             <code>PaymentAddress</code></dfn> with <a>AddressInit</a>
             <var>details</var> are given by the following algorithm:
           </p>
@@ -2711,7 +2715,7 @@
           provided.
           </li>
           <li>
-            <a data-lt="PaymentAddress.PaymentAddress()">Construct a new
+            <a data-lt="PaymentAddress.PaymentAddress()">Internally construct a new
             <code>PaymentAddress</code></a> with <var>details</var> and return
             the result.
           </li>
