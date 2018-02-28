@@ -6,7 +6,8 @@ The following tasks have been completed:
  * [ ] MDN Docs added (link)
 
 Implementation commitment:
-   * [ ] Safari (link to issue)
-   * [ ] Chrome (link to issue)
-   * [ ] Firefox (link to issue)
-   * [ ] Edge (public signal)
+
+ * [ ] Safari (link to issue)
+ * [ ] Chrome (link to issue)
+ * [ ] Firefox (link to issue)
+ * [ ] Edge (public signal)
