@@ -2535,14 +2535,14 @@
         <p>
           The steps to <dfn>create a <code>PaymentAddress</code> from
           user-provided input</dfn> are given by the following algorithm. The
-          algorithm takes a <a>list</a> <var>excludeList</var>, for which user
+          algorithm takes a <a>list</a> <var>redactList</var>, for which user
           input will not be gathered.
         </p>
         <ol data-link-for="AddressInit">
           <li>Let <var>details</var> be an object with no members that will
           serve as a <a>AddressInit</a> dictionary.
           </li>
-          <li>If "addressLine" is not in <var>excludeList</var>, set
+          <li>If "addressLine" is not in <var>redactList</var>, set
           <var>details</var>["<a>addressLine</a>"] to the result of splitting
           the user-provided address line into a <a data-cite=
           "!WEBIDL#dfn-frozen-array-type">frozen array</a>. If none was
@@ -2552,12 +2552,12 @@
               scope of this specification.
             </aside>
           </li>
-          <li>If "country" is not in <var>excludeList</var>, set
+          <li>If "country" is not in <var>redactList</var>, set
           <var>details</var>["<a>country</a>"] to the user-provided country as
           an upper case [[!ISO3166-1]] alpha-2 code, or to the empty string if
           none was provided.
           </li>
-          <li>If "phone" is not in <var>excludeList</var>, set
+          <li>If "phone" is not in <var>redactList</var>, set
           <var>details</var>["<a>phone</a>"] to the user-provided phone number,
           or to the empty string if none was provided.
             <aside class="note" title="Privacy of phone number">
@@ -2570,25 +2570,25 @@
               </p>
             </aside>
           </li>
-          <li>If "languageCode" is not in <var>excludeList</var>, set
+          <li>If "languageCode" is not in <var>redactList</var>, set
           <var>details</var>["<a>languageCode</a>"] to a <a data-cite=
           "!BCP47#section-4.5">canonicalized language tag</a>, or to the empty
           string if none was provided.
             <div class="issue" data-number="608"></div>
           </li>
-          <li>If "city" is not in <var>excludeList</var>, set
+          <li>If "city" is not in <var>redactList</var>, set
           <var>details</var>["<a>city</a>"] to the user-provided city, or to
           the empty string if none was provided.
           </li>
-          <li>If "dependentLocality" is not in <var>excludeList</var>, set
-          <var>details</var>["<a>dependentLocality</a>"] to the user-provided
-          dependent locality, or to the empty string if none was provided.
+          <li>If "dependentLocality" is not in <var>redactList</var>, set <var>
+            details</var>["<a>dependentLocality</a>"] to the user-provided
+            dependent locality, or to the empty string if none was provided.
           </li>
-          <li>If "organization" is not in <var>excludeList</var>, set
+          <li>If "organization" is not in <var>redactList</var>, set
           <var>details</var>["<a>organization</a>"] to the user-provided
           recipient organization, or to the empty string if none was provided.
           </li>
-          <li>If "postalCode" is not in <var>excludeList</var>, set
+          <li>If "postalCode" is not in <var>redactList</var>, set
           <var>details</var>["<a>postalCode</a>"] to the user-provided postal
           code, or to the empty string if none was provided. Optionally, redact
           part of <var>details</var>["<a>postalCode</a>"].
@@ -2605,18 +2605,18 @@
               </p>
             </div>
           </li>
-          <li>If "recipient" is not in <var>excludeList</var>, set
+          <li>If "recipient" is not in <var>redactList</var>, set
           <var>details</var>["<a>recipient</a>"] to the user-provided recipient
           of the transaction, or to the empty string if none was provided.
           </li>
-          <li>If "region" is not in <var>excludeList</var>:
+          <li>If "region" is not in <var>redactList</var>:
             <ol>
               <li>Set <var>details</var>["<a>region</a>"] to the user-provided
               region, or to the empty string if none was provided.
               </li>
             </ol>
           </li>
-          <li>If "sortingCode" is not in <var>excludeList</var>, set
+          <li>If "sortingCode" is not in <var>redactList</var>, set
           <var>details</var>["<a>sortingCode</a>"] to the user-provided sorting
           code, or to the empty string if none was provided.
           </li>
@@ -3214,8 +3214,8 @@
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
             <ol>
-              <li>Let <var>excludeList</var> be the empty list. Optionally,
-              append the following items to <var>excludeList</var>: «
+              <li>Let <var>redactList</var> be the empty list. Optionally,
+              append the following items to <var>redactList</var>: «
               "organization", "phone", "recipient", "addressLine" ».
               </li>
               <li>Let <var>address</var> be the result of running the steps to
@@ -3359,7 +3359,7 @@
           "PaymentOptions.requestShipping">requestShipping</a> value of
           <var>request</var>.<a>[[\options]]</a> is true, then <a>create a
           <code>PaymentAddress</code> from user-provided input</a> passing the
-          empty list as the <var>excludeList</var> and set the <a data-lt=
+          empty list as the <var>redactList</var> and set the <a data-lt=
           "PaymentResponse.shippingAddress">shippingAddress</a> attribute of
           <var>response</var> to the resulting <a>PaymentAddress</a>.
           Otherwise, set it to null.
