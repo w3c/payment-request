@@ -2103,10 +2103,12 @@
           <h2>
             Internal Constructor
           </h2>
-          <p class="note">
-            This constructor algorithm is used internally by the user agent.
-            It's not available to scripts.
-          </p>
+          <div class="issue" data-number="653">
+            Currently, this constructor algorithm is only used internally by a
+            user agent. It is not available to scripts. However, discussions
+            are underway in the working group to make this into a public
+            constructor.
+          </div>
           <p>
             The steps to <dfn data-lt=
             "PaymentAddress.PaymentAddress()">internally construct a
@@ -2115,10 +2117,11 @@
           </p>
           <ol data-link-for="AddressInit">
             <li>Let <var>address</var> be a new instance of
-            <a>PaymentAddress</a>.Set
-            <var>address</var>.<a>[[\addressLine]]</a>to the empty frozen
-            array, and all other <a data-lt="PaymentAddress slots">internal
-            slots</a>set to the empty string.
+            <a>PaymentAddress</a>.
+            </li>
+            <li>Set <var>address</var>.<a>[[\addressLine]]</a> to the empty
+            frozen array, and all other <a data-lt=
+            "PaymentAddress slots">internal slots</a> set to the empty string.
             </li>
             <li>If <var>details</var> was not passed to the constructor, return
             <var>address</var> and terminate this algorithm.
@@ -2215,16 +2218,17 @@
           <h2>
             <dfn>country</dfn> attribute
           </h2>
-          <p>
-            When getting, returns the value of the <a>PaymentAddress</a>'s
-            <a>[[\country]]</a> internal slot.
+          <p data-link-for="">
+            Represents the <a>country</a> of the address. When getting, returns
+            the value of the <a>PaymentAddress</a>'s <a>[[\country]]</a>
+            internal slot.
           </p>
         </section>
         <section>
           <h2>
             <dfn>addressLine</dfn> attribute
           </h2>
-          <p>
+          <p data-link-for="">
             Represents the <a>address line</a> of the address. When getting,
             returns the value of the <a>PaymentAddress</a>'s
             <a>[[\addressLine]]</a> internal slot.
@@ -2234,7 +2238,7 @@
           <h2>
             <dfn>region</dfn> attribute
           </h2>
-          <p>
+          <p data-link-for="">
             Represents the <a>region</a> of the address. When getting, returns
             the value of the <a>PaymentAddress</a>'s <a>[[\region]]</a>
             internal slot.
@@ -2244,7 +2248,7 @@
           <h2>
             <dfn>city</dfn> attribute
           </h2>
-          <p>
+          <p data-link-for="">
             Represents the <a>city</a> of the address. When getting, returns
             the value of the <a>PaymentAddress</a>'s <a>[[\city]]</a> internal
             slot.
@@ -2294,7 +2298,7 @@
           <h2>
             <dfn>organization</dfn> attribute
           </h2>
-          <p>
+          <p data-link-for="">
             Represents the <a>organization</a> of the address. When getting,
             returns the value of the <a>PaymentAddress</a>'s
             <a>[[\organization]]</a> internal slot.
@@ -2304,7 +2308,7 @@
           <h2>
             <dfn>recipient</dfn> attribute
           </h2>
-          <p>
+          <p data-link-for="">
             Represents the <a>recipient</a> of the address. When getting,
             returns the value of the <a>PaymentAddress</a>'s
             <a>[[\recipient]]</a> internal slot.
@@ -2315,9 +2319,9 @@
             <dfn>phone</dfn> attribute
           </h2>
           <p>
-            Represents the <a>phone</a> of the address. When getting, returns
-            the value of the <a>PaymentAddress</a>'s <a>[[\phone]]</a> internal
-            slot.
+            Represents the <a>phone number</a> of the address. When getting,
+            returns the value of the <a>PaymentAddress</a>'s <a>[[\phone]]</a>
+            internal slot.
           </p>
         </section>
         <section data-link-for="">
@@ -2460,13 +2464,13 @@
             <dfn>country</dfn> member
           </dt>
           <dd>
-            An <a>country</a>, represented as a a [[!ISO3166-1]] country code.
+            An <a>country</a>, represented as a [[!ISO3166-1]] country code.
           </dd>
           <dt>
             <dfn>addressLine</dfn> member
           </dt>
           <dd>
-            An <a>address line</a>, represented as sequence.
+            An <a>address line</a>, represented as a sequence.
           </dd>
           <dt>
             <dfn>region</dfn> member
@@ -2539,8 +2543,8 @@
           input will not be gathered.
         </p>
         <ol data-link-for="AddressInit">
-          <li>Let <var>details</var> be an object with no members that will
-          serve as a <a>AddressInit</a> dictionary.
+          <li>Let <var>details</var> be an <a>AddressInit</a> dictionary with
+          no members present.
           </li>
           <li>If "addressLine" is not in <var>redactList</var>, set
           <var>details</var>["<a>addressLine</a>"] to the result of splitting
@@ -3220,7 +3224,7 @@
               </li>
               <li>Let <var>address</var> be the result of running the steps to
               <a>create a <code>PaymentAddress</code> from user-provided
-              input</a>.
+              input</a> with <var>redactList</var>.
               </li>
               <li>Set the <a data-lt=
               "PaymentRequest.shippingAddress">shippingAddress</a> attribute on
