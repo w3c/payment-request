@@ -2108,8 +2108,9 @@
           <p>
             The steps to <dfn data-lt=
             "PaymentAddress.PaymentAddress()">internally construct a
-            <code>PaymentAddress</code></dfn> with <a>AddressInit</a>
-            <var>details</var> are given by the following algorithm:
+            <code>PaymentAddress</code></dfn> with an optional
+            <a>AddressInit</a> <var>details</var> are given by the following
+            algorithm:
           </p>
           <ol data-link-for="AddressInit">
             <li>Let <var>address</var> be a new instance of
@@ -2119,8 +2120,8 @@
             frozen array, and all other <a data-lt=
             "PaymentAddress slots">internal slots</a> set to the empty string.
             </li>
-            <li>If <var>details</var> was not passed to the constructor, return
-            <var>address</var> and terminate this algorithm.
+            <li>If <var>details</var> was not passed, return
+            <var>address</var>.
             </li>
             <li>If <var>details</var>["<a>country</a>"] is present:
               <ol>
