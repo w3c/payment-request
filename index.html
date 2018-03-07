@@ -2122,16 +2122,17 @@
             </li>
             <li>Set <var>address</var>.<a>[[\addressLine]]</a> to the empty
             frozen array, and all other <a data-lt=
-            "PaymentAddress slots">internal slots</a> set to the empty string.
+            "PaymentAddress slots">internal slots</a> to the empty string.
             </li>
             <li>If <var>details</var> was not passed, return
             <var>address</var>.
             </li>
             <li>If <var>details</var>["<a>country</a>"] is present:
               <ol>
-                <li>Let <var>country</var> be the result of <a data-cite=
-                "!INFRA#ascii-uppercase">ASCII uppercasing</a>
-                <var>details</var>["<a>country</a>"].
+                <li>Set <var>country</var> the result of <a>stripping leading
+                and trailing ASCII whitespace</a> from
+                <var>details</var>["<a>country</a>"] and performing
+                <a data-cite="!INFRA#ascii-uppercase">ASCII uppercasing</a>.
                 </li>
                 <li>If <var>country</var> is not a valid [[!ISO3166-1]] alpha-2
                 code, throw a <a>RangeError</a> exception.
@@ -2153,9 +2154,22 @@
                 </li>
               </ol>
             </li>
-            <li>If <var>details</var>["<a>addressLine</a>"] is present, set
-            <var>address</var>.<a>[[\addressLine]]</a> to a new frozen array
-            created from <var>details</var>["<a>addressLine</a>"].
+            <li>Let <var>cleanAddressLines</var> be an emtpy list.
+            </li>
+            <li>If <var>details</var>["<a>addressLine</a>"] is present, then
+            for each <var>item</var> in
+            <var>details</var>["<a>addressLine</a>"]:
+              <ol>
+                <li>
+                  <a>strip leading and trailing ASCII whitespace</a> from
+                  <var>item</var> and append the result into
+                  <var>cleanAddressLines</var>
+                </li>
+              </ol>
+            </li>
+            <li>
+              <var>Set address</var>.<a>[[\addressLine]]</a> to a new frozen
+              array created from <var>cleanAddressLines</var>.
             </li>
             <li>If <var>details</var>["<a>region</a>"] is present, <a>strip
             leading and trailing ASCII whitespace</a> from
@@ -2614,12 +2628,9 @@
           <var>details</var>["<a>recipient</a>"] to the user-provided recipient
           of the transaction, or to the empty string if none was provided.
           </li>
-          <li>If "region" is not in <var>redactList</var>:
-            <ol>
-              <li>Set <var>details</var>["<a>region</a>"] to the user-provided
-              region, or to the empty string if none was provided.
-              </li>
-            </ol>
+          <li>If "region" is not in <var>redactList</var>, set
+          <var>details</var>["<a>region</a>"] to the user-provided region, or
+          to the empty string if none was provided.
           </li>
           <li>If "sortingCode" is not in <var>redactList</var>, set
           <var>details</var>["<a>sortingCode</a>"] to the user-provided sorting
