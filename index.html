@@ -3388,7 +3388,9 @@
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> value of
-          <var>request</var>.<a>[[\options]]</a> is true, then:
+          <var>request</var>.<a>[[\options]]</a> is false, then set the
+          <a data-lt="PaymentResponse.shippingAddress">shippingAddress</a>
+          attribute value of <var>response</var> to null. Otherwise:
             <ol>
               <li>Let <var>redactList</var> be the empty <a>list</a>.
               </li>
