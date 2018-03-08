@@ -2091,6 +2091,7 @@
             readonly attribute DOMString postalCode;
             readonly attribute DOMString recipient;
             readonly attribute DOMString region;
+            readonly attribute DOMString regionCode;
             readonly attribute DOMString sortingCode;
             readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
           };
@@ -2139,6 +2140,22 @@
                 </li>
                 <li>Set <var>address</var>.<a>[[\country]]</a> to
                 <var>country</var>.
+                </li>
+              </ol>
+            </li>
+            <li>If <var>details</var>["<a>regionCode</a>"] is present and not
+            the empty string:
+              <ol>
+                <li>Let <var>regionCode</var> be the result of <a>stripping
+                leading and trailing ASCII whitespace</a> and <a data-cite=
+                "!INFRA#ascii-uppercase">ASCII uppercasing</a>
+                <var>details</var>["<a>regionCode</a>"].
+                </li>
+                <li>If <var>regionCode</var> is not a valid [[!ISO3166-2]]
+                subdivision code, throw a <a>RangeError</a> exception.
+                </li>
+                <li>Set <var>address</var>.<a>[[\regionCode]]</a> to
+                <var>regionCode</var>.
                 </li>
               </ol>
             </li>
@@ -2257,6 +2274,16 @@
             Represents the <a>region</a> of the address. When getting, returns
             the value of the <a>PaymentAddress</a>'s <a>[[\region]]</a>
             internal slot.
+          </p>
+        </section>
+        <section>
+          <h2>
+            <dfn>regionCode</dfn> attribute
+          </h2>
+          <p>
+            Represents the <a>region</a> of the address as an [[!ISO3166-2]]
+            code. When getting, returns the value of the
+            <a>PaymentAddress</a>'s <a>[[\regionCode]]</a> internal slot.
           </p>
         </section>
         <section>
@@ -2384,6 +2411,17 @@
             </tr>
             <tr>
               <td>
+                <dfn>[[\regionCode]]</dfn>
+              </td>
+              <td>
+                A <a>region</a> represented as a [[!ISO3166-2]] subdivision
+                code or the empty string, stored in its canonical uppercase
+                form. For example, "<code>PT-11</code>" represents the Lisbon
+                district of Portugal.
+              </td>
+            </tr>
+            <tr>
+              <td>
                 <dfn>[[\city]]</dfn>
               </td>
               <td>
@@ -2459,6 +2497,7 @@
             DOMString country;
             sequence&lt;DOMString&gt; addressLine;
             DOMString region;
+            DOMString regionCode;
             DOMString city;
             DOMString dependentLocality;
             DOMString postalCode;
@@ -2492,6 +2531,13 @@
           </dt>
           <dd>
             A <a>region</a>.
+          </dd>
+          <dt>
+            <dfn>regionCode</dfn> member
+          </dt>
+          <dd>
+            An <a>region</a>, represented as an [[!ISO3166-2]] subdivision
+            code.
           </dd>
           <dt>
             <dfn>city</dfn> member
@@ -2628,9 +2674,16 @@
           <var>details</var>["<a>recipient</a>"] to the user-provided recipient
           of the transaction, or to the empty string if none was provided.
           </li>
-          <li>If "region" is not in <var>redactList</var>, set
-          <var>details</var>["<a>region</a>"] to the user-provided region, or
-          to the empty string if none was provided.
+          <li>If "region" is not in <var>redactList</var>:
+            <ol>
+              <li>Set <var>details</var>["<a>region</a>"] to the user-provided
+              region, or to the empty string if none was provided.
+              </li>
+              <li>If <var>details</var>["<a>region</a>"] maps to a
+              [[!ISO3166-2]] subdivision code, set
+              <var>details</var>["<a>regionCode</a>"] to that subdivision code.
+              </li>
+            </ol>
           </li>
           <li>If "sortingCode" is not in <var>redactList</var>, set
           <var>details</var>["<a>sortingCode</a>"] to the user-provided sorting
