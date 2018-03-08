@@ -3388,12 +3388,23 @@
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> value of
-          <var>request</var>.<a>[[\options]]</a> is true, then <a>create a
-          <code>PaymentAddress</code> from user-provided input</a> passing the
-          empty list as the <var>redactList</var> and set the <a data-lt=
-          "PaymentResponse.shippingAddress">shippingAddress</a> attribute of
-          <var>response</var> to the resulting <a>PaymentAddress</a>.
-          Otherwise, set it to null.
+          <var>request</var>.<a>[[\options]]</a> is true, then:
+            <ol>
+              <li>Let <var>redactList</var> be the empty <a>list</a>.
+              </li>
+              <li>Let <var>shippingAddress</var> be the result of <a>create a
+              <code>PaymentAddress</code> from user-provided input</a> with
+              <var>redactList</var>.
+              </li>
+              <li>Set the <a data-lt=
+              "PaymentResponse.shippingAddress">shippingAddress</a> attribute
+              value of <var>response</var> to <var>shippingAddress</var>.
+              </li>
+              <li>Set the <a data-lt=
+              "PaymentResponse.shippingAddress">shippingAddress</a> attribute
+              value of <var>request</var> to <var>shippingAddress</var>.
+              </li>
+            </ol>
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> value of
