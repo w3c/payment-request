@@ -3230,6 +3230,25 @@
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
             <ol>
+              <div class="note" title="Privacy of recipient information">
+                <p>
+                  The <var>redactList</var> optionally gives user agents the
+                  possibility to limit the amount of personal information about
+                  the recipient that the API shares with the merchant.
+                </p>
+                <p>
+                  For merchants, the resulting <a>PaymentAddress</a> object
+                  provides enough information to, for example, calculate
+                  shipping costs, but, in most cases, not enough information to
+                  physically locate and uniquely identify the recipient.
+                </p>
+                <p>
+                  Unfortunately, even with the <var>redactList</var>, recipient
+                  anonymity is cannot be assured. This is because in some
+                  countries postal codes are so fine-grained that they can
+                  uniquely identify a recipient.
+                </p>
+              </div>
               <li>Let <var>redactList</var> be the empty list. Optionally,
               append the following items to <var>redactList</var>: «
               "organization", "phone", "recipient", "addressLine" ».
