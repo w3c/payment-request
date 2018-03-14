@@ -1991,7 +1991,7 @@
     </div>
     <section>
       <h2>
-        Physical Addresses
+        Physical addresses
       </h2>
       <p>
         A <dfn>physical address</dfn> is composed of the following concepts.
@@ -2097,7 +2097,7 @@
         </p>
         <section>
           <h2>
-            Internal Constructor
+            Internal constructor
           </h2>
           <div class="issue" data-number="653">
             Currently, this constructor algorithm is only used internally by a
@@ -2150,16 +2150,16 @@
                 </li>
               </ol>
             </li>
-            <li>Let <var>cleanAddressLines</var> be an emtpy list.
+            <li>Let <var>cleanAddressLines</var> be an empty list.
             </li>
             <li>If <var>details</var>["<a>addressLine</a>"] is present, then
             for each <var>item</var> in
             <var>details</var>["<a>addressLine</a>"]:
               <ol>
                 <li>
-                  <a>strip leading and trailing ASCII whitespace</a> from
+                  <a>Strip leading and trailing ASCII whitespace</a> from
                   <var>item</var> and append the result into
-                  <var>cleanAddressLines</var>
+                  <var>cleanAddressLines</var>.
                 </li>
               </ol>
             </li>
@@ -2354,8 +2354,8 @@
                 <dfn>[[\country]]</dfn>
               </td>
               <td>
-                A <a>country</a> as an [[!ISO3166-1]] alpha-2 code or the empty
-                string stored in its canonical uppercase form. For example,
+                A <a>country</a> as an [[!ISO3166-1]] alpha-2 code stored in
+                its canonical uppercase form or the empty string. For example,
                 "JP".
               </td>
             </tr>
@@ -2559,8 +2559,7 @@
           </li>
           <li>If "addressLine" is not in <var>redactList</var>, set
           <var>details</var>["<a>addressLine</a>"] to the result of splitting
-          the user-provided address line into a <a data-cite=
-          "!WEBIDL#dfn-frozen-array-type">frozen array</a>. If none was
+          the user-provided address line into a <a>list</a>. If none was
           provided, set it to the empty <a>list</a>.
             <aside class="note">
               How to split an address line is locale dependent and beyond the
@@ -3245,9 +3244,9 @@
                   uniquely identify a recipient.
                 </p>
               </div>
-              <li>Let <var>redactList</var> be the empty list. Optionally,
-              append the following items to <var>redactList</var>: «
-              "organization", "phone", "recipient", "addressLine" ».
+              <li>Let <var>redactList</var> be the empty list. Optionally, set
+              <var>redactList</var> to « "organization", "phone", "recipient",
+              "addressLine" ».
               </li>
               <li>Let <var>address</var> be the result of running the steps to
               <a>create a <code>PaymentAddress</code> from user-provided
