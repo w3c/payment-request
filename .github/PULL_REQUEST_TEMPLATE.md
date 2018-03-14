@@ -2,8 +2,9 @@ closes #???
 
 The following tasks have been completed:
 
- * [ ] web platform tests (link)
- * [ ] MDN Docs added (link)
+ * [ ] Confirmed there are no ReSpec errors/warnings.
+ * [ ] Added Web platform tests (link)
+ * [ ] added MDN Docs (link)
 
 Implementation commitment:
 
