@@ -566,8 +566,9 @@
           act as follows:
         </p>
         <ol data-link-for="PaymentDetailsBase" class="algorithm">
-          <li data-tests="payment-allowed-by-feature-policy.https.sub.html">If
-          the <a>current settings object</a>'s <a data-cite=
+          <li data-tests=
+          "active-document-cross-origin.https.sub.html, active-document-same-origin.https.html, removing-allowpaymentrequest.https.sub.html, setting-allowpaymentrequest-timing.https.sub.html, setting-allowpaymentrequest.https.sub.html">
+          If the <a>current settings object</a>'s <a data-cite=
           "!HTML#responsible-document">responsible document</a> is not
           <a>allowed to use</a> the feature indicated by attribute name
           <a>allowpaymentrequest</a>, then <a>throw</a> a
@@ -2966,7 +2967,7 @@
         <code>PaymentRequest</code> and <code>iframe</code> elements
       </h2>
       <p data-tests=
-      "active-document-same-origin.https.html, allowpaymentrequest-attribute-cross-origin-bc-containers.https.html, allowpaymentrequest-attribute-same-origin-bc-containers.https.html, basic.https.html, no-attribute-cross-origin-bc-containers.https.html, no-attribute-same-origin-bc-containers.https.html">
+      "allowpaymentrequest/active-document-cross-origin.https.sub.html, allowpaymentrequest/active-document-same-origin.https.html, allowpaymentrequest/allowpaymentrequest-attribute-cross-origin-bc-containers.https.html, allowpaymentrequest/allowpaymentrequest-attribute-same-origin-bc-containers.https.html, allowpaymentrequest/basic.https.html, allowpaymentrequest/no-attribute-cross-origin-bc-containers.https.html, allowpaymentrequest/no-attribute-same-origin-bc-containers.https.html, allowpaymentrequest/removing-allowpaymentrequest.https.sub.html, allowpaymentrequest/setting-allowpaymentrequest-timing.https.sub.html, allowpaymentrequest/setting-allowpaymentrequest.https.sub.html">
         To indicate that a cross-origin <a>iframe</a> is allowed to invoke the
         payment request API, the <a>allowpaymentrequest</a> attribute can be
         specified on the <a>iframe</a> element.
@@ -3037,7 +3038,7 @@
             "PaymentRequestUpdateEvent.PaymentRequestUpdateEvent()">Constructor</dfn>
           </h3>
           <p data-tests=
-          "payment-request-update-event-constructor.https.html, payment-request-update-event-constructor.http.html">
+          "PaymentRequestUpdateEvent/constructor.https.html, PaymentRequestUpdateEvent/constructor.http.html">
             The <a data-lt=
             "PaymentRequestUpdateEvent"><code>PaymentRequestUpdateEvent(<var>type</var>,
             <var>eventInitDict</var>)</code></a> constructor MUST act as
