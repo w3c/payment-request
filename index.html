@@ -1484,8 +1484,10 @@
           steps:
         </p>
         <ol data-link-for="PaymentCurrencyAmount">
-          <li>If <var>amount</var>.<a>currencySystem</a> is not
-          "<code>urn:iso:std:iso:4217</code>", terminate this algorithm.
+          <li data-tests=
+          "PaymentCurrencyAmount/currencySystem-member.https.html">If
+          <var>amount</var>.<a>currencySystem</a> is not
+          "<code>urn:iso:std:iso:4217</code>", throw a <a>TypeError</a>.
           </li>
           <li>Let <var>isValidCurrency</var> be the result of calling
           <a data-cite=
