@@ -118,12 +118,6 @@
           before proceeding along the W3C Recommendation track.
         </p>
         <ul>
-          <li>
-            <a data-lt=
-            "PaymentCurrencyAmount.currencySystem">currencySystem</a> (see
-            <a href="https://github.com/w3c/payment-request/issues/617">issue
-            617</a>).
-          </li>
           <li data-link-for="PaymentItem">
             <a>PaymentItem</a>'s <a>type</a> member and the
             <a>PaymentItemType</a> enum (see <a href=
@@ -1387,55 +1381,27 @@
         dictionary PaymentCurrencyAmount {
           required DOMString currency;
           required DOMString value;
-          // Note: currencySystem is "at risk" of being removed!
-          DOMString currencySystem = "urn:iso:std:iso:4217";
         };
       </pre>
       <p>
         A <a>PaymentCurrencyAmount</a> dictionary is used to supply monetary
         amounts.
       </p>
-      <div class="issue atrisk">
-        <p>
-          This feature has been marked "<a>at risk</a>". If you'd like for this
-          feature to remain in the specification, please describe your use case
-          in <a href="https://github.com/w3c/payment-request/issues/490">issue
-          490</a>.
-        </p>
-        <dl>
-          <dt>
-            <dfn>currencySystem</dfn> member
-          </dt>
-          <dd>
-            A URL that indicates the currency system that the <a>currency</a>
-            identifier belongs to. By default, the value is
-            "<code>urn:iso:std:iso:4217</code>" indicating that <a>currency</a>
-            is defined by [[!ISO4217]] (for example, <code>USD</code> for US
-            Dollars).
-          </dd>
-        </dl>
-      </div>
       <dl>
         <dt>
           <dfn>currency</dfn> member
         </dt>
         <dd>
           <p>
-            A string containing a currency identifier. The value of
-            <a>currency</a> can be any string that is valid within the currency
-            system indicated by <a>currencySystem</a>.
-          </p>
-          <p>
-            When using [[!ISO4217]], all <a data-cite=
+            A [[!ISO4217]] <a data-cite=
             "!ecma-402#sec-iswellformedcurrencycode">well-formed</a> 3-letter
-            alphabetic codes are allowed (i.e., the numeric codes are not
-            supported). Their canonical form is upper case. However, the set of
-            combinations of currency code for which localized currency symbols
-            are available is implementation dependent. Where a localized
-            currency symbol is not available, a user agent SHOULD use U+00A4
-            (¤) for formatting. User agents MAY format the display of the
-            <a>currency</a> member to adhere to OS conventions (e.g., for
-            localization purposes).
+            alphabetic code (i.e., the numeric codes are not supported). Their
+            canonical form is upper case. However, the set of combinations of
+            currency code for which localized currency symbols are available is
+            implementation dependent. Where a localized currency symbol is not
+            available, a user agent SHOULD use U+00A4 (¤) for formatting. User
+            agents MAY format the display of the <a>currency</a> member to
+            adhere to OS conventions (e.g., for localization purposes).
           </p>
         </dd>
         <dt>
@@ -1486,11 +1452,6 @@
           steps:
         </p>
         <ol data-link-for="PaymentCurrencyAmount">
-          <li data-tests=
-          "PaymentCurrencyAmount/currencySystem-member.https.html">If
-          <var>amount</var>.<a>currencySystem</a> is not
-          "<code>urn:iso:std:iso:4217</code>", throw a <a>TypeError</a>.
-          </li>
           <li>Let <var>isValidCurrency</var> be the result of calling
           <a data-cite=
           "!ecma-402#sec-iswellformedcurrencycode">IsWellFormedCurrencyCode</a>
@@ -1516,9 +1477,6 @@
           steps:
         </p>
         <ol data-link-for="PaymentCurrencyAmount">
-          <li>If <var>total</var>.<a>currencySystem</a> is not
-          "<code>urn:iso:std:iso:4217</code>", terminate this algorithm.
-          </li>
           <li>
             <a>Check and canonicalize amount</a> <var>amount</var>. Rethrow any
             exceptions.
