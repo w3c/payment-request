@@ -2208,8 +2208,40 @@
                 "!INFRA#ascii-uppercase">ASCII uppercasing</a>
                 <var>details</var>["<a>regionCode</a>"].
                 </li>
-                <li>If <var>regionCode</var> is not a valid [[!ISO3166-2]]
-                subdivision code, throw a <a>RangeError</a> exception.
+                <li>
+                  <p>
+                    If <var>regionCode</var> is not a valid subdivision code as
+                    per [[!ISO3166-2]]'s section 5.2 Structure of country
+                    subdivision code elements (details below), throw a
+                    <a>RangeError</a> exception.
+                  </p>
+                  <div class="note" title=
+                  "Structure of country subdivision code elements">
+                    <p>
+                      The structure of country subdivision code elements is
+                      formally defined in [[!ISO3166-2]] (section 5.2).
+                      Although the structure is not expected to change at the
+                      time of writing, implementers are expected to track
+                      updates to [[!ISO3166-2]] directly from ISO.
+                    </p>
+                    <p>
+                      As [[!ISO3166-2]] is not freely available to the general
+                      public, the structure of a country subdivision code
+                      elements at the time of publication is as follow:
+                    </p>
+                    <ul>
+                      <li>Two <a>code points</a> that match an [[!ISO3166-1]]
+                      alpha-2 country code.
+                      </li>
+                      <li>A single U+002D (-) <a>code point</a>.
+                      </li>
+                      <li>One, two, or three <a data-cite=
+                      "infra#ascii-alphanumeric">ASCII alphanumeric</a> code
+                      points, in any order. This is referred to as the
+                      subdivision name.
+                      </li>
+                    </ul>
+                  </div>
                 </li>
                 <li>Set <var>address</var>.<a>[[\regionCode]]</a> to
                 <var>regionCode</var>.
@@ -2339,8 +2371,9 @@
           </h2>
           <p data-link-for="">
             Represents the <a>region</a> of the address as an [[!ISO3166-2]]
-            code. When getting, returns the value of the
-            <a>PaymentAddress</a>'s <a>[[\regionCode]]</a> internal slot.
+            country subdivision code element. When getting, returns the value
+            of the <a>PaymentAddress</a>'s <a>[[\regionCode]]</a> internal
+            slot.
           </p>
         </section>
         <section>
@@ -2471,10 +2504,10 @@
                 <dfn>[[\regionCode]]</dfn>
               </td>
               <td>
-                A <a>region</a> represented as a [[!ISO3166-2]] subdivision
-                code or the empty string, stored in its canonical uppercase
-                form. For example, "<code>PT-11</code>" represents the Lisbon
-                district of Portugal.
+                A <a>region</a> represented as a [[!ISO3166-2]] country
+                subdivision code element or the empty string, stored in its
+                canonical uppercase form. For example, "<code>PT-11</code>"
+                represents the Lisbon district of Portugal.
               </td>
             </tr>
             <tr>
@@ -2593,8 +2626,8 @@
             <dfn>regionCode</dfn> member
           </dt>
           <dd>
-            An <a>region</a>, represented as an [[!ISO3166-2]] subdivision
-            code.
+            An <a>region</a>, represented as an [[!ISO3166-2]] country
+            subdivision code element.
           </dd>
           <dt>
             <dfn>city</dfn> member
@@ -2736,7 +2769,7 @@
               region, or to the empty string if none was provided.
               </li>
               <li>If <var>details</var>["<a>region</a>"] has as a corresponding
-              [[!ISO3166-2]] subdivision code, set
+              [[!ISO3166-2]] country subdivision code element, set
               <var>details</var>["<a>regionCode</a>"] to that subdivision code.
               </li>
             </ol>
