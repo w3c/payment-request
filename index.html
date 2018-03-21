@@ -841,8 +841,10 @@
           MUST act as follows:
         </p>
         <ol class="algorithm">
-          <li>If the method was not <a>triggered by user activation</a>, return
-          a promise rejected with a "<a>SecurityError</a>" <a>DOMException</a>
+          <li data-tests=
+          "payment-request-show-method-manual.https.html, show-method-postmessage-manual.https.html">
+          If the method was not <a>triggered by user activation</a>, return a
+          promise rejected with a "<a>SecurityError</a>" <a>DOMException</a>
           and terminate this algorithm.
           </li>
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object on
