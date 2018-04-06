@@ -1403,6 +1403,42 @@
             agents MAY format the display of the <a>currency</a> member to
             adhere to OS conventions (e.g., for localization purposes).
           </p>
+          <div class="note" title=
+          "Digital currencies and ISO 4217 currency codes">
+            <p>
+              User agents implementing this specification enforce [[ISO4217]]'s
+              3-letter codes format via ECMAScript’s <a data-cite=
+              "!ecma-402#sec-iswellformedcurrencycode">isWellFormedCurrencyCode</a>
+              abstract operation, which is invoked as part of the <a>check and
+              canonicalize amount</a> algorithm. When a code does not adhere to
+              the [[ISO4217]] defined format, a <a>RangeError</a> is thrown.
+            </p>
+            <p>
+              Current implementations will therefore allow the use of
+              well-formed currency codes that are not part of the official
+              [[ISO4217]] list (e.g., XBT, XRP, etc.). If the provided code is
+              a currency that the browser knows how to display, then an
+              implementation will generally display the appropriate currency
+              symbol in the user interface (e.g., "USD" is shown as "$", "GBP"
+              is "£", and the non-standard "XBT" could be shown as "Ƀ"). When a
+              code can't be matched, the specification recommends browsers show
+              a scarab "¤".
+            </p>
+            <p>
+              Efforts are underway at ISO to account for digital currencies,
+              which may result in an update to the [[ISO4217]] registry or an
+              entirely new registry. The community expects this will resolve
+              ambiguities that have crept in through the use of non-standard
+              3-letter codes; for example, does "BTC" refer to Bitcoin or to a
+              future Bhutan currency? At the time of publication, it remains
+              unclear what form this evolution will take, or even the time
+              frame in which the work will be completed. The W3C Web Payments
+              Working Group is liaising with ISO during this evolutionary
+              process to ensure digital currencies are well supported both in
+              future versions of [[ISO4217]] and in future revisions of this
+              specification.
+            </p>
+          </div>
         </dd>
         <dt>
           <dfn>value</dfn> member
