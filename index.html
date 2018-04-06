@@ -1123,14 +1123,32 @@
           <li>Return <var>promise</var>, and perform the remaining steps <a>in
           parallel</a>.
           </li>
-          <li>For each <var>methodData</var> in
+          <li>For each <var>paymentMethod</var> tuple in
           <var>request</var>.<a>[[\serializedMethodData]]</a>:
             <ol>
-              <li>If <var>methodData</var>.<a data-lt=
-              "PaymentMethodData.supportedMethods">supportedMethods</a> is a
-              supported <a>payment method identifier</a> (including its
-              <a>payment method</a> specific capabilities), resolve
-              <var>promise</var> with true, and abort this algorithm.
+              <li>Let <var>identifier</var> be the first element in the
+              <var>paymentMethod</var> tuple.
+              </li>
+              <li>Let <var>data</var> be the result of <a data-cite=
+              "!ECMASCRIPT#sec-json.parse">JSON-parsing</a> the second element
+              in the <var>paymentMethod</var> tuple.
+              </li>
+              <li>If required by the specification that defines the
+              <var>identifer</var>, then <a data-cite=
+              "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
+              <var>data</var> to an IDL value. Otherwise, <a data-cite=
+              "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
+              <a data-cite="!WEBIDL#idl-object">object</a>.
+              </li>
+              <li>If conversion results in an error, reject <var>promise</var>
+              with that error and terminate this algorithm.
+              </li>
+              <li>If the user agent has a registered <a>payment handler</a>
+              that supports <var>identifier</var>, then check if the payment
+              handler is authorized and capable of handling the payment request
+              with <var>data</var>. If the check returns in the affirmative,
+              then resolve <var>promise</var> with true, and abort this
+              algorithm.
               </li>
             </ol>
           </li>
@@ -3809,17 +3827,24 @@
           <a>payment methods</a> support this.
         </p>
       </section>
-      <section>
+      <section class="informative">
         <h2>
-          Payment Handler Matching
+          How user agents match payment handlers
         </h2>
+        <p>
+          As part of <a>show()</a>, the user agent typically displays a list of
+          matching <a>payment handlers</a> that satisfy the <a>payment
+          methods</a> accepted by the merchant and other conditions. Matching
+          can take into account <a>payment method</a> information provided as
+          input to the API, information provided by the <a>payment method</a>
+          owner, the <a>payment handlers</a> registered by the user, user
+          preferences, and other considerations.
+        </p>
         <p data-link-for="PaymentRequest">
           For security reasons, a user agent can limit matching (in
           <a>show()</a> and <a>canMakePayment()</a>) to <a>payment handlers</a>
           from the same <a data-cite="rfc6454#section-3.2">origin</a> as a URL
-          <a>payment method identifier</a>. User agents can also use
-          information provided by a <a>payment method</a> owner to match
-          <a>payment handlers</a> from other origins.
+          <a>payment method identifier</a>.
         </p>
       </section>
     </section>
