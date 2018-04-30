@@ -173,7 +173,7 @@
         A payment handler also defines the <a>steps to respond to a payment
         request</a>, which results with an object, or <a>dictionary</a>, that a
         a merchant uses to process or validate the transaction. The structure
-        of this object is specific for each <a>payment handler</a>. For an
+        of this object is specific for each <a>payment method</a>. For an
         example of such an object, see the <code><a data-cite=
         "payment-method-basic-card#dom-basiccardresponse">BasicCardResponse</a></code>
         dictionary of [[payment-method-basic-card]].
@@ -3431,8 +3431,7 @@
           identifier</a> for the <a>payment method</a> that the user selected
           to accept the payment.
           </li>
-          <li>Let <var>handler</var> be the <a>payment handler</a> that the
-          user is interacting with via <var>request</var>.
+          <li>Let <var>handler</var> be the <a>payment handler</a> selected by the user.
           </li>
           <li>Set the <a data-lt="PaymentResponse.details">details</a>
           attribute value of <var>response</var> to an object resulting from
