@@ -3756,10 +3756,11 @@
           </li>
           <li>Let <var>methodDetails</var> be null.
           </li>
-          <li>Optionally, set <var>methodDetails</var> be a <a data-cite=
-          "!WEBIDL#idl-dictionary">dictionary</a> or <a data-cite=
-          "!WEBIDL#idl-object">object</a> resulting the user selecting a
-          different <a>payment method</a>.
+          <li>If <a>request</a>'s <a>payment handler</a> defines a <a>user
+          changes payment method</a> algorithm, set <var>methodDetails</var> be
+          a <a data-cite="!WEBIDL#idl-dictionary">dictionary</a> or
+          <a data-cite="!WEBIDL#idl-object">object</a> resulting the user
+          selecting a different <a>payment method</a>.
           </li>
           <li>Let <var>methodName</var> be the <a>payment method identifier</a>
           of the <a>payment handler</a> the user is interacting with.
