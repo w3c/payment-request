@@ -1582,9 +1582,10 @@
             A sequence of <a>PaymentItem</a> dictionaries contains line items
             for the payment request that the <a>user agent</a> MAY display.
             <aside class="note">
-              It is the developer's responsibility to verify that the
-              <a data-lt="PaymentDetailsInit.total">total</a> amount is the sum
-              of these items.
+              It is the developer's responsibility, when generating or updating
+              a <a>PaymentRequest</a>, to verify that the <a data-lt=
+              "PaymentDetailsInit.total">total</a> amount is the sum of these
+              items.
             </aside>
           </dd>
           <dt>
