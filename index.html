@@ -41,7 +41,14 @@
       wgPatentURI: "https://www.w3.org/2004/01/pp-impl/83744/status",
       testSuiteURI: "https://w3c-test.org/payment-request/",
       implementationReportURI: "https://w3c.github.io/payment-request/reports/implementation.html",
-      // caniuse: "payment-request", TODO: enable when https://github.com/w3c/respec/issues/1614 is fixed
+      caniuse: "payment-request",
+      lint: {
+        "no-headingless-sections": true,
+        "privsec-section": true,
+        "no-http-props": true,
+        "check-punctuation": true,
+      },
+      doJsonLd: true,
     };
     </script>
     <style>
@@ -54,6 +61,7 @@
     </style>
   </head>
   <body>
+    <h1 id="title">Payment Request API</h1>
     <section id='abstract'>
       <p>
         This specification standardizes an API to allow merchants (i.e. web
