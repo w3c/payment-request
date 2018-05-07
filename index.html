@@ -161,21 +161,28 @@
       <p>
         The details of how to fulfill a payment request for a given <a>payment
         method</a> is an implementation detail of a <dfn data-lt=
-        "payment handlers">payment handler</dfn>. Additionally, each payment
-        handler defines a <dfn>can make payment</dfn> algorithm. The details of
-        how a payment handler determines wether it, or the user, can
-        potentially "make a payment" is also an implementation detail of a
-        payment handler. For an example, see the <a data-cite=
-        "payment-method-basic-card#can-makepayment">can make payment</a>
-        algorithm of [[payment-method-basic-card]].
+        "payment handlers">payment handler</dfn>. Concretely, each payment
+        handler defines:
       </p>
+      <dl>
+        <dt>
+          A <dfn>can make payment</dfn> algorithm
+        </dt>
+        <dd>
+          How a payment handler determines whether it, or the user, can
+          potentially "make a payment" is also an implementation detail of a
+          payment handler. For an example, see the <a data-cite=
+          "payment-method-basic-card#can-makepayment">can make payment</a>
+          algorithm of [[payment-method-basic-card]].
+        </dd>
+      </dl>
       <p>
         A payment handler also defines the <dfn>steps to respond to a payment
-        request</dfn>, which results with an object, or <a data-cite=
-        "!WEBIDL#idl-dictionary">dictionary</a>, that a a merchant uses to
-        process or validate the transaction. The structure of this object is
-        specific for each <a>payment method</a>. For an example of such an
-        object, see the <code><a data-cite=
+        request</dfn>, which return an object or <a data-cite=
+        "!WEBIDL#idl-dictionary">dictionary</a> that a merchant uses to process
+        or validate the transaction. The structure of this object is specific
+        to each <a>payment method</a>. For an example of such an object, see
+        the <code><a data-cite=
         "payment-method-basic-card#dom-basiccardresponse">BasicCardResponse</a></code>
         dictionary of [[payment-method-basic-card]].
       </p>
@@ -943,13 +950,10 @@
               algorithm.
               </li>
               <li>Let <var>registeredHandlers</var> be a <a>list</a> of
-              registered <a>payment handlers</a> that are authorized and can
-              handle payment request for <var>identifier</var>.
+              registered payment handlers for the payment method
+              <var>identifier</var>.
               </li>
-              <li>If <var>registeredHandlers</var> is empty, then continue.
-              </li>
-              <li>Otherwise, for each <var>handler</var> in
-              <var>registeredHandlers</var>:
+              <li>For each <var>handler</var> in <var>registeredHandlers</var>:
                 <ol>
                   <li>Let <var>canMakePayment</var> be the result of running
                   <var>handler</var>'s <a>can make payment</a> algorithm with
@@ -1173,16 +1177,14 @@
               <a>payment handlers</a> that are authorized and can handle
               payment request for <var>identifier</var>.
               </li>
-              <li>If <var>handlers</var> is empty, then continue.
-              </li>
-              <li>Otherwise, for each <var>handler</var> in
-              <var>handlers</var>:
+              <li>For each <var>handler</var> in <var>handlers</var>:
                 <ol>
                   <li>Let <var>canMakePayment</var> be the result of running
                   <var>handler</var>'s <a>can make payment</a> algorithm with
                   <var>data</var>.
                   </li>
-                  <li>If <var>canMakePayment</var> is true, return true.
+                  <li>If <var>canMakePayment</var> is true, resolve
+                  <var>promise</var> with true, and return.
                   </li>
                 </ol>
               </li>
