@@ -175,17 +175,19 @@
           "payment-method-basic-card#can-makepayment">can make payment</a>
           algorithm of [[payment-method-basic-card]].
         </dd>
+        <dt>
+          <dfn>steps to respond to a payment request</dfn>
+        </dt>
+        <dd>
+          An algorithm that returns an object or <a data-cite=
+          "!WEBIDL#idl-dictionary">dictionary</a> that a merchant uses to
+          process or validate the transaction. The structure of this object is
+          specific to each <a>payment method</a>. For an example of such an
+          object, see the <code><a data-cite=
+          "payment-method-basic-card#dom-basiccardresponse">BasicCardResponse</a></code>
+          dictionary of [[payment-method-basic-card]].
+        </dd>
       </dl>
-      <p>
-        A payment handler also defines the <dfn>steps to respond to a payment
-        request</dfn>, which return an object or <a data-cite=
-        "!WEBIDL#idl-dictionary">dictionary</a> that a merchant uses to process
-        or validate the transaction. The structure of this object is specific
-        to each <a>payment method</a>. For an example of such an object, see
-        the <code><a data-cite=
-        "payment-method-basic-card#dom-basiccardresponse">BasicCardResponse</a></code>
-        dictionary of [[payment-method-basic-card]].
-      </p>
       <p>
         This API also enables web sites to take advantage of more secure
         payment schemes (e.g., tokenization and system-level authentication)
