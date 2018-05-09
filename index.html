@@ -171,7 +171,7 @@
       </p>
       <dl>
         <dt>
-          A <dfn>can make payment</dfn> algorithm:
+          <dfn>Steps to check if a payment can be made</dfn>:
         </dt>
         <dd>
           How a payment handler determines whether it, or the user, can
@@ -184,13 +184,26 @@
           <dfn>Steps to respond to a payment request</dfn>:
         </dt>
         <dd>
-          An algorithm that returns an object or <a data-cite=
+          Steps that return an object or <a data-cite=
           "!WEBIDL#idl-dictionary">dictionary</a> that a merchant uses to
           process or validate the transaction. The structure of this object is
           specific to each <a>payment method</a>. For an example of such an
           object, see the <code><a data-cite=
           "payment-method-basic-card#dom-basiccardresponse">BasicCardResponse</a></code>
           dictionary of [[payment-method-basic-card]].
+        </dd>
+        <dt>
+          <dfn>Steps for when a user changes payment method</dfn>
+        </dt>
+        <dd>
+          Steps that describe how to handle the user changing payment method or
+          monetary instrument (e.g., from a debit card to a credit card) that
+          results in a <a data-cite="!WEBIDL#idl-dictionary">dictionary</a> or
+          <a data-cite="!WEBIDL#idl-object">object</a> or null. See, for
+          example, the <a data-cite=
+          "payment-method-basic-card#dfn-steps-for-when-a-user-changes-payment-method">
+          steps for when a user changes payment method</a> of
+          [[payment-method-basic-card]].
         </dd>
       </dl>
       <p>
@@ -1021,8 +1034,8 @@
               <li>For each <var>handler</var> in <var>registeredHandlers</var>:
                 <ol>
                   <li>Let <var>canMakePayment</var> be the result of running
-                  <var>handler</var>'s <a>can make payment</a> algorithm with
-                  <var>data</var>.
+                  <var>handler</var>'s <a>steps to check if a payment can be
+                  made</a> with <var>data</var>.
                   </li>
                   <li>If <var>canMakePayment</var> is true, then append
                   <var>handler</var> to <var>handlers</var>.
@@ -1242,8 +1255,8 @@
               <li>For each <var>handler</var> in <var>handlers</var>:
                 <ol>
                   <li>Let <var>canMakePayment</var> be the result of running
-                  <var>handler</var>'s <a>can make payment</a> algorithm with
-                  <var>data</var>.
+                  <var>handler</var>'s <a>steps to check if a payment can be
+                  made</a> with <var>data</var>.
                   </li>
                   <li>If <var>canMakePayment</var> is true, resolve
                   <var>promise</var> with true, and return.
@@ -3745,25 +3758,18 @@
           Payment method changed algorithm
         </h2>
         <p>
-          The <dfn>payment method changed algorithm</dfn> runs when the user
-          selects a new payment method. It MUST run the following steps:
+          The user agent MUST run the <dfn>payment method changed
+          algorithm</dfn> runs when the user changes <a>payment method</a>. The
+          algorithm takes <var>methodDetails</var>, which is either
+          <a data-cite="!WEBIDL#idl-dictionary">dictionary</a> or an
+          <a data-cite="!WEBIDL#idl-object">object</a> or null, a DOMString
+          <var>methodName</var>, which represents the <a>payment method
+          identifier</a> of the <a>payment handler</a> the user is interacting
+          with:
         </p>
         <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
           the user is interacting with.
-          </li>
-          <li>Let <var>name</var> be "<a>paymentmethodchanged</a>".
-          </li>
-          <li>Let <var>methodDetails</var> be null.
-          </li>
-          <li>If <var>request</var>'s <a>payment handler</a> defines a <a>user
-          changes payment method</a> algorithm, set <var>methodDetails</var> be
-          a <a data-cite="!WEBIDL#idl-dictionary">dictionary</a> or
-          <a data-cite="!WEBIDL#idl-object">object</a> resulting the user
-          selecting a different <a>payment method</a>.
-          </li>
-          <li>Let <var>methodName</var> be the <a>payment method identifier</a>
-          of the <a>payment handler</a> the user is interacting with.
           </li>
           <li>
             <a>Queue a task</a> on the <a>user interaction task source</a> to
@@ -3776,7 +3782,7 @@
               slot to <var>methodDetails</var>.
               </li>
               <li>Run the <a>PaymentRequest updated algorithm</a> with
-              <var>request</var>, <var>name</var>.
+              <var>request</var>, and "<a>paymentmethodchanged</a>".
               </li>
             </ol>
           </li>
