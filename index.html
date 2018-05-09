@@ -3281,7 +3281,6 @@
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
           the user is interacting with.
           </li>
-          <li>Let <var>name</var> be "<a>shippingaddresschange</a>".
           </li>
           <li>
             <a>Queue a task</a> on the <a>user interaction task source</a> to
@@ -3319,7 +3318,7 @@
               <var>request</var> to <var>address</var>.
               </li>
               <li>Run the <a>PaymentRequest updated algorithm</a> with
-              <var>request</var> and <var>name</var>.
+              <var>request</var> and "<a>shippingaddresschange</a>".
               </li>
             </ol>
           </li>
@@ -3338,7 +3337,6 @@
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
           the user is interacting with.
           </li>
-          <li>Let <var>name</var> be "<a>shippingoptionchange</a>".
           </li>
           <li>
             <a>Queue a task</a> on the <a>user interaction task source</a> to
@@ -3350,7 +3348,7 @@
               <a>PaymentShippingOption</a> provided by the user.
               </li>
               <li>Run the <a>PaymentRequest updated algorithm</a> with
-              <var>request</var> and <var>name</var>.
+              <var>request</var> and "<a>shippingoptionchange</a>".
               </li>
             </ol>
           </li>
