@@ -1171,6 +1171,12 @@
               </li>
               <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
               </li>
+              <li>Set <var>request</var>'s <a>[[\methodName]]</a> internal slot
+              to null.
+              </li>
+              <li>Set <var>request</var>'s <a>[[\methodDetails]]</a> internal
+              slot to null.
+              </li>
               <li>Reject the promise
               <var>request</var>.<a>[[\acceptPromise]]</a> with an
               "<a>AbortError</a>" <a>DOMException</a>.
@@ -3686,6 +3692,12 @@
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
             <ol>
+              <li>Set <var>request</var>'s <a>[[\methodName]]</a> internal slot
+              to null.
+              </li>
+              <li>Set <var>request</var>'s <a>[[\methodDetails]]</a> internal
+              slot to null.
+              </li>
               <li>
                 <div class="note" title="Privacy of recipient information">
                   <p>
@@ -3741,6 +3753,12 @@
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
             <ol>
+              <li>Set <var>request</var>'s <a>[[\methodName]]</a> internal slot
+              to null.
+              </li>
+              <li>Set <var>request</var>'s <a>[[\methodDetails]]</a> internal
+              slot to null.
+              </li>
               <li>Set the <a data-lt=
               "PaymentRequest.shippingOption">shippingOption</a> attribute on
               <var>request</var> to the <code>id</code> string of the
@@ -3762,14 +3780,15 @@
           algorithm</dfn> runs when the user changes <a>payment method</a>. The
           algorithm takes <var>methodDetails</var>, which is either
           <a data-cite="!WEBIDL#idl-dictionary">dictionary</a> or an
-          <a data-cite="!WEBIDL#idl-object">object</a> or null, a DOMString
-          <var>methodName</var>, which represents the <a>payment method
-          identifier</a> of the <a>payment handler</a> the user is interacting
-          with:
+          <a data-cite="!WEBIDL#idl-object">object</a> or null:
         </p>
         <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
           the user is interacting with.
+          </li>
+          <li>Let <var>methodName</var> be a DOMString that represents the <a>
+            payment method identifier</a> of the <a>payment handler</a> the
+            user is interacting with.
           </li>
           <li>
             <a>Queue a task</a> on the <a>user interaction task source</a> to
@@ -3937,6 +3956,12 @@
           <li>Set <var>response</var>.<a>[[\completeCalled]]</a> to false.
           </li>
           <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
+          </li>
+          <li>Set <var>request</var>'s <a>[[\methodName]]</a> internal slot to
+          null.
+          </li>
+          <li>Set <var>request</var>'s <a>[[\methodDetails]]</a> internal slot
+          to null.
           </li>
           <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
           boolean to false.
