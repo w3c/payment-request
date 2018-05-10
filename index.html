@@ -1167,11 +1167,9 @@
               </li>
               <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
               </li>
-              <li>Set <var>request</var>'s <a>[[\methodName]]</a> internal slot
-              to null.
+              <li>Set <var>request</var>.<a>[[\methodName]]</a> to null.
               </li>
-              <li>Set <var>request</var>'s <a>[[\methodDetails]]</a> internal
-              slot to null.
+              <li>Set <var>request</var>.<a>[[\methodDetails]]</a> to null.
               </li>
               <li>Reject the promise
               <var>request</var>.<a>[[\acceptPromise]]</a> with an
@@ -3688,11 +3686,9 @@
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
             <ol>
-              <li>Set <var>request</var>'s <a>[[\methodName]]</a> internal slot
-              to null.
+              <li>Set <var>request</var>.<a>[[\methodName]]</a> to null.
               </li>
-              <li>Set <var>request</var>'s <a>[[\methodDetails]]</a> internal
-              slot to null.
+              <li>Set <var>request</var>.<a>[[\methodDetails]]</a> to null.
               </li>
               <li>
                 <div class="note" title="Privacy of recipient information">
@@ -3749,11 +3745,9 @@
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
             <ol>
-              <li>Set <var>request</var>'s <a>[[\methodName]]</a> internal slot
-              to null.
+              <li>Set <var>request</var>.<a>[[\methodName]]</a> to null.
               </li>
-              <li>Set <var>request</var>'s <a>[[\methodDetails]]</a> internal
-              slot to null.
+              <li>Set <var>request</var>.<a>[[\methodDetails]]</a> to null.
               </li>
               <li>Set the <a data-lt=
               "PaymentRequest.shippingOption">shippingOption</a> attribute on
@@ -3790,11 +3784,11 @@
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
             <ol>
-              <li>Set <var>request</var>'s <a>[[\methodName]]</a> internal slot
-              to <var>methodName</var>.
+              <li>Set <var>request</var>.<a>[[\methodName]]</a> to
+              <var>methodName</var>.
               </li>
-              <li>Set <var>request</var>'s <a>[[\methodDetails]]</a> internal
-              slot to <var>methodDetails</var>.
+              <li>Set <var>request</var>.<a>[[\methodDetails]]</a> to
+              <var>methodDetails</var>.
               </li>
               <li>Run the <a>PaymentRequest updated algorithm</a> with
               <var>request</var>, and "<a>paymentmethodchange</a>".
@@ -3953,11 +3947,9 @@
           </li>
           <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
           </li>
-          <li>Set <var>request</var>'s <a>[[\methodName]]</a> internal slot to
-          null.
+          <li>Set <var>request</var>.<a>[[\methodName]]</a> to null.
           </li>
-          <li>Set <var>request</var>'s <a>[[\methodDetails]]</a> internal slot
-          to null.
+          <li>Set <var>request</var>.<a>[[\methodDetails]]</a> to null.
           </li>
           <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
           boolean to false.
