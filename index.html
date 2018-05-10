@@ -591,7 +591,7 @@
 
           attribute EventHandler onshippingaddresschange;
           attribute EventHandler onshippingoptionchange;
-          attribute EventHandler onpaymentmethodchanged;
+          attribute EventHandler onpaymentmethodchange;
         };
       </pre>
       <div class="note">
@@ -1330,12 +1330,12 @@
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
         <h2>
-          <dfn>onpaymentmethodchanged</dfn> attribute
+          <dfn>onpaymentmethodchange</dfn> attribute
         </h2>
         <p>
-          A <a>PaymentRequest</a>'s <a>onpaymentmethodchanged</a> attribute is
+          A <a>PaymentRequest</a>'s <a>onpaymentmethodchange</a> attribute is
           an <a>EventHandler</a> for a <a>PaymentRequestUpdateEvent</a> named
-          "<a>paymentmethodchanged</a>".
+          "<a>paymentmethodchange</a>".
         </p>
       </section>
       <section>
@@ -3473,7 +3473,7 @@
           </tr>
           <tr>
             <td>
-              <code><dfn>paymentmethodchanged</dfn></code>
+              <code><dfn>paymentmethodchange</dfn></code>
             </td>
             <td>
               <a>PaymentRequestUpdateEvent</a>
@@ -3782,7 +3782,7 @@
               slot to <var>methodDetails</var>.
               </li>
               <li>Run the <a>PaymentRequest updated algorithm</a> with
-              <var>request</var>, and "<a>paymentmethodchanged</a>".
+              <var>request</var>, and "<a>paymentmethodchange</a>".
               </li>
             </ol>
           </li>
