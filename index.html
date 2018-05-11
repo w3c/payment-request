@@ -2185,7 +2185,8 @@
             <li>If <var>details</var> was not passed, return
             <var>address</var>.
             </li>
-            <li>If <var>details</var>["<a>country</a>"] is present:
+            <li>If <var>details</var>["<a>country</a>"] is present and not the
+            empty string:
               <ol>
                 <li>Set <var>country</var> the result of <a>strip leading and
                 trailing ASCII whitespace</a> from
@@ -2203,11 +2204,15 @@
             <li>If <var>details</var>["<a>regionCode</a>"] is present and not
             the empty string:
               <ol>
-                <li>Let <var>regionCode</var> be the result of <a>strip leading
+                <li>Let <var>regionPart</var> be the result of <a>strip leading
                 and trailing ASCII whitespace</a> from
                 <var>details</var>["<a>regionCode</a>"] and then
                   <a data-cite="!INFRA#ascii-uppercase">ASCII uppercasing</a>
                   the result.
+                </li>
+                <li>Let <var>regionCode</var> be the concatenation of
+                <var>address</var>.<a>[[\country]]</a>, a single U+002D (-) <a>
+                  code point</a>, <var>regionPart</var>.
                 </li>
                 <li>
                   <p>
@@ -2246,26 +2251,30 @@
                   </div>
                 </li>
                 <li>Set <var>address</var>.<a>[[\regionCode]]</a> to
-                <var>regionCode</var>.
+                <var>regionPart</var>.
                 </li>
-                <li>Let <var>region</var> be the corresponding <a>country
-                subdivision name</a> for <var>regionCode</var>. Where
-                [[!ISO3166-2]] defines multiple <a>country subdivision
-                names</a> for a <var>regionCode</var>, it is RECOMMENDED the
-                user agent select one by matching on:
+                <li>If <var>details</var>["<a>region</a>"] is not present:
                   <ol>
-                    <li>The <a data-cite="!HTML#language">language</a> of
-                    <a data-cite="HTML#the-body-element-2">the body
-                    element</a>.
+                    <li>Let <var>region</var> be the corresponding <a>country
+                    subdivision name</a> for <var>regionCode</var>. Where
+                    [[!ISO3166-2]] defines multiple <a>country subdivision
+                    names</a> for a <var>regionCode</var>, it is RECOMMENDED
+                    the user agent select one by matching on:
+                      <ol>
+                        <li>The <a data-cite="!HTML#language">language</a> of
+                        <a data-cite="HTML#the-body-element-2">the body
+                        element</a>.
+                        </li>
+                        <li>The user's preferred languages.
+                        </li>
+                        <li>Any other criteria the user agent deems suitable.
+                        </li>
+                      </ol>
                     </li>
-                    <li>The user's preferred languages.
-                    </li>
-                    <li>Any other criteria the user agent deems suitable.
+                    <li>
+                      <var>details</var>["<a>region</a>"] to <var>region</var>.
                     </li>
                   </ol>
-                </li>
-                <li>Set <var>address</var>.<a>[[\region]]</a> to
-                <var>region</var>.
                 </li>
               </ol>
             </li>
@@ -2391,10 +2400,10 @@
             <dfn>regionCode</dfn> attribute
           </h2>
           <p data-link-for="">
-            Represents the <a>region</a> of the address as an [[!ISO3166-2]]
-            <a>country subdivision code element</a>. When getting, returns the
-            value of the <a>PaymentAddress</a>'s <a>[[\regionCode]]</a>
-            internal slot.
+            Represents the <a>region</a> of the address, but as the code
+            element of an [[!ISO3166-2]] country subdivision name (e.g., "CA"
+            for California, USA). When getting, returns the value of the
+            <a>PaymentAddress</a>'s <a>[[\regionCode]]</a> internal slot.
           </p>
         </section>
         <section>
@@ -2525,10 +2534,12 @@
                 <dfn>[[\regionCode]]</dfn>
               </td>
               <td>
-                A <a>region</a> represented as a [[!ISO3166-2]] <a>country
-                subdivision code element</a> stored in its canonical uppercase
-                form, or the empty string. For example, "<code>PT-11</code>"
-                represents the Lisbon district of Portugal.
+                Either the empty string, or one to three code points that
+                represent a <a>region</a> as the code element of an
+                [[!ISO3166-2]] country subdivision name (i.e., the characters
+                after the hyphen in an ISO3166-2 <a>country subdivision code
+                element</a>, such as "CA" for the state of California in the
+                USA, or "11" for the Lisbon district of Portugal).
               </td>
             </tr>
             <tr>
@@ -2647,8 +2658,12 @@
             <dfn>regionCode</dfn> member
           </dt>
           <dd>
-            An <a>region</a>, represented as a <a>country subdivision code
-            element</a>.
+            Either the empty string, or one to three code points that represent
+            a <a>region</a> as the code element of an [[!ISO3166-2]] country
+            subdivision name (i.e., the characters after the hyphen in an
+            ISO3166-2 <a>country subdivision code element</a>, such as "CA" for
+            the state of California in the USA, or "11" for the Lisbon district
+            of Portugal)
           </dd>
           <dt>
             <dfn>city</dfn> member
