@@ -12,3 +12,5 @@ Implementation commitment:
  * [ ] Chrome (link to issue)
  * [ ] Firefox (link to issue)
  * [ ] Edge (public signal)
+
+Impact on Payment Handler spec? 
