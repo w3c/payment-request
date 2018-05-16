@@ -2210,14 +2210,14 @@
                   <a data-cite="!INFRA#ascii-uppercase">ASCII uppercasing</a>
                   the result.
                 </li>
-                <li>Let <var>countrySubdivisionCodeElement</var> be the
+                <li>Let <var>putativeCountrySubdivisionCodeElement</var> be the
                 concatenation of <var>address</var>.<a>[[\country]]</a>, a
                 single U+002D (-) <a>code point</a>, and <var>regionCode</var>.
                 </li>
                 <li>
                   <p>
-                    If <var>countrySubdivisionCodeElement</var> is not a valid
-                    <a>country subdivision code element</a> as per
+                    If <var>putativeCountrySubdivisionCodeElement</var> is not
+                    a valid <a>country subdivision code element</a> as per
                     [[!ISO3166-2]]'s section 5.2 "Structure of country
                     subdivision code elements" (non-normative details below),
                     throw a <a>RangeError</a> exception.
