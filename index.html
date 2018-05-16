@@ -490,6 +490,39 @@
           }
         </pre>
       </section>
+      <section>
+        <h3>
+          Fine-grained error reporting
+        </h3>
+        <p>
+          A developer can use the <a data-link-for=
+          "PaymentDetailsUpdate">shippingAddressErrors</a> member of the
+          <a>PaymentDetailsUpdate</a> dictionary to indicate that there are
+          validation errors with specific attributes of a
+          <a>PaymentAddress</a>. The <a data-link-for=
+          "PaymentDetailsUpdate">shippingAddressErrors</a> member is a
+          <a>AddressErrorFields</a> dictionary, whose members specifically
+          demarcate the fields of a <a>physical address</a> that are erroneous
+          while also providing helpful error messages to be displayed to the
+          end user.
+        </p>
+        <pre class="example">
+          request.onshippingaddresschange = ev =&gt; {
+            ev.updateWith(validateAddress(request.shippingAddress));
+          };
+          function validateAddress(shippingAddress) {
+            const error = "Can't ship to this address.";
+            const shippingAddressErrors = {
+              cityError: "FarmVille is not a real place.",
+              postalCodeError: "Unknown postal code for your country.",
+            };
+            // Empty shippingOptions implies that we can't ship
+            // to this address.
+            const shippingOptions = [];
+            return { error, shippingAddressErrors, shippingOptions };
+          }
+        </pre>
+      </section>
       <section data-link-for="PaymentResponse">
         <h3>
           POSTing payment response back to a server
@@ -1713,6 +1746,7 @@
           dictionary PaymentDetailsUpdate : PaymentDetailsBase {
             DOMString error;
             PaymentItem total;
+            AddressErrorFields shippingAddressErrors;
           };
         </pre>
         <p>
@@ -1755,6 +1789,14 @@
               "PaymentItem.amount">amount</a>.<a data-lt=
               "PaymentCurrencyAmount.value">value</a> is a negative number.
             </p>
+          </dd>
+          <dt>
+            <dfn>shippingAddressErrors</dfn> member
+          </dt>
+          <dd>
+            Represents validation errors with the shipping address that is
+            associated with the <a data-cite="!DOM#event-target">event
+            target</a>.
           </dd>
         </dl>
       </section>
@@ -2040,7 +2082,7 @@
         Physical addresses
       </h2>
       <p>
-        A <dfn>physical address</dfn> is composed of the following concepts.
+        A <dfn>physical address</dfn> is composed of the following parts.
       </p>
       <dl data-sort="">
         <dt>
@@ -2701,6 +2743,153 @@
           <dd>
             A <a>phone number</a>, optionally structured to adhere to
             [[!E.164]].
+          </dd>
+        </dl>
+      </section>
+      <section data-dfn-for="AddressErrorFields" data-link-for=
+      "AddressErrorFields">
+        <h2>
+          <dfn>AddressErrorFields</dfn> dictionary
+        </h2>
+        <pre class="idl">
+          dictionary AddressErrorFields {
+            DOMString addressLineError;
+            DOMString cityError;
+            DOMString countryError;
+            DOMString dependentLocalityError;
+            DOMString languageCodeError;
+            DOMString organizationError;
+            DOMString phoneError;
+            DOMString postalCodeError;
+            DOMString recipientError;
+            DOMString regionError;
+            DOMString regionCodeError;
+            DOMString sortingCodeError;
+          };
+        </pre>
+        <p>
+          The members of the <a>AddressErrorFields</a> dictionary represent
+          validation errors with specific parts of a <a>physical address</a>.
+          Each dictionary member has a dual function: firstly, it denotes that
+          a particular part of an address is suffering from a validation error.
+          Secondly, the string value allows the developer to describe the
+          validation error (and possibly how the end user can fix the error).
+        </p>
+        <p class="note">
+          Developers need to be aware that users might not have the ability to
+          fix certain parts of an address. As such, they need to be mindful to
+          not to ask the user to fix things they might not have control over
+          (e.g., <a>languageCodeError</a>).
+        </p>
+        <dl>
+          <dt>
+            <dfn>addressLineError</dfn> member
+          </dt>
+          <dd>
+            Denotes that the <a>address line</a> has a validation error. In the
+            user agent's UI, this member corresponds to the input field that
+            provided the <a>PaymentAddress</a>'s <a data-link-for=
+            "PaymentAddress">addressLine</a> attribute's value.
+          </dd>
+          <dt>
+            <dfn>cityError</dfn> member
+          </dt>
+          <dd>
+            Denotes that the <a>city</a> has a validation error. In the user
+            agent's UI, this member corresponds to the input field that
+            provided the <a>PaymentAddress</a>'s <a data-link-for=
+            "PaymentAddress">city</a> attribute's value.
+          </dd>
+          <dt>
+            <dfn>countryError</dfn> member
+          </dt>
+          <dd>
+            Denotes that the <a>country</a> has a validation error. In the user
+            agent's UI, this member corresponds to the input field that
+            provided the <a>PaymentAddress</a>'s <a data-link-for=
+            "PaymentAddress">country</a> attribute's value.
+          </dd>
+          <dt>
+            <dfn>dependentLocalityError</dfn> member
+          </dt>
+          <dd>
+            Denotes that the <a>dependent locality</a> has a validation error.
+            In the user agent's UI, this member corresponds to the input field
+            that provided the <a>PaymentAddress</a>'s <a data-link-for=
+            "PaymentAddress">dependentLocality</a> attribute's value.
+          </dd>
+          <dt>
+            <dfn>languageCodeError</dfn> member
+          </dt>
+          <dd>
+            Denotes that the <a>language code</a> has a validation error. In
+            the user agent's UI, this member corresponds to the input field
+            that provided the <a>PaymentAddress</a>'s <a data-link-for=
+            "PaymentAddress">languageCode</a> attribute's value.
+          </dd>
+          <dt>
+            <dfn>organizationError</dfn> member
+          </dt>
+          <dd>
+            Denotes that the <a>organization</a> has a validation error. In the
+            user agent's UI, this member corresponds to the input field that
+            provided the <a>PaymentAddress</a>'s <a data-link-for=
+            "PaymentAddress">organization</a> attribute's value.
+          </dd>
+          <dt>
+            <dfn>phoneError</dfn> member
+          </dt>
+          <dd>
+            Denotes that the <a>phone number</a> has a validation error. In the
+            user agent's UI, this member corresponds to the input field that
+            provided the <a>PaymentAddress</a>'s <a data-link-for=
+            "PaymentAddress">phone</a> attribute's value.
+          </dd>
+          <dt>
+            <dfn>postalCodeError</dfn> member
+          </dt>
+          <dd>
+            Denotes that the <a>postal code</a> has a validation error. In the
+            user agent's UI, this member corresponds to the input field that
+            provided the <a>PaymentAddress</a>'s <a data-link-for=
+            "PaymentAddress">postalCode</a> attribute's value.
+          </dd>
+          <dt>
+            <dfn>recipientError</dfn> member
+          </dt>
+          <dd>
+            Denotes that the <a>recipient</a> has a validation error. In the
+            user agent's UI, this member corresponds to the input field that
+            provided the <a>PaymentAddress</a>'s <a data-link-for=
+            "PaymentAddress">addressLine</a> attribute's value.
+          </dd>
+          <dt>
+            <dfn>regionError</dfn> member
+          </dt>
+          <dd>
+            Denotes that the <a>region</a> has a validation error. In the user
+            agent's UI, this member corresponds to the input field that
+            provided the <a>PaymentAddress</a>'s <a data-link-for=
+            "PaymentAddress">region</a> attribute's value.
+          </dd>
+          <dt>
+            <dfn>regionCodeError</dfn> member
+          </dt>
+          <dd>
+            Denotes that the region code representation of the <a>region</a>
+            has a validation error. In the user agent's UI, this member
+            corresponds to the input field that provided the
+            <a>PaymentAddress</a>'s <a data-link-for=
+            "PaymentAddress">regionCode</a> attribute's value.
+          </dd>
+          <dt>
+            <dfn>sortingCodeError</dfn> member
+          </dt>
+          <dd>
+            The <a>sorting code</a> has a validation error. In the user agent's
+            UI, this member corresponds to the input field that provided the
+            <a>PaymentAddress</a>'s <a data-link-for=
+            "PaymentAddress">sortingCode</a> attribute's value.
           </dd>
         </dl>
       </section>
@@ -3914,21 +4103,37 @@
                       </li>
                     </ol>
                   </li>
-                  <li>If <var>request</var>.<a>[[\options]]</a>.<a data-lt=
-                  "PaymentOptions.requestShipping">requestShipping</a> is true,
-                  and
-                  <var>request</var>.<a>[[\details]]</a>.<a>shippingOptions</a>
-                  is empty, then the developer has signified that there are no
-                  valid shipping options for the currently-chosen shipping
-                  address (given by <var>request</var>'s <a data-lt=
-                  "PaymentRequest.shippingAddress">shippingAddress</a>). In
-                  this case, the user agent SHOULD display an error indicating
-                  this, and MAY indicate that the currently-chosen shipping
-                  address is invalid in some way. The user agent SHOULD use the
-                  <a data-lt="PaymentDetailsUpdate.error">error</a> member of
-                  <var>details</var>, if it is present, to give more
-                  information about why there are no valid shipping options for
-                  that address.
+                  <li>
+                    <p>
+                      If <var>request</var>.<a>[[\options]]</a>.<a data-lt=
+                      "PaymentOptions.requestShipping">requestShipping</a> is
+                      true, and
+                      <var>request</var>.<a>[[\details]]</a>.<a>shippingOptions</a>
+                      is empty, then the developer has signified that there are
+                      no valid shipping options for the currently-chosen
+                      shipping address (given by <var>request</var>'s
+                      <a data-lt=
+                      "PaymentRequest.shippingAddress">shippingAddress</a>).
+                    </p>
+                    <p>
+                      In this case, the user agent SHOULD display an error
+                      indicating this, and MAY indicate that the
+                      currently-chosen shipping address is invalid in some way.
+                      The user agent SHOULD use the <a data-lt=
+                      "PaymentDetailsUpdate.error">error</a> member of
+                      <var>details</var>, if it is present, to give more
+                      information about why there are no valid shipping options
+                      for that address.
+                    </p>
+                    <p>
+                      Further, if the <a data-lt=
+                      "PaymentDetailsUpdate.shippingAddressErrors">shippingAddressErrors</a>
+                      member is present, the user agent SHOULD display an error
+                      specifically for each erroneous field of the shipping
+                      address. This is done by matching each present member of
+                      the <a>AddressErrorFields</a> to a corresponding input
+                      field in the shown user interface.
+                    </p>
                   </li>
                 </ol>
               </li>
