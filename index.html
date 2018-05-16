@@ -2204,23 +2204,23 @@
             <li>If <var>details</var>["<a>regionCode</a>"] is present and not
             the empty string:
               <ol>
-                <li>Let <var>regionPart</var> be the result of <a>strip leading
+                <li>Let <var>regionCode</var> be the result of <a>strip leading
                 and trailing ASCII whitespace</a> from
                 <var>details</var>["<a>regionCode</a>"] and then
                   <a data-cite="!INFRA#ascii-uppercase">ASCII uppercasing</a>
                   the result.
                 </li>
-                <li>Let <var>regionCode</var> be the concatenation of
-                <var>address</var>.<a>[[\country]]</a>, a single U+002D (-) <a>
-                  code point</a>, <var>regionPart</var>.
+                <li>Let <var>countrySubdivisionCodeElement</var> be the
+                concatenation of <var>address</var>.<a>[[\country]]</a>, a
+                single U+002D (-) <a>code point</a>, <var>regionCode</var>.
                 </li>
                 <li>
                   <p>
-                    If <var>regionCode</var> is not a valid <a>country
-                    subdivision code element</a> as per [[!ISO3166-2]]'s
-                    section 5.2 "Structure of country subdivision code
-                    elements" (non-normative details below), throw a
-                    <a>RangeError</a> exception.
+                    If <var>countrySubdivisionCodeElement</var> is not a valid
+                    <a>country subdivision code element</a> as per
+                    [[!ISO3166-2]]'s section 5.2 "Structure of country
+                    subdivision code elements" (non-normative details below),
+                    throw a <a>RangeError</a> exception.
                   </p>
                   <div class="note" title=
                   "Structure of country subdivision code elements">
@@ -2251,7 +2251,7 @@
                   </div>
                 </li>
                 <li>Set <var>address</var>.<a>[[\regionCode]]</a> to
-                <var>regionPart</var>.
+                <var>regionCode</var>.
                 </li>
                 <li>If <var>details</var>["<a>region</a>"] is not present:
                   <ol>
