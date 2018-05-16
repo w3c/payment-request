@@ -2799,7 +2799,25 @@
           <var>details</var>["<a>recipient</a>"] to the user-provided recipient
           of the transaction, or to the empty string if none was provided.
           </li>
-          <li>If "region" is not in <var>redactList</var>:
+          <li>
+            <p>
+              If "region" is not in <var>redactList</var>:
+            </p>
+            <p data-link-for="" class="note" title=
+            "Countries where regions are not commonly used">
+              In some countries (e.g., Belgium) it is uncommon for users to
+              include a <a>region</a> as part of a <a>physical address</a>
+              (even if all the regions of a country are part of
+              [[!ISO3166-2]]). As such, when the user agent knows that the user
+              is inputting the address for a particular country, it might not
+              provide a field for the user to input a <a>region</a>. In such
+              cases, the user agent returns an empty string for both
+              <a>PaymentAddress</a>'s <a data-link-for=
+              "PaymentAddress">region</a> and <a data-link-for=
+              "PaymentAddress">regionCode</a> attributes - but the address can
+              still serve its intended purpose (e.g., be valid for shipping or
+              billing purposes).
+            </p>
             <ol>
               <li>Set <var>details</var>["<a>region</a>"] to the user-provided
               region, or to the empty string if none was provided.
