@@ -579,8 +579,6 @@
           Promise&lt;boolean&gt; canMakePayment();
 
           readonly attribute DOMString id;
-          readonly attribute object? methodDetails;
-          readonly attribute DOMString? methodName;
           readonly attribute PaymentAddress? shippingAddress;
           readonly attribute DOMString? shippingOption;
           readonly attribute PaymentShippingType? shippingType;
@@ -3436,13 +3434,17 @@
           </tr>
         </table>
       </section>
-      <section>
+      <section data-dfn-for="PaymentMethodChangeEvent" data-link-for=
+      "PaymentMethodChangeEvent">
+        <h2>
+          <dfn>PaymentMethodChangeEvent</dfn> interface
+        </h2>
         <pre class="idl">
           [Constructor(DOMString type, optional PaymentMethodChangeEventInit eventInitDict), SecureContext, Exposed=Window]
-          PaymentMethodChangeEvent : PaymentRequestUpdateEvent {
+          interface PaymentMethodChangeEvent : PaymentRequestUpdateEvent {
             readonly attribute DOMString methodName;
             readonly attribute object? methodDetails;
-          }
+          };
         </pre>
         <section>
           <h2>
@@ -3497,23 +3499,39 @@
                 <dfn>[[\methodName]]</dfn>
               </td>
               <td>
-                Null, or a DOMString representing the <a>payment method
-                identifier</a> for the <a>payment method</a> that the user last
-                interacted with.
+                A DOMString representing the <a>payment method identifier</a>
+                for the <a>payment method</a> that the user last interacted
+                with.
               </td>
             </tr>
           </table>
         </section>
-        <section>
+        <section data-dfn-for="PaymentMethodChangeEventInit" data-link-for=
+        "PaymentMethodChangeEventInit">
           <h3>
             <dfn>PaymentMethodChangeEventInit</dfn> dictionary
           </h3>
           <pre class="idl">
             dictionary PaymentMethodChangeEventInit : PaymentRequestUpdateEventInit {
-              DOMString methodName;
+              required DOMString methodName;
               object? methodDetails;
             };
           </pre>
+          <dl>
+            <dt>
+              <dfn>methodName</dfn> member
+            </dt>
+            <dd>
+              A DOMString representing the <a>payment method identifier</a>.
+            </dd>
+            <dt>
+              <dfn>methodDetails</dfn> member
+            </dt>
+            <dd>
+              An object representing the some data from the payment method, or
+              null.
+            </dd>
+          </dl>
         </section>
       </section>
       <section data-dfn-for="PaymentRequestUpdateEvent" data-link-for=
