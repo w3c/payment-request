@@ -845,10 +845,6 @@
           <li>Set <var>request</var>.<a>[[\serializedMethodData]]</a> to <var>
             serializedMethodData</var>.
           </li>
-          <li>Set <var>request</var>.<a>[[\methodName]]</a> to null.
-          </li>
-          <li>Set <var>request</var>.<a>[[\methodDetails]]</a> to null.
-          </li>
           <li>Set the value of <var>request</var>'s <a data-lt=
           "PaymentRequest.shippingOption">shippingOption</a> attribute to <var>
             selectedShippingOption</var>.
@@ -876,24 +872,6 @@
           When getting, the <a>id</a> attribute returns this
           <a>PaymentRequest</a>'s <a>[[\details]]</a>.<a data-lt=
           "PaymentDetailsInit.id">id</a>.
-        </p>
-      </section>
-      <section>
-        <h2>
-          <dfn>methodDetails</dfn> attribute
-        </h2>
-        <p data-tests="methodDetails-attribute.https.html">
-          When getting, returns the value of the <a>[[\methodDetails]]</a>
-          internal slot.
-        </p>
-      </section>
-      <section>
-        <h2>
-          <dfn>methodName</dfn> attribute
-        </h2>
-        <p data-tests="methodName-attribute.https.html">
-          When getting, returns the value of the <a>[[\methodName]]</a>
-          internal slot.
         </p>
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
@@ -1166,10 +1144,6 @@
               <a>DOMException</a> and abort these steps.
               </li>
               <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
-              </li>
-              <li>Set <var>request</var>.<a>[[\methodName]]</a> to null.
-              </li>
-              <li>Set <var>request</var>.<a>[[\methodDetails]]</a> to null.
               </li>
               <li>Reject the promise
               <var>request</var>.<a>[[\acceptPromise]]</a> with an
@@ -1469,29 +1443,6 @@
               The pending <a>Promise</a> created during <a data-lt=
               "PaymentRequest.show">show</a> that will be resolved if the user
               accepts the payment request.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <dfn>[[\methodDetails]]</dfn>
-            </td>
-            <td>
-              <p>
-                Null, or an <a data-cite="!WEBIDL#idl-object">object</a> or
-                <a data-cite="!WEBIDL#idl-dictionary">dictionary</a> generated
-                by a <a>payment handler</a>. When not null, it provides
-                <a>payment handler</a> specific data.
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <dfn>[[\methodName]]</dfn>
-            </td>
-            <td>
-              Null, or a DOMString representing the <a>payment method
-              identifier</a> for the <a>payment method</a> that the user last
-              interacted with.
             </td>
           </tr>
         </table>
@@ -3476,7 +3427,7 @@
               <code><dfn>paymentmethodchange</dfn></code>
             </td>
             <td>
-              <a>PaymentRequestUpdateEvent</a>
+              <a>PaymentMethodChangeEvent</a>
             </td>
             <td>
               The user chooses a different <a>payment method</a> within a
@@ -3484,6 +3435,86 @@
             </td>
           </tr>
         </table>
+      </section>
+      <section>
+        <pre class="idl">
+          [Constructor(DOMString type, optional PaymentMethodChangeEventInit eventInitDict), SecureContext, Exposed=Window]
+          PaymentMethodChangeEvent : PaymentRequestUpdateEvent {
+            readonly attribute DOMString methodName;
+            readonly attribute object? methodDetails;
+          }
+        </pre>
+        <section>
+          <h2>
+            <dfn>methodDetails</dfn> attribute
+          </h2>
+          <p>
+            When getting, returns the value of the <a>[[\methodDetails]]</a>
+            internal slot.
+          </p>
+        </section>
+        <section>
+          <h2>
+            <dfn>methodName</dfn> attribute
+          </h2>
+          <p>
+            When getting, returns the value of the <a>[[\methodName]]</a>
+            internal slot.
+          </p>
+        </section>
+        <section>
+          <h2>
+            Internal Slots
+          </h2>
+          <p>
+            Instances of <a>PaymentMethodChangeEvent</a> are created with the
+            internal slots in the following table:
+          </p>
+          <table>
+            <tr>
+              <th>
+                Internal Slot
+              </th>
+              <th>
+                Description (<em>non-normative</em>)
+              </th>
+            </tr>
+            <tr>
+              <td>
+                <dfn>[[\methodDetails]]</dfn>
+              </td>
+              <td>
+                <p>
+                  Null, or an <a data-cite="!WEBIDL#idl-object">object</a> or
+                  <a data-cite="!WEBIDL#idl-dictionary">dictionary</a>
+                  generated by a <a>payment handler</a>. When not null, it
+                  provides <a>payment handler</a> specific data.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <dfn>[[\methodName]]</dfn>
+              </td>
+              <td>
+                Null, or a DOMString representing the <a>payment method
+                identifier</a> for the <a>payment method</a> that the user last
+                interacted with.
+              </td>
+            </tr>
+          </table>
+        </section>
+        <section>
+          <h3>
+            <dfn>PaymentMethodChangeEventInit</dfn> dictionary
+          </h3>
+          <pre class="idl">
+            dictionary PaymentMethodChangeEventInit : PaymentRequestUpdateEventInit {
+              DOMString methodName;
+              object? methodDetails;
+            };
+          </pre>
+        </section>
       </section>
       <section data-dfn-for="PaymentRequestUpdateEvent" data-link-for=
       "PaymentRequestUpdateEvent">
@@ -3686,10 +3717,6 @@
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
             <ol>
-              <li>Set <var>request</var>.<a>[[\methodName]]</a> to null.
-              </li>
-              <li>Set <var>request</var>.<a>[[\methodDetails]]</a> to null.
-              </li>
               <li>
                 <div class="note" title="Privacy of recipient information">
                   <p>
@@ -3745,10 +3772,6 @@
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
             <ol>
-              <li>Set <var>request</var>.<a>[[\methodName]]</a> to null.
-              </li>
-              <li>Set <var>request</var>.<a>[[\methodDetails]]</a> to null.
-              </li>
               <li>Set the <a data-lt=
               "PaymentRequest.shippingOption">shippingOption</a> attribute on
               <var>request</var> to the <code>id</code> string of the
@@ -3784,14 +3807,22 @@
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
             <ol>
-              <li>Set <var>request</var>.<a>[[\methodName]]</a> to
-              <var>methodName</var>.
+              <li>If the <var>request</var>.<a>[[\updating]]</a> is true, then
+              terminate this algorithm and take no further action. Only one
+              update may take place at a time. The <a>user agent</a> SHOULD
+              ensure that this never occurs.
               </li>
-              <li>Set <var>request</var>.<a>[[\methodDetails]]</a> to
+              <li>If the <var>request</var>.<a>[[\state]]</a> is not set to
+              "<a>interactive</a>", then terminate this algorithm and take no
+              further action. The <a>user agent</a> user interface SHOULD
+              ensure that this never occurs.
+              </li>
+              <li data-link-for="PaymentMethodChangeEvent">Fire an event
+              "<a>paymentmethodchange</a>" at <var>request</var> using
+              <a>PaymentMethodChangeEvent</a>, with its <a>methodName</a>
+              attribute initialized to <var>methodName</var>, and its
+              <a>methodDetails</a> attribute initialized to
               <var>methodDetails</var>.
-              </li>
-              <li>Run the <a>PaymentRequest updated algorithm</a> with
-              <var>request</var>, and "<a>paymentmethodchange</a>".
               </li>
             </ol>
           </li>
@@ -3946,10 +3977,6 @@
           <li>Set <var>response</var>.<a>[[\completeCalled]]</a> to false.
           </li>
           <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
-          </li>
-          <li>Set <var>request</var>.<a>[[\methodName]]</a> to null.
-          </li>
-          <li>Set <var>request</var>.<a>[[\methodDetails]]</a> to null.
           </li>
           <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
           boolean to false.
