@@ -3500,8 +3500,7 @@
               </td>
               <td>
                 A DOMString representing the <a>payment method identifier</a>
-                for the <a>payment method</a> that the user last interacted
-                with.
+                for the <a>payment method</a> that caused the event to fire.
               </td>
             </tr>
           </table>
@@ -3811,15 +3810,14 @@
           algorithm</dfn> runs when the user changes <a>payment method</a>. The
           algorithm takes <var>methodDetails</var>, which is either
           <a data-cite="!WEBIDL#idl-dictionary">dictionary</a> or an
-          <a data-cite="!WEBIDL#idl-object">object</a> or null:
+          <a data-cite="!WEBIDL#idl-object">object</a> or null, and a
+          <var>methodName</var>, which is a DOMString that represents the
+          <a>payment method identifier</a> of the <a>payment handler</a> the
+          user is interacting with:
         </p>
         <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
           the user is interacting with.
-          </li>
-          <li>Let <var>methodName</var> be a DOMString that represents the <a>
-            payment method identifier</a> of the <a>payment handler</a> the
-            user is interacting with.
           </li>
           <li>
             <a>Queue a task</a> on the <a>user interaction task source</a> to
