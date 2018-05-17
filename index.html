@@ -1394,6 +1394,611 @@
           </tr>
         </table>
       </section>
+      <section>
+        <h2>
+          <code>PaymentRequest</code> Algorithms
+        </h2>
+        <p>
+          When the internal slot <a>[[\state]]</a> of a <a>PaymentRequest</a>
+          object is set to "<a>interactive</a>", the <a>user agent</a> will
+          trigger the following algorithms based on user interaction.
+        </p>
+        <section>
+          <h2>
+            Shipping address changed algorithm
+          </h2>
+          <p data-tests=
+          "algorithms-manual.https.html#shipping-address-changed-algo">
+            The <dfn>shipping address changed algorithm</dfn> runs when the
+            user provides a new shipping address. It MUST run the following
+            steps:
+          </p>
+          <ol class="algorithm">
+            <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
+            the user is interacting with.
+            </li>
+            <li>
+              <a>Queue a task</a> on the <a>user interaction task source</a> to
+              run the following steps:
+              <ol>
+                <li>
+                  <div class="note" title="Privacy of recipient information">
+                    <p>
+                      The <var>redactList</var> optionally gives user agents
+                      the possibility to limit the amount of personal
+                      information about the recipient that the API shares with
+                      the merchant.
+                    </p>
+                    <p>
+                      For merchants, the resulting <a>PaymentAddress</a> object
+                      provides enough information to, for example, calculate
+                      shipping costs, but, in most cases, not enough
+                      information to physically locate and uniquely identify
+                      the recipient.
+                    </p>
+                    <p>
+                      Unfortunately, even with the <var>redactList</var>,
+                      recipient anonymity cannot be assured. This is because in
+                      some countries postal codes are so fine-grained that they
+                      can uniquely identify a recipient.
+                    </p>
+                  </div>Let <var>redactList</var> be the empty list.
+                  Optionally, set <var>redactList</var> to « "organization",
+                  "phone", "recipient", "addressLine" ».
+                </li>
+                <li>Let <var>address</var> be the result of running the steps
+                to <a>create a <code>PaymentAddress</code> from user-provided
+                input</a> with <var>redactList</var>.
+                </li>
+                <li>Set the <a data-lt=
+                "PaymentRequest.shippingAddress">shippingAddress</a> attribute
+                on <var>request</var> to <var>address</var>.
+                </li>
+                <li>Run the <a>PaymentRequest updated algorithm</a> with <var>
+                  request</var> and "<a>shippingaddresschange</a>".
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2>
+            Shipping option changed algorithm
+          </h2>
+          <p data-tests=
+          "algorithms-manual.https.html#shipping-option-changed-algo">
+            The <dfn>shipping option changed algorithm</dfn> runs when the user
+            chooses a new shipping option. It MUST run the following steps:
+          </p>
+          <ol class="algorithm">
+            <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
+            the user is interacting with.
+            </li>
+            <li>
+              <a>Queue a task</a> on the <a>user interaction task source</a> to
+              run the following steps:
+              <ol>
+                <li>Set the <a data-lt=
+                "PaymentRequest.shippingOption">shippingOption</a> attribute on
+                <var>request</var> to the <code>id</code> string of the
+                <a>PaymentShippingOption</a> provided by the user.
+                </li>
+                <li>Run the <a>PaymentRequest updated algorithm</a> with <var>
+                  request</var> and "<a>shippingoptionchange</a>".
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2>
+            PaymentRequest updated algorithm
+          </h2>
+          <p data-tests="algorithms-manual.https.html">
+            The <dfn>PaymentRequest updated algorithm</dfn> is run by other
+            algorithms above to <a>fire an event</a> to indicate that a user
+            has made a change to a <a>PaymentRequest</a> called
+            <var>request</var> with an event name of <var>name</var>:
+          </p>
+          <ol class="algorithm">
+            <li>If the <var>request</var>.<a>[[\updating]]</a> is true, then
+            terminate this algorithm and take no further action. Only one
+            update may take place at a time. The <a>user agent</a> SHOULD
+            ensure that this never occurs.
+            </li>
+            <li>If the <var>request</var>.<a>[[\state]]</a> is not set to
+            "<a>interactive</a>", then terminate this algorithm and take no
+            further action. The <a>user agent</a> user interface SHOULD ensure
+            that this never occurs.
+            </li>
+            <li>Let <var>event</var> be the result of <a data-cite=
+            "!DOM#concept-event-create">creating an event</a> using
+            <a>PaymentRequestUpdateEvent</a>.
+            </li>
+            <li>Initialize <var>event</var>'s <code><a data-cite=
+            "!DOM#dom-event-type">type</a></code> attribute to <var>name</var>.
+            </li>
+            <li>
+              <a data-cite="!DOM#concept-event-dispatch">Dispatch</a>
+              <var>event</var> at <var>request</var>.
+            </li>
+            <li data-link-for="PaymentRequestUpdateEvent">If
+            <var>event</var>.<a>[[\waitForUpdate]]</a> is true, disable any
+            part of the user interface that could cause another update event to
+            be fired.
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2>
+            User accepts the payment request algorithm
+          </h2>
+          <p data-tests="user-accepts-payment-request-algo-manual.https.html">
+            The <dfn data-lt="user accepts the payment request">user accepts
+            the payment request algorithm</dfn> runs when the user accepts the
+            payment request and confirms that they want to pay. It MUST
+            <a>queue a task</a> on the <a>user interaction task source</a> to
+            perform the following steps:
+          </p>
+          <ol class="algorithm">
+            <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
+            the user is interacting with.
+            </li>
+            <li>If the <var>request</var>.<a>[[\updating]]</a> is true, then
+            terminate this algorithm and take no further action. The <a>user
+            agent</a> user interface SHOULD ensure that this never occurs.
+            </li>
+            <li>If <var>request</var>.<a>[[\state]]</a> is not
+            "<a>interactive</a>", then terminate this algorithm and take no
+            further action. The <a>user agent</a> user interface SHOULD ensure
+            that this never occurs.
+            </li>
+            <li>If the <a data-lt=
+            "PaymentOptions.requestShipping">requestShipping</a> value of <var>
+              request</var>.<a>[[\options]]</a> is true, then if the
+              <a data-lt="PaymentRequest.shippingAddress">shippingAddress</a>
+              attribute of <var>request</var> is null or if the <a data-lt=
+              "PaymentRequest.shippingOption">shippingOption</a> attribute of
+              <var>request</var> is null, then terminate this algorithm and
+              take no further action. The <a>user agent</a> SHOULD ensure that
+              this never occurs.
+            </li>
+            <li>Let <var>response</var> be a new <a>PaymentResponse</a>.
+            </li>
+            <li>Set the <a data-lt="PaymentResponse.requestId">requestId</a>
+            attribute value of <var>response</var> to the value of
+            <var>request</var>.<a>[[\details]]</a>.<a data-lt=
+            "PaymentDetailsInit.id">id</a>.
+            </li>
+            <li>Set the <a data-lt="PaymentResponse.methodName">methodName</a>
+            attribute value of <var>response</var> to the <a>payment method
+            identifier</a> for the <a>payment method</a> that the user selected
+            to accept the payment.
+            </li>
+            <li>Let <var>handler</var> be the <a>payment handler</a> selected
+            by the user.
+            </li>
+            <li>Set the <a data-lt="PaymentResponse.details">details</a>
+            attribute value of <var>response</var> to an object resulting from
+            running the <var>handler</var>'s <a>steps to respond to a payment
+            request</a>.
+            </li>
+            <li>If the <a data-lt=
+            "PaymentOptions.requestShipping">requestShipping</a> value of <var>
+              request</var>.<a>[[\options]]</a> is false, then set the
+              <a data-lt="PaymentResponse.shippingAddress">shippingAddress</a>
+              attribute value of <var>response</var> to null. Otherwise:
+              <ol>
+                <li>Let <var>redactList</var> be the empty <a>list</a>.
+                </li>
+                <li>Let <var>shippingAddress</var> be the result of <a>create a
+                <code>PaymentAddress</code> from user-provided input</a> with
+                <var>redactList</var>.
+                </li>
+                <li>Set the <a data-lt=
+                "PaymentResponse.shippingAddress">shippingAddress</a> attribute
+                value of <var>response</var> to <var>shippingAddress</var>.
+                </li>
+                <li>Set the <a data-lt=
+                "PaymentResponse.shippingAddress">shippingAddress</a> attribute
+                value of <var>request</var> to <var>shippingAddress</var>.
+                </li>
+              </ol>
+            </li>
+            <li>If the <a data-lt=
+            "PaymentOptions.requestShipping">requestShipping</a> value of <var>
+              request</var>.<a>[[\options]]</a> is true, then set the
+              <a data-lt="PaymentResponse.shippingOption">shippingOption</a>
+              attribute of <var>response</var> to the value of the <a data-lt=
+              "PaymentRequest.shippingOption">shippingOption</a> attribute of
+              <var>request</var>. Otherwise, set it to null.
+            </li>
+            <li>If the <a data-lt=
+            "PaymentOptions.requestPayerName">requestPayerName</a> value of
+            <var>request</var>.<a>[[\options]]</a> is true, then set the
+            <a data-lt="PaymentResponse.payerName">payerName</a> attribute of
+            <var>response</var> to the payer's name provided by the user, or to
+            null if none was provided. Otherwise, set it to null.
+            </li>
+            <li>If the <a data-lt=
+            "PaymentOptions.requestPayerEmail">requestPayerEmail</a> value of
+            <var>request</var>.<a>[[\options]]</a> is true, then set the
+            <a data-lt="PaymentResponse.payerEmail">payerEmail</a> attribute of
+            <var>response</var> to the payer's email address provided by the
+            user, or to null if none was provided. Otherwise, set it to null.
+            </li>
+            <li>If the <a data-lt=
+            "PaymentOptions.requestPayerPhone">requestPayerPhone</a> value of
+            <var>request</var>.<a>[[\options]]</a> is true, then set the
+            <a data-lt="PaymentResponse.payerPhone">payerPhone</a> attribute of
+            <var>response</var> to the payer's phone number provided by the
+            user, or to null if none was provided. When setting the
+              <a data-lt="PaymentResponse.payerPhone">payerPhone</a> value, the
+              user agent SHOULD format the phone number to adhere to
+              [[!E.164]].
+            </li>
+            <li>Set <var>response</var>.<a>[[\completeCalled]]</a> to false.
+            </li>
+            <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
+            </li>
+            <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
+            boolean to false.
+            </li>
+            <li>Resolve the pending promise
+            <var>request</var>.<a>[[\acceptPromise]]</a> with
+            <var>response</var>.
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2>
+            User aborts the payment request algorithm
+          </h2>
+          <p data-tests="user-abort-algorithm-manual.https.html">
+            The <dfn data-lt="user aborts the payment request">user aborts the
+            payment request algorithm</dfn> runs when the user aborts the
+            payment request through the currently interactive user interface.
+            It MUST <a>queue a task</a> on the <a>user interaction task
+            source</a> to perform the following steps:
+          </p>
+          <ol class="algorithm">
+            <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
+            the user is interacting with.
+            </li>
+            <li>If the <var>request</var>.<a>[[\updating]]</a> is true, then
+            terminate this algorithm and take no further action. The <a>user
+            agent</a> user interface SHOULD ensure that this never occurs.
+            </li>
+            <li>If <var>request</var>.<a>[[\state]]</a> is not
+            "<a>interactive</a>", then terminate this algorithm and take no
+            further action. The <a>user agent</a> user interface SHOULD ensure
+            that this never occurs.
+            </li>
+            <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
+            </li>
+            <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
+            boolean to false.
+            </li>
+            <li>Reject the promise <var>request</var>.<a>[[\acceptPromise]]</a>
+            with an "<a>AbortError</a>" <a>DOMException</a>.
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2>
+            Update a <code>PaymentRequest</code>'s details algorithm
+          </h2>
+          <p>
+            The <dfn>update a <code>PaymentRequest</code>'s details
+            algorithm</dfn> takes a <a>PaymentDetailsUpdate</a>
+            <var>detailsPromise</var> and a <a>PaymentRequest</a>
+            <var>request</var>. The steps are conditional on the
+            <var>detailsPromise</var> settling. If <var>detailsPromise</var>
+            never settles then the payment request is blocked. Users SHOULD
+            always be able to cancel a payment request. Implementations MAY
+            choose to implement a timeout for pending updates if
+            <var>detailsPromise</var> doesn't settle in a reasonable amount of
+            time. If an implementation chooses to implement a timeout, they
+            must execute the steps listed below in the "upon rejection" path.
+            Such a timeout is a fatal error for the payment request.
+          </p>
+          <ol class="algorithm">
+            <li>
+              <a>Upon rejection</a> of <var>detailsPromise</var>:
+              <ol>
+                <li>
+                  <a>Abort the update</a> with an "<a>AbortError</a>"
+                  <a>DOMException</a>.
+                </li>
+              </ol>
+            </li>
+            <li>
+              <a>Upon fulfillment</a> of <var>detailsPromise</var> with value
+              <var>value</var>:
+              <ol data-link-for="PaymentDetailsBase">
+                <li>Let <var>details</var> be the result of <a data-cite=
+                "!WEBIDL#es-dictionary">converting</a> <var>value</var> to a
+                <a>PaymentDetailsUpdate</a> dictionary. If this <a>throws</a>
+                an exception, <a>abort the update</a> with the thrown
+                exception.
+                </li>
+                <li>Let <var>serializedModifierData</var> be an empty list.
+                </li>
+                <li>Let <var>selectedShippingOption</var> be null.
+                </li>
+                <li>Let <var>shippingOptions</var> be an empty
+                <code><a data-cite=
+                "!WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
+                </li>
+                <li>Validate and canonicalize the details:
+                  <ol>
+                    <li data-link-for="PaymentDetailsUpdate">If the
+                    <a>total</a> member of <var>details</var> is present, then:
+                      <ol>
+                        <li>
+                          <a>Check and canonicalize total</a>
+                          <var>details</var>.<a>total</a>.<a data-lt=
+                          "PaymentItem.amount">amount</a>. If an exception is
+                          thrown, then <a>abort the update</a> with that
+                          exception.
+                        </li>
+                      </ol>
+                    </li>
+                    <li>If the <a>displayItems</a> member of <var>details</var>
+                    is present, then for each <var>item</var> in
+                    <var>details</var>.<a>displayItems</a>:
+                      <ol>
+                        <li>
+                          <a>Check and canonicalize amount</a>
+                          <var>item</var>.<a data-lt=
+                          "PaymentItem.amount">amount</a>. If an exception is
+                          thrown, then <a>abort the update</a> with that
+                          exception.
+                        </li>
+                      </ol>
+                    </li>
+                    <li>If the <a>shippingOptions</a> member of
+                    <var>details</var> is present, and
+                    <var>request</var>.<a>[[\options]]</a>.<a data-lt=
+                    "PaymentOptions.requestShipping">requestShipping</a> is
+                    true, then:
+                      <ol>
+                        <li>Set <var>shippingOptions</var> to
+                        <var>details</var>.<a>shippingOptions</a>.
+                        </li>
+                        <li>Let <var>seenIDs</var> be an empty list.
+                        </li>
+                        <li>For each <var>option</var> in
+                        <var>shippingOptions</var>:
+                          <ol>
+                            <li>
+                              <a>Check and canonicalize amount</a>
+                              <var>option</var>.<a data-lt=
+                              "PaymentShippingOption.amount">amount</a>. If an
+                              exception is thrown, then <a>abort the update</a>
+                              with that exception.
+                            </li>
+                            <li data-tests=
+                            "PaymentRequestUpdateEvent/updateWith-duplicate-shipping-options-manual.https.html">
+                            If <var>seenIDs</var> contains
+                            <var>option</var>.<a data-lt=
+                            "PaymentShippingOption.id">id</a>, then <a>abort
+                            the update</a> with a <a>TypeError</a>.
+                            </li>
+                            <li>Otherwise, append
+                              <var>option</var>.<a data-lt="PaymentShippingOption.id">id</a>
+                              to <var>seenIDs</var>.
+                            </li>
+                          </ol>
+                        </li>
+                        <li>For each <var>option</var> in
+                        <var>shippingOptions</var>:
+                          <ol>
+                            <li>If <var>option</var>.<a data-lt=
+                            "PaymentShippingOption.selected">selected</a> is
+                            true, then set <var>selectedShippingOption</var> to
+                            <var>option</var>.<a data-lt=
+                            "PaymentShippingOption.id">id</a>.
+                            </li>
+                          </ol>
+                        </li>
+                      </ol>
+                    </li>
+                    <li>If the <a>modifiers</a> member of <var>details</var> is
+                    present, then:
+                      <ol>
+                        <li>Let <var>modifiers</var> be the sequence
+                        <var>details</var>.<a>modifiers</a>.
+                        </li>
+                        <li>Let <var>serializedModifierData</var> be an empty
+                        list.
+                        </li>
+                        <li>For each <a>PaymentDetailsModifier</a>
+                        <var>modifier</var> in <var>modifiers</var>:
+                          <ol data-link-for="PaymentDetailsModifier">
+                            <li data-tests=
+                            "updateWith-method-pmi-handling-manual.https.html">
+                            Run the steps to <a data-cite=
+                            "payment-method-id#dfn-validate-a-payment-method-identifier">
+                              validate a payment method identifier</a> with
+                              <var>modifier</var>.<a data-lt=
+                              "PaymentDetailsModifier.supportedMethods">supportedMethods</a>.
+                              If it returns false, then <a>abort the update</a>
+                              with a <a>RangeError</a> exception. Optional,
+                              inform the developer that the payment method
+                              identifier is invalid.
+                            </li>
+                            <li>If the <a>total</a> member of
+                            <var>modifier</var> is present, then:
+                              <ol>
+                                <li>
+                                  <a>Check and canonicalize total</a>
+                                  <var>modifier</var>.<a>total</a>.<a data-lt=
+                                  "PaymentItem.amount">amount</a>. If an
+                                  exception is thrown, then <a>abort the
+                                  update</a> with that exception.
+                                </li>
+                              </ol>
+                            </li>
+                            <li>If the <a>additionalDisplayItems</a> member of
+                            <var>modifier</var> is present, then for each
+                            <a>PaymentItem</a> <var>item</var> in
+                            <var>modifier</var>.<a>additionalDisplayItems</a>:
+                              <ol>
+                                <li>
+                                  <a>Check and canonicalize amount</a>
+                                  <var>item</var>.<a data-lt=
+                                  "PaymentItem.amount">amount</a>. If an
+                                  exception is thrown, then <a>abort the
+                                  update</a> with that exception.
+                                </li>
+                              </ol>
+                            </li>
+                            <li>If the <a data-lt=
+                            "PaymentDetailsModifier.data">data</a> member of
+                            <var>modifier</var> is missing, let
+                            <var>serializedData</var> be null. Otherwise, let
+                            <var>serializedData</var> be the result of
+                            <a>JSON-serializing</a>
+                            <var>modifier</var>.<a data-lt=
+                            "PaymentDetailsModifier.data">data</a> into a
+                            string. If <a>JSON-serializing</a> throws an
+                            exception, then <a>abort the update</a> with that
+                            exception.
+                            </li>
+                            <li>Add <var>serializedData</var> to
+                            <var>serializedModifierData</var>.
+                            </li>
+                            <li>Remove the <a data-lt=
+                            "PaymentDetailsModifier.data">data</a> member of
+                            <var>modifier</var>, if it is present.
+                            </li>
+                          </ol>
+                        </li>
+                      </ol>
+                    </li>
+                  </ol>
+                </li>
+                <li>Update the <a>PaymentRequest</a> using the new details:
+                  <ol>
+                    <li data-link-for="PaymentDetailsUpdate">If the
+                    <a>total</a> member of <var>details</var> is present, then:
+                      <ol>
+                        <li>Set
+                        <var>request</var>.<a>[[\details]]</a>.<a data-link-for="PaymentDetailsInit">total</a>
+                          to <var>details</var>.<a>total</a>.
+                        </li>
+                      </ol>
+                    </li>
+                    <li>If the <a>displayItems</a> member of <var>details</var>
+                    is present, then:
+                      <ol>
+                        <li>Set
+                        <var>request</var>.<a>[[\details]]</a>.<a>displayItems</a>
+                        to <var>details</var>.<a>displayItems</a>.
+                        </li>
+                      </ol>
+                    </li>
+                    <li>If the <a>shippingOptions</a> member of
+                    <var>details</var> is present, and
+                    <var>request</var>.<a>[[\options]]</a>.<a data-lt=
+                    "PaymentOptions.requestShipping">requestShipping</a> is
+                    true, then:
+                      <ol>
+                        <li>Set
+                        <var>request</var>.<a>[[\details]]</a>.<a>shippingOptions</a>
+                        to <var>shippingOptions</var>.
+                        </li>
+                        <li>Set the value of <var>request</var>'s <a data-lt=
+                        "PaymentRequest.shippingOption">shippingOption</a>
+                        attribute to <var>selectedShippingOption</var>.
+                        </li>
+                      </ol>
+                    </li>
+                    <li>If the <a>modifiers</a> member of <var>details</var> is
+                    present, then:
+                      <ol>
+                        <li>Set
+                        <var>request</var>.<a>[[\details]]</a>.<a>modifiers</a>
+                        to <var>details</var>.<a>modifiers</a>.
+                        </li>
+                        <li>Set
+                        <var>request</var>.<a>[[\serializedModifierData]]</a>
+                        to <var>serializedModifierData</var>.
+                        </li>
+                      </ol>
+                    </li>
+                    <li>If <var>request</var>.<a>[[\options]]</a>.<a data-lt=
+                    "PaymentOptions.requestShipping">requestShipping</a> is
+                    true, and
+                    <var>request</var>.<a>[[\details]]</a>.<a>shippingOptions</a>
+                    is empty, then the developer has signified that there are
+                    no valid shipping options for the currently-chosen shipping
+                    address (given by <var>request</var>'s <a data-lt=
+                    "PaymentRequest.shippingAddress">shippingAddress</a>). In
+                    this case, the user agent SHOULD display an error
+                    indicating this, and MAY indicate that the currently-chosen
+                    shipping address is invalid in some way. The user agent
+                    SHOULD use the <a data-lt=
+                    "PaymentDetailsUpdate.error">error</a> member of
+                    <var>details</var>, if it is present, to give more
+                    information about why there are no valid shipping options
+                    for that address.
+                    </li>
+                  </ol>
+                </li>
+              </ol>
+            </li>
+            <li>In either case, run the following steps, after either the upon
+            rejection or upon fulfillment steps have concluded:
+              <ol>
+                <li>Set <var>request</var>.<a>[[\updating]]</a> to false.
+                </li>
+                <li>The <a>user agent</a> SHOULD update the user interface
+                based on any changed values in <var>request</var>. If
+                appropriate, the user agent SHOULD re-enable user interface
+                elements that might have been disabled prior to running this
+                algorithm.
+                </li>
+              </ol>
+            </li>
+          </ol>
+          <p>
+            If any of the above steps say to <dfn>abort the update</dfn> with
+            an exception <var>exception</var>, then:
+          </p>
+          <ol>
+            <li>Abort the current user interaction and close down any remaining
+            user interface.
+            </li>
+            <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
+            </li>
+            <li>Reject the promise <var>request</var>.<a>[[\acceptPromise]]</a>
+            with <var>exception</var>.
+            </li>
+            <li>Abort the algorithm.
+            </li>
+          </ol>
+          <div class="note">
+            <p>
+              <a data-lt="abort the update">Aborting the update</a> is
+              performed when there is a fatal error updating the payment
+              request, such as the supplied <var>detailsPromise</var>
+              rejecting, or its fulfillment value containing invalid data. This
+              would potentially leave the payment request in an inconsistent
+              state since the developer hasn't successfully handled the change
+              event. Consequently, the <a>PaymentRequest</a> moves to a
+              "<a>closed</a>" state. The error is signaled to the developer
+              through the rejection of the <a>[[\acceptPromise]]</a>, i.e., the
+              promise returned by <a data-lt="PaymentRequest.show">show()</a>.
+            </p>
+            <p>
+              <a>User agents</a> might show an error message to the user when
+              this occurs.
+            </p>
+          </div>
+        </section>
+      </section>
     </section>
     <section data-dfn-for="PaymentMethodData" data-link-for=
     "PaymentMethodData">
@@ -3382,602 +3987,6 @@
             dictionary PaymentRequestUpdateEventInit : EventInit {};
           </pre>
         </section>
-      </section>
-    </section>
-    <section>
-      <h2>
-        Algorithms
-      </h2>
-      <p>
-        When the internal slot <a>[[\state]]</a> of a <a>PaymentRequest</a>
-        object is set to "<a>interactive</a>", the <a>user agent</a> will
-        trigger the following algorithms based on user interaction.
-      </p>
-      <section>
-        <h2>
-          Shipping address changed algorithm
-        </h2>
-        <p data-tests=
-        "algorithms-manual.https.html#shipping-address-changed-algo">
-          The <dfn>shipping address changed algorithm</dfn> runs when the user
-          provides a new shipping address. It MUST run the following steps:
-        </p>
-        <ol class="algorithm">
-          <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
-          the user is interacting with.
-          </li>
-          <li>
-            <a>Queue a task</a> on the <a>user interaction task source</a> to
-            run the following steps:
-            <ol>
-              <li>
-                <div class="note" title="Privacy of recipient information">
-                  <p>
-                    The <var>redactList</var> optionally gives user agents the
-                    possibility to limit the amount of personal information
-                    about the recipient that the API shares with the merchant.
-                  </p>
-                  <p>
-                    For merchants, the resulting <a>PaymentAddress</a> object
-                    provides enough information to, for example, calculate
-                    shipping costs, but, in most cases, not enough information
-                    to physically locate and uniquely identify the recipient.
-                  </p>
-                  <p>
-                    Unfortunately, even with the <var>redactList</var>,
-                    recipient anonymity cannot be assured. This is because in
-                    some countries postal codes are so fine-grained that they
-                    can uniquely identify a recipient.
-                  </p>
-                </div>Let <var>redactList</var> be the empty list. Optionally,
-                set <var>redactList</var> to « "organization", "phone",
-                "recipient", "addressLine" ».
-              </li>
-              <li>Let <var>address</var> be the result of running the steps to
-              <a>create a <code>PaymentAddress</code> from user-provided
-              input</a> with <var>redactList</var>.
-              </li>
-              <li>Set the <a data-lt=
-              "PaymentRequest.shippingAddress">shippingAddress</a> attribute on
-              <var>request</var> to <var>address</var>.
-              </li>
-              <li>Run the <a>PaymentRequest updated algorithm</a> with
-              <var>request</var> and "<a>shippingaddresschange</a>".
-              </li>
-            </ol>
-          </li>
-        </ol>
-      </section>
-      <section>
-        <h2>
-          Shipping option changed algorithm
-        </h2>
-        <p data-tests=
-        "algorithms-manual.https.html#shipping-option-changed-algo">
-          The <dfn>shipping option changed algorithm</dfn> runs when the user
-          chooses a new shipping option. It MUST run the following steps:
-        </p>
-        <ol class="algorithm">
-          <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
-          the user is interacting with.
-          </li>
-          <li>
-            <a>Queue a task</a> on the <a>user interaction task source</a> to
-            run the following steps:
-            <ol>
-              <li>Set the <a data-lt=
-              "PaymentRequest.shippingOption">shippingOption</a> attribute on
-              <var>request</var> to the <code>id</code> string of the
-              <a>PaymentShippingOption</a> provided by the user.
-              </li>
-              <li>Run the <a>PaymentRequest updated algorithm</a> with
-              <var>request</var> and "<a>shippingoptionchange</a>".
-              </li>
-            </ol>
-          </li>
-        </ol>
-      </section>
-      <section>
-        <h2>
-          PaymentRequest updated algorithm
-        </h2>
-        <p data-tests="algorithms-manual.https.html">
-          The <dfn>PaymentRequest updated algorithm</dfn> is run by other
-          algorithms above to <a>fire an event</a> to indicate that a user has
-          made a change to a <a>PaymentRequest</a> called <var>request</var>
-          with an event name of <var>name</var>:
-        </p>
-        <ol class="algorithm">
-          <li>If the <var>request</var>.<a>[[\updating]]</a> is true, then
-          terminate this algorithm and take no further action. Only one update
-          may take place at a time. The <a>user agent</a> SHOULD ensure that
-          this never occurs.
-          </li>
-          <li>If the <var>request</var>.<a>[[\state]]</a> is not set to
-          "<a>interactive</a>", then terminate this algorithm and take no
-          further action. The <a>user agent</a> user interface SHOULD ensure
-          that this never occurs.
-          </li>
-          <li>Let <var>event</var> be the result of <a data-cite=
-          "!DOM#concept-event-create">creating an event</a> using
-          <a>PaymentRequestUpdateEvent</a>.
-          </li>
-          <li>Initialize <var>event</var>'s <code><a data-cite=
-          "!DOM#dom-event-type">type</a></code> attribute to <var>name</var>.
-          </li>
-          <li>
-            <a data-cite="!DOM#concept-event-dispatch">Dispatch</a>
-            <var>event</var> at <var>request</var>.
-          </li>
-          <li data-link-for="PaymentRequestUpdateEvent">If
-          <var>event</var>.<a>[[\waitForUpdate]]</a> is true, disable any part
-          of the user interface that could cause another update event to be
-          fired.
-          </li>
-        </ol>
-      </section>
-      <section>
-        <h2>
-          User accepts the payment request algorithm
-        </h2>
-        <p data-tests="user-accepts-payment-request-algo-manual.https.html">
-          The <dfn data-lt="user accepts the payment request">user accepts the
-          payment request algorithm</dfn> runs when the user accepts the
-          payment request and confirms that they want to pay. It MUST <a>queue
-          a task</a> on the <a>user interaction task source</a> to perform the
-          following steps:
-        </p>
-        <ol class="algorithm">
-          <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
-          the user is interacting with.
-          </li>
-          <li>If the <var>request</var>.<a>[[\updating]]</a> is true, then
-          terminate this algorithm and take no further action. The <a>user
-          agent</a> user interface SHOULD ensure that this never occurs.
-          </li>
-          <li>If <var>request</var>.<a>[[\state]]</a> is not
-          "<a>interactive</a>", then terminate this algorithm and take no
-          further action. The <a>user agent</a> user interface SHOULD ensure
-          that this never occurs.
-          </li>
-          <li>If the <a data-lt=
-          "PaymentOptions.requestShipping">requestShipping</a> value of
-          <var>request</var>.<a>[[\options]]</a> is true, then if the
-          <a data-lt="PaymentRequest.shippingAddress">shippingAddress</a>
-          attribute of <var>request</var> is null or if the <a data-lt=
-          "PaymentRequest.shippingOption">shippingOption</a> attribute of <var>
-            request</var> is null, then terminate this algorithm and take no
-            further action. The <a>user agent</a> SHOULD ensure that this never
-            occurs.
-          </li>
-          <li>Let <var>response</var> be a new <a>PaymentResponse</a>.
-          </li>
-          <li>Set the <a data-lt="PaymentResponse.requestId">requestId</a>
-          attribute value of <var>response</var> to the value of
-          <var>request</var>.<a>[[\details]]</a>.<a data-lt=
-          "PaymentDetailsInit.id">id</a>.
-          </li>
-          <li>Set the <a data-lt="PaymentResponse.methodName">methodName</a>
-          attribute value of <var>response</var> to the <a>payment method
-          identifier</a> for the <a>payment method</a> that the user selected
-          to accept the payment.
-          </li>
-          <li>Let <var>handler</var> be the <a>payment handler</a> selected by
-          the user.
-          </li>
-          <li>Set the <a data-lt="PaymentResponse.details">details</a>
-          attribute value of <var>response</var> to an object resulting from
-          running the <var>handler</var>'s <a>steps to respond to a payment
-          request</a>.
-          </li>
-          <li>If the <a data-lt=
-          "PaymentOptions.requestShipping">requestShipping</a> value of
-          <var>request</var>.<a>[[\options]]</a> is false, then set the
-          <a data-lt="PaymentResponse.shippingAddress">shippingAddress</a>
-          attribute value of <var>response</var> to null. Otherwise:
-            <ol>
-              <li>Let <var>redactList</var> be the empty <a>list</a>.
-              </li>
-              <li>Let <var>shippingAddress</var> be the result of <a>create a
-              <code>PaymentAddress</code> from user-provided input</a> with
-              <var>redactList</var>.
-              </li>
-              <li>Set the <a data-lt=
-              "PaymentResponse.shippingAddress">shippingAddress</a> attribute
-              value of <var>response</var> to <var>shippingAddress</var>.
-              </li>
-              <li>Set the <a data-lt=
-              "PaymentResponse.shippingAddress">shippingAddress</a> attribute
-              value of <var>request</var> to <var>shippingAddress</var>.
-              </li>
-            </ol>
-          </li>
-          <li>If the <a data-lt=
-          "PaymentOptions.requestShipping">requestShipping</a> value of
-          <var>request</var>.<a>[[\options]]</a> is true, then set the
-          <a data-lt="PaymentResponse.shippingOption">shippingOption</a>
-          attribute of <var>response</var> to the value of the <a data-lt=
-          "PaymentRequest.shippingOption">shippingOption</a> attribute of <var>
-            request</var>. Otherwise, set it to null.
-          </li>
-          <li>If the <a data-lt=
-          "PaymentOptions.requestPayerName">requestPayerName</a> value of <var>
-            request</var>.<a>[[\options]]</a> is true, then set the <a data-lt=
-            "PaymentResponse.payerName">payerName</a> attribute of
-            <var>response</var> to the payer's name provided by the user, or to
-            null if none was provided. Otherwise, set it to null.
-          </li>
-          <li>If the <a data-lt=
-          "PaymentOptions.requestPayerEmail">requestPayerEmail</a> value of
-          <var>request</var>.<a>[[\options]]</a> is true, then set the
-          <a data-lt="PaymentResponse.payerEmail">payerEmail</a> attribute of
-          <var>response</var> to the payer's email address provided by the
-          user, or to null if none was provided. Otherwise, set it to null.
-          </li>
-          <li>If the <a data-lt=
-          "PaymentOptions.requestPayerPhone">requestPayerPhone</a> value of
-          <var>request</var>.<a>[[\options]]</a> is true, then set the
-          <a data-lt="PaymentResponse.payerPhone">payerPhone</a> attribute of
-          <var>response</var> to the payer's phone number provided by the user,
-          or to null if none was provided. When setting the <a data-lt=
-          "PaymentResponse.payerPhone">payerPhone</a> value, the user agent
-          SHOULD format the phone number to adhere to [[!E.164]].
-          </li>
-          <li>Set <var>response</var>.<a>[[\completeCalled]]</a> to false.
-          </li>
-          <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
-          </li>
-          <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
-          boolean to false.
-          </li>
-          <li>Resolve the pending promise
-          <var>request</var>.<a>[[\acceptPromise]]</a> with
-          <var>response</var>.
-          </li>
-        </ol>
-      </section>
-      <section>
-        <h2>
-          User aborts the payment request algorithm
-        </h2>
-        <p data-tests="user-abort-algorithm-manual.https.html">
-          The <dfn data-lt="user aborts the payment request">user aborts the
-          payment request algorithm</dfn> runs when the user aborts the payment
-          request through the currently interactive user interface. It MUST
-          <a>queue a task</a> on the <a>user interaction task source</a> to
-          perform the following steps:
-        </p>
-        <ol class="algorithm">
-          <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
-          the user is interacting with.
-          </li>
-          <li>If the <var>request</var>.<a>[[\updating]]</a> is true, then
-          terminate this algorithm and take no further action. The <a>user
-          agent</a> user interface SHOULD ensure that this never occurs.
-          </li>
-          <li>If <var>request</var>.<a>[[\state]]</a> is not
-          "<a>interactive</a>", then terminate this algorithm and take no
-          further action. The <a>user agent</a> user interface SHOULD ensure
-          that this never occurs.
-          </li>
-          <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
-          </li>
-          <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
-          boolean to false.
-          </li>
-          <li>Reject the promise <var>request</var>.<a>[[\acceptPromise]]</a>
-          with an "<a>AbortError</a>" <a>DOMException</a>.
-          </li>
-        </ol>
-      </section>
-      <section>
-        <h2>
-          Update a <code>PaymentRequest</code>'s details algorithm
-        </h2>
-        <p>
-          The <dfn>update a <code>PaymentRequest</code>'s details
-          algorithm</dfn> takes a <a>PaymentDetailsUpdate</a>
-          <var>detailsPromise</var> and a <a>PaymentRequest</a>
-          <var>request</var>. The steps are conditional on the
-          <var>detailsPromise</var> settling. If <var>detailsPromise</var>
-          never settles then the payment request is blocked. Users SHOULD
-          always be able to cancel a payment request. Implementations MAY
-          choose to implement a timeout for pending updates if
-          <var>detailsPromise</var> doesn't settle in a reasonable amount of
-          time. If an implementation chooses to implement a timeout, they must
-          execute the steps listed below in the "upon rejection" path. Such a
-          timeout is a fatal error for the payment request.
-        </p>
-        <ol class="algorithm">
-          <li>
-            <a>Upon rejection</a> of <var>detailsPromise</var>:
-            <ol>
-              <li>
-                <a>Abort the update</a> with an "<a>AbortError</a>"
-                <a>DOMException</a>.
-              </li>
-            </ol>
-          </li>
-          <li>
-            <a>Upon fulfillment</a> of <var>detailsPromise</var> with value
-            <var>value</var>:
-            <ol data-link-for="PaymentDetailsBase">
-              <li>Let <var>details</var> be the result of <a data-cite=
-              "!WEBIDL#es-dictionary">converting</a> <var>value</var> to a <a>
-                PaymentDetailsUpdate</a> dictionary. If this <a>throws</a> an
-                exception, <a>abort the update</a> with the thrown exception.
-              </li>
-              <li>Let <var>serializedModifierData</var> be an empty list.
-              </li>
-              <li>Let <var>selectedShippingOption</var> be null.
-              </li>
-              <li>Let <var>shippingOptions</var> be an empty
-                <code><a data-cite="!WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
-              </li>
-              <li>Validate and canonicalize the details:
-                <ol>
-                  <li data-link-for="PaymentDetailsUpdate">If the <a>total</a>
-                  member of <var>details</var> is present, then:
-                    <ol>
-                      <li>
-                        <a>Check and canonicalize total</a>
-                        <var>details</var>.<a>total</a>.<a data-lt=
-                        "PaymentItem.amount">amount</a>. If an exception is
-                        thrown, then <a>abort the update</a> with that
-                        exception.
-                      </li>
-                    </ol>
-                  </li>
-                  <li>If the <a>displayItems</a> member of <var>details</var>
-                  is present, then for each <var>item</var> in
-                  <var>details</var>.<a>displayItems</a>:
-                    <ol>
-                      <li>
-                        <a>Check and canonicalize amount</a>
-                        <var>item</var>.<a data-lt=
-                        "PaymentItem.amount">amount</a>. If an exception is
-                        thrown, then <a>abort the update</a> with that
-                        exception.
-                      </li>
-                    </ol>
-                  </li>
-                  <li>If the <a>shippingOptions</a> member of
-                  <var>details</var> is present, and
-                  <var>request</var>.<a>[[\options]]</a>.<a data-lt=
-                  "PaymentOptions.requestShipping">requestShipping</a> is true,
-                  then:
-                    <ol>
-                      <li>Set <var>shippingOptions</var> to
-                      <var>details</var>.<a>shippingOptions</a>.
-                      </li>
-                      <li>Let <var>seenIDs</var> be an empty list.
-                      </li>
-                      <li>For each <var>option</var> in
-                      <var>shippingOptions</var>:
-                        <ol>
-                          <li>
-                            <a>Check and canonicalize amount</a>
-                            <var>option</var>.<a data-lt=
-                            "PaymentShippingOption.amount">amount</a>. If an
-                            exception is thrown, then <a>abort the update</a>
-                            with that exception.
-                          </li>
-                          <li data-tests=
-                          "PaymentRequestUpdateEvent/updateWith-duplicate-shipping-options-manual.https.html">
-                          If <var>seenIDs</var> contains
-                          <var>option</var>.<a data-lt=
-                          "PaymentShippingOption.id">id</a>, then <a>abort the
-                          update</a> with a <a>TypeError</a>.
-                          </li>
-                          <li>Otherwise, append <var>option</var>.<a data-lt=
-                          "PaymentShippingOption.id">id</a> to
-                          <var>seenIDs</var>.
-                          </li>
-                        </ol>
-                      </li>
-                      <li>For each <var>option</var> in
-                      <var>shippingOptions</var>:
-                        <ol>
-                          <li>If <var>option</var>.<a data-lt=
-                          "PaymentShippingOption.selected">selected</a> is
-                          true, then set <var>selectedShippingOption</var> to
-                          <var>option</var>.<a data-lt=
-                          "PaymentShippingOption.id">id</a>.
-                          </li>
-                        </ol>
-                      </li>
-                    </ol>
-                  </li>
-                  <li>If the <a>modifiers</a> member of <var>details</var> is
-                  present, then:
-                    <ol>
-                      <li>Let <var>modifiers</var> be the sequence
-                      <var>details</var>.<a>modifiers</a>.
-                      </li>
-                      <li>Let <var>serializedModifierData</var> be an empty
-                      list.
-                      </li>
-                      <li>For each <a>PaymentDetailsModifier</a>
-                      <var>modifier</var> in <var>modifiers</var>:
-                        <ol data-link-for="PaymentDetailsModifier">
-                          <li data-tests=
-                          "updateWith-method-pmi-handling-manual.https.html">
-                          Run the steps to <a data-cite=
-                          "payment-method-id#dfn-validate-a-payment-method-identifier">
-                            validate a payment method identifier</a> with
-                            <var>modifier</var>.<a data-lt=
-                            "PaymentDetailsModifier.supportedMethods">supportedMethods</a>.
-                            If it returns false, then <a>abort the update</a>
-                            with a <a>RangeError</a> exception. Optional,
-                            inform the developer that the payment method
-                            identifier is invalid.
-                          </li>
-                          <li>If the <a>total</a> member of <var>modifier</var>
-                          is present, then:
-                            <ol>
-                              <li>
-                                <a>Check and canonicalize total</a>
-                                <var>modifier</var>.<a>total</a>.<a data-lt=
-                                "PaymentItem.amount">amount</a>. If an
-                                exception is thrown, then <a>abort the
-                                update</a> with that exception.
-                              </li>
-                            </ol>
-                          </li>
-                          <li>If the <a>additionalDisplayItems</a> member of
-                          <var>modifier</var> is present, then for each
-                          <a>PaymentItem</a> <var>item</var> in
-                          <var>modifier</var>.<a>additionalDisplayItems</a>:
-                            <ol>
-                              <li>
-                                <a>Check and canonicalize amount</a>
-                                <var>item</var>.<a data-lt=
-                                "PaymentItem.amount">amount</a>. If an
-                                exception is thrown, then <a>abort the
-                                update</a> with that exception.
-                              </li>
-                            </ol>
-                          </li>
-                          <li>If the <a data-lt="PaymentDetailsModifier.data">
-                            data</a> member of <var>modifier</var> is missing,
-                            let <var>serializedData</var> be null. Otherwise,
-                            let <var>serializedData</var> be the result of
-                            <a>JSON-serializing</a>
-                            <var>modifier</var>.<a data-lt=
-                            "PaymentDetailsModifier.data">data</a> into a
-                            string. If <a>JSON-serializing</a> throws an
-                            exception, then <a>abort the update</a> with that
-                            exception.
-                          </li>
-                          <li>Add <var>serializedData</var> to
-                          <var>serializedModifierData</var>.
-                          </li>
-                          <li>Remove the <a data-lt=
-                          "PaymentDetailsModifier.data">data</a> member of
-                          <var>modifier</var>, if it is present.
-                          </li>
-                        </ol>
-                      </li>
-                    </ol>
-                  </li>
-                </ol>
-              </li>
-              <li>Update the <a>PaymentRequest</a> using the new details:
-                <ol>
-                  <li data-link-for="PaymentDetailsUpdate">If the <a>total</a>
-                  member of <var>details</var> is present, then:
-                    <ol>
-                      <li>Set
-                      <var>request</var>.<a>[[\details]]</a>.<a data-link-for="PaymentDetailsInit">total</a>
-                        to <var>details</var>.<a>total</a>.
-                      </li>
-                    </ol>
-                  </li>
-                  <li>If the <a>displayItems</a> member of <var>details</var>
-                  is present, then:
-                    <ol>
-                      <li>Set
-                      <var>request</var>.<a>[[\details]]</a>.<a>displayItems</a>
-                      to <var>details</var>.<a>displayItems</a>.
-                      </li>
-                    </ol>
-                  </li>
-                  <li>If the <a>shippingOptions</a> member of
-                  <var>details</var> is present, and
-                  <var>request</var>.<a>[[\options]]</a>.<a data-lt=
-                  "PaymentOptions.requestShipping">requestShipping</a> is true,
-                  then:
-                    <ol>
-                      <li>Set
-                      <var>request</var>.<a>[[\details]]</a>.<a>shippingOptions</a>
-                      to <var>shippingOptions</var>.
-                      </li>
-                      <li>Set the value of <var>request</var>'s <a data-lt=
-                      "PaymentRequest.shippingOption">shippingOption</a>
-                      attribute to <var>selectedShippingOption</var>.
-                      </li>
-                    </ol>
-                  </li>
-                  <li>If the <a>modifiers</a> member of <var>details</var> is
-                  present, then:
-                    <ol>
-                      <li>Set
-                      <var>request</var>.<a>[[\details]]</a>.<a>modifiers</a>
-                      to <var>details</var>.<a>modifiers</a>.
-                      </li>
-                      <li>Set
-                      <var>request</var>.<a>[[\serializedModifierData]]</a> to
-                      <var>serializedModifierData</var>.
-                      </li>
-                    </ol>
-                  </li>
-                  <li>If <var>request</var>.<a>[[\options]]</a>.<a data-lt=
-                  "PaymentOptions.requestShipping">requestShipping</a> is true,
-                  and
-                  <var>request</var>.<a>[[\details]]</a>.<a>shippingOptions</a>
-                  is empty, then the developer has signified that there are no
-                  valid shipping options for the currently-chosen shipping
-                  address (given by <var>request</var>'s <a data-lt=
-                  "PaymentRequest.shippingAddress">shippingAddress</a>). In
-                  this case, the user agent SHOULD display an error indicating
-                  this, and MAY indicate that the currently-chosen shipping
-                  address is invalid in some way. The user agent SHOULD use the
-                  <a data-lt="PaymentDetailsUpdate.error">error</a> member of
-                  <var>details</var>, if it is present, to give more
-                  information about why there are no valid shipping options for
-                  that address.
-                  </li>
-                </ol>
-              </li>
-            </ol>
-          </li>
-          <li>In either case, run the following steps, after either the upon
-          rejection or upon fulfillment steps have concluded:
-            <ol>
-              <li>Set <var>request</var>.<a>[[\updating]]</a> to false.
-              </li>
-              <li>The <a>user agent</a> SHOULD update the user interface based
-              on any changed values in <var>request</var>. If appropriate, the
-              user agent SHOULD re-enable user interface elements that might
-              have been disabled prior to running this algorithm.
-              </li>
-            </ol>
-          </li>
-        </ol>
-        <p>
-          If any of the above steps say to <dfn>abort the update</dfn> with an
-          exception <var>exception</var>, then:
-        </p>
-        <ol>
-          <li>Abort the current user interaction and close down any remaining
-          user interface.
-          </li>
-          <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
-          </li>
-          <li>Reject the promise <var>request</var>.<a>[[\acceptPromise]]</a>
-          with <var>exception</var>.
-          </li>
-          <li>Abort the algorithm.
-          </li>
-        </ol>
-        <div class="note">
-          <p>
-            <a data-lt="abort the update">Aborting the update</a> is performed
-            when there is a fatal error updating the payment request, such as
-            the supplied <var>detailsPromise</var> rejecting, or its
-            fulfillment value containing invalid data. This would potentially
-            leave the payment request in an inconsistent state since the
-            developer hasn't successfully handled the change event.
-            Consequently, the <a>PaymentRequest</a> moves to a "<a>closed</a>"
-            state. The error is signaled to the developer through the rejection
-            of the <a>[[\acceptPromise]]</a>, i.e., the promise returned by
-            <a data-lt="PaymentRequest.show">show()</a>.
-          </p>
-          <p>
-            <a>User agents</a> might show an error message to the user when
-            this occurs.
-          </p>
-        </div>
       </section>
     </section>
     <section class="informative">
