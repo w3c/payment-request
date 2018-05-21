@@ -3131,12 +3131,48 @@
           readonly attribute DOMString? payerPhone;
 
           Promise&lt;void&gt; complete(optional PaymentComplete result = "unknown");
+          Promise&lt;void&gt; retry();
         };
       </pre>
       <p class="note">
         A <a>PaymentResponse</a> is returned when a user has selected a payment
         method and approved a payment request.
       </p>
+      <section>
+        <h2>
+          <dfn>retry()</dfn> method
+        </h2>
+        <ol class="algorithm">
+          <li>Let response be the context object.
+          </li>
+          <li>Let request be response.[[\request]].
+          </li>
+          <li>If response.[[\completeCalled]] is true, throw a
+          "InvalidStateError" DOMException.
+          </li>
+          <li>If request.[[\state]] is not "closed", throw a
+          "InvalidStateError" DOMException.
+          </li>
+          <li>Set request.[[\state]] to "interactive".
+          </li>
+          <li>Set request.[[\retrying]] to true.
+          </li>
+          <li>Let promiseToRetry be a newly created promise.
+          </li>
+          <li>In parallel:
+            <ol>
+              <li>If the <a>user accepts the retry</a>, resolve promiseToRetry
+              with undefined.
+              </li>
+              <li>If the <a>user aborts the retry</a>, reject promiseToRetry
+              with an "AbortError" DOMException.
+              </li>
+            </ol>
+          </li>
+          <li>Return promiseToRetry.
+          </li>
+        </ol>
+      </section>
       <section>
         <h2>
           <dfn>toJSON()</dfn> method
@@ -3745,6 +3781,8 @@
             occurs.
           </li>
           <li>Let <var>response</var> be a new <a>PaymentResponse</a>.
+          </li>
+          <li>Let <var>response</var>.[[\request]] be <var>request</var>.
           </li>
           <li>Set the <a data-lt="PaymentResponse.requestId">requestId</a>
           attribute value of <var>response</var> to the value of
