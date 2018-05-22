@@ -3142,6 +3142,9 @@
         <h2>
           <dfn>retry()</dfn> method
         </h2>
+        <p data-tests="payment-response/retry-method-manual.https.html">
+          The <a>retry()</a> method MUST act as follows:
+        </p>
         <ol class="algorithm">
           <li>Let <var>response</var> be the <a>context object</a>.
           </li>
@@ -3352,9 +3355,11 @@
             promise</var> with an "<a>InvalidStateError</a>"
             <a>DOMException</a>.
           </li>
-          <li>If <var>response</var>.<a>[[\retrying]]</a> is true, reject <var>
-            promise</var> with an "<a>InvalidStateError</a>"
-            <a>DOMException</a>.
+          <li data-tests=
+          "payment-request/payment-response/retry-method-manual.https.html">If
+          <var>response</var>.<a>[[\retrying]]</a> is true, reject
+          <var>promise</var> with an "<a>InvalidStateError</a>"
+          <a>DOMException</a>.
           </li>
           <li>Otherwise, set <var>response</var>.<a>[[\complete]]</a> to true.
           </li>
