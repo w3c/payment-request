@@ -3352,6 +3352,10 @@
             promise</var> with an "<a>InvalidStateError</a>"
             <a>DOMException</a>.
           </li>
+          <li>If <var>response</var>.<a>[[\retrying]]</a> is true, reject <var>
+            promise</var> with an "<a>InvalidStateError</a>"
+            <a>DOMException</a>.
+          </li>
           <li>Otherwise, set <var>response</var>.<a>[[\complete]]</a> to true.
           </li>
           <li>Return <var>promise</var> and perform the remaining steps <a>in
