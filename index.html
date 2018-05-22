@@ -1116,8 +1116,8 @@
           </li>
           <li>If <var>request</var>.<a>[[\response]]</a> is not null, and <var>
             request</var>.<a>[[\response]]</a>.<a>[[\retrying]]</a> is true,
-            return a newly created promise an "<a>InvalidStateError</a>"
-            <a>DOMException</a>.
+            return a newly created promise rejected with an
+            "<a>InvalidStateError</a>" <a>DOMException</a>.
           </li>
           <li>If the value of <var>request</var>.<a>[[\state]]</a> is not
           "<a>interactive</a>" then return a newly created promise rejected
