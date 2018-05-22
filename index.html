@@ -834,6 +834,8 @@
           <li>Set <var>request</var>.<a>[[\serializedMethodData]]</a> to <var>
             serializedMethodData</var>.
           </li>
+          <li>Set <var>request</var>.<a>[[\response]]</a> to null.
+          </li>
           <li>Set the value of <var>request</var>'s <a data-lt=
           "PaymentRequest.shippingOption">shippingOption</a> attribute to <var>
             selectedShippingOption</var>.
@@ -1112,9 +1114,14 @@
         <ol class="algorithm">
           <li>Let <var>request</var> be the <a>context object</a>.
           </li>
+          <li>If <var>request</var>.<a>[[\response]]</a> is not null, and <var>
+            request</var>.<a>[[\response]]</a>.<a>[[\retrying]]</a> is true,
+            return a newly created promise an "<a>InvalidStateError</a>"
+            <a>DOMException</a>.
+          </li>
           <li>If the value of <var>request</var>.<a>[[\state]]</a> is not
-          "<a>interactive</a>" then <a>throw</a> an "<a>InvalidStateError</a>"
-          <a>DOMException</a>.
+          "<a>interactive</a>" then return a newly created promise rejected
+          with an "<a>InvalidStateError</a>" <a>DOMException</a>.
           </li>
           <li>Let <var>promise</var> be <a>a new promise</a>.
           </li>
@@ -1422,6 +1429,15 @@
               The pending <a>Promise</a> created during <a data-lt=
               "PaymentRequest.show">show</a> that will be resolved if the user
               accepts the payment request.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\response]]</dfn>
+            </td>
+            <td>
+              Null, or the <a>PaymentResponse</a> instantiated by this
+              <a>PaymentRequest</a>.
             </td>
           </tr>
         </table>
@@ -3934,7 +3950,11 @@
           </li>
           <li>Let <var>response</var> be a new <a>PaymentResponse</a>.
           </li>
-          <li>Let <var>response</var>.[[\request]] be <var>request</var>.
+          <li>Let <var>response</var>.<a>[[\request]]</a> be
+          <var>request</var>.
+          </li>
+          <li>Set <var>request</var>.<a>[[\response]]</a> to
+          <var>response</var>.
           </li>
           <li>Set the <a data-lt="PaymentResponse.requestId">requestId</a>
           attribute value of <var>response</var> to the value of
