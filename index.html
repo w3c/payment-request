@@ -3143,33 +3143,40 @@
           <dfn>retry()</dfn> method
         </h2>
         <ol class="algorithm">
-          <li>Let response be the context object.
+          <li>Let <var>response</var> be the <a>context object</a>.
           </li>
-          <li>Let request be response.[[\request]].
+          <li>Let <var>request</var> be
+          <var>response</var>.<a>[[\request]]</a>.
           </li>
-          <li>If response.[[\completeCalled]] is true, throw a
-          "InvalidStateError" DOMException.
+          <li>If <var>response</var>.<a>[[\complete]]</a> is true, throw a
+          "<a>InvalidStateError</a>" <a>DOMException</a>.
           </li>
-          <li>If request.[[\state]] is not "closed", throw a
-          "InvalidStateError" DOMException.
+          <li>If <var>request</var>.<a>[[\retrying]]</a> is true, throw a
+          "<a>InvalidStateError</a>" <a>DOMException</a>.
           </li>
-          <li>Set request.[[\state]] to "interactive".
+          <li>If <var>request</var>.<a>[[\state]]</a> is not "<a>closed</a>",
+          throw a "<a>InvalidStateError</a>" <a>DOMException</a>.
           </li>
-          <li>Set request.[[\retrying]] to true.
+          <li>Set <var>response</var>.<a>[[\retrying]]</a> to true.
           </li>
-          <li>Let promiseToRetry be a newly created promise.
+          <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>interactive</a>".
           </li>
-          <li>In parallel:
+          <li>Set <var>request</var>.<a>[[\retryPromise]]</a> to a newly
+          created promise.
+          </li>
+          <li>
+            <a>In parallel</a>:
             <ol>
-              <li>If the <a>user accepts the retry</a>, resolve promiseToRetry
-              with undefined.
+              <li>Indicate to the end-user that something is wrong with the
+              data of the payment response.
+                <div class="issue" data-number="647"></div>
               </li>
-              <li>If the <a>user aborts the retry</a>, reject promiseToRetry
-              with an "AbortError" DOMException.
+              <li>Wait for the user to either <a>retry the payment</a> or
+              <a>abort retrying</a>.
               </li>
             </ol>
           </li>
-          <li>Return promiseToRetry.
+          <li>Return <var>request</var>.<a>[[\retryPromise]]</a>.
           </li>
         </ol>
       </section>
@@ -3338,18 +3345,20 @@
           </li>
           <li>Let <var>promise</var> be <a>a new promise</a>.
           </li>
-          <li>If <var>response</var>.<a>[[\completeCalled]]</a> is true, reject
-          <var>promise</var> with an "<a>InvalidStateError</a>"
-          <a>DOMException</a>.
+          <li>If <var>response</var>.<a>[[\complete]]</a> is true, reject <var>
+            promise</var> with an "<a>InvalidStateError</a>"
+            <a>DOMException</a>.
           </li>
-          <li>Otherwise, set <var>response</var>.<a>[[\completeCalled]]</a> to
-          true.
+          <li>Otherwise, set <var>response</var>.<a>[[\complete]]</a> to true.
           </li>
           <li>Return <var>promise</var> and perform the remaining steps <a>in
           parallel</a>.
           </li>
           <li>Close down any remaining user interface. The <a>user agent</a>
           MAY use the value <var>result</var> to influence the user experience.
+          </li>
+          <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
+          boolean to false.
           </li>
           <li>Resolve <var>promise</var> with undefined.
           </li>
@@ -3374,14 +3383,145 @@
           </tr>
           <tr>
             <td>
-              <dfn>[[\completeCalled]]</dfn>
+              <dfn>[[\complete]]</dfn>
             </td>
             <td>
-              true if the <a data-lt="PaymentResponse.complete">complete</a>
-              method has been called and false otherwise.
+              true if that the request for payment has completed, or false
+              otherwise.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\request]]</dfn>
+            </td>
+            <td>
+              The <a>PaymentRequest</a> instance that instantiated this
+              <a>PaymentResponse</a>.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\retryPromise]]</dfn>
+            </td>
+            <td>
+              A <a>Promise</a> resolves when a user <a data-lt=
+              "retry the payment">retries the payment</a> or rejects if the
+              user <a>aborts retrying</a>.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\retrying]]</dfn>
+            </td>
+            <td>
+              When true, the developer has signaled that the payment response
+              suffers from validation errors that the user needs to correct in
+              the user agent's UI.
             </td>
           </tr>
         </table>
+      </section>
+      <section>
+        <h2>
+          <code>PaymentResponse</code> algorithms
+        </h2>
+        <section>
+          <h3>
+            User retries the payment algorithm
+          </h3>
+          <p>
+            The <dfn data-lt="retry the payment">user retries the payment
+            algorithm</dfn> runs if the developer has called <a>retry()</a> and
+            the user attempts to reaccept a request for payment:
+          </p>
+          <ol class="algorithm">
+            <li>Let <var>response</var> be the <a>PaymentResponse</a>
+            <a>context object</a>.
+            </li>
+            <li>Let <var>request</var> be
+            <var>response</var><a>[[\request]]</a>.
+            </li>
+            <li>If <var>request</var>.<a>[[\updating]]</a> is true, then
+            terminate this algorithm and take no further action. The <a>user
+            agent</a> user interface SHOULD ensure that this never occurs.
+            </li>
+            <li>If <var>request</var>.<a>[[\state]]</a> is not
+            "<a>interactive</a>", then terminate this algorithm and take no
+            further action. The <a>user agent</a> user interface SHOULD ensure
+            that this never occurs.
+            </li>
+            <li>If the <a data-lt=
+            "PaymentOptions.requestShipping">requestShipping</a> value of <var>
+              request</var>.<a>[[\options]]</a> is true, then if the
+              <a data-lt="PaymentRequest.shippingAddress">shippingAddress</a>
+              attribute of <var>request</var> is null or if the <a data-lt=
+              "PaymentRequest.shippingOption">shippingOption</a> attribute of
+              <var>request</var> is null, then terminate this algorithm and
+              take no further action. The <a>user agent</a> SHOULD ensure that
+              this never occurs.
+            </li>
+            <li>
+              <a>Queue a task</a> on the <a>user interaction task source</a> to
+              perform the following steps:
+              <ol>
+                <li>Set <var>response</var>.<a>[[\retrying]]</a> to false.
+                </li>
+                <li>Set <var>request</var>.<a>[[\state]]</a> to
+                "<a>closed</a>".
+                </li>
+                <li>Resolve <var>response</var>.<a>[[\retryPromise]]</a> with
+                undefined.
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h3>
+            User aborts retrying algorithm
+          </h3>
+          <p>
+            The <dfn data-lt="aborts retrying|abort retrying">user aborts
+            retrying algorithm</dfn> runs if the developer has called
+            <a>retry()</a> and the user aborts the payment request through the
+            currently interactive user interface.
+          </p>
+          <ol class="algorithm">
+            <li>Let <var>request</var> be the <a>PaymentRequest</a> <a>context
+            object</a>.
+            </li>
+            <li>If the <var>request</var>.<a>[[\retrying]]</a> is false, then
+            terminate this algorithm and take no further action. The <a>user
+            agent</a> user interface SHOULD ensure that this never occurs.
+            </li>
+            <li>If the <var>request</var>.<a>[[\updating]]</a> is true, then
+            terminate this algorithm and take no further action. The <a>user
+            agent</a> user interface SHOULD ensure that this never occurs.
+            </li>
+            <li>If <var>request</var>.<a>[[\state]]</a> is not
+            "<a>interactive</a>", then terminate this algorithm and take no
+            further action. The <a>user agent</a> user interface SHOULD ensure
+            that this never occurs.
+            </li>
+            <li>
+              <a>Queue a task</a> on the <a>user interaction task source</a> to
+              perform the following steps:
+              <ol>
+                <li>Set <var>request</var>.<a>[[\state]]</a> to
+                "<a>closed</a>".
+                </li>
+                <li>Set the <a>user agent</a>'s <a>payment request is
+                showing</a> boolean to false.
+                </li>
+                <li>Set <var>response</var>.<a>[[\complete]]</a> to true.
+                </li>
+                <li>Reject <var>request</var>.<a>[[\retryPromise]]</a> with an
+                "<a>AbortError</a>" <a>DOMException</a>.
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </section>
       </section>
     </section>
     <section class="informative">
@@ -3855,12 +3995,9 @@
           "PaymentResponse.payerPhone">payerPhone</a> value, the user agent
           SHOULD format the phone number to adhere to [[!E.164]].
           </li>
-          <li>Set <var>response</var>.<a>[[\completeCalled]]</a> to false.
+          <li>Set <var>response</var>.<a>[[\complete]]</a> to false.
           </li>
           <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
-          </li>
-          <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
-          boolean to false.
           </li>
           <li>Resolve the pending promise
           <var>request</var>.<a>[[\acceptPromise]]</a> with
