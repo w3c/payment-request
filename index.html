@@ -3148,21 +3148,24 @@
           <li>Let <var>request</var> be
           <var>response</var>.<a>[[\request]]</a>.
           </li>
-          <li>If <var>response</var>.<a>[[\complete]]</a> is true, throw a
-          "<a>InvalidStateError</a>" <a>DOMException</a>.
+          <li>If <var>response</var>.<a>[[\complete]]</a> is true, return a
+          promise rejected with an "<a>InvalidStateError</a>"
+          <a>DOMException</a>.
           </li>
-          <li>If <var>request</var>.<a>[[\retrying]]</a> is true, throw a
-          "<a>InvalidStateError</a>" <a>DOMException</a>.
+          <li>If <var>request</var>.<a>[[\retrying]]</a> is true, return a
+          promise rejected with an "<a>InvalidStateError</a>"
+          <a>DOMException</a>.
           </li>
           <li>If <var>request</var>.<a>[[\state]]</a> is not "<a>closed</a>",
-          throw a "<a>InvalidStateError</a>" <a>DOMException</a>.
+          return a promise rejected with an "<a>InvalidStateError</a>"
+          <a>DOMException</a>.
           </li>
           <li>Set <var>response</var>.<a>[[\retrying]]</a> to true.
           </li>
           <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>interactive</a>".
           </li>
-          <li>Set <var>request</var>.<a>[[\retryPromise]]</a> to a newly
-          created promise.
+          <li>Set <var>request</var>.<a>[[\retryPromise]]</a> to
+          <var>retryPromise</var>.
           </li>
           <li>
             <a>In parallel</a>:
@@ -3176,7 +3179,7 @@
               </li>
             </ol>
           </li>
-          <li>Return <var>request</var>.<a>[[\retryPromise]]</a>.
+          <li>Return <var>retryPromise</var>.
           </li>
         </ol>
       </section>
