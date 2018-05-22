@@ -3518,22 +3518,6 @@
             <li>Let <var>request</var> be the <a>PaymentRequest</a> <a>context
             object</a>.
             </li>
-            <li>If the <var>request</var>.<a>[[\retrying]]</a> is false, then
-            terminate this algorithm and take no further action. The <a>user
-            agent</a> user interface SHOULD ensure that this never occurs.
-            </li>
-            <li>If the <var>request</var>.<a>[[\updating]]</a> is true, then
-            terminate this algorithm and take no further action. The <a>user
-            agent</a> user interface SHOULD ensure that this never occurs.
-            </li>
-            <li>If <var>request</var>.<a>[[\state]]</a> is not
-            "<a>interactive</a>", then terminate this algorithm and take no
-            further action. The <a>user agent</a> user interface SHOULD ensure
-            that this never occurs.
-            </li>
-            <li>Try to abort the current user interaction with the <a>payment
-            handler</a> and close down any remaining user interface.
-            </li>
             <li>
               <a>Queue a task</a> on the <a>user interaction task source</a> to
               perform the following steps:
