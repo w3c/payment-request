@@ -3512,11 +3512,25 @@
             The <dfn data-lt="aborts retrying|abort retrying">user aborts
             retrying algorithm</dfn> runs if the developer has called
             <a>retry()</a> and the user aborts the payment request through the
-            currently interactive user interface.
+            currently interactive user interface. Aborting closes down any
+            remaining user interface.
           </p>
           <ol class="algorithm">
             <li>Let <var>request</var> be the <a>PaymentRequest</a> <a>context
             object</a>.
+            </li>
+            <li>If the <var>request</var>.<a>[[\retrying]]</a> is false, then
+            terminate this algorithm and take no further action. The <a>user
+            agent</a> user interface SHOULD ensure that this never occurs.
+            </li>
+            <li>If the <var>request</var>.<a>[[\updating]]</a> is true, then
+            terminate this algorithm and take no further action. The <a>user
+            agent</a> user interface SHOULD ensure that this never occurs.
+            </li>
+            <li>If <var>request</var>.<a>[[\state]]</a> is not
+            "<a>interactive</a>", then terminate this algorithm and take no
+            further action. The <a>user agent</a> user interface SHOULD ensure
+            that this never occurs.
             </li>
             <li>
               <a>Queue a task</a> on the <a>user interaction task source</a> to
