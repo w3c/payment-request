@@ -3183,8 +3183,8 @@
           </li>
           <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>interactive</a>".
           </li>
-          <li>Set <var>request</var>.<a>[[\retryPromise]]</a> to
-          <var>retryPromise</var>.
+          <li>Set <var>request</var>.<a>[[\retryPromise]]</a> to a newly
+          created promise.
           </li>
           <li>
             <a>In parallel</a>:
@@ -3198,7 +3198,7 @@
               </li>
             </ol>
           </li>
-          <li>Return <var>retryPromise</var>.
+          <li>Return <var>request</var>.<a>[[\retryPromise]]</a>.
           </li>
         </ol>
       </section>
