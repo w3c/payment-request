@@ -3147,7 +3147,7 @@
           readonly attribute DOMString? payerPhone;
 
           Promise&lt;void&gt; complete(optional PaymentComplete result = "unknown");
-          Promise&lt;void&gt; retry();
+          Promise&lt;void&gt; retry(PaymentValidationErrors errorFields);
         };
       </pre>
       <p class="note">
@@ -3159,7 +3159,8 @@
           <dfn>retry()</dfn> method
         </h2>
         <p data-tests="payment-response/retry-method-manual.https.html">
-          The <a>retry()</a> method MUST act as follows:
+          The <code>retry(<var>errorFields</var>)</code> method MUST act as
+          follows:
         </p>
         <ol class="algorithm">
           <li>Let <var>response</var> be the <a>context object</a>.
@@ -3189,8 +3190,9 @@
           <li>
             <a>In parallel</a>:
             <ol>
-              <li>Indicate to the end-user that something is wrong with the
-              data of the payment response.
+              <li>By matching the members of <var>errorFields</var> to input
+              fields in the user agent's UI, indicate to the end-user that
+              something is wrong with the data of the payment response.
                 <div class="issue" data-number="647"></div>
               </li>
               <li>Wait for the user to either <a>retry the payment</a> or
@@ -3201,6 +3203,83 @@
           <li>Return <var>request</var>.<a>[[\retryPromise]]</a>.
           </li>
         </ol>
+        <section data-dfn-for="PaymentValidationErrors" data-link-for=
+        "PaymentValidationErrors">
+          <h3>
+            <dfn>PaymentValidationErrors</dfn> dictionary
+          </h3>
+          <pre class="idl">
+            dictionary PaymentValidationErrors {
+              PayerErrorFields payerErrors;
+            };
+          </pre>
+          <dl>
+            <dt>
+              <dfn>payerErrors</dfn> member
+            </dt>
+            <dd>
+              Validation errors related to the <a>payer details</a>.
+            </dd>
+          </dl>
+        </section>
+        <section data-dfn-for="PayerErrorFields" data-link-for=
+        "PayerErrorFields">
+          <h3>
+            <dfn>PayerErrorFields</dfn> dictionary
+          </h3>
+          <pre class="idl">
+          dictionary PayerErrorFields {
+            DOMString payerEmailError;
+            DOMString payerNameError;
+            DOMString payerPhoneError;
+          };
+        </pre>
+          <p>
+            The <a>PayerErrorFields</a> is used to represent validation errors
+            with one or more <a>payer details</a>.
+          </p>
+          <p>
+            <dfn>Payer details</dfn> are any of the payer's name, payer's phone
+            number, and payer's email.
+          </p>
+          <dl data-link-for="PaymentResponse">
+            <dt>
+              <dfn>payerEmailError</dfn> member
+            </dt>
+            <dd>
+              Denotes that the payer's email suffers from a validation error.
+              In the user agent's UI, this member corresponds to the input
+              field that provided the <a>PaymentResponse</a>'s
+              <a>payerEmail</a> attribute's value.
+            </dd>
+            <dt>
+              <dfn>payerNameError</dfn> member
+            </dt>
+            <dd>
+              Denotes that the payer's name suffers from a validation error. In
+              the user agent's UI, this member corresponds to the input field
+              that provided the <a>PaymentResponse</a>'s <a>payerName</a>
+              attribute's value.
+            </dd>
+            <dt>
+              <dfn>payerPhoneError</dfn> member
+            </dt>
+            <dd>
+              Denotes that the payer's phone number suffers from a validation
+              error. In the user agent's UI, this member corresponds to the
+              input field that provided the <a>PaymentResponse</a>'s
+              <a>payerPhone</a> attribute's value.
+            </dd>
+          </dl>
+          <pre class="example js" title="Payer-related validation errors">
+          const payerErrors = {
+            payerEmailError: "The domain is invalid.",
+            payerPhoneError: "Unknown country code.",
+            payerNameError: "Not in database",
+          };
+          await response.retry({ payerErrors });
+          </pre>
+        </section>
       </section>
       <section>
         <h2>
