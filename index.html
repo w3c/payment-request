@@ -50,6 +50,7 @@
       },
       doJsonLd: true,
       highlightVars: true,
+      pluralize: true,
     };
     </script>
     <style>
@@ -158,16 +159,15 @@
         <li>the payer: the party that makes a purchase at that online store,
         and who authenticates and authorizes payment as required.
         </li>
-        <li>the <dfn data-lt="payment methods">payment method</dfn> provider:
-        the party that provides the means (e.g., credit card) that the payer
-        uses to pay, and that is accepted by the payee.
+        <li>the <dfn>payment method</dfn> provider: the party that provides the
+        means (e.g., credit card) that the payer uses to pay, and that is
+        accepted by the payee.
         </li>
       </ul>
       <p>
         The details of how to fulfill a payment request for a given <a>payment
-        method</a> is an implementation detail of a <dfn data-lt=
-        "payment handlers">payment handler</dfn>. Concretely, each payment
-        handler defines:
+        method</a> is an implementation detail of a <dfn>payment handler</dfn>.
+        Concretely, each payment handler defines:
       </p>
       <dl>
         <dt>
@@ -1057,12 +1057,12 @@
             the <a>user agent</a> to abort the payment <var>request</var> and
             to tear down any user interface that might be shown. The
             <a>abort()</a> can only be called after the <a>show()</a> method
-            has been called (see <a data-lt="state">states</a>) and before this
-            instance's <a>[[\acceptPromise]]</a> has been resolved. For
-            example, developers might choose to do this if the goods they are
-            selling are only available for a limited amount of time. If the
-            user does not accept the payment request within the allowed time
-            period, then the request will be aborted.
+            has been called (see <a>states</a>) and before this instance's
+            <a>[[\acceptPromise]]</a> has been resolved. For example,
+            developers might choose to do this if the goods they are selling
+            are only available for a limited amount of time. If the user does
+            not accept the payment request within the allowed time period, then
+            the request will be aborted.
           </p>
           <p>
             A <a>user agent</a> might not always be able to abort a request.
@@ -1524,8 +1524,7 @@
         <p>
           A <dfn data-cite="INFRA#javascript-string">JavaScript string</dfn> is
           a <dfn>valid decimal monetary value</dfn> if it consists of the
-          following <dfn data-lt="code point" data-cite="INFRA#code-point">code
-          points</dfn> in the given order: [[!INFRA]]
+          following <a>code points</a> in the given order:
         </p>
         <ol>
           <li>Optionally, a single U+002D (-), to indicate that the amount is
@@ -2093,7 +2092,7 @@
           neighborhoods, boroughs, districts, or UK dependent localities.
         </dd>
         <dt>
-          <dfn data-lt="Postal codes">Postal code</dfn>
+          <dfn>Postal code</dfn>
         </dt>
         <dd>
           The postal code or ZIP code, also known as PIN code in India.
@@ -4079,7 +4078,8 @@
           The [[!INFRA] specification defines how to <dfn data-cite=
           "!INFRA#strip-leading-and-trailing-ascii-whitespace">strip leading
           and trailing ascii whitespace</dfn>. It also defines the concept of a
-          <dfn data-cite="!INFRA#list">list</dfn>.
+          <dfn data-cite="!INFRA#list">list</dfn> and <dfn data-cite=
+          "INFRA#code-point">code point</dfn>.
         </dd>
         <dt>
           Payment Method Identifiers
@@ -4166,10 +4166,10 @@
         </dt>
         <dd>
           <p>
-            When this specification says to <dfn data-cite="!WEBIDL#dfn-throw"
-            data-lt="throws">throw</dfn> an error, the <a>user agent</a> must
-            throw an error as described in [[!WEBIDL]]. When this occurs in a
-            sub-algorithm, this results in termination of execution of the
+            When this specification says to <dfn data-cite=
+            "!WEBIDL#dfn-throw">throw</dfn> an error, the <a>user agent</a>
+            must throw an error as described in [[!WEBIDL]]. When this occurs
+            in a sub-algorithm, this results in termination of execution of the
             sub-algorithm and all ancestor algorithms until one is reached that
             explicitly describes procedures for catching exceptions.
           </p>
@@ -4200,7 +4200,7 @@
     <section id="conformance">
       <p>
         There is only one class of product that can claim conformance to this
-        specification: a <dfn data-lt="user agents">user agent</dfn>.
+        specification: a <dfn>user agent</dfn>.
       </p>
       <p class="note">
         Although this specification is primarily targeted at web browsers, it
