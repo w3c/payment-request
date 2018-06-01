@@ -177,8 +177,8 @@
           How a payment handler determines whether it, or the user, can
           potentially "make a payment" is also an implementation detail of a
           payment handler. For an example, see the <a data-cite=
-          "payment-method-basic-card#steps-to-check-if-a-payment-can-be-made">can make payment</a>
-          algorithm of [[payment-method-basic-card]].
+          "payment-method-basic-card#steps-to-check-if-a-payment-can-be-made">can
+          make payment</a> algorithm of [[payment-method-basic-card]].
         </dd>
         <dt>
           <dfn>Steps to respond to a payment request</dfn>:
@@ -3679,11 +3679,11 @@
           <var>detailsPromise</var> and a <a>PaymentRequest</a>
           <var>request</var>. The steps are conditional on the
           <var>detailsPromise</var> settling. If <var>detailsPromise</var>
-          never settles then the payment request is blocked. Users SHOULD
-          always be able to cancel a payment request. Implementations MAY
-          choose to implement a timeout for pending updates if
-          <var>detailsPromise</var> doesn't settle in a reasonable amount of
-          time. If an implementation chooses to implement a timeout, they must
+          never settles then the payment request is blocked. The user agent
+          SHOULD provide the user with a means to abort a payment request.
+          Implementations MAY choose to implement a timeout for pending updates
+          if <var>detailsPromise</var> doesn't settle in a reasonable amount of
+          time. If an implementation chooses to implement a timeout, they MUST
           execute the steps listed below in the "upon rejection" path. Such a
           timeout is a fatal error for the payment request.
         </p>
@@ -3951,6 +3951,9 @@
             "WEBIDL#dfn-exception">exception</a> <var>exception</var>:
           </p>
           <ol class="algorithm">
+            <li>Optionally, show an error message to the user when letting them
+            know an error has occured.
+            </li>
             <li>Abort the current user interaction and close down any remaining
             user interface.
             </li>
@@ -3985,10 +3988,6 @@
             state. The error is signaled to the developer through the rejection
             of the <a>[[\acceptPromise]]</a>, i.e., the promise returned by
             <a data-lt="PaymentRequest.show">show()</a>.
-          </p>
-          <p>
-            <a>User agents</a> might show an error message to the user when
-            this occurs.
           </p>
         </div>
       </section>
