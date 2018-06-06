@@ -3807,7 +3807,7 @@
         </h2>
         <p>
           The user agent MUST run the <dfn>payment method changed
-          algorithm</dfn> runs when the user changes <a>payment method</a>. The
+          algorithm</dfn> when the user changes <a>payment method</a>. The
           algorithm takes <var>methodDetails</var>, which is either
           <a data-cite="!WEBIDL#idl-dictionary">dictionary</a> or an
           <a data-cite="!WEBIDL#idl-object">object</a> or null, and a
@@ -3833,12 +3833,12 @@
               further action. The <a>user agent</a> user interface SHOULD
               ensure that this never occurs.
               </li>
-              <li data-link-for="PaymentMethodChangeEvent">Fire an event
-              "<a>paymentmethodchange</a>" at <var>request</var> using
-              <a>PaymentMethodChangeEvent</a>, with its <a>methodName</a>
-              attribute initialized to <var>methodName</var>, and its
-              <a>methodDetails</a> attribute initialized to
-              <var>methodDetails</var>.
+              <li data-link-for="PaymentMethodChangeEvent">
+                <a>Fire an event</a> "<a>paymentmethodchange</a>" at
+                <var>request</var> using <a>PaymentMethodChangeEvent</a>, with
+                its <a>methodName</a> attribute initialized to
+                <var>methodName</var>, and its <a>methodDetails</a> attribute
+                initialized to <var>methodDetails</var>.
               </li>
             </ol>
           </li>
