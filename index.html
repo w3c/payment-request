@@ -3234,6 +3234,7 @@
           <pre class="idl">
             dictionary PaymentValidationErrors {
               PayerErrorFields payerErrors;
+              AddressErrorFields shippingAddressErrors;
             };
           </pre>
           <dl>
@@ -3242,6 +3243,13 @@
             </dt>
             <dd>
               Validation errors related to the <a>payer details</a>.
+            </dd>
+            <dt>
+              <dfn>shippingAddressErrors</dfn> member
+            </dt>
+            <dd data-link-for="PaymentResponse">
+              Represents validation errors with the <a>PaymentResponse</a>'s
+              <a>shippingAddress</a>.
             </dd>
           </dl>
         </section>
