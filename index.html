@@ -3167,34 +3167,61 @@
           <li>Let <var>request</var> be
           <var>response</var>.<a>[[\request]]</a>.
           </li>
-          <li>If <var>response</var>.<a>[[\complete]]</a> is true, return a
-          promise rejected with an "<a>InvalidStateError</a>"
+          <li>If <var>response</var>.<a>[[\complete]]</a> is true, return <a>a
+          promise rejected with</a> an "<a>InvalidStateError</a>"
           <a>DOMException</a>.
           </li>
-          <li>If <var>response</var>.<a>[[\retrying]]</a> is true, return a
-          promise rejected with an "<a>InvalidStateError</a>"
+          <li>If <var>response</var>.<a>[[\retrying]]</a> is true, return <a>a
+          promise rejected with</a> an "<a>InvalidStateError</a>"
           <a>DOMException</a>.
           </li>
           <li>Set <var>response</var>.<a>[[\retrying]]</a> to true.
           </li>
           <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>interactive</a>".
           </li>
-          <li>Set <var>request</var>.<a>[[\retryPromise]]</a> to a newly
-          created promise.
+          <li>Let <var>retryPromise</var> be <a>a new promise</a>.
+          </li>
+          <li>Set <var>response</var>.<a>[[\retryPromise]]</a> to
+          <var>retryPromise</var>.
           </li>
           <li>
             <a>In parallel</a>:
             <ol>
-              <li>Indicate to the end-user that something is wrong with the
-              data of the payment response.
-                <div class="issue" data-number="647"></div>
+              <li>In the payments UI, indicate to the end-user that something
+              is wrong with the user-provided data of the payment response.
               </li>
-              <li>Wait for the user to either <a>retry the payment</a> or
-              <a>abort retrying</a>.
+              <li>
+                <p>
+                  The <var>retryPromise</var> will later be resolved or
+                  rejected by either the <a>user accepts the payment request
+                  algorithm</a> or the <a>user aborts the payment request
+                  algorithm</a>, which are triggered through interaction with
+                  the user interface.
+                </p>
+                <p data-test="rejects_if_not_active.https.html">
+                  If <var>document</var> stops being <a data-cite=
+                  "!HTML#fully-active">fully active</a> while the user
+                  interface is being shown, or no longer is by the time this
+                  step is reached, then:
+                </p>
+                <ol>
+                  <li>Close down the user interface.
+                  </li>
+                  <li>Set the <a>user agent</a>'s <a>payment request is
+                  showing</a> boolean to false.
+                  </li>
+                  <li>Reject <var>retryPromise</var> with an
+                  "<a>AbortError</a>" <a>DOMException</a>.
+                  </li>
+                </ol>
+                <p>
+                  Finally, when <var>retryPromise</var> settles, set
+                  <var>response</var><a>[[\retrying]]</a> to false.
+                </p>
               </li>
             </ol>
           </li>
-          <li>Return <var>request</var>.<a>[[\retryPromise]]</a>.
+          <li>Return <var>retryPromise</var>.
           </li>
         </ol>
       </section>
@@ -3410,7 +3437,7 @@
               <dfn>[[\complete]]</dfn>
             </td>
             <td>
-              true if that the request for payment has completed, or false
+              Is true if that the request for payment has completed, or false
               otherwise.
             </td>
           </tr>
@@ -3428,9 +3455,9 @@
               <dfn>[[\retryPromise]]</dfn>
             </td>
             <td>
-              A <a>Promise</a> resolves when a user <a data-lt=
-              "retry the payment">retries the payment</a> or rejects if the
-              user <a>aborts retrying</a>.
+              When <a>[[\retrying]]</a> is true, a <a>Promise</a> resolves when
+              a <a>user accepts the payment request</a> or rejects if the
+              <a>user aborts the payment request</a>.
             </td>
           </tr>
           <tr>
@@ -3444,109 +3471,6 @@
             </td>
           </tr>
         </table>
-      </section>
-      <section>
-        <h2>
-          <code>PaymentResponse</code> algorithms
-        </h2>
-        <section>
-          <h3>
-            User retries the payment algorithm
-          </h3>
-          <p>
-            The <dfn data-lt="retry the payment">user retries the payment
-            algorithm</dfn> runs if the developer has called <a>retry()</a> and
-            the user attempts to reaccept a request for payment:
-          </p>
-          <ol class="algorithm">
-            <li>Let <var>response</var> be the <a>PaymentResponse</a>
-            <a>context object</a>.
-            </li>
-            <li>Let <var>request</var> be
-            <var>response</var><a>[[\request]]</a>.
-            </li>
-            <li>If <var>request</var>.<a>[[\updating]]</a> is true, then
-            terminate this algorithm and take no further action. The <a>user
-            agent</a> user interface SHOULD ensure that this never occurs.
-            </li>
-            <li>If <var>request</var>.<a>[[\state]]</a> is not
-            "<a>interactive</a>", then terminate this algorithm and take no
-            further action. The <a>user agent</a> user interface SHOULD ensure
-            that this never occurs.
-            </li>
-            <li>If the <a data-lt=
-            "PaymentOptions.requestShipping">requestShipping</a> value of <var>
-              request</var>.<a>[[\options]]</a> is true, then if the
-              <a data-lt="PaymentRequest.shippingAddress">shippingAddress</a>
-              attribute of <var>request</var> is null or if the <a data-lt=
-              "PaymentRequest.shippingOption">shippingOption</a> attribute of
-              <var>request</var> is null, then terminate this algorithm and
-              take no further action. The <a>user agent</a> SHOULD ensure that
-              this never occurs.
-            </li>
-            <li>
-              <a>Queue a task</a> on the <a>user interaction task source</a> to
-              perform the following steps:
-              <ol>
-                <li>Set <var>response</var>.<a>[[\retrying]]</a> to false.
-                </li>
-                <li>Set <var>request</var>.<a>[[\state]]</a> to
-                "<a>closed</a>".
-                </li>
-                <li>Resolve <var>response</var>.<a>[[\retryPromise]]</a> with
-                undefined.
-                </li>
-              </ol>
-            </li>
-          </ol>
-        </section>
-        <section>
-          <h3>
-            User aborts retrying algorithm
-          </h3>
-          <p>
-            The <dfn data-lt="aborts retrying|abort retrying">user aborts
-            retrying algorithm</dfn> runs if the developer has called
-            <a>retry()</a> and the user aborts the payment request through the
-            currently interactive user interface. Aborting closes down any
-            remaining user interface.
-          </p>
-          <ol class="algorithm">
-            <li>Let <var>request</var> be the <a>PaymentRequest</a> <a>context
-            object</a>.
-            </li>
-            <li>If the <var>response</var>.<a>[[\retrying]]</a> is false, then
-            terminate this algorithm and take no further action. The <a>user
-            agent</a> user interface SHOULD ensure that this never occurs.
-            </li>
-            <li>If the <var>request</var>.<a>[[\updating]]</a> is true, then
-            terminate this algorithm and take no further action. The <a>user
-            agent</a> user interface SHOULD ensure that this never occurs.
-            </li>
-            <li>If <var>request</var>.<a>[[\state]]</a> is not
-            "<a>interactive</a>", then terminate this algorithm and take no
-            further action. The <a>user agent</a> user interface SHOULD ensure
-            that this never occurs.
-            </li>
-            <li>
-              <a>Queue a task</a> on the <a>user interaction task source</a> to
-              perform the following steps:
-              <ol>
-                <li>Set <var>request</var>.<a>[[\state]]</a> to
-                "<a>closed</a>".
-                </li>
-                <li>Set the <a>user agent</a>'s <a>payment request is
-                showing</a> boolean to false.
-                </li>
-                <li>Set <var>response</var>.<a>[[\complete]]</a> to true.
-                </li>
-                <li>Reject <var>request</var>.<a>[[\retryPromise]]</a> with an
-                "<a>AbortError</a>" <a>DOMException</a>.
-                </li>
-              </ol>
-            </li>
-          </ol>
-        </section>
       </section>
     </section>
     <section class="informative">
@@ -3945,23 +3869,41 @@
             further action. The <a>user agent</a> SHOULD ensure that this never
             occurs.
           </li>
-          <li>Let <var>response</var> be a new <a>PaymentResponse</a>.
+          <li>Let <var>isRetry</var> be true if
+          <var>request</var><a>[[\response]]</a> is not null, false otherwise.
           </li>
-          <li>Let <var>response</var>.<a>[[\request]]</a> be
-          <var>request</var>.
+          <li>Let <var>response</var> be <var>request</var><a>[[\response]]</a>
+          if <var>isRetry</var> is true, or a new <a>PaymentResponse</a>
+          otherwise.
           </li>
-          <li>Set <var>request</var>.<a>[[\response]]</a> to
-          <var>response</var>.
-          </li>
-          <li>Set the <a data-lt="PaymentResponse.requestId">requestId</a>
-          attribute value of <var>response</var> to the value of
-          <var>request</var>.<a>[[\details]]</a>.<a data-lt=
-          "PaymentDetailsInit.id">id</a>.
-          </li>
-          <li>Set the <a data-lt="PaymentResponse.methodName">methodName</a>
-          attribute value of <var>response</var> to the <a>payment method
-          identifier</a> for the <a>payment method</a> that the user selected
-          to accept the payment.
+          <li>If <var>isRetry</var> if false, initialize the newly created
+          <var>response</var>:
+            <ol>
+              <li>Set <var>response</var>.<a>[[\request]]</a> to
+              <var>request</var>.
+              </li>
+              <li>Set <var>response</var>.<a>[[\retrying]]</a> to false.
+              </li>
+              <li>Set <var>response</var>.<a>[[\retryPromise]]</a> to
+              undefined.
+              </li>
+              <li>Set <var>response</var>.<a>[[\complete]]</a> to false.
+              </li>
+              <li>Set the <a data-lt="PaymentResponse.requestId">requestId</a>
+              attribute value of <var>response</var> to the value of
+              <var>request</var>.<a>[[\details]]</a>.<a data-lt=
+              "PaymentDetailsInit.id">id</a>.
+              </li>
+              <li>Set the <a data-lt=
+              "PaymentResponse.methodName">methodName</a> attribute value of
+              <var>response</var> to the <a>payment method identifier</a> for
+              the <a>payment method</a> that the user selected to accept the
+              payment.
+              </li>
+              <li>Set <var>request</var>.<a>[[\response]]</a> to
+              <var>response</var>.
+              </li>
+            </ol>
           </li>
           <li>Let <var>handler</var> be the <a>payment handler</a> selected by
           the user.
@@ -4024,13 +3966,12 @@
           "PaymentResponse.payerPhone">payerPhone</a> value, the user agent
           SHOULD format the phone number to adhere to [[!E.164]].
           </li>
-          <li>Set <var>response</var>.<a>[[\complete]]</a> to false.
+          <li>If <var>isRetry</var> is true, resolve
+          <var>response</var><a>[[\retryPromise]]</a> with undefined.
+          Otherwise, resolve <var>request</var>.<a>[[\acceptPromise]]</a> with
+          <var>response</var>.
           </li>
           <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
-          </li>
-          <li>Resolve the pending promise
-          <var>request</var>.<a>[[\acceptPromise]]</a> with
-          <var>response</var>.
           </li>
         </ol>
       </section>
@@ -4063,8 +4004,23 @@
           <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
           boolean to false.
           </li>
-          <li>Reject the promise <var>request</var>.<a>[[\acceptPromise]]</a>
-          with an "<a>AbortError</a>" <a>DOMException</a>.
+          <li>Let <var>error</var> be an "<a>AbortError</a>"
+          <a>DOMException</a>.
+          </li>
+          <li>Let <var>response</var> be
+          <var>request</var><a>[[\response]]</a>.
+          </li>
+          <li>If <var>response</var> not null:
+            <ol>
+              <li>Assert: <var>response</var><a>[[\retrying]]</a> is true.
+              </li>
+              <li>Reject <var>response</var><a>[[\retryPromise]]</a> with <var>
+                error</var>
+              </li>
+            </ol>
+          </li>
+          <li>Otherwise, reject <var>request</var>.<a>[[\acceptPromise]]</a>
+          with <var>error</var>.
           </li>
         </ol>
       </section>
