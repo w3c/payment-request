@@ -3134,7 +3134,7 @@
       </h2>
       <pre class="idl">
         [SecureContext, Exposed=Window]
-        interface PaymentResponse {
+        interface PaymentResponse : EventTarget  {
           [Default] object toJSON();
 
           readonly attribute DOMString requestId;
@@ -3148,6 +3148,8 @@
 
           Promise&lt;void&gt; complete(optional PaymentComplete result = "unknown");
           Promise&lt;void&gt; retry(PaymentValidationErrors errorFields);
+
+          attribute EventHandler onpayerdetailchange;
         };
       </pre>
       <p class="note">
@@ -3501,6 +3503,14 @@
           </li>
         </ol>
       </section>
+      <section data-dfn-for="PaymentResponse" data-link-for="PaymentResponse">
+        <h2>
+          <dfn>onpayerdetailchange</dfn> attribute
+        </h2>
+        <p>
+          Allows a developer to handle "<a>payerdetailchange</a>" events.
+        </p>
+      </section>
       <section>
         <h2>
           Internal Slots
@@ -3589,6 +3599,9 @@
             <th>
               Dispatched when…
             </th>
+            <th>
+              Target
+            </th>
           </tr>
           <tr>
             <td>
@@ -3600,6 +3613,9 @@
             <td>
               The user provides a new shipping address.
             </td>
+            <td>
+              <a>PaymentRequest</a>
+            </td>
           </tr>
           <tr>
             <td>
@@ -3610,6 +3626,24 @@
             </td>
             <td>
               The user chooses a new shipping option.
+            </td>
+            <td>
+              <a>PaymentRequest</a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code><dfn>payerdetailchange</dfn></code>
+            </td>
+            <td>
+              <a>PaymentRequestUpdateEvent</a>
+            </td>
+            <td>
+              The user changes the payer name, the payer email, or the payer
+              phone (see <a>payer detail changed algorithm</a>).
+            </td>
+            <td>
+              <a>PaymentResponse</a>
             </td>
           </tr>
         </table>
@@ -3727,8 +3761,14 @@
             <li>If <var>event</var>.<a>[[\waitForUpdate]]</a> is true, then <a>
               throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
-            <li>Let <var>request</var> be the value of <var>event</var>'s
-            <a data-cite="DOM#event-target">target</a>.
+            <li>If <var>event</var>'s <a data-cite=
+            "DOM#event-target">target</a> is an instance of
+            <a>PaymentResponse</a>, let <var>request</var> be
+            <var>event</var>'s <a data-cite=
+            "DOM#event-target">target</a><a>[[\request]]</a>.
+            </li>
+            <li>Otherwise, let <var>request</var> be the value of
+            <var>event</var>'s <a data-cite="DOM#event-target">target</a>.
             </li>
             <li>Assert: <var>request</var> is an instance of
             <a>PaymentRequest</a>.
@@ -3877,6 +3917,91 @@
               </li>
               <li>Run the <a>PaymentRequest updated algorithm</a> with
               <var>request</var> and "<a>shippingoptionchange</a>".
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h2>
+          Payer detail changed algorithm
+        </h2>
+        <p>
+          The user agent MUST run the <dfn>payer detail changed algorithm</dfn>
+          when the user changes the <a>DOMString</a> <var>payer name</var>, or
+          the <a>DOMString</a> <var>payer email</var>, or the <a>DOMString</a>
+          <var>payer phone</var> in the user interface:
+        </p>
+        <ol class="algorithm">
+          <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
+          the user is interacting with.
+          </li>
+          <li>If <var>request</var><a>[[\response]]</a> is null, terminate this
+          algorithm.
+          </li>
+          <li>Let <var>response</var> be
+          <var>request</var><a>[[\response]]</a>.
+          </li>
+          <li>Assert: <var>response</var><a>[[\retrying]]</a> is true.
+          </li>
+          <li>
+            <a>Queue a task</a> on the <a>user interaction task source</a> to
+            run the following steps:
+            <ol data-link-for="PaymentResponse">
+              <li>Assert: <var>request</var>.<a>[[\updating]]</a> is false.
+              </li>
+              <li>Assert: <var>request</var>.<a>[[\state]]</a> is
+              "<a>interactive</a>".
+              </li>
+              <li>If <var>payer name</var> changed:
+                <ol>
+                  <li data-link-for="PaymentOptions">Assert:
+                  <var>request</var><a>[[\options]]</a>.<a>requestPayerName</a>
+                  is true.
+                  </li>
+                  <li>Set <var>response</var>'s <a>payerName</a> attribute to
+                  <var>payer name</var>.
+                  </li>
+                </ol>
+              </li>
+              <li>If <var>payer email</var> changed:
+                <ol>
+                  <li data-link-for="PaymentOptions">Assert:
+                  <var>request</var><a>[[\options]]</a>.<a>requestPayerEmail</a>
+                  is true.
+                  </li>
+                  <li>Set <var>response</var>'s <a>payerEmail</a> attribute to
+                  <a>payer email</a>.
+                  </li>
+                </ol>
+              </li>
+              <li>If <var>payer phone</var> changed:
+                <ol>
+                  <li data-link-for="PaymentOptions">Assert:
+                  <var>request</var><a>[[\options]]</a>.<a>requestPayerPhone</a>
+                  is true.
+                  </li>
+                  <li>Set <var>response</var>'s <a>payerPhone</a> attribute to
+                  <var>payer phone</var>.
+                  </li>
+                </ol>
+              </li>
+              <li>Let <var>event</var> be the result of <a data-cite=
+              "!DOM#concept-event-create">creating an event</a> using
+              <a>PaymentRequestUpdateEvent</a>.
+              </li>
+              <li>Initialize <var>event</var>'s <code><a data-cite=
+              "!DOM#dom-event-type">type</a></code> attribute to
+              "<a>payerdetailchange</a>".
+              </li>
+              <li>
+                <a data-cite="!DOM#concept-event-dispatch">Dispatch</a>
+                <var>event</var> at <var>response</var>.
+              </li>
+              <li data-link-for="PaymentRequestUpdateEvent">If
+              <var>event</var>.<a>[[\waitForUpdate]]</a> is true, disable any
+              part of the user interface that could cause another update event
+              to be fired.
               </li>
             </ol>
           </li>
@@ -4432,7 +4557,8 @@
                     <li>Let <var>response</var> be
                     <var>request</var><a>[[\response]]</a>.
                     </li>
-                    <li>Assert: <var>response</var><a>[[\retrying]]</a> is true.
+                    <li>Assert: <var>response</var><a>[[\retrying]]</a> is
+                    true.
                     </li>
                     <li>Reject <var>response</var><a>[[\retryPromise]]</a> with
                     <var>exception</var>.
