@@ -4426,7 +4426,20 @@
                 <li>Set <var>request</var>.<a>[[\state]]</a> to
                 "<a>closed</a>".
                 </li>
-                <li>Reject the promise
+                <li>If <var>request</var><a>[[\response]]</a> is not null,
+                then:
+                  <ol>
+                    <li>Let <var>response</var> be
+                    <var>request</var><a>[[\response]]</a>.
+                    </li>
+                    <li>Assert: <var>response</var><a>[[\retrying]]</a> is true.
+                    </li>
+                    <li>Reject <var>response</var><a>[[\retryPromise]]</a> with
+                    <var>exception</var>.
+                    </li>
+                  </ol>
+                </li>
+                <li>Otherwise, reject the promise
                 <var>request</var>.<a>[[\acceptPromise]]</a> with
                 <var>exception</var>.
                 </li>
