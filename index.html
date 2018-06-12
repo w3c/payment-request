@@ -3371,12 +3371,8 @@
         </h2>
         <p data-tests=
         "payment-response/shippingAddress-attribute-manual.https.html">
-          If the <a data-lt=
-          "PaymentOptions.requestShipping">requestShipping</a> member was set
-          to true in the <a>PaymentOptions</a> passed to the
-          <a>PaymentRequest</a> constructor, then <a data-lt=
-          "PaymentRequest.shippingAddress">shippingAddress</a> will be the full
-          and final shipping address chosen by the user.
+          When getting, the user agent MUST return the value of the <a>context
+          object</a>'s <a>[[\request]]</a>'s <a>shippingAddress</a> attribute.
         </p>
       </section>
       <section>
@@ -3384,14 +3380,10 @@
           <dfn>shippingOption</dfn> attribute
         </h2>
         <p data-tests=
-        "payment-response/shippingOption-attribute-manual.https.html">
-          If the <a data-lt=
-          "PaymentOptions.requestShipping">requestShipping</a> member was set
-          to true in the <a>PaymentOptions</a> passed to the
-          <a>PaymentRequest</a> constructor, then <a data-lt=
-          "PaymentRequest.shippingOption">shippingOption</a> will be the
-          <a data-lt="PaymentShippingOption.id">id</a> attribute of the
-          selected shipping option.
+        "payment-response/shippingOption-attribute-manual.https.html"
+        data-link-for="PaymentRequest">
+          When getting, the user agent MUST return the value of the <a>context
+          object</a>'s <a>[[\request]]</a>'s <a>shippingOption</a> attribute.
         </p>
       </section>
       <section>
@@ -3399,12 +3391,8 @@
           <dfn>payerName</dfn> attribute
         </h2>
         <p data-tests="payment-response/payerName-attribute-manual.https.html">
-          If the <a data-lt=
-          "PaymentOptions.requestPayerName">requestPayerName</a> member was set
-          to true in the <a>PaymentOptions</a> passed to the
-          <a>PaymentRequest</a> constructor, then <a data-lt=
-          "PaymentResponse.payerName">payerName</a> will be the name provided
-          by the user.
+          When getting, the user agent MUST return value of the <a>context
+          object</a>'s <a>[[\payerName]]</a> internal slot.
         </p>
       </section>
       <section>
@@ -3413,12 +3401,8 @@
         </h2>
         <p data-tests=
         "payment-response/payerEmail-attribute-manual.https.html">
-          If the <a data-lt=
-          "PaymentOptions.requestPayerEmail">requestPayerEmail</a> member was
-          set to true in the <a>PaymentOptions</a> passed to the
-          <a>PaymentRequest</a> constructor, then <a data-lt=
-          "PaymentResponse.payerEmail">payerEmail</a> will be the email address
-          chosen by the user.
+          When getting, the user agent MUST return value of the <a>context
+          object</a>'s <a>[[\payerEmail]]</a> internal slot.
         </p>
       </section>
       <section>
@@ -3427,21 +3411,18 @@
         </h2>
         <p data-tests=
         "payment-response/payerPhone-attribute-manual.https.html">
-          If the <a data-lt=
-          "PaymentOptions.requestPayerPhone">requestPayerPhone</a> member was
-          set to true in the <a>PaymentOptions</a> passed to the
-          <a>PaymentRequest</a> constructor, then <a data-lt=
-          "PaymentResponse.payerPhone">payerPhone</a> will be the phone number
-          chosen by the user.
+          When getting, the user agent MUST return the value of the <a>context
+          object</a>'s <a>[[\payerPhone]]</a> internal slot.
         </p>
       </section>
       <section>
         <h2>
           <dfn>requestId</dfn> attribute
         </h2>
-        <p data-tests="payment-response/requestId-attribute-manual.https.html">
-          The corresponding payment request <a data-lt=
-          "PaymentRequest.id">id</a> that spawned this payment response.
+        <p data-tests="payment-response/requestId-attribute-manual.https.html"
+        data-link-for="PaymentDetailsInit">
+          When getting, the user agent MUST return the value of the <a>context
+          object</a>'s <a>[[\request]]</a><a>[[\details]]</a>.<a>id</a>.
         </p>
       </section>
       <section data-dfn-for="PaymentResponse" data-link-for="PaymentResponse">
@@ -3539,6 +3520,26 @@
           </tr>
           <tr>
             <td>
+              <dfn>[[\methodName]]</dfn>
+            </td>
+            <td>
+              A <a>payment method identifier</a> for the <a>payment method</a>
+              that the user selected to accept the payment.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\responseDetails]]</dfn>
+            </td>
+            <td>
+              An object that allows a payment to be completed (e.g., a credit
+              card number, or tokenized payment information), provided by a
+              <a>payment handler</a>'s <a>steps to respond to a payment
+              request</a>.
+            </td>
+          </tr>
+          <tr>
+            <td>
               <dfn>[[\request]]</dfn>
             </td>
             <td>
@@ -3564,6 +3565,30 @@
               When true, the developer has signaled that the payment response
               suffers from validation errors that the user needs to correct in
               the user agent's UI.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\payerEmail]]</dfn>
+            </td>
+            <td>
+              A DOMString or null, represents the payer's email.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\payerName]]</dfn>
+            </td>
+            <td>
+              A DOMString or null, represents the payer's email.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\payerPhone]]</dfn>
+            </td>
+            <td>
+              A DOMString or null, represents the payer's phone number.
             </td>
           </tr>
         </table>
@@ -3851,6 +3876,9 @@
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
           the user is interacting with.
           </li>
+          <li>Let <var>isRetry</var> be true if
+          <var>request</var><a>[[\response]]</a> is not null, false otherwise.
+          </li>
           <li>
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
@@ -3874,9 +3902,11 @@
                     some countries postal codes are so fine-grained that they
                     can uniquely identify a recipient.
                   </p>
-                </div>Let <var>redactList</var> be the empty list. Optionally,
-                set <var>redactList</var> to « "organization", "phone",
-                "recipient", "addressLine" ».
+                </div>Let <var>redactList</var> be the empty list.
+              </li>
+              <li>Optionally, if <var>isRetry</var> is false, set
+              <var>redactList</var> to « "organization", "phone", "recipient",
+              "addressLine" ».
               </li>
               <li>Let <var>address</var> be the result of running the steps to
               <a>create a <code>PaymentAddress</code> from user-provided
@@ -3928,9 +3958,8 @@
         </h2>
         <p>
           The user agent MUST run the <dfn>payer detail changed algorithm</dfn>
-          when the user changes the <a>DOMString</a> <var>payer name</var>, or
-          the <a>DOMString</a> <var>payer email</var>, or the <a>DOMString</a>
-          <var>payer phone</var> in the user interface:
+          when the user changes the <var>payer name</var>, or the <var>payer
+          email</var>, or the <var>payer phone</var> in the user interface:
         </p>
         <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
@@ -3959,8 +3988,8 @@
                   <var>request</var><a>[[\options]]</a>.<a>requestPayerName</a>
                   is true.
                   </li>
-                  <li>Set <var>response</var>'s <a>payerName</a> attribute to
-                  <var>payer name</var>.
+                  <li>Set <var>response</var>'s <a>[[\payerName]]</a> to <var>
+                    payer name</var>.
                   </li>
                 </ol>
               </li>
@@ -3970,8 +3999,8 @@
                   <var>request</var><a>[[\options]]</a>.<a>requestPayerEmail</a>
                   is true.
                   </li>
-                  <li>Set <var>response</var>'s <a>payerEmail</a> attribute to
-                  <var>payer email</var>.
+                  <li>Set <var>response</var>'s <a>[[\payerEmail]]</a> to <var>
+                    payer email</var>.
                   </li>
                 </ol>
               </li>
@@ -3981,8 +4010,9 @@
                   <var>request</var><a>[[\options]]</a>.<a>requestPayerPhone</a>
                   is true.
                   </li>
-                  <li>Set <var>response</var>'s <a>payerPhone</a> attribute to
-                  <var>payer phone</var>.
+                  <li>Set <var>response</var>'s <a>[[\payerPhone]]</a> to <var>
+                    payer phone</var>. The user agent SHOULD format the
+                    <var>phone number</var> to adhere to [[!E.164]].
                   </li>
                 </ol>
               </li>
@@ -4057,7 +4087,7 @@
           a task</a> on the <a>user interaction task source</a> to perform the
           following steps:
         </p>
-        <ol class="algorithm">
+        <ol class="algorithm" data-link-for="PaymentOptions">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
           the user is interacting with.
           </li>
@@ -4070,8 +4100,7 @@
           further action. The <a>user agent</a> user interface SHOULD ensure
           that this never occurs.
           </li>
-          <li>If the <a data-lt=
-          "PaymentOptions.requestShipping">requestShipping</a> value of
+          <li>If the <a>requestShipping</a> value of
           <var>request</var>.<a>[[\options]]</a> is true, then if the
           <a data-lt="PaymentRequest.shippingAddress">shippingAddress</a>
           attribute of <var>request</var> is null or if the <a data-lt=
@@ -4100,16 +4129,15 @@
               </li>
               <li>Set <var>response</var>.<a>[[\complete]]</a> to false.
               </li>
-              <li>Set the <a data-lt="PaymentResponse.requestId">requestId</a>
-              attribute value of <var>response</var> to the value of
-              <var>request</var>.<a>[[\details]]</a>.<a data-lt=
-              "PaymentDetailsInit.id">id</a>.
+              <li>Set <var>response</var>.<a>[[\payerEmail]]</a> to null.
               </li>
-              <li>Set the <a data-lt=
-              "PaymentResponse.methodName">methodName</a> attribute value of
-              <var>response</var> to the <a>payment method identifier</a> for
-              the <a>payment method</a> that the user selected to accept the
-              payment.
+              <li>Set <var>response</var>.<a>[[\payerName]]</a> to null.
+              </li>
+              <li>Set <var>response</var>.<a>[[\payerPhone]]</a> to null.
+              </li>
+              <li>Set <var>response</var>.<a>[[\methodName]]</a> to the
+              <a>payment method identifier</a> for the <a>payment method</a>
+              that the user selected to accept the payment.
               </li>
               <li>Set <var>request</var>.<a>[[\response]]</a> to
               <var>response</var>.
@@ -4119,63 +4147,26 @@
           <li>Let <var>handler</var> be the <a>payment handler</a> selected by
           the user.
           </li>
-          <li>Set the <a data-lt="PaymentResponse.details">details</a>
-          attribute value of <var>response</var> to an object resulting from
-          running the <var>handler</var>'s <a>steps to respond to a payment
+          <li>Set <var>request</var><a>[[\responseDetails]]</a> to the result
+          of running <var>handler</var>'s <a>steps to respond to a payment
           request</a>.
           </li>
-          <li>If the <a data-lt=
-          "PaymentOptions.requestShipping">requestShipping</a> value of
-          <var>request</var>.<a>[[\options]]</a> is false, then set the
-          <a data-lt="PaymentResponse.shippingAddress">shippingAddress</a>
-          attribute value of <var>response</var> to null. Otherwise:
-            <ol>
-              <li>Let <var>redactList</var> be the empty <a>list</a>.
-              </li>
-              <li>Let <var>shippingAddress</var> be the result of <a>create a
-              <code>PaymentAddress</code> from user-provided input</a> with
-              <var>redactList</var>.
-              </li>
-              <li>Set the <a data-lt=
-              "PaymentResponse.shippingAddress">shippingAddress</a> attribute
-              value of <var>response</var> to <var>shippingAddress</var>.
-              </li>
-              <li>Set the <a data-lt=
-              "PaymentResponse.shippingAddress">shippingAddress</a> attribute
-              value of <var>request</var> to <var>shippingAddress</var>.
-              </li>
-            </ol>
+          <li>If the <a>requestPayerName</a> value of
+          <var>request</var>.<a>[[\options]]</a> is true, then set
+          <var>response</var><a>[[\payerName]]</a> to the payer's name provided
+          by the user, or to null if none was provided.
           </li>
-          <li>If the <a data-lt=
-          "PaymentOptions.requestShipping">requestShipping</a> value of
-          <var>request</var>.<a>[[\options]]</a> is true, then set the
-          <a data-lt="PaymentResponse.shippingOption">shippingOption</a>
-          attribute of <var>response</var> to the value of the <a data-lt=
-          "PaymentRequest.shippingOption">shippingOption</a> attribute of <var>
-            request</var>. Otherwise, set it to null.
+          <li>If the <a>requestPayerEmail</a> value of
+          <var>request</var>.<a>[[\options]]</a> is true, then set
+          <var>response</var><a>[[\payerEmail]]</a> to the payer's email
+          address provided by the user, or to null if none was provided.
           </li>
-          <li>If the <a data-lt=
-          "PaymentOptions.requestPayerName">requestPayerName</a> value of <var>
-            request</var>.<a>[[\options]]</a> is true, then set the <a data-lt=
-            "PaymentResponse.payerName">payerName</a> attribute of
-            <var>response</var> to the payer's name provided by the user, or to
-            null if none was provided. Otherwise, set it to null.
-          </li>
-          <li>If the <a data-lt=
-          "PaymentOptions.requestPayerEmail">requestPayerEmail</a> value of
-          <var>request</var>.<a>[[\options]]</a> is true, then set the
-          <a data-lt="PaymentResponse.payerEmail">payerEmail</a> attribute of
-          <var>response</var> to the payer's email address provided by the
-          user, or to null if none was provided. Otherwise, set it to null.
-          </li>
-          <li>If the <a data-lt=
-          "PaymentOptions.requestPayerPhone">requestPayerPhone</a> value of
-          <var>request</var>.<a>[[\options]]</a> is true, then set the
-          <a data-lt="PaymentResponse.payerPhone">payerPhone</a> attribute of
-          <var>response</var> to the payer's phone number provided by the user,
-          or to null if none was provided. When setting the <a data-lt=
-          "PaymentResponse.payerPhone">payerPhone</a> value, the user agent
-          SHOULD format the phone number to adhere to [[!E.164]].
+          <li>If the <a>requestPayerPhone</a> value of
+          <var>request</var>.<a>[[\options]]</a> is true, then set
+          <var>response</var><a>[[\payerPhone]]</a> to the payer's phone number
+          provided by the user, or to null if none was provided. When setting
+          the <a>[[\payerPhone]]</a>, the user agent SHOULD format the phone
+          number to adhere to [[!E.164]].
           </li>
           <li>If <var>isRetry</var> is true, resolve
           <var>response</var><a>[[\retryPromise]]</a> with undefined.
