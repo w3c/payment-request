@@ -3490,24 +3490,25 @@
           arguments.
         </p>
         <p data-tests="payment-response/complete-method-manual.https.html">
-          The <a>complete(result)</a> method MUST act as follows:
+          The <a><code>complete(<var>result</var>)</code></a> method MUST act
+          as follows:
         </p>
         <ol class="algorithm">
           <li>Let <var>response</var> be the <a>context object</a>.
           </li>
+          <li>If <var>response</var>.<a>[[\complete]]</a> is true, return <a>a
+          promise rejected with</a> an "<a>InvalidStateError</a>"
+          <a>DOMException</a>.
+          </li>
           <li>Let <var>promise</var> be <a>a new promise</a>.
           </li>
-          <li>If <var>response</var>.<a>[[\complete]]</a> is true, reject <var>
-            promise</var> with an "<a>InvalidStateError</a>"
-            <a>DOMException</a>.
+          <li>Set <var>response</var>.<a>[[\complete]]</a> to true.
           </li>
           <li data-tests=
           "payment-request/payment-response/retry-method-manual.https.html">If
           <var>response</var>.<a>[[\retryPromise]]</a> is not null, reject
           <var>promise</var> with an "<a>InvalidStateError</a>"
           <a>DOMException</a>.
-          </li>
-          <li>Otherwise, set <var>response</var>.<a>[[\complete]]</a> to true.
           </li>
           <li>Return <var>promise</var> and perform the remaining steps <a>in
           parallel</a>.
