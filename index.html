@@ -1113,8 +1113,9 @@
           <li>Let <var>request</var> be the <a>context object</a>.
           </li>
           <li>If the value of <var>request</var>.<a>[[\state]]</a> is not
-          "<a>interactive</a>" then <a>throw</a> an "<a>InvalidStateError</a>"
-          <a>DOMException</a>.
+          "<a>interactive</a>" then return a promise rejected with a
+          "<a>InvalidStateError</a>" <a>DOMException</a> and terminate this
+          algorithm.
           </li>
           <li>Let <var>promise</var> be <a>a new promise</a>.
           </li>
