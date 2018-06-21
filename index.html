@@ -475,15 +475,14 @@
           };
           // Sync update to the total
           request.onshippingoptionchange = ev =&gt; {
-            const shippingOption = shippingOptions.find(
-              option =&gt; option.id === request.id
-            );
+            // selected shipping option
+            const { shippingOption } = request;
             const newTotal = {
               currency: "USD",
               label: "Total due",
               value: calculateNewTotal(shippingOption),
             };
-            ev.updateWith({ ...details, total: newTotal });
+            ev.updateWith({ total: newTotal });
           };
           async function checkShipping(request) {
             try {
@@ -492,9 +491,9 @@
               await ensureCanShipTo(json);
               const { shippingOptions, total } = await calculateShipping(json);
 
-              return { ...details, shippingOptions, total };
+              return { shippingOptions, total };
             } catch (err) {
-              return { ...details, error: `Sorry! we can't ship to your address.` };
+              return { error: `Sorry! we can't ship to your address.` };
             }
           }
         </pre>
