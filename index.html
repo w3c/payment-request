@@ -3239,10 +3239,10 @@
           </li>
           <li>Return <var>retryPromise</var>.
             <p class="note">
-              The <var>retryPromise</var> will later be resolved or rejected by
-              either the <a>user accepts the payment request algorithm</a> or
-              the <a>user aborts the payment request algorithm</a>, which are
-              triggered through interaction with the user interface.
+              The <var>retryPromise</var> will later be resolved by the <a>user
+              accepts the payment request algorithm</a>, or rejected by either
+              the <a>user aborts the payment request algorithm</a> or <a>abort
+              the update</a>.
             </p>
           </li>
         </ol>
@@ -4218,10 +4218,15 @@
           <li>Let <var>response</var> be
           <var>request</var>.<a>[[\response]]</a>.
           </li>
-          <li>If <var>response</var> not null:
+          <li>If <var>response</var> is not null:
             <ol>
+              <li>Set <var>response</var>.<a>[[\complete]]</a> to true.
+              </li>
+              <li>Assert: <var>response</var>.<a>[[\retryPromise]]</a> is not
+              null.
+              </li>
               <li>Reject <var>response</var>.<a>[[\retryPromise]]</a> with
-              <var>error</var>
+              <var>error</var>.
               </li>
             </ol>
           </li>
@@ -4546,16 +4551,18 @@
                 <li>Set <var>request</var>.<a>[[\state]]</a> to
                 "<a>closed</a>".
                 </li>
-                <li>If <var>request</var><a>[[\response]]</a> is not null,
-                then:
+                <li>Let <var>response</var> be
+                <var>request</var>.<a>[[\response]]</a>.
+                </li>
+                <li>If <var>response</var> is not null, then:
                   <ol>
-                    <li>Let <var>response</var> be
-                    <var>request</var><a>[[\response]]</a>.
+                    <li>Set <var>response</var>.<a>[[\complete]]</a> to true.
                     </li>
-                    <li>Set <var>response</var><a>[[\complete]]</a> to true.
+                    <li>Assert: <var>response</var>.<a>[[\retryPromise]]</a> is
+                    not null.
                     </li>
-                    <li>Reject <var>response</var><a>[[\retryPromise]]</a> with
-                    <var>exception</var>.
+                    <li>Reject <var>response</var>.<a>[[\retryPromise]]</a>
+                    with <var>exception</var>.
                     </li>
                   </ol>
                 </li>
@@ -4579,10 +4586,18 @@
             fulfillment value containing invalid data. This would potentially
             leave the payment request in an inconsistent state since the
             developer hasn't successfully handled the change event.
+          </p>
+          <p>
             Consequently, the <a>PaymentRequest</a> moves to a "<a>closed</a>"
             state. The error is signaled to the developer through the rejection
             of the <a>[[\acceptPromise]]</a>, i.e., the promise returned by
             <a data-lt="PaymentRequest.show">show()</a>.
+          </p>
+          <p data-link-for="PaymentResponse">
+            Similarly, aborting the update occurs during a <a>retry()</a>, will
+            cause the <a>[[\retryPromise]]</a> to reject, and the corresponding
+            <a>PaymentRequest</a> is put into a "<a>complete</a>" state (i.e.,
+            meaning it can no longer be used).
           </p>
         </div>
       </section>
