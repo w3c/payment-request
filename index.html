@@ -4581,12 +4581,12 @@
         </section>
         <div class="note">
           <p>
-            <a data-lt="abort the update">Aborting the update</a> is performed
-            when there is a fatal error updating the payment request, such as
-            the supplied <var>detailsPromise</var> rejecting, or its
-            fulfillment value containing invalid data. This would potentially
-            leave the payment request in an inconsistent state since the
-            developer hasn't successfully handled the change event.
+            <a>Abort the update</a> runs when there is a fatal error updating
+            the payment request, such as the supplied <var>detailsPromise</var>
+            rejecting, or its fulfillment value containing invalid data. This
+            would potentially leave the payment request in an inconsistent
+            state since the developer hasn't successfully handled the change
+            event.
           </p>
           <p>
             Consequently, the <a>PaymentRequest</a> moves to a "<a>closed</a>"
@@ -4595,10 +4595,10 @@
             <a data-lt="PaymentRequest.show">show()</a>.
           </p>
           <p data-link-for="PaymentResponse">
-            Similarly, aborting the update occurs during a <a>retry()</a> will
-            cause the <a>[[\retryPromise]]</a> to reject, and the corresponding
-            <a>PaymentRequest</a>'s <a>[[\complete]]</a> internal slot will be
-            set to true (i.e., meaning it can no longer be used).
+            Similarly, <a>abort the update</a> occurring during <a>retry()</a>
+            causes the <a>[[\retryPromise]]</a> to reject, and the
+            corresponding <a>PaymentRequest</a>'s <a>[[\complete]]</a> internal
+            slot will be set to true (i.e., it can no longer be used).
           </p>
         </div>
       </section>
