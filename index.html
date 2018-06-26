@@ -4736,6 +4736,22 @@
       </section>
       <section class="informative">
         <h2>
+          Cross-origin payment requests
+        </h2>
+        <p>
+          It is common for merchants and other payees to delegate checkout and
+          other e-commerce activities to payment service providers through an
+          <a>iframe</a>. This API supports payee-authorized cross-origin
+          iframes through [[!HTML]]'s <a>allowpaymentrequest</a> attribute.
+        </p>
+        <p class="Note">
+          <a>Payment handlers</a> have access to both the origin that hosts the
+          <a>iframe</a> and the origin of the <a>iframe</a> content (where the
+          <a>PaymentRequest</a> initiates).
+        </p>
+      </section>
+      <section class="informative">
+        <h2>
           Encryption of data fields
         </h2>
         <p>
