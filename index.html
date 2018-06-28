@@ -3850,7 +3850,7 @@
             "DOM#event-target">target</a> is an instance of
             <a>PaymentResponse</a>, let <var>request</var> be
             <var>event</var>'s <a data-cite=
-            "DOM#event-target">target</a><a>[[\request]]</a>.
+            "DOM#event-target">target</a>.<a>[[\request]]</a>.
             </li>
             <li>Otherwise, let <var>request</var> be the value of
             <var>event</var>'s <a data-cite="DOM#event-target">target</a>.
@@ -4021,6 +4021,75 @@
           identifier</a> of the <a>payment handler</a> the user is interacting
           with:
         </p>
+                <ol class="algorithm">
+          <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
+          the user is interacting with.
+          </li>
+          <li>
+            <a>Queue a task</a> on the <a>user interaction task source</a> to
+            run the following steps:
+            <ol>
+              <li>Assert: <var>request</var>.<a>[[\updating]]</a> is false.
+              Only one update can take place at a time.
+              </li>
+              <li>Assert: <var>request</var>.<a>[[\state]]</a> is
+              "<a>interactive</a>".
+              </li>
+              <li data-link-for="PaymentMethodChangeEvent">
+                <a>Fire an event</a> named "<a>paymentmethodchange</a>" at
+                <var>request</var> using <a>PaymentMethodChangeEvent</a>, with
+                its <a>methodName</a> attribute initialized to
+                <var>methodName</var>, and its <a>methodDetails</a> attribute
+                initialized to <var>methodDetails</var>.
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h2>
+          PaymentRequest updated algorithm
+        </h2>
+        <p data-tests="algorithms-manual.https.html">
+          The <dfn>PaymentRequest updated algorithm</dfn> is run by other
+          algorithms above to <a>fire an event</a> to indicate that a user has
+          made a change to a <a>PaymentRequest</a> called <var>request</var>
+          with an event name of <var>name</var>:
+        </p>
+        <ol class="algorithm">
+          <li>Assert: <var>request</var>.<a>[[\updating]]</a> is false. Only
+          one update can take place at a time.
+          </li>
+          <li>Assert: <var>request</var>.<a>[[\state]]</a> is
+          "<a>interactive</a>".
+          </li>
+          <li>Let <var>event</var> be the result of <a data-cite=
+          "!DOM#concept-event-create">creating an event</a> using the
+          <a>PaymentRequestUpdateEvent</a> interface.
+          </li>
+          <li>Initialize <var>event</var>'s <code><a data-cite=
+          "!DOM#dom-event-type">type</a></code> attribute to <var>name</var>.
+          </li>
+          <li>
+            <a data-cite="!DOM#concept-event-dispatch">Dispatch</a>
+            <var>event</var> at <var>request</var>.
+          </li>
+          <li data-link-for="PaymentRequestUpdateEvent">If
+          <var>event</var>.<a>[[\waitForUpdate]]</a> is true, disable any part
+          of the user interface that could cause another update event to be
+          fired.
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h2>
+          Payer detail changed algorithm
+        </h2>
+        <p>
+          The user agent MUST run the <dfn>payer detail changed algorithm</dfn>
+          when the user changes the <var>payer name</var>, or the <var>payer
+          email</var>, or the <var>payer phone</var> in the user interface:
+        </p>
         <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
           the user is interacting with.
@@ -4089,75 +4158,6 @@
               <var>event</var>.<a>[[\waitForUpdate]]</a> is true, disable any
               part of the user interface that could cause another update event
               to be fired.
-              </li>
-            </ol>
-          </li>
-        </ol>
-      </section>
-      <section>
-        <h2>
-          PaymentRequest updated algorithm
-        </h2>
-        <p data-tests="algorithms-manual.https.html">
-          The <dfn>PaymentRequest updated algorithm</dfn> is run by other
-          algorithms above to <a>fire an event</a> to indicate that a user has
-          made a change to a <a>PaymentRequest</a> called <var>request</var>
-          with an event name of <var>name</var>:
-        </p>
-        <ol class="algorithm">
-          <li>Assert: <var>request</var>.<a>[[\updating]]</a> is false. Only
-          one update can take place at a time.
-          </li>
-          <li>Assert: <var>request</var>.<a>[[\state]]</a> is
-          "<a>interactive</a>".
-          </li>
-          <li>Let <var>event</var> be the result of <a data-cite=
-          "!DOM#concept-event-create">creating an event</a> using the
-          <a>PaymentRequestUpdateEvent</a> interface.
-          </li>
-          <li>Initialize <var>event</var>'s <code><a data-cite=
-          "!DOM#dom-event-type">type</a></code> attribute to <var>name</var>.
-          </li>
-          <li>
-            <a data-cite="!DOM#concept-event-dispatch">Dispatch</a>
-            <var>event</var> at <var>request</var>.
-          </li>
-          <li data-link-for="PaymentRequestUpdateEvent">If
-          <var>event</var>.<a>[[\waitForUpdate]]</a> is true, disable any part
-          of the user interface that could cause another update event to be
-          fired.
-          </li>
-        </ol>
-      </section>
-      <section>
-        <h2>
-          Payer detail changed algorithm
-        </h2>
-        <p>
-          The user agent MUST run the <dfn>payer detail changed algorithm</dfn>
-          when the user changes the <var>payer name</var>, or the <var>payer
-          email</var>, or the <var>payer phone</var> in the user interface:
-        </p>
-        <ol class="algorithm">
-          <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
-          the user is interacting with.
-          </li>
-          <li>
-            <a>Queue a task</a> on the <a>user interaction task source</a> to
-            run the following steps:
-            <ol>
-              <li>Assert: <var>request</var>.<a>[[\updating]]</a> is false.
-              Only one update can take place at a time.
-              </li>
-              <li>Assert: <var>request</var>.<a>[[\state]]</a> is
-              "<a>interactive</a>".
-              </li>
-              <li data-link-for="PaymentMethodChangeEvent">
-                <a>Fire an event</a> named "<a>paymentmethodchange</a>" at
-                <var>request</var> using <a>PaymentMethodChangeEvent</a>, with
-                its <a>methodName</a> attribute initialized to
-                <var>methodName</var>, and its <a>methodDetails</a> attribute
-                initialized to <var>methodDetails</var>.
               </li>
             </ol>
           </li>
