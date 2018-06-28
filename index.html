@@ -4025,11 +4025,11 @@
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
           the user is interacting with.
           </li>
-          <li>If <var>request</var><a>[[\response]]</a> is null, terminate this
-          algorithm.
+          <li>If <var>request</var>.<a>[[\response]]</a> is null, terminate
+          this algorithm.
           </li>
           <li>Let <var>response</var> be
-          <var>request</var><a>[[\response]]</a>.
+          <var>request</var>.<a>[[\response]]</a>.
           </li>
           <li>
             <a>Queue a task</a> on the <a>user interaction task source</a> to
@@ -4043,7 +4043,7 @@
               <li>If <var>payer name</var> changed:
                 <ol>
                   <li data-link-for="PaymentOptions">Assert:
-                  <var>request</var><a>[[\options]]</a>.<a>requestPayerName</a>
+                  <var>request</var>.<a>[[\options]]</a>.<a>requestPayerName</a>
                   is true.
                   </li>
                   <li>Set <var>response</var>'s <a>payerName</a> attribute to
@@ -4054,7 +4054,7 @@
               <li>If <var>payer email</var> changed:
                 <ol>
                   <li data-link-for="PaymentOptions">Assert:
-                  <var>request</var><a>[[\options]]</a>.<a>requestPayerEmail</a>
+                  <var>request</var>.<a>[[\options]]</a>.<a>requestPayerEmail</a>
                   is true.
                   </li>
                   <li>Set <var>response</var>'s <a>payerEmail</a> attribute to
@@ -4065,7 +4065,7 @@
               <li>If <var>payer phone</var> changed:
                 <ol>
                   <li data-link-for="PaymentOptions">Assert:
-                  <var>request</var><a>[[\options]]</a>.<a>requestPayerPhone</a>
+                  <var>request</var>.<a>[[\options]]</a>.<a>requestPayerPhone</a>
                   is true.
                   </li>
                   <li>Set <var>response</var>'s <a>payerPhone</a> attribute to
