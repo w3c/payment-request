@@ -4021,7 +4021,7 @@
           identifier</a> of the <a>payment handler</a> the user is interacting
           with:
         </p>
-                <ol class="algorithm">
+        <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
           the user is interacting with.
           </li>
@@ -4094,8 +4094,7 @@
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
           the user is interacting with.
           </li>
-          <li>If <var>request</var>.<a>[[\response]]</a> is null, terminate
-          this algorithm.
+          <li>If <var>request</var>.<a>[[\response]]</a> is null, return.
           </li>
           <li>Let <var>response</var> be
           <var>request</var>.<a>[[\response]]</a>.
@@ -4109,34 +4108,31 @@
               <li>Assert: <var>request</var>.<a>[[\state]]</a> is
               "<a>interactive</a>".
               </li>
-              <li>If <var>payer name</var> changed:
+              <li>Let <var>options</var> be
+              <var>request</var>.<a>[[\options]]</a>.
+              </li>
+              <li>If <var>payer name</var> changed and
+              <var>options</var>.<a data-link-for=
+              "PaymentOptions">requestPayerName</a> is true:
                 <ol>
-                  <li data-link-for="PaymentOptions">Assert:
-                  <var>request</var>.<a>[[\options]]</a>.<a>requestPayerName</a>
-                  is true.
-                  </li>
                   <li>Set <var>response</var>'s <a>payerName</a> attribute to
                   <var>payer name</var>.
                   </li>
                 </ol>
               </li>
-              <li>If <var>payer email</var> changed:
+              <li>If <var>payer email</var> changed and
+              <var>options</var>.<a data-link-for=
+              "PaymentOptions">requestPayerEmail</a> is true:
                 <ol>
-                  <li data-link-for="PaymentOptions">Assert:
-                  <var>request</var>.<a>[[\options]]</a>.<a>requestPayerEmail</a>
-                  is true.
-                  </li>
                   <li>Set <var>response</var>'s <a>payerEmail</a> attribute to
                   <var>payer email</var>.
                   </li>
                 </ol>
               </li>
-              <li>If <var>payer phone</var> changed:
+              <li>If <var>payer phone</var> changed and
+              <var>options</var>.<a data-link-for=
+              "PaymentOptions">requestPayerPhone</a> is true:
                 <ol>
-                  <li data-link-for="PaymentOptions">Assert:
-                  <var>request</var>.<a>[[\options]]</a>.<a>requestPayerPhone</a>
-                  is true.
-                  </li>
                   <li>Set <var>response</var>'s <a>payerPhone</a> attribute to
                   <var>payer phone</var>.
                   </li>
@@ -4156,8 +4152,8 @@
               </li>
               <li data-link-for="PaymentRequestUpdateEvent">If
               <var>event</var>.<a>[[\waitForUpdate]]</a> is true, disable any
-              part of the user interface that could cause another update event
-              to be fired.
+              part of the user interface that could cause another change to the
+              payer details to be fired.
               </li>
             </ol>
           </li>
