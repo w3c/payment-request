@@ -573,8 +573,11 @@
         [Constructor(sequence&lt;PaymentMethodData&gt; methodData, PaymentDetailsInit details, optional PaymentOptions options),
         SecureContext, Exposed=Window]
         interface PaymentRequest : EventTarget {
+          [NewObject]
           Promise&lt;PaymentResponse&gt; show(optional Promise&lt;PaymentDetailsUpdate&gt; detailsPromise);
+          [NewObject]
           Promise&lt;void&gt; abort();
+          [NewObject]
           Promise&lt;boolean&gt; canMakePayment();
 
           readonly attribute DOMString id;
@@ -3164,7 +3167,9 @@
           readonly attribute DOMString? payerEmail;
           readonly attribute DOMString? payerPhone;
 
+          [NewObject]
           Promise&lt;void&gt; complete(optional PaymentComplete result = "unknown");
+          [NewObject]
           Promise&lt;void&gt; retry(PaymentValidationErrors errorFields);
 
           attribute EventHandler onpayerdetailchange;
