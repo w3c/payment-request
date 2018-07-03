@@ -521,8 +521,8 @@
           function validateAddress(shippingAddress) {
             const error = "Can't ship to this address.";
             const shippingAddressErrors = {
-              cityError: "FarmVille is not a real place.",
-              postalCodeError: "Unknown postal code for your country.",
+              city: "FarmVille is not a real place.",
+              postalCode: "Unknown postal code for your country.",
             };
             // Empty shippingOptions implies that we can't ship
             // to this address.
@@ -2795,18 +2795,18 @@
         </h2>
         <pre class="idl">
           dictionary AddressErrorFields {
-            DOMString addressLineError;
-            DOMString cityError;
-            DOMString countryError;
-            DOMString dependentLocalityError;
-            DOMString languageCodeError;
-            DOMString organizationError;
-            DOMString phoneError;
-            DOMString postalCodeError;
-            DOMString recipientError;
-            DOMString regionError;
-            DOMString regionCodeError;
-            DOMString sortingCodeError;
+            DOMString addressLine;
+            DOMString city;
+            DOMString country;
+            DOMString dependentLocality;
+            DOMString languageCode;
+            DOMString organization;
+            DOMString phone;
+            DOMString postalCode;
+            DOMString recipient;
+            DOMString region;
+            DOMString regionCode;
+            DOMString sortingCode;
           };
         </pre>
         <p>
@@ -2822,11 +2822,11 @@
           Developers need to be aware that users might not have the ability to
           fix certain parts of an address. As such, they need to be mindful to
           not to ask the user to fix things they might not have control over
-          (e.g., <a>languageCodeError</a>).
+          (e.g., <a>languageCode</a>).
         </p>
         <dl>
           <dt>
-            <dfn>addressLineError</dfn> member
+            <dfn>addressLine</dfn> member
           </dt>
           <dd>
             Denotes that the <a>address line</a> has a validation error. In the
@@ -2835,7 +2835,7 @@
             "PaymentAddress">addressLine</a> attribute's value.
           </dd>
           <dt>
-            <dfn>cityError</dfn> member
+            <dfn>city</dfn> member
           </dt>
           <dd>
             Denotes that the <a>city</a> has a validation error. In the user
@@ -2844,7 +2844,7 @@
             "PaymentAddress">city</a> attribute's value.
           </dd>
           <dt>
-            <dfn>countryError</dfn> member
+            <dfn>country</dfn> member
           </dt>
           <dd>
             Denotes that the <a>country</a> has a validation error. In the user
@@ -2853,7 +2853,7 @@
             "PaymentAddress">country</a> attribute's value.
           </dd>
           <dt>
-            <dfn>dependentLocalityError</dfn> member
+            <dfn>dependentLocality</dfn> member
           </dt>
           <dd>
             Denotes that the <a>dependent locality</a> has a validation error.
@@ -2862,7 +2862,7 @@
             "PaymentAddress">dependentLocality</a> attribute's value.
           </dd>
           <dt>
-            <dfn>languageCodeError</dfn> member
+            <dfn>languageCode</dfn> member
           </dt>
           <dd>
             Denotes that the <a>language code</a> has a validation error. In
@@ -2871,7 +2871,7 @@
             "PaymentAddress">languageCode</a> attribute's value.
           </dd>
           <dt>
-            <dfn>organizationError</dfn> member
+            <dfn>organization</dfn> member
           </dt>
           <dd>
             Denotes that the <a>organization</a> has a validation error. In the
@@ -2880,7 +2880,7 @@
             "PaymentAddress">organization</a> attribute's value.
           </dd>
           <dt>
-            <dfn>phoneError</dfn> member
+            <dfn>phone</dfn> member
           </dt>
           <dd>
             Denotes that the <a>phone number</a> has a validation error. In the
@@ -2889,7 +2889,7 @@
             "PaymentAddress">phone</a> attribute's value.
           </dd>
           <dt>
-            <dfn>postalCodeError</dfn> member
+            <dfn>postalCode</dfn> member
           </dt>
           <dd>
             Denotes that the <a>postal code</a> has a validation error. In the
@@ -2898,7 +2898,7 @@
             "PaymentAddress">postalCode</a> attribute's value.
           </dd>
           <dt>
-            <dfn>recipientError</dfn> member
+            <dfn>recipient</dfn> member
           </dt>
           <dd>
             Denotes that the <a>recipient</a> has a validation error. In the
@@ -2907,7 +2907,7 @@
             "PaymentAddress">addressLine</a> attribute's value.
           </dd>
           <dt>
-            <dfn>regionError</dfn> member
+            <dfn>region</dfn> member
           </dt>
           <dd>
             Denotes that the <a>region</a> has a validation error. In the user
@@ -2916,7 +2916,7 @@
             "PaymentAddress">region</a> attribute's value.
           </dd>
           <dt>
-            <dfn>regionCodeError</dfn> member
+            <dfn>regionCode</dfn> member
           </dt>
           <dd>
             Denotes that the region code representation of the <a>region</a>
@@ -2926,7 +2926,7 @@
             "PaymentAddress">regionCode</a> attribute's value.
           </dd>
           <dt>
-            <dfn>sortingCodeError</dfn> member
+            <dfn>sortingCode</dfn> member
           </dt>
           <dd>
             The <a>sorting code</a> has a validation error. In the user agent's
@@ -3255,19 +3255,19 @@
           </h3>
           <pre class="idl">
             dictionary PaymentValidationErrors {
-              PayerErrorFields payerErrors;
-              AddressErrorFields shippingAddressErrors;
+              PayerErrorFields payer;
+              AddressErrorFields shippingAddress;
             };
           </pre>
           <dl>
             <dt>
-              <dfn>payerErrors</dfn> member
+              <dfn>payer</dfn> member
             </dt>
             <dd>
               Validation errors related to the <a>payer details</a>.
             </dd>
             <dt>
-              <dfn>shippingAddressErrors</dfn> member
+              <dfn>shippingAddress</dfn> member
             </dt>
             <dd data-link-for="PaymentResponse">
               Represents validation errors with the <a>PaymentResponse</a>'s
@@ -3282,9 +3282,9 @@
           </h3>
           <pre class="idl">
           dictionary PayerErrorFields {
-            DOMString payerEmailError;
-            DOMString payerNameError;
-            DOMString payerPhoneError;
+            DOMString email;
+            DOMString name;
+            DOMString phone;
           };
           </pre>
           <p>
@@ -3297,7 +3297,7 @@
           </p>
           <dl data-link-for="PaymentResponse">
             <dt>
-              <dfn>payerEmailError</dfn> member
+              <dfn>email</dfn> member
             </dt>
             <dd>
               Denotes that the payer's email suffers from a validation error.
@@ -3306,7 +3306,7 @@
               <a>payerEmail</a> attribute's value.
             </dd>
             <dt>
-              <dfn>payerNameError</dfn> member
+              <dfn>name</dfn> member
             </dt>
             <dd>
               Denotes that the payer's name suffers from a validation error. In
@@ -3315,7 +3315,7 @@
               attribute's value.
             </dd>
             <dt>
-              <dfn>payerPhoneError</dfn> member
+              <dfn>phone</dfn> member
             </dt>
             <dd>
               Denotes that the payer's phone number suffers from a validation
@@ -3325,12 +3325,12 @@
             </dd>
           </dl>
           <pre class="example js" title="Payer-related validation errors">
-          const payerErrors = {
-            payerEmailError: "The domain is invalid.",
-            payerPhoneError: "Unknown country code.",
-            payerNameError: "Not in database",
+          const payer = {
+            email: "The domain is invalid.",
+            phone: "Unknown country code.",
+            name: "Not in database",
           };
-          await response.retry({ payerErrors });
+          await response.retry({ payer });
           </pre>
         </section>
       </section>
