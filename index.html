@@ -3224,12 +3224,14 @@
           <li>Set <var>response</var>.<a>[[\retryPromise]]</a> to
           <var>retryPromise</var>.
           </li>
-          <li>By matching the members of <var>errorFields</var> to input fields
-          in the user agent's UI, indicate to the end-user that something is
-          wrong with the data of the payment response. For example, a user
-          agent might draw the user's attention to the erroneous
-          <var>errorFields</var> in the browser's UI and display the value of
-          each field in a manner that helps the user fix each error.
+          <li data-link-for="PaymentValidationErrors">By matching the members
+          of <var>errorFields</var> to input fields in the user agent's UI,
+          indicate to the end-user that something is wrong with the data of the
+          payment response. For example, a user agent might draw the user's
+          attention to the erroneous <var>errorFields</var> in the browser's UI
+          and display the value of each field in a manner that helps the user
+          fix each error. Similarly, if the <a>error</a> member is passed,
+          present the error in the user agent's UI.
           </li>
           <li data-tests=
           "payment-request/payment-response/rejects_if_not_active-manual.https.html">
@@ -3268,6 +3270,7 @@
             dictionary PaymentValidationErrors {
               PayerErrorFields payer;
               AddressErrors shippingAddress;
+              DOMString error;
             };
           </pre>
           <dl>
@@ -3283,6 +3286,17 @@
             <dd data-link-for="PaymentResponse">
               Represents validation errors with the <a>PaymentResponse</a>'s
               <a>shippingAddress</a>.
+            </dd>
+            <dt>
+              <dfn>error</dfn> member
+            </dt>
+            <dd>
+              A general description of an error with the payment from which the
+              user can attempt to recover from by, for example, retrying a
+              payment. A developer can optionally pass the <a>error</a> member
+              on its own to give a general overview of validation issues, or it
+              can be passed in combination with other members of the
+              <a>PaymentValidationErrors</a> dictionary.
             </dd>
           </dl>
         </section>
