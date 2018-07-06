@@ -1832,6 +1832,7 @@
             DOMString error;
             PaymentItem total;
             AddressErrors shippingAddressErrors;
+            AddressErrorFields payerAddressErrors;
           };
         </pre>
         <p>
@@ -1880,6 +1881,14 @@
           </dt>
           <dd>
             Represents validation errors with the shipping address that is
+            associated with the <a data-cite="!DOM#event-target">event
+            target</a>.
+          </dd>
+          <dt>
+            <dfn>payerAddressErrors</dfn> member
+          </dt>
+          <dd>
+            Represents validation errors with the payer address that is
             associated with the <a data-cite="!DOM#event-target">event
             target</a>.
           </dd>
@@ -3310,8 +3319,9 @@
           </h3>
           <pre class="idl">
             dictionary PaymentValidationErrors {
-              PayerErrorFields payer;
-              AddressErrors shippingAddress;
+              PayerErrorFields payerErrors;
+              AddressErrors shippingAddressErrors;
+              AddressErrorFields payerAddress;
             };
           </pre>
           <dl>
@@ -3327,6 +3337,13 @@
             <dd data-link-for="PaymentResponse">
               Represents validation errors with the <a>PaymentResponse</a>'s
               <a>shippingAddress</a>.
+            </dd>
+            <dt>
+              <dfn>payerAddress</dfn> member
+            </dt>
+            <dd data-link-for="PaymentResponse">
+              Represents validation errors with the <a>PaymentResponse</a>'s
+              <a>payerAddress</a>.
             </dd>
           </dl>
         </section>
@@ -4776,6 +4793,8 @@
                     <p>
                       Further, if the <a data-lt=
                       "PaymentDetailsUpdate.shippingAddressErrors">shippingAddressErrors</a>
+                      or the <a data-lt=
+                      "PaymentDetailsUpdate.payerAddressErrors">payerAddressErrors</a>
                       member is present, the user agent SHOULD display an error
                       specifically for each erroneous field of the shipping
                       address. This is done by matching each present member of
