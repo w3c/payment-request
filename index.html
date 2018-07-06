@@ -3225,11 +3225,32 @@
           <var>retryPromise</var>.
           </li>
           <li data-link-for="PaymentValidationErrors" data-tests=
-          "payment-request/PaymentValidationErrors/retry-shows-error-member-manual.https.html">
-          By matching the members of <var>errorFields</var> to input fields in
-          the user agent's UI, indicate to the end-user that something is wrong
-          with the data of the payment response. For example, a user agent
-          might draw the user's attention to the erroneous
+          "payment-request/PaymentValidationErrors/retry-shows-error-member-manual.https.html">If
+          <var>errorFields</var>'s <a>paymentMethod</a> member was passed, and
+          if required by the specification that defines <var>response</var>'s
+          <a>payment method</a>, then <a data-cite=
+          "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
+          <var>errorFields</var> <a>paymentMethod</a> to an IDL value.
+          Otherwise, <a data-cite=
+          "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
+          <a data-cite="!WEBIDL#idl-object">object</a>.
+          </li>
+          <li>If conversion results in a <a data-cite="!WEBIDL#dfn-exception">
+            exception</a> <var>error</var>:
+            <ol>
+              <li>Reject <var>retryPromise</var> with <var>error</var>.
+              </li>
+              <li>Set <a>user agent</a>'s <a>payment request is showing</a>
+              boolean to false.
+              </li>
+              <li>Return.
+              </li>
+            </ol>
+          </li>
+          <li>By matching the members of <var>errorFields</var> to input fields
+          in the user agent's UI, indicate to the end-user that something is
+          wrong with the data of the payment response. For example, a user
+          agent might draw the user's attention to the erroneous
           <var>errorFields</var> in the browser's UI and display the value of
           each field in a manner that helps the user fix each error. Similarly,
           if the <a>error</a> member is passed, present the error in the user
@@ -3273,6 +3294,7 @@
               PayerErrorFields payer;
               AddressErrors shippingAddress;
               DOMString error;
+              object paymentMethod;
             };
           </pre>
           <dl>
@@ -3299,6 +3321,14 @@
               on its own to give a general overview of validation issues, or it
               can be passed in combination with other members of the
               <a>PaymentValidationErrors</a> dictionary.
+            </dd>
+            <dt>
+              <dfn>paymentMethod</dfn> member
+            </dt>
+            <dd>
+              A payment method specific error. See, for example,
+              [[payment-method-basic-card]]'s <code><a data-cite=
+              "payment-method-basic-card#basiccarderrorfields-dictionary">BasicCardErrorFields</a></code>.
             </dd>
           </dl>
         </section>
