@@ -586,6 +586,7 @@
           readonly attribute DOMString? shippingOption;
           readonly attribute PaymentShippingType? shippingType;
 
+          attribute EventHandler onmerchantvalidation;
           attribute EventHandler onshippingaddresschange;
           attribute EventHandler onshippingoptionchange;
           attribute EventHandler onpaymentmethodchange;
@@ -1288,6 +1289,16 @@
           "PaymentRequest.PaymentRequest()">construction</a> (see
           <a>PaymentOptions</a>'s <a data-lt=
           "PaymentOptions.shippingType">shippingType</a> member).
+        </p>
+      </section>
+      <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
+        <h2>
+          <dfn>onmerchantvalidation</dfn> attribute
+        </h2>
+        <p>
+          A <a>PaymentRequest</a>'s <a>onmerchantvalidation</a> attribute is an
+          <a>EventHandler</a> for a <a>MerchantValidationEvent</a> named
+          "<a>merchantvalidation</a>".
         </p>
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
@@ -3724,6 +3735,21 @@
           </tr>
           <tr>
             <td>
+              <code><dfn>merchantvalidation</dfn></code>
+            </td>
+            <td>
+              <a>MerchantValidationEvent</a>
+            </td>
+            <td>
+              The user agent requires the merchant to perform merchant
+              validation.
+            </td>
+            <td>
+              <a>PaymentRequest</a>
+            </td>
+          </tr>
+          <tr>
+            <td>
               <code><dfn>shippingaddresschange</dfn></code>
             </td>
             <td>
@@ -3781,6 +3807,116 @@
             </td>
           </tr>
         </table>
+      </section>
+      <section data-dfn-for="MerchantValidationEvent" data-link-for=
+      "MerchantValidationEvent">
+        <h2>
+          <dfn>MerchantValidationEvent</dfn> interface
+        </h2>
+        <pre class="idl">
+          [Constructor(DOMString type, optional MerchantValidationEventInit eventInitDict), SecureContext, Exposed=Window]
+          interface MerchantValidationEvent : Event {
+            readonly attribute USVString validationURL;
+            void complete(Promise&lt;any&gt; merchantSessionPromise);
+          };
+        </pre>
+        <section>
+          <h3>
+            <dfn>validationURL</dfn> attribute
+          </h3>
+          <p>
+            A URL from which a developer would fetch <a>payment
+            handler</a>-specific verification data. By then passing that data
+            (or a promise that resolves with that data) to <a>complete()</a>,
+            the user agent can verify that the payment request is from a
+            authorized merchant.
+          </p>
+        </section>
+        <section>
+          <h3>
+            <dfn>complete()</dfn> method
+          </h3>
+          <p>
+            The <a>MerchantValidationEvent</a>'s
+            <code>complete(<var>merchantSessionPromise</var>)</code> method
+            MUST act as follows:
+          </p>
+          <ol class="algorithm">
+            <li>Let <var>event</var> be the <a>context object</a>.
+            </li>
+            <li>If <var>event</var>'s <a>isTrusted</a> attribute is false, then
+            then <a>throw</a> an "<a>InvalidStateError</a>"
+            <a>DOMException</a>.
+            </li>
+            <li>Let <var>request</var> be <var>event</var>.<a data-lt=
+            "MVE.[[request]]">[[\request]]</a>.
+            </li>
+            <li>If <var>request</var>.<a>[[\state]]</a> is not
+            "<a>interactive</a>", then <a>throw</a> an
+            "<a>InvalidStateError</a>" <a>DOMException</a>.
+            </li>
+            <li>If <var>request</var>.<a>[[\updating]]</a> is true, then
+            <a>throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
+            </li>
+            <li>Set <var>event</var>'s <a>stop propagation flag</a> and <a>stop
+            immediate propagation flag</a>.
+            </li>
+            <li>Set <var>event</var>.<a>[[\waitForUpdate]]</a> to true.
+            </li>
+            <li>Run the <a>validate a merchant algorithm</a> with
+            <var>merchantSessionPromise</var> and <var>request</var>.
+            </li>
+          </ol>
+        </section>
+        <section data-dfn-for="MerchantValidationEventInit" data-link-for=
+        "MerchantValidationEventInit">
+          <h3>
+            <dfn>MerchantValidationEventInit</dfn> dictionary
+          </h3>
+          <pre class="idl">
+            dictionary MerchantValidationEventInit {
+              USVString validationURL;
+            };
+          </pre>
+          <section>
+            <h4>
+              <dfn>validationURL</dfn> member
+            </h4>
+            <p>
+              A URL from which a developer would fetch <a>payment
+              handler</a>-specific verification data.
+            </p>
+          </section>
+        </section>
+        <section>
+          <h3>
+            Internal slots
+          </h3>
+          <p>
+            Instances of <a>MerchantValidationEvent</a> are created with the
+            internal slots in the following table:
+          </p>
+          <table>
+            <tr>
+              <th>
+                Internal Slot
+              </th>
+              <th>
+                Description (<em>non-normative</em>)
+              </th>
+            </tr>
+            <tr>
+              <td>
+                <dfn data-lt="MVE.[[request]]" data-lt-nodefault=
+                "">[[\request]]</dfn>
+              </td>
+              <td>
+                The <a>PaymentRequest</a> instance that instantiated this
+                <a>PaymentResponse</a>.
+              </td>
+            </tr>
+          </table>
+        </section>
       </section>
       <section data-dfn-for="PaymentMethodChangeEvent" data-link-for=
       "PaymentMethodChangeEvent">
@@ -4032,6 +4168,51 @@
         object is set to "<a>interactive</a>", the <a>user agent</a> will
         trigger the following algorithms based on user interaction.
       </p>
+      <section>
+        <h2>
+          Validate a merchant algorithm
+        </h2>
+        <p>
+          <dfn>Merchant validation</dfn> is the process by which <a>payment
+          handler</a> validates the identity of merchant. Validated merchants
+          are allowed to interface with a <a>payment handler</a>. Details of
+          how actual validation is performed is outside the scope of this
+          specification.
+        </p>
+        <p>
+          It is OPTIONAL for a payment handler to support <a>merchant
+          validation</a>.
+        </p>
+        <p>
+          For <a>payment methods</a> that support <a>merchant validation</a>,
+          the user agent runs the <dfn>validate a merchant algorithm</dfn>. The
+          algorithm takes a USVString <var>merchantSpecificURL</var>, provided
+          by the <a>payment handler</a>:
+        </p>
+        <ol class="algorithm">
+          <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
+          the user is interacting with.
+          </li>
+          <li>
+            <a>Queue a task</a> on the <a>user interaction task source</a> to
+            run the following steps:
+            <ol>
+              <li>Assert: <var>request</var>.<a>[[\updating]]</a> is false.
+              </li>
+              <li>Assert: <var>request</var>.<a>[[\state]]</a> is
+              "<a>interactive</a>".
+              </li>
+              <li data-link-for="MerchantValidationEvent">
+                <a>Fire an event</a> named "<a>merchantvalidation</a>" at
+                <var>request</var> using the <a>MerchantValidationEvent</a>
+                interface, with its <a>validationURL</a> attribute initialized
+                to <var>merchantSpecificURL</var>, and its <a data-lt=
+                "MVE.[[request]]">[[\request]]</a> set to <var>request</var>.
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </section>
       <section>
         <h2>
           Shipping address changed algorithm
@@ -4820,6 +5001,61 @@
             slot will be set to true (i.e., it can no longer be used).
           </p>
         </div>
+      </section>
+      <section>
+        <h2>
+          Validate merchant's details algorithm
+        </h2>
+        <p>
+          The <dfn>validate the merchant's details algorithm</dfn> takes a
+          <a>Promise</a> <var>opaqueDataPromise</var> and a
+          <a>PaymentRequest</a> <var>request</var>. The steps are conditional
+          on the <var>opaqueDataPromise</var> settling. If
+          <var>opaqueDataPromise</var> never settles then the payment request
+          is blocked. The user agent SHOULD provide the user with a means to
+          abort a payment request. Implementations MAY choose to implement a
+          timeout for pending updates if <var>opaqueDataPromise</var> doesn't
+          settle in a reasonable amount of time. If an implementation chooses
+          to implement a timeout, they MUST execute the steps listed below in
+          the "upon rejection" path. Such a timeout is a fatal error for the
+          payment request.
+        </p>
+        <ol class="algorithm">
+          <li>Set <var>request</var>.<a>[[\updating]]</a> to true.
+          </li>
+          <li>
+            <a>In parallel</a>, disable the user interface that allows the user
+            to accept the payment request. This is to ensure that the payment
+            is not accepted until the user interface is updated with any new
+            details.
+          </li>
+          <li>
+            <a>Upon rejection</a> of <var>opaqueDataPromise</var>:
+            <ol>
+              <li>
+                <a>Abort the update</a> with <var>request</var> and an
+                "<a>AbortError</a>" <a>DOMException</a>.
+              </li>
+            </ol>
+          </li>
+          <li>
+            <a>Upon fulfillment</a> of <var>opaqueDataPromise</var> with value
+            <var>opaqueData</var>:
+            <ol>
+              <li>If <var>opaqueData</var> is invalid, as per the validation
+              rules of the <a>payment handler</a>, <a>abort the update</a> with
+              <var>request</var> and an appropriate <a data-cite=
+              "!webidl#dfn-exception">exception</a> and return.
+              </li>
+              <li>Otherwise, set <var>request</var>.<a>[[\updating]]</a> to
+              false.
+              </li>
+              <li>Enable user interface, allowing the request for payment to
+              proceed.
+              </li>
+            </ol>
+          </li>
+        </ol>
       </section>
     </section>
     <section class="informative">
