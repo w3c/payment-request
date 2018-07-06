@@ -4717,6 +4717,23 @@
       <h2>
         Security Considerations
       </h2>
+      <section class="informative" data-link-for="PaymentRequest">
+        <h2>
+          User Protections with <code>show()</code> method
+        </h2>
+        <p>
+          To help ensure that users do not inadvertently share sensitive
+          credentials with an origin, this API requires that PaymentRequest's
+          <a>show()</a> method be <a>triggered by user activation</a> (e.g.,
+          via a click or press).
+        </p>
+        <p>
+          To avoid a confusing user experience, this specification limits the
+          user agent to displaying one at a time via the <a>show()</a> method.
+          In addition, the user agent can limit the rate at which a page can
+          call <a>show()</a>.
+        </p>
+      </section>
       <section class="informative">
         <h2>
           Encryption of data fields
