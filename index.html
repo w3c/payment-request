@@ -584,11 +584,13 @@
           readonly attribute PaymentAddress? shippingAddress;
           readonly attribute DOMString? shippingOption;
           readonly attribute PaymentShippingType? shippingType;
+          readonly attribute PaymentAddress? payerAddress;
 
           attribute EventHandler onmerchantvalidation;
           attribute EventHandler onshippingaddresschange;
           attribute EventHandler onshippingoptionchange;
           attribute EventHandler onpaymentmethodchange;
+          attribute EventHandler onpayeraddresschange;
         };
       </pre>
       <div class="note">
@@ -855,6 +857,10 @@
           </li>
           <li>Set the value of the <a data-lt="PaymentRequest.shippingAddress">
             shippingAddress</a> attribute on <var>request</var> to null.
+          </li>
+          <li>Set the value of the <a data-lt=
+          "PaymentRequest.payerAddress">payerAddress</a> attribute on
+          <var>request</var> to null.
           </li>
           <li>If <var>options</var>.<a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> is set to true,
@@ -1265,6 +1271,24 @@
           "PaymentOptions.shippingType">shippingType</a> member).
         </p>
       </section>
+      <section>
+        <h2>
+          <dfn>payerAddress</dfn> attribute
+        </h2>
+        <p>
+          If the <a data-lt=
+          "PaymentOptions.requestPayerAddress">requestPayerAddress</a> member
+          was set to true in the <a>PaymentOptions</a> passed to the
+          <a>PaymentRequest</a> constructor, then <a>payerAddress</a> will be
+          the payer's address chosen by the user.
+        </p>
+        <p class="note">
+          On some user agents, the some attributes of the <a>payerAddress</a>'s
+          might be redacted until the <a>user accepts the payment request</a> -
+          at which point all the user provided details of <a>payerAddress</a>
+          become available.
+        </p>
+      </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
         <h2>
           <dfn>onmerchantvalidation</dfn> attribute
@@ -1317,6 +1341,16 @@
           A <a>PaymentRequest</a>'s <a>onpaymentmethodchange</a> attribute is
           an <a>EventHandler</a> for a <a>PaymentMethodChangeEvent</a> named
           "<a>paymentmethodchange</a>".
+        </p>
+      </section>
+      <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
+        <h2>
+          <dfn>onpayeraddresschange</dfn> attribute
+        </h2>
+        <p>
+          A <a>PaymentRequest</a>'s <a>onpayeraddresschange</a> attribute is an
+          <a>EventHandler</a> for a <a>PaymentRequestUpdateEvent</a> named
+          "<a>payeraddresschange</a>".
         </p>
       </section>
       <section>
@@ -1975,6 +2009,7 @@
           boolean requestPayerEmail = false;
           boolean requestPayerPhone = false;
           boolean requestShipping = false;
+          boolean requestPayerAddress = false;
           PaymentShippingType shippingType = "shipping";
         };
       </pre>
@@ -2036,6 +2071,15 @@
             The <a>shippingType</a> member only affects the user interface for
             the payment request.
           </p>
+        </dd>
+        <dt>
+          <dfn>requestPayerAddress</dfn> member
+        </dt>
+        <dd>
+          A boolean that instructs the <a>user agent</a> to collect and return
+          a payer's address (also commonly referred to as a "billing address").
+          A merchant can use this information to, for example, calculate tax in
+          certain jurisdictions.
         </dd>
       </dl>
     </section>
@@ -3059,6 +3103,7 @@
           readonly attribute DOMString? payerName;
           readonly attribute DOMString? payerEmail;
           readonly attribute DOMString? payerPhone;
+          readonly attribute PaymentAddress? payerAddress;
 
           [NewObject]
           Promise&lt;void&gt; complete(optional PaymentComplete result = "unknown");
@@ -3408,6 +3453,19 @@
           "PaymentRequest.id">id</a> that spawned this payment response.
         </p>
       </section>
+      <section>
+        <h2>
+          <dfn>payerAddress</dfn> attribute
+        </h2>
+        <p>
+          If the <a data-lt=
+          "PaymentOptions.requestPayerAddress">requestPayerAddress</a> member
+          was set to true in the <a>PaymentOptions</a> passed to the
+          <a>PaymentRequest</a> constructor, then <a data-lt=
+          "PaymentRequest.payerAddress">payerAddress</a> will be the
+          un-redacted payer's address chosen by the user.
+        </p>
+      </section>
       <section data-dfn-for="PaymentResponse" data-link-for="PaymentResponse">
         <h2>
           <dfn data-lt="complete(result)">complete()</dfn> method
@@ -3645,6 +3703,20 @@
             <td>
               The user chooses a different <a>payment method</a> within a
               <a>payment handler</a>.
+            </td>
+            <td>
+              <a>PaymentRequest</a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code><dfn>payeraddresschange</dfn></code>
+            </td>
+            <td>
+              <a>PaymentRequestUpdateEvent</a>
+            </td>
+            <td>
+              The user provides a new payer address.
             </td>
             <td>
               <a>PaymentRequest</a>
@@ -4397,6 +4469,60 @@
       </section>
       <section>
         <h2>
+          Payer address changed algorithm
+        </h2>
+        <p>
+          The <dfn>payer address changed algorithm</dfn> runs when the user
+          provides a new payer address. It MUST run the following steps:
+        </p>
+        <ol class="algorithm">
+          <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
+          the user is interacting with.
+          </li>
+          <li>
+            <a>Queue a task</a> on the <a>user interaction task source</a> to
+            run the following steps:
+            <ol>
+              <li>
+                <div class="note" title="Privacy of recipient information">
+                  <p>
+                    The <var>redactList</var> optionally gives user agents the
+                    possibility to limit the amount of personal information
+                    about the recipient that the API shares with the merchant.
+                  </p>
+                  <p>
+                    For merchants, the resulting <a>PaymentAddress</a> object
+                    provides enough information to, for example, calculate tax,
+                    but, in most cases, not enough information to physically
+                    locate and uniquely identify the payer.
+                  </p>
+                  <p>
+                    Unfortunately, even with the <var>redactList</var>,
+                    recipient anonymity cannot be assured. This is because in
+                    some countries postal codes are so fine-grained that they
+                    can uniquely identify a recipient.
+                  </p>
+                </div>Let <var>redactList</var> be the empty list. Optionally,
+                set <var>redactList</var> to « "organization", "phone",
+                "recipient", "addressLine" ».
+              </li>
+              <li>Let <var>address</var> be the result of running the steps to
+              <a>create a <code>PaymentAddress</code> from user-provided
+              input</a> with <var>redactList</var>.
+              </li>
+              <li>Set the <a data-lt=
+              "PaymentRequest.payerAddress">payerAddress</a> attribute on <var>
+                request</var> to <var>address</var>.
+              </li>
+              <li>Run the <a>PaymentRequest updated algorithm</a> with
+              <var>request</var> and "<a>payeraddresschange</a>".
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h2>
           User accepts the payment request algorithm
         </h2>
         <p data-tests="user-accepts-payment-request-algo-manual.https.html">
@@ -4487,6 +4613,28 @@
               <li>Set the <a data-lt=
               "PaymentRequest.shippingAddress">shippingAddress</a> attribute
               value of <var>request</var> to <var>shippingAddress</var>.
+              </li>
+            </ol>
+          </li>
+          <li>If the <a data-lt=
+          "PaymentOptions.requestPayerAddress">requestPayerAddress</a> value of
+          <var>request</var>.<a>[[\options]]</a> is false, then set the
+          <a data-lt="PaymentResponse.payerAddress">payerAddress</a> attribute
+          value of <var>response</var> to null. Otherwise:
+            <ol>
+              <li>Let <var>redactList</var> be the empty <a>list</a>.
+              </li>
+              <li>Let <var>payerAddress</var> be the result of <a>create a
+              <code>PaymentAddress</code> from user-provided input</a> with
+              <var>redactList</var>.
+              </li>
+              <li>Set the <a data-lt=
+              "PaymentResponse.payerAddress">payerAddress</a> attribute value
+              of <var>response</var> to <var>payerAddress</var>.
+              </li>
+              <li>Set the <a data-lt=
+              "PaymentRequest.payerAddress">payerAddress</a> attribute value of
+              <var>request</var> to <var>payerAddress</var>.
               </li>
             </ol>
           </li>
