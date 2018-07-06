@@ -4778,6 +4778,19 @@
           consent.
         </p>
       </section>
+      <section>
+        <h2>
+          canMakePayment() protections
+        </h2>
+        <p data-link-for="PaymentRequest">
+          The <a>canMakePayment()</a> method enables the payee to call
+          <a>show()</a> if the user is ready to take advantage of the API, or
+          to fall back to a legacy checkout experience if not. Because this
+          method shares some information with the payee, user agents are
+          expected to protect the user from abuse of the method, for example,
+          by restricting the number or frequency of calls.
+        </p>
+      </section>
     </section>
     <section id="dependencies">
       <h2>
