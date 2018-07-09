@@ -3540,14 +3540,18 @@
               </li>
             </ol>
           </li>
-          <li>Otherwise, close down any remaining user interface. The <a>user
-          agent</a> MAY use the value <var>result</var> to influence the user
-          experience.
-          </li>
-          <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
-          boolean to false.
-          </li>
-          <li>Resolve <var>promise</var> with undefined.
+          <li>Otherwise:
+            <ol>
+              <li>Close down any remaining user interface. The <a>user
+              agent</a> MAY use the value <var>result</var> to influence the
+              user experience.
+              </li>
+              <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
+              boolean to false.
+              </li>
+              <li>Resolve <var>promise</var> with undefined.
+              </li>
+            </ol>
           </li>
         </ol>
       </section>
