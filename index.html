@@ -981,7 +981,8 @@
               <li>If required by the specification that defines the
               <var>identifer</var>, then <a data-cite=
               "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
-              <var>data</var> to an IDL value. Otherwise, <a data-cite=
+              <var>data</var> to an IDL value of the type specified there.
+              Otherwise, <a data-cite=
               "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
               <a data-cite="!WEBIDL#idl-object">object</a>.
               </li>
@@ -1040,7 +1041,7 @@
           </li>
           <li data-tests=
           "show-method-optional-promise-rejects-manual.https.html, show-method-optional-promise-resolves-manual.https.html">
-          If <var>detailsPromise</var> was passed, then:
+          If <var>detailsPromise</var> is present, then:
             <ol>
               <li>Run the <a>update a <code>PaymentRequest</code>'s details
               algorithm</a> with <var>detailsPromise</var> and
@@ -3230,8 +3231,8 @@
           if required by the specification that defines <var>response</var>'s
           <a>payment method</a>, then <a data-cite=
           "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
-          <var>errorFields</var> <a>paymentMethod</a> to an IDL value.
-          Otherwise, <a data-cite=
+          <var>errorFields</var> <a>paymentMethod</a> to an IDL value of the
+          type specified there. Otherwise, <a data-cite=
           "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
           <a data-cite="!WEBIDL#idl-object">object</a>.
           </li>
@@ -3326,7 +3327,7 @@
               <dfn>paymentMethod</dfn> member
             </dt>
             <dd>
-              A payment method specific error. See, for example,
+              A payment method specific errors. See, for example,
               [[payment-method-basic-card]]'s <code><a data-cite=
               "payment-method-basic-card#basiccarderrorfields-dictionary">BasicCardErrorFields</a></code>.
             </dd>
