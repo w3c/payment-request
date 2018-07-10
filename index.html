@@ -1276,11 +1276,10 @@
           <dfn>payerAddress</dfn> attribute
         </h2>
         <p>
-          If the <a data-lt=
-          "PaymentOptions.requestPayerAddress">requestPayerAddress</a> member
-          was set to true in the <a>PaymentOptions</a> passed to the
-          <a>PaymentRequest</a> constructor, then <a>payerAddress</a> will be
-          the payer's address chosen by the user.
+          A <a>PaymentRequest</a>'s <a>payerAddress</a> attribute is populated
+          when the user provides a payer address (commonly referred to as a
+          billing address). It is null by default. When a user provides a
+          payer address, the <a>payer address changed algorithm</a> runs.
         </p>
         <p class="note">
           On some user agents, some attributes of <a>payerAddress</a> might be
