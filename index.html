@@ -989,6 +989,9 @@
               <li>If conversion results in a <a data-cite=
               "!WEBIDL#dfn-exception">exception</a> <var>error</var>:
                 <ol>
+                  <li>Set <var>request</var>.<a>[[\state]]</a> to
+                  "<a>closed</a>".
+                  </li>
                   <li>Reject <var>acceptPromise</var> with <var>error</var>.
                   </li>
                   <li>Set <a>user agent</a>'s <a>payment request is showing</a>
@@ -1015,10 +1018,19 @@
               </li>
             </ol>
           </li>
-          <li>If <var>handlers</var> is empty, then reject
-          <var>acceptPromise</var> with a "<a>NotSupportedError</a>"
-          <a>DOMException</a>, and set the <a>user agent</a>'s <a>payment
-          request is showing</a> boolean to false. Terminate this algorithm.
+          <li>If <var>handlers</var> is empty, then:
+            <ol>
+              <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
+              </li>
+              <li>Reject <var>acceptPromise</var> with
+              "<a>NotSupportedError</a>" <a>DOMException</a>.
+              </li>
+              <li>Set <a>user agent</a>'s <a>payment request is showing</a>
+              boolean to false.
+              </li>
+              <li>Terminate this algorithm.
+              </li>
+            </ol>
           </li>
           <li>Present a user interface that will allow the user to interact
           with the <var>handlers</var>. The user agent SHOULD prioritize the
