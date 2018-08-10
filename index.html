@@ -3277,12 +3277,16 @@
           <li>Set <var>response</var>.<a>[[\retryPromise]]</a> to
           <var>retryPromise</var>.
           </li>
-          <li>By matching the members of <var>errorFields</var> to input fields
-          in the user agent's UI, indicate to the end-user that something is
-          wrong with the data of the payment response. For example, a user
-          agent might draw the user's attention to the erroneous
+          <li data-link-for="PaymentValidationErrors" data-tests=
+          "payment-request/PaymentValidationErrors/retry-shows-error-member-manual.https.html">
+          By matching the members of <var>errorFields</var> to input fields in
+          the user agent's UI, indicate to the end-user that something is wrong
+          with the data of the payment response. For example, a user agent
+          might draw the user's attention to the erroneous
           <var>errorFields</var> in the browser's UI and display the value of
-          each field in a manner that helps the user fix each error.
+          each field in a manner that helps the user fix each error. Similarly,
+          if the <a>error</a> member is passed, present the error in the user
+          agent's UI.
           </li>
           <li data-tests=
           "payment-request/payment-response/rejects_if_not_active-manual.https.html">
@@ -3322,6 +3326,7 @@
               PayerErrors payer;
               AddressErrors shippingAddress;
               AddressErrors payerAddress;
+              DOMString error;
             };
           </pre>
           <dl>
@@ -3344,6 +3349,16 @@
             <dd data-link-for="PaymentResponse">
               Represents validation errors with the <a>PaymentResponse</a>'s
               <a>payerAddress</a>.
+            </dd>
+              <dfn>error</dfn> member
+            </dt>
+            <dd>
+              A general description of an error with the payment from which the
+              user can attempt to recover from by, for example, retrying a
+              payment. A developer can optionally pass the <a>error</a> member
+              on its own to give a general overview of validation issues, or it
+              can be passed in combination with other members of the
+              <a>PaymentValidationErrors</a> dictionary.
             </dd>
           </dl>
         </section>
@@ -3600,13 +3615,32 @@
           <li>Return <var>promise</var> and perform the remaining steps <a>in
           parallel</a>.
           </li>
-          <li>Close down any remaining user interface. The <a>user agent</a>
-          MAY use the value <var>result</var> to influence the user experience.
+          <li>If <var>document</var> stops being <a data-cite=
+          "!HTML#fully-active">fully active</a> while the user interface is
+          being shown, or no longer is by the time this step is reached, then:
+            <ol>
+              <li>Close down the user interface.
+              </li>
+              <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
+              boolean to false.
+              </li>
+              <li>Reject <var>promise</var> with an "<a>AbortError</a>"
+              <a>DOMException</a>.
+              </li>
+            </ol>
           </li>
-          <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
-          boolean to false.
-          </li>
-          <li>Resolve <var>promise</var> with undefined.
+          <li>Otherwise:
+            <ol>
+              <li>Close down any remaining user interface. The <a>user
+              agent</a> MAY use the value <var>result</var> to influence the
+              user experience.
+              </li>
+              <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
+              boolean to false.
+              </li>
+              <li>Resolve <var>promise</var> with undefined.
+              </li>
+            </ol>
           </li>
         </ol>
       </section>
