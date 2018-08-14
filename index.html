@@ -579,10 +579,12 @@
           readonly attribute PaymentAddress? shippingAddress;
           readonly attribute DOMString? shippingOption;
           readonly attribute PaymentShippingType? shippingType;
+          readonly attribute PaymentAddress? payerAddress;
 
           attribute EventHandler onshippingaddresschange;
           attribute EventHandler onshippingoptionchange;
           attribute EventHandler onpaymentmethodchange;
+          attribute EventHandler onpayeraddresschange;
         };
       </pre>
       <div class="note">
@@ -847,6 +849,10 @@
           </li>
           <li>Set the value of the <a data-lt="PaymentRequest.shippingAddress">
             shippingAddress</a> attribute on <var>request</var> to null.
+          </li>
+          <li>Set the value of the <a data-lt=
+          "PaymentRequest.payerAddress">payerAddress</a> attribute on
+          <var>request</var> to null.
           </li>
           <li>If <var>options</var>.<a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> is set to true,
@@ -1283,6 +1289,23 @@
           "PaymentOptions.shippingType">shippingType</a> member).
         </p>
       </section>
+      <section>
+        <h2>
+          <dfn>payerAddress</dfn> attribute
+        </h2>
+        <p>
+          A <a>PaymentRequest</a>'s <a>payerAddress</a> attribute is populated
+          when the user provides a payer address (commonly referred to as a
+          billing address). It is null by default. When a user provides a payer
+          address, the <a>payer address changed algorithm</a> runs.
+        </p>
+        <p class="note">
+          On some user agents, some attributes of <a>payerAddress</a> might be
+          redacted until the <a>user accepts the payment request</a>, at which
+          point all the user-provided details of <a>payerAddress</a> become
+          available.
+        </p>
+      </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
         <h2>
           <dfn>onshippingaddresschange</dfn> attribute
@@ -1325,6 +1348,16 @@
           A <a>PaymentRequest</a>'s <a>onpaymentmethodchange</a> attribute is
           an <a>EventHandler</a> for a <a>PaymentRequestUpdateEvent</a> named
           "<a>paymentmethodchange</a>".
+        </p>
+      </section>
+      <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
+        <h2>
+          <dfn>onpayeraddresschange</dfn> attribute
+        </h2>
+        <p>
+          A <a>PaymentRequest</a>'s <a>onpayeraddresschange</a> attribute is an
+          <a>EventHandler</a> for a <a>PaymentRequestUpdateEvent</a> named
+          "<a>payeraddresschange</a>".
         </p>
       </section>
       <section>
@@ -1800,6 +1833,7 @@
             DOMString error;
             PaymentItem total;
             AddressErrors shippingAddressErrors;
+            AddressErrors payerAddressErrors;
           };
         </pre>
         <p>
@@ -1848,6 +1882,14 @@
           </dt>
           <dd>
             Represents validation errors with the shipping address that is
+            associated with the <a data-cite="!DOM#event-target">event
+            target</a>.
+          </dd>
+          <dt>
+            <dfn>payerAddressErrors</dfn> member
+          </dt>
+          <dd>
+            Represents validation errors with the payer address that is
             associated with the <a data-cite="!DOM#event-target">event
             target</a>.
           </dd>
@@ -1965,6 +2007,7 @@
           boolean requestPayerEmail = false;
           boolean requestPayerPhone = false;
           boolean requestShipping = false;
+          boolean requestPayerAddress = false;
           PaymentShippingType shippingType = "shipping";
         };
       </pre>
@@ -2026,6 +2069,15 @@
             The <a>shippingType</a> member only affects the user interface for
             the payment request.
           </p>
+        </dd>
+        <dt>
+          <dfn>requestPayerAddress</dfn> member
+        </dt>
+        <dd>
+          A boolean that instructs the <a>user agent</a> to collect and return
+          a payer's address (also commonly referred to as a "billing address").
+          A merchant can use this information to, for example, calculate tax in
+          certain jurisdictions.
         </dd>
       </dl>
     </section>
@@ -3173,6 +3225,7 @@
           readonly attribute DOMString? payerName;
           readonly attribute DOMString? payerEmail;
           readonly attribute DOMString? payerPhone;
+          readonly attribute PaymentAddress? payerAddress;
 
           [NewObject]
           Promise&lt;void&gt; complete(optional PaymentComplete result = "unknown");
@@ -3292,8 +3345,9 @@
           </h3>
           <pre class="idl">
             dictionary PaymentValidationErrors {
-              PayerErrorFields payer;
+              PayerErrors payer;
               AddressErrors shippingAddress;
+              AddressErrors payerAddress;
               DOMString error;
               object paymentMethod;
             };
@@ -3313,6 +3367,12 @@
               <a>shippingAddress</a>.
             </dd>
             <dt>
+              <dfn>payerAddress</dfn> member
+            </dt>
+            <dd data-link-for="PaymentResponse">
+              Represents validation errors with the <a>PaymentResponse</a>'s
+              <a>payerAddress</a>.
+            </dd>
               <dfn>error</dfn> member
             </dt>
             <dd>
@@ -3333,20 +3393,20 @@
             </dd>
           </dl>
         </section>
-        <section data-dfn-for="PayerErrorFields" data-link-for=
-        "PayerErrorFields">
+        <section data-dfn-for="PayerErrors" data-link-for=
+        "PayerErrors">
           <h3>
-            <dfn>PayerErrorFields</dfn> dictionary
+            <dfn>PayerErrors</dfn> dictionary
           </h3>
           <pre class="idl">
-          dictionary PayerErrorFields {
+          dictionary PayerErrors {
             DOMString email;
             DOMString name;
             DOMString phone;
           };
           </pre>
           <p>
-            The <a>PayerErrorFields</a> is used to represent validation errors
+            The <a>PayerErrors</a> is used to represent validation errors
             with one or more <a>payer details</a>.
           </p>
           <p>
@@ -3521,6 +3581,19 @@
         <p data-tests="payment-response/requestId-attribute-manual.https.html">
           The corresponding payment request <a data-lt=
           "PaymentRequest.id">id</a> that spawned this payment response.
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>payerAddress</dfn> attribute
+        </h2>
+        <p>
+          If the <a data-lt=
+          "PaymentOptions.requestPayerAddress">requestPayerAddress</a> member
+          was set to true in the <a>PaymentOptions</a> passed to the
+          <a>PaymentRequest</a> constructor, then <a data-lt=
+          "PaymentRequest.payerAddress">payerAddress</a> will be the
+          un-redacted payer's address chosen by the user.
         </p>
       </section>
       <section data-dfn-for="PaymentResponse" data-link-for="PaymentResponse">
@@ -3746,6 +3819,20 @@
             <td>
               The user chooses a different <a>payment method</a> within a
               <a>payment handler</a>.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <code><dfn>payeraddresschange</dfn></code>
+            </td>
+            <td>
+              <a>PaymentRequestUpdateEvent</a>
+            </td>
+            <td>
+              The user provides a new payer address.
+            </td>
+            <td>
+              <a>PaymentRequest</a>
             </td>
           </tr>
         </table>
@@ -4238,6 +4325,60 @@
       </section>
       <section>
         <h2>
+          Payer address changed algorithm
+        </h2>
+        <p>
+          The <dfn>payer address changed algorithm</dfn> runs when the user
+          provides a new payer address. It MUST run the following steps:
+        </p>
+        <ol class="algorithm">
+          <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
+          the user is interacting with.
+          </li>
+          <li>
+            <a>Queue a task</a> on the <a>user interaction task source</a> to
+            run the following steps:
+            <ol>
+              <li>
+                <div class="note" title="Privacy of recipient information">
+                  <p>
+                    The <var>redactList</var> optionally gives user agents the
+                    possibility to limit the amount of personal information
+                    about the recipient that the API shares with the merchant.
+                  </p>
+                  <p>
+                    For merchants, the resulting <a>PaymentAddress</a> object
+                    provides enough information to, for example, calculate tax,
+                    but, in most cases, not enough information to physically
+                    locate and uniquely identify the payer.
+                  </p>
+                  <p>
+                    Unfortunately, even with the <var>redactList</var>,
+                    recipient anonymity cannot be assured. This is because in
+                    some countries postal codes are so fine-grained that they
+                    can uniquely identify a recipient.
+                  </p>
+                </div>Let <var>redactList</var> be the empty list. Optionally,
+                set <var>redactList</var> to « "organization", "phone",
+                "recipient", "addressLine" ».
+              </li>
+              <li>Let <var>address</var> be the result of running the steps to
+              <a>create a <code>PaymentAddress</code> from user-provided
+              input</a> with <var>redactList</var>.
+              </li>
+              <li>Set the <a data-lt=
+              "PaymentRequest.payerAddress">payerAddress</a> attribute on <var>
+                request</var> to <var>address</var>.
+              </li>
+              <li>Run the <a>PaymentRequest updated algorithm</a> with
+              <var>request</var> and "<a>payeraddresschange</a>".
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h2>
           User accepts the payment request algorithm
         </h2>
         <p data-tests="user-accepts-payment-request-algo-manual.https.html">
@@ -4328,6 +4469,28 @@
               <li>Set the <a data-lt=
               "PaymentRequest.shippingAddress">shippingAddress</a> attribute
               value of <var>request</var> to <var>shippingAddress</var>.
+              </li>
+            </ol>
+          </li>
+          <li>If the <a data-lt=
+          "PaymentOptions.requestPayerAddress">requestPayerAddress</a> value of
+          <var>request</var>.<a>[[\options]]</a> is false, then set the
+          <a data-lt="PaymentResponse.payerAddress">payerAddress</a> attribute
+          value of <var>response</var> to null. Otherwise:
+            <ol>
+              <li>Let <var>redactList</var> be the empty <a>list</a>.
+              </li>
+              <li>Let <var>payerAddress</var> be the result of <a>create a
+              <code>PaymentAddress</code> from user-provided input</a> with
+              <var>redactList</var>.
+              </li>
+              <li>Set the <a data-lt=
+              "PaymentResponse.payerAddress">payerAddress</a> attribute value
+              of <var>response</var> to <var>payerAddress</var>.
+              </li>
+              <li>Set the <a data-lt=
+              "PaymentRequest.payerAddress">payerAddress</a> attribute value of
+              <var>request</var> to <var>payerAddress</var>.
               </li>
             </ol>
           </li>
@@ -4695,6 +4858,8 @@
                     <p>
                       Further, if the <a data-lt=
                       "PaymentDetailsUpdate.shippingAddressErrors">shippingAddressErrors</a>
+                      or the <a data-lt=
+                      "PaymentDetailsUpdate.payerAddressErrors">payerAddressErrors</a>
                       member is present, the user agent SHOULD display an error
                       specifically for each erroneous field of the shipping
                       address. This is done by matching each present member of
