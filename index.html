@@ -979,7 +979,7 @@
               in the <var>paymentMethod</var> tuple.
               </li>
               <li>If required by the specification that defines the
-              <var>identifer</var>, then <a data-cite=
+              <var>identifier</var>, then <a data-cite=
               "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
               <var>data</var> to an IDL value of the type specified there.
               Otherwise, <a data-cite=
@@ -1226,7 +1226,7 @@
               in the <var>paymentMethod</var> tuple.
               </li>
               <li>If required by the specification that defines the
-              <var>identifer</var>, then <a data-cite=
+              <var>identifier</var>, then <a data-cite=
               "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
               <var>data</var> to an IDL value. Otherwise, <a data-cite=
               "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
@@ -3248,14 +3248,14 @@
               </li>
             </ol>
           </li>
-          <li>By matching the members of <var>errorFields</var> to input fields
-          in the user agent's UI, indicate to the end-user that something is
-          wrong with the data of the payment response. For example, a user
-          agent might draw the user's attention to the erroneous
-          <var>errorFields</var> in the browser's UI and display the value of
-          each field in a manner that helps the user fix each error. Similarly,
-          if the <a>error</a> member is passed, present the error in the user
-          agent's UI.
+          <li data-link-for="PaymentValidationErrors">By matching the members
+          of <var>errorFields</var> to input fields in the user agent's UI,
+          indicate to the end-user that something is wrong with the data of the
+          payment response. For example, a user agent might draw the user's
+          attention to the erroneous <var>errorFields</var> in the browser's UI
+          and display the value of each field in a manner that helps the user
+          fix each error. Similarly, if the <a>error</a> member is passed,
+          present the error in the user agent's UI.
           </li>
           <li data-tests=
           "payment-request/payment-response/rejects_if_not_active-manual.https.html">
