@@ -51,6 +51,7 @@
       doJsonLd: true,
       highlightVars: true,
       pluralize: true,
+      xrefs: true,
     };
     </script>
     <style>
@@ -615,10 +616,11 @@
           Constructor
         </h2>
         <p>
-          The <a>PaymentRequest</a> is constructed using the supplied
-          <var>methodData</var> list including any <a>payment method</a>
-          specific <a data-lt="PaymentMethodData.data">data</a>, the payment
-          <var>details</var>, and the payment <var>options</var>.
+          The <a>PaymentRequest</a> is constructed using the supplied sequence
+          of <a>PaymentMethodData</a> <var>methodData</var> including any
+          <a>payment method</a> specific <a data-lt=
+          "PaymentMethodData.data">data</a>, the <a>PaymentDetailsInit</a>
+          <var>details</var>, and the <a>PaymentOptions</a> <var>options</var>.
         </p>
         <p data-tests="payment-request-constructor.https.html">
           The <code><dfn data-lt=
