@@ -4597,16 +4597,17 @@
           The <dfn>update a <code>PaymentRequest</code>'s details
           algorithm</dfn> takes a <a>PaymentDetailsUpdate</a>
           <var>detailsPromise</var>, a <a>PaymentRequest</a>
-          <var>request</var>, and a DOMString or null <var>identifer</var> (a
-          <a>payment method identifier</a>). The steps are conditional on the
-          <var>detailsPromise</var> settling. If <var>detailsPromise</var>
-          never settles then the payment request is blocked. The user agent
-          SHOULD provide the user with a means to abort a payment request.
-          Implementations MAY choose to implement a timeout for pending updates
-          if <var>detailsPromise</var> doesn't settle in a reasonable amount of
-          time. If an implementation chooses to implement a timeout, they MUST
-          execute the steps listed below in the "upon rejection" path. Such a
-          timeout is a fatal error for the payment request.
+          <var>request</var>, and <var>pmi</var> that is either a DOMString or
+          null (a <a>payment method identifier</a>). The steps are conditional
+          on the <var>detailsPromise</var> settling. If
+          <var>detailsPromise</var> never settles then the payment request is
+          blocked. The user agent SHOULD provide the user with a means to abort
+          a payment request. Implementations MAY choose to implement a timeout
+          for pending updates if <var>detailsPromise</var> doesn't settle in a
+          reasonable amount of time. If an implementation chooses to implement
+          a timeout, they MUST execute the steps listed below in the "upon
+          rejection" path. Such a timeout is a fatal error for the payment
+          request.
         </p>
         <ol class="algorithm">
           <li>Set <var>request</var>.<a>[[\updating]]</a> to true.
@@ -4793,7 +4794,7 @@
               <var>identifier</var> is not null:
                 <ol>
                   <li>If required by the specification that defines the
-                  <var>identifer</var>, then <a data-cite=
+                  <var>pmi</var>, then <a data-cite=
                   "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> <a>
                     paymentMethodErrors</a> to an IDL value.
                   </li>
