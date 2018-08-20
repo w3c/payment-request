@@ -4034,16 +4034,16 @@
             </li>
             <li>Set <var>event</var>.<a>[[\waitForUpdate]]</a> to true.
             </li>
-            <li>Let <var>identifer</var> be undefined.
+            <li>Let <var>pmi</var> be null.
             </li>
             <li>If <var>event</var> has a <a data-link-for=
             "PaymentMethodChangeEvent">methodName</a> attribute, set
-            <var>identifer</var> to the <a data-link-for=
-            "PaymentMethodChangeEvent">methodName</a> attribute's value.
+            <var>pmi</var> to the <a data-link-for="PaymentMethodChangeEvent">
+              methodName</a> attribute's value.
             </li>
             <li>Run the <a>update a <code>PaymentRequest</code>'s details
             algorithm</a> with <var>detailsPromise</var>, <var>request</var>,
-            and <var>identifer</var>.
+            and <var>pmi</var>.
             </li>
           </ol>
         </section>
@@ -4790,16 +4790,12 @@
               </li>
               <li data-link-for="PaymentDetailsUpdate">If the
               <a>paymentMethodErrors</a> member is present and
-              <var>identifier</var> is not undefined:
+              <var>identifier</var> is not null:
                 <ol>
                   <li>If required by the specification that defines the
                   <var>identifer</var>, then <a data-cite=
                   "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> <a>
-                    paymentMethodErrors</a> to an IDL value. Otherwise,
-                    <a data-cite=
-                    "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
-                    <a>paymentMethodErrors</a> to <a data-cite=
-                    "!WEBIDL#idl-object">object</a>.
+                    paymentMethodErrors</a> to an IDL value.
                   </li>
                   <li>If conversion results in a <a data-cite=
                   "!WEBIDL#dfn-exception">exception</a> <var>error</var>,
