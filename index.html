@@ -4597,9 +4597,9 @@
           The <dfn>update a <code>PaymentRequest</code>'s details
           algorithm</dfn> takes a <a>PaymentDetailsUpdate</a>
           <var>detailsPromise</var>, a <a>PaymentRequest</a>
-          <var>request</var>, and optionally a DOMString <var>identifer</var>
-          (a <a>payment method identifier</a>). The steps are conditional on
-          the <var>detailsPromise</var> settling. If <var>detailsPromise</var>
+          <var>request</var>, and a DOMString or null <var>identifer</var> (a
+          <a>payment method identifier</a>). The steps are conditional on the
+          <var>detailsPromise</var> settling. If <var>detailsPromise</var>
           never settles then the payment request is blocked. The user agent
           SHOULD provide the user with a means to abort a payment request.
           Implementations MAY choose to implement a timeout for pending updates
