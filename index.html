@@ -1972,6 +1972,7 @@
       <pre class="idl">
         dictionary PaymentOptions {
           boolean requestPayerName = false;
+          boolean requestBillingAddress = false;
           boolean requestPayerEmail = false;
           boolean requestPayerPhone = false;
           boolean requestShipping = false;
@@ -1984,6 +1985,19 @@
         options desired for the payment request.
       </p>
       <dl>
+        <dt>
+          <dfn>requestBillingAddress</dfn> member
+        </dt>
+        <dd data-link-for="PaymentMethodChangeEvent">
+          A boolean that instructs the <a>user agent</a> to get the billing
+          address associated with a <a>payment method</a> (e.g., the billing
+          address associated with a credit card). Typically, the user agent
+          will return the billing address as part of the
+          <a>PaymentMethodChangeEvent</a>'s <a>methodDetails</a>, albeit
+          possibly with parts of the address redacted for privacy reasons. A
+          merchant can use this information to, for example, calculate tax in
+          certain jurisdictions.
+        </dd>
         <dt>
           <dfn>requestPayerName</dfn> member
         </dt>
