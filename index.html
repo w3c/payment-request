@@ -137,6 +137,11 @@
           implemented relatively quickly, the feature will remain in this
           version of the specification.
           </li>
+          <li data-link-for="PaymentAddress">Due to <a>PaymentAddress</a>'s <a>
+            languageCode</a> attribute only being implemented in one browser
+            (Chrome), the attribute, and all its associated spec text, is <a>at
+            risk</a>.
+          </li>
         </ul>
       </section>
     </section>
@@ -2224,6 +2229,7 @@
             readonly attribute DOMString city;
             readonly attribute DOMString country;
             readonly attribute DOMString dependentLocality;
+            // "languageCode" is a feature at risk
             readonly attribute DOMString languageCode;
             readonly attribute DOMString organization;
             readonly attribute DOMString phone;
@@ -2532,6 +2538,12 @@
           <h2>
             <dfn>languageCode</dfn> attribute
           </h2>
+          <p class="issue atrisk">
+            This feature has been marked "<a>at risk</a>". If you'd like for
+            this feature to remain in the specification, please signal your
+            support for it to remain in <a href=
+            "https://github.com/w3c/payment-request/issues/608">issue 608</a>.
+          </p>
           <p>
             Represents the <a>language code</a> of the address. When getting,
             returns the value of the <a>PaymentAddress</a>'s
@@ -2661,8 +2673,14 @@
                 <dfn>[[\languageCode]]</dfn>
               </td>
               <td>
-                A <a data-cite="!BCP47#section-2">language tag</a> representing
-                the <a>language code</a>, or the empty string.
+                <p class="issue atrisk">
+                  This feature has been marked "<a>at risk</a>". If you'd like
+                  for this feature to remain in the specification, please
+                  signal your support for it to remain in <a href=
+                  "https://github.com/w3c/payment-request/issues/608">issue
+                  608</a>.
+                </p>A <a data-cite="!BCP47#section-2">language tag</a>
+                representing the <a>language code</a>, or the empty string.
               </td>
             </tr>
             <tr>
@@ -2775,8 +2793,17 @@
             <dfn>languageCode</dfn> member
           </dt>
           <dd>
-            A <a>language code</a>, represented as a <a data-cite=
-            "!BCP47#section-2">language tag</a>.
+            <p class="issue atrisk">
+              This feature has been marked "<a>at risk</a>". If you'd like for
+              this feature to remain in the specification, please signal your
+              support for it to remain in <a href=
+              "https://github.com/w3c/payment-request/issues/608">issue
+              608</a>.
+            </p>
+            <p>
+              A <a>language code</a>, represented as a <a data-cite=
+              "!BCP47#section-2">language tag</a>.
+            </p>
           </dd>
           <dt>
             <dfn>organization</dfn> member
@@ -2993,7 +3020,7 @@
           <var>details</var>["<a>languageCode</a>"] to a <a data-cite=
           "!BCP47#section-4.5">canonicalized language tag</a>, or to the empty
           string if none was provided.
-            <div class="issue" data-number="608"></div>
+            <div class="issue atrisk" data-number="608"></div>
           </li>
           <li>If "city" is not in <var>redactList</var>, set
           <var>details</var>["<a>city</a>"] to the user-provided city, or to
