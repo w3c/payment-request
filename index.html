@@ -3913,29 +3913,8 @@
             <li>Set <var>event</var>.<a data-lt=
             "mechvalidation.waitForUpdate">[[\waitForUpdate]]</a> to true.
             </li>
-            <li>
-              <a>In parallel</a>, disable the user interface that allows the
-              user to accept the payment request. This is to ensure that the
-              payment is not accepted until the <a data-lt=
-              "merchant validation">merchant is validated</a>.
-            </li>
-            <li>
-              <a>Upon rejection</a> of <var>merchantSessionPromise</var>,
-              <a>abort the update</a> with <var>request</var> and an
-              "<a>AbortError</a>" <a>DOMException</a>.
-            </li>
-            <li>
-              <a>Upon fulfillment</a> of <var>merchantSessionPromise</var> with
-              value <var>value</var>, <a>validate the merchant</a> using
-              <var>value</var>.
-            </li>
-            <li>If validation fails with <var>exception</var>, <a>abort the
-            update</a> with <var>request</var> and <var>exception</var>.
-            </li>
-            <li>Set <var>request</var>.<a>[[\updating]]</a> to false.
-            </li>
-            <li>Merchant validation succeeded. Re-enable the user interface
-            that allows the user to accept the payment request.
+            <li>Run the <a>validate merchant's details algorithm</a> with <var>
+              merchantSessionPromise</var> and <var>request</var>.
             </li>
           </ol>
         </section>
@@ -5103,7 +5082,7 @@
           Validate merchant's details algorithm
         </h2>
         <p>
-          The <dfn>validate the merchant's details algorithm</dfn> takes a
+          The <dfn>validate merchant's details algorithm</dfn> takes a
           <a>Promise</a> <var>opaqueDataPromise</var> and a
           <a>PaymentRequest</a> <var>request</var>. The steps are conditional
           on the <var>opaqueDataPromise</var> settling. If
