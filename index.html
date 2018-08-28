@@ -1807,6 +1807,8 @@
             DOMString error;
             PaymentItem total;
             AddressErrors shippingAddressErrors;
+            PayerErrorFields payerErrors;
+            object paymentMethodErrors;
           };
         </pre>
         <p>
@@ -1857,6 +1859,23 @@
             Represents validation errors with the shipping address that is
             associated with the <a data-cite="!DOM#event-target">event
             target</a>.
+          </dd>
+          <dt>
+            <dfn>payerErrors</dfn> member
+          </dt>
+          <dd>
+            Validation errors related to the <a>payer details</a>.
+          </dd>
+          <dt>
+            <dfn>paymentMethodErrors</dfn> member
+          </dt>
+          <dd>
+            <p>
+              <a>Payment method</a> specific errors. See, for example,
+              [[!payment-method-basic-card]]'s <a data-cite=
+              "payment-method-basic-card#basiccarderrorfields-dictionary"><code>
+              BasicCardErrorFields</code></a>.
+            </p>
           </dd>
         </dl>
       </section>
@@ -3357,8 +3376,9 @@
             </dt>
             <dd>
               A payment method specific errors. See, for example,
-              [[payment-method-basic-card]]'s <code><a data-cite=
-              "payment-method-basic-card#basiccarderrorfields-dictionary">BasicCardErrorFields</a></code>.
+              [[payment-method-basic-card]]'s <a data-cite=
+              "payment-method-basic-card#basiccarderrorfields-dictionary"><code>
+              BasicCardErrorFields</code></a>.
             </dd>
           </dl>
         </section>
@@ -4725,13 +4745,31 @@
                       for that address.
                     </p>
                     <p>
-                      Further, if the <a data-lt=
-                      "PaymentDetailsUpdate.shippingAddressErrors">shippingAddressErrors</a>
+                      Further, if <var>details</var>["<a data-lt=
+                      "PaymentDetailsUpdate.shippingAddressErrors">shippingAddressErrors</a>"]
                       member is present, the user agent SHOULD display an error
                       specifically for each erroneous field of the shipping
                       address. This is done by matching each present member of
                       the <a>AddressErrors</a> to a corresponding input field
                       in the shown user interface.
+                    </p>
+                    <p data-link-for="PaymentDetailsUpdate">
+                      Similarly, if <var>details</var>["<a>payerErrors</a>"]
+                      member is present and
+                      <var>request</var>.<a>[[\options]]</a>'s <a data-lt=
+                      "PaymentOptions.requestShipping">requestPayerName</a>,
+                      <a data-lt=
+                      "PaymentOptions.requestShipping">requestPayerEmail</a>,
+                      or <a data-lt=
+                      "PaymentOptions.requestShipping">requestPayerPhone</a> is
+                      true, then display an error specifically for each
+                      erroneous field.
+                    </p>
+                    <p data-link-for="PaymentDetailsUpdate">
+                      Likewise, if
+                      <var>details</var>["<a>paymentMethodErrors</a>"] is
+                      present, then display errors specifically for each
+                      erroneous input field for the particular payment method.
                     </p>
                   </li>
                 </ol>
