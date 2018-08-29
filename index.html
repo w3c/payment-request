@@ -3826,13 +3826,13 @@
           <h3>
             <dfn data-lt=
             "MerchantValidationEvent.MerchantValidationEvent()"><code>MerchantValidationEvent</code>
-            Constructor</dfn>
+            constructor</dfn>
           </h3>
           <p data-tests=
           "MerchantValidationEvent/constructor.https.html, MerchantValidationEvent/constructor.http.html">
-            The <dfn>event constructing steps for a
-            <code>MerchantValidationEvent</code></dfn>, which take a
-            <a>MerchantValidationEvent</a> <var>event</var>, are as follows:
+            The <a data-cite="dom#concept-event-constructor-ext">event
+            constructing steps</a>, which take a <a>MerchantValidationEvent</a>
+            <var>event</var>, are as follows:
           </p>
           <ol class="algorithm">
             <li>Let <var>base</var> be the <a data-cite=
@@ -3854,10 +3854,11 @@
             <li>If <var>validationURL</var> is failure, throw a
             <a>TypeError</a>.
             </li>
+            <li>Initialize <var>event</var>.<a>validationURL</a> attribute to
+            <var>validationURL</var>.
+            </li>
             <li>Initialize <var>event</var>.<a data-lt=
             "mechvalidation.waitForUpdate">[[\waitForUpdate]]</a> to false.
-            </li>
-            <li>Return <var>event</var>.
             </li>
           </ol>
         </section>
@@ -4271,10 +4272,6 @@
               "dom#concept-event-constructor">constructing</a> a
               <a>MerchantValidationEvent</a> with "<a>merchantvalidation</a>"
               and <var>eventInitDict</var>.
-                <p class="note">
-                  The above runs the <a>event constructing steps for a
-                  <code>MerchantValidationEvent</code></a>.
-                </p>
               </li>
               <li>Initialize <var>event</var>’s <a data-cite=
               "dom#dom-event-istrusted"><code>isTrusted</code></a> attribute to
