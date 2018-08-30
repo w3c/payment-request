@@ -3821,7 +3821,7 @@
           </h3>
           <pre class="idl">
             dictionary PaymentMethodChangeEventInit : PaymentRequestUpdateEventInit {
-              required DOMString methodName;
+              DOMString methodName = "";
               object? methodDetails;
             };
           </pre>
