@@ -3865,7 +3865,8 @@
             <li>Initialize <var>event</var>.<a>validationURL</a> attribute to
             <var>validationURL</var>.
             </li>
-            <li>Run the steps to <a data-cite=
+            <li>If <var>eventInitDict</var>["<a>methodName</a>"] is not the
+            empty string, run the steps to <a data-cite=
             "payment-method-id#dfn-validate-a-payment-method-identifier">validate
             a payment method identifier</a> with
             <var>eventInitDict</var>["<a>methodName</a>"]. If it returns false,
