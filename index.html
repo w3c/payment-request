@@ -3819,10 +3819,21 @@
           [Constructor(DOMString type, optional MerchantValidationEventInit eventInitDict),
           SecureContext, Exposed=Window]
           interface MerchantValidationEvent : Event {
+            readonly attribute DOMString methodName;
             readonly attribute USVString validationURL;
             void complete(Promise&lt;any&gt; merchantSessionPromise);
           };
         </pre>
+        <section>
+          <h2>
+            <dfn>methodName</dfn> attribute
+          </h2>
+          <p data-link-for="MerchantValidationEventInit">
+            When getting, returns the value it was initialized with. See
+            <a>methodName</a> member of <a>MerchantValidationEventInit</a> for
+            more information.
+          </p>
+        </section>
         <section>
           <h3>
             <dfn data-lt=
@@ -3842,14 +3853,10 @@
             settings object</a>’s <a data-cite=
             "!html/multipage/webappapis.html#api-base-url">API base URL</a>.
             </li>
-            <li>Let <var>input</var> be the empty string.
-            </li>
-            <li>If <var>eventInitDict</var> was passed, set <var>input</var> to
-            the value of <var>eventInitDict</var>["<a>validationURL</a>"].
-            </li>
             <li data-link-for="MerchantValidationEventInit">Let
             <var>validationURL</var> be the result of <a data-cite=
-            "!url#concept-url-parser">URL parsing</a> <var>input</var> and
+            "!url#concept-url-parser">URL parsing</a>
+            <var>eventInitDict</var>["<a>validationURL</a>"] and
             <var>base</var>.
             </li>
             <li>If <var>validationURL</var> is failure, throw a
@@ -3857,6 +3864,17 @@
             </li>
             <li>Initialize <var>event</var>.<a>validationURL</a> attribute to
             <var>validationURL</var>.
+            </li>
+            <li>If <var>eventInitDict</var>["<a>methodName</a>"] is not the
+            empty string, run the steps to <a data-cite=
+            "payment-method-id#dfn-validate-a-payment-method-identifier">validate
+            a payment method identifier</a> with
+            <var>eventInitDict</var>["<a>methodName</a>"]. If it returns false,
+            then throw a <a>RangeError</a> exception. Optionally, inform the
+            developer that the payment method identifier is invalid.
+            </li>
+            <li>Initialize <var>event</var>.<a>methodName</a> attribute to
+            <var>eventInitDict</var>["<a>methodName</a>"].
             </li>
             <li>Initialize <var>event</var>.<a data-lt=
             "mechvalidation.waitForUpdate">[[\waitForUpdate]]</a> to false.
@@ -3956,18 +3974,26 @@
           </h3>
           <pre class="idl">
             dictionary MerchantValidationEventInit : EventInit {
+              DOMString methodName = "";
               USVString validationURL = "";
             };
           </pre>
-          <section>
-            <h4>
+          <dl>
+            <dt>
+              <dfn>methodName</dfn> member
+            </dt>
+            <dd>
+              A <a>payment method identifier</a> representing the <a>payment
+              handler</a> that is requiring <a>merchant validation</a>.
+            </dd>
+            <dt>
               <dfn>validationURL</dfn> member
-            </h4>
-            <p>
+            </dt>
+            <dd>
               A URL from which a developer would fetch <a>payment
               handler</a>-specific verification data.
-            </p>
-          </section>
+            </dd>
+          </dl>
         </section>
       </section>
       <section data-dfn-for="PaymentMethodChangeEvent" data-link-for=
@@ -4018,7 +4044,7 @@
               <dfn>methodName</dfn> member
             </dt>
             <dd>
-              A DOMString representing the <a>payment method identifier</a>.
+              A string representing the <a>payment method identifier</a>.
             </dd>
             <dt>
               <dfn>methodDetails</dfn> member
@@ -4253,10 +4279,14 @@
           developer can fetch <a>payment handler</a>-specific verification
           data.
           </li>
+          <li>Let <var>methodName</var> be the <a>payment method identifier</a>
+          for the <a>payment handler</a> that is requiring <a>merchant
+          validation</a>.
+          </li>
           <li>
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
-            <ol>
+            <ol data-link-for="MerchantValidationEventInit">
               <li>Assert: <var>request</var>.<a>[[\updating]]</a> is false.
               </li>
               <li>Assert: <var>request</var>.<a>[[\state]]</a> is
@@ -4265,9 +4295,11 @@
               <li>Let <var>eventInitDict</var> be an new
               <a>MerchantValidationEventInit</a> dictionary.
               </li>
-              <li data-link-for="MerchantValidationEventInit">Set
-              <var>eventInitDict</var>["<a>validationURL</a>"] to
-              <var>validationURL</var>.
+              <li>Set <var>eventInitDict</var>["<a>validationURL</a>"] to <var>
+                validationURL</var>.
+              </li>
+              <li>Set <var>eventInitDict</var>["<a>methodName</a>"] to
+              <var>methodName</var>.
               </li>
               <li>Let <var>event</var> be the result of <a data-cite=
               "dom#concept-event-constructor">constructing</a> a
