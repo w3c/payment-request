@@ -1,0 +1,64 @@
+
+-The tests that are in the payment request directory but not in the spec are : 
+
+	MerchantValidationEvent/complete-method.https.html
+
+	PaymentAddress/attributes-and-toJSON-method-manual.https.html
+
+	PaymentMethodChangeEvent/methodDetails-attribute.https.html
+	PaymentMethodChangeEvent/methodName-attribute.https.html
+
+	PaymentRequestUpdateEvent/updateWith-call-immediate-manual.https.html
+	PaymentRequestUpdateEvent/updateWith-method-abort-update-manual.https.html
+	PaymentRequestUpdateEvent/updateWith-state-checks-manual.https.html
+	PaymentRequestUpdateEvent/updatewith-method.https.html
+
+	PaymentValidationErrors/retry-shows-payer-member-manual.https.html
+	PaymentValidationErrors/retry-shows-shippingAddress-member-manual.https.html
+
+	allowpaymentrequest/common.sub.js
+	allowpaymentrequest/echo-PaymentRequest.html
+
+	payment-response/helpers.js
+	payment-response/onpayerdetailchange-attribute-manual.https.html
+	payment-response/onpayerdetailchange-attribute.https.html
+
+	resources/page1.html
+	resources/page2.html
+
+	META.yml
+	historical.https.html
+	idlharness.https.window.js
+	payment-request-abort-method.https.html
+	payment-request-canmakepayment-method.https.html
+	payment-request-not-exposed.https.worker.js
+	show-method-postmessage-iframe.html
+
+
+-The tests that are in the spec but are not present in or are wrongly addresed in the payment directory are :
+
+Line 640 : 
+	active-document-cross-origin.https.sub.html
+	active-document-same-origin.https.html
+	removing-allowpaymentrequest.https.sub.html
+	setting-allowpaymentrequest-timing.https.sub.html
+	setting-allowpaymentrequest.https.sub.html
+Line 904 : 
+	payment-request-show-method-manual.https.html
+Line 910 :
+	payment-request-show-method-manual.https.html
+Line 1138 :
+	payment-request-abort-method-manual.https.html
+Line 1197 :
+	payment-request-canmakepayment-method-manual.https.html
+Line 1300 : 
+	payment-request/onmerchantvalidation-attribute.https.html
+Line 3290 :
+	payment-request/PaymentValidationErrors/retry-shows-error-member-manual.https.html
+Line 3322:
+	payment-request/payment-response/rejects_if_not_active-manual.https.html
+Line 3630 : 
+	payment-request/payment-response/retry-method-manual.https.html
+Line 4177:
+	payment-request-update-event-updatewith-method.https.html
+
