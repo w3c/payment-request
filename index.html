@@ -1817,7 +1817,7 @@
             DOMString error;
             PaymentItem total;
             AddressErrors shippingAddressErrors;
-            PayerErrorFields payerErrors;
+            PayerErrors payerErrors;
             object paymentMethodErrors;
           };
         </pre>
@@ -3349,7 +3349,7 @@
           </h3>
           <pre class="idl">
             dictionary PaymentValidationErrors {
-              PayerErrorFields payer;
+              PayerErrors payer;
               AddressErrors shippingAddress;
               DOMString error;
               object paymentMethod;
@@ -3390,20 +3390,20 @@
             </dd>
           </dl>
         </section>
-        <section data-dfn-for="PayerErrorFields" data-link-for=
-        "PayerErrorFields">
+        <section data-dfn-for="PayerErrors" data-link-for=
+        "PayerErrors">
           <h3>
-            <dfn>PayerErrorFields</dfn> dictionary
+            <dfn>PayerErrors</dfn> dictionary
           </h3>
           <pre class="idl">
-          dictionary PayerErrorFields {
+          dictionary PayerErrors {
             DOMString email;
             DOMString name;
             DOMString phone;
           };
           </pre>
           <p>
-            The <a>PayerErrorFields</a> is used to represent validation errors
+            The <a>PayerErrors</a> is used to represent validation errors
             with one or more <a>payer details</a>.
           </p>
           <p>
