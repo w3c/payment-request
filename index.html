@@ -662,7 +662,7 @@
                 missing, add an <a data-lt="PaymentDetailsInit.id">id</a>
                 member to <var>details</var> and set its value to a
                 <abbr title="Universally Unique Identifier">UUID</abbr>
-                [[!RFC4122]].
+                [[RFC4122]].
               </li>
             </ol>
           </li>
@@ -1558,7 +1558,7 @@
         </dt>
         <dd>
           <p>
-            A [[!ISO4217]] <a data-cite=
+            A [[ISO4217]] <a data-cite=
             "!ecma-402#sec-iswellformedcurrencycode">well-formed</a> 3-letter
             alphabetic code (i.e., the numeric codes are not supported). Their
             canonical form is upper case. However, the set of combinations of
@@ -1891,7 +1891,7 @@
           <dd>
             <p>
               <a>Payment method</a> specific errors. See, for example,
-              [[!payment-method-basic-card]]'s <a data-cite=
+              [[payment-method-basic-card]]'s <a data-cite=
               "payment-method-basic-card#basiccarderrors-dictionary"><code>BasicCardErrors</code></a>.
             </p>
           </dd>
@@ -2318,7 +2318,7 @@
                 <var>details</var>["<a>country</a>"] and performing
                 <a data-cite="!INFRA#ascii-uppercase">ASCII uppercasing</a>.
                 </li>
-                <li>If <var>country</var> is not a valid [[!ISO3166-1]] alpha-2
+                <li>If <var>country</var> is not a valid [[ISO3166-1]] alpha-2
                 code, throw a <a>RangeError</a> exception.
                 </li>
                 <li>Set <var>address</var>.<a>[[\country]]</a> to
@@ -2343,7 +2343,7 @@
                   <p>
                     If <var>putativeCountrySubdivisionCodeElement</var> is not
                     a valid <a>country subdivision code element</a> as per
-                    [[!ISO3166-2]]'s section 5.2 "Structure of country
+                    [[ISO3166-2]]'s section 5.2 "Structure of country
                     subdivision code elements" (non-normative details below),
                     throw a <a>RangeError</a> exception.
                   </p>
@@ -2352,18 +2352,18 @@
                     <p>
                       <strong>Do not implement from this note.</strong> The
                       structure of a <a>country subdivision code element</a> is
-                      formally defined in [[!ISO3166-2]] (section 5.2).
-                      Although the structure is not expected to change at the
-                      time of writing, implementers are expected to track
-                      updates to [[!ISO3166-2]] directly from ISO.
+                      formally defined in [[ISO3166-2]] (section 5.2). Although
+                      the structure is not expected to change at the time of
+                      writing, implementers are expected to track updates to
+                      [[ISO3166-2]] directly from ISO.
                     </p>
                     <p>
-                      As [[!ISO3166-2]] is not freely available to the general
+                      As [[ISO3166-2]] is not freely available to the general
                       public, the structure of a <a>country subdivision code
                       element</a> at the time of publication is as follows:
                     </p>
                     <ul>
-                      <li>Two <a>code points</a> that match an [[!ISO3166-1]]
+                      <li>Two <a>code points</a> that match an [[ISO3166-1]]
                       alpha-2 country code.
                       </li>
                       <li>A single U+002D (-) <a>code point</a>.
@@ -2382,7 +2382,7 @@
                   <ol>
                     <li>Let <var>region</var> be the corresponding <a>country
                     subdivision name</a> for <var>regionCode</var>. Where
-                    [[!ISO3166-2]] defines multiple <a>country subdivision
+                    [[ISO3166-2]] defines multiple <a>country subdivision
                     names</a> for a <var>regionCode</var>, it is RECOMMENDED
                     the user agent select one by matching on:
                       <ol>
@@ -2486,7 +2486,7 @@
             <dfn>toJSON()</dfn> method
           </h2>
           <p>
-            When called, runs [[!WEBIDL]]'s <a data-cite=
+            When called, runs [[WEBIDL]]'s <a data-cite=
             "WEBIDL#default-tojson-operation">default toJSON operation</a>.
           </p>
         </section>
@@ -2526,7 +2526,7 @@
           </h2>
           <p data-link-for="">
             Represents the <a>region</a> of the address as a code element of an
-            [[!ISO3166-2]] country subdivision name (e.g., "CA" for California,
+            [[ISO3166-2]] country subdivision name (e.g., "CA" for California,
             USA). When getting, returns the value of the
             <a>PaymentAddress</a>'s <a>[[\regionCode]]</a> internal slot.
           </p>
@@ -2636,8 +2636,8 @@
                 <dfn>[[\country]]</dfn>
               </td>
               <td>
-                A <a>country</a> as an [[!ISO3166-1]] alpha-2 code stored in
-                its canonical uppercase form or the empty string. For example,
+                A <a>country</a> as an [[ISO3166-1]] alpha-2 code stored in its
+                canonical uppercase form or the empty string. For example,
                 "JP".
               </td>
             </tr>
@@ -2666,7 +2666,7 @@
               </td>
               <td>
                 The empty string, or one to three code points that represent a
-                <a>region</a> as the code element of an [[!ISO3166-2]] country
+                <a>region</a> as the code element of an [[ISO3166-2]] country
                 subdivision name (i.e., the characters after the hyphen in an
                 ISO3166-2 <a>country subdivision code element</a>, such as "CA"
                 for the state of California in the USA, or "11" for the Lisbon
@@ -2777,7 +2777,7 @@
             <dfn>country</dfn> member
           </dt>
           <dd>
-            An <a>country</a>, represented as a [[!ISO3166-1]] country code.
+            An <a>country</a>, represented as a [[ISO3166-1]] country code.
           </dd>
           <dt>
             <dfn>addressLine</dfn> member
@@ -2796,7 +2796,7 @@
           </dt>
           <dd>
             The empty string, or one to three code points that represent a
-            <a>region</a> as the code element of an [[!ISO3166-2]] country
+            <a>region</a> as the code element of an [[ISO3166-2]] country
             subdivision name (i.e., the characters after the hyphen in an
             ISO3166-2 <a>country subdivision code element</a>, such as "CA" for
             the state of California in the USA, or "11" for the Lisbon district
@@ -2861,7 +2861,7 @@
           </dt>
           <dd>
             A <a>phone number</a>, optionally structured to adhere to
-            [[!E.164]].
+            [[E.164]].
           </dd>
         </dl>
       </section>
@@ -3037,7 +3037,7 @@
           </li>
           <li>If "country" is not in <var>redactList</var>, set
           <var>details</var>["<a>country</a>"] to the user-provided country as
-          an upper case [[!ISO3166-1]] alpha-2 code, or to the empty string if
+          an upper case [[ISO3166-1]] alpha-2 code, or to the empty string if
           none was provided.
           </li>
           <li>If "phone" is not in <var>redactList</var>, set
@@ -3100,16 +3100,15 @@
             "Countries where regions are not commonly used">
               In some countries (e.g., Belgium) it is uncommon for users to
               include a <a>region</a> as part of a <a>physical address</a>
-              (even if all the regions of a country are part of
-              [[!ISO3166-2]]). As such, when the user agent knows that the user
-              is inputting the address for a particular country, it might not
-              provide a field for the user to input a <a>region</a>. In such
-              cases, the user agent returns an empty string for both
-              <a>PaymentAddress</a>'s <a data-link-for=
-              "PaymentAddress">region</a> and <a data-link-for=
-              "PaymentAddress">regionCode</a> attributes - but the address can
-              still serve its intended purpose (e.g., be valid for shipping or
-              billing purposes).
+              (even if all the regions of a country are part of [[ISO3166-2]]).
+              As such, when the user agent knows that the user is inputting the
+              address for a particular country, it might not provide a field
+              for the user to input a <a>region</a>. In such cases, the user
+              agent returns an empty string for both <a>PaymentAddress</a>'s
+              <a data-link-for="PaymentAddress">region</a> and
+              <a data-link-for="PaymentAddress">regionCode</a> attributes - but
+              the address can still serve its intended purpose (e.g., be valid
+              for shipping or billing purposes).
             </p>
             <ol>
               <li>Set <var>details</var>["<a>region</a>"] to the user-provided
@@ -3399,8 +3398,7 @@
             </dd>
           </dl>
         </section>
-        <section data-dfn-for="PayerErrors" data-link-for=
-        "PayerErrors">
+        <section data-dfn-for="PayerErrors" data-link-for="PayerErrors">
           <h3>
             <dfn>PayerErrors</dfn> dictionary
           </h3>
@@ -3412,8 +3410,8 @@
           };
           </pre>
           <p>
-            The <a>PayerErrors</a> is used to represent validation errors
-            with one or more <a>payer details</a>.
+            The <a>PayerErrors</a> is used to represent validation errors with
+            one or more <a>payer details</a>.
           </p>
           <p>
             <dfn>Payer details</dfn> are any of the payer's name, payer's phone
@@ -3463,7 +3461,7 @@
           <dfn>toJSON()</dfn> method
         </h2>
         <p>
-          When called, runs [[!WEBIDL]]'s <a data-cite=
+          When called, runs [[WEBIDL]]'s <a data-cite=
           "WEBIDL#default-tojson-operation">default toJSON operation</a>.
         </p>
       </section>
@@ -4700,7 +4698,7 @@
           <var>response</var> to the payer's phone number provided by the user,
           or to null if none was provided. When setting the <a data-lt=
           "PaymentResponse.payerPhone">payerPhone</a> value, the user agent
-          SHOULD format the phone number to adhere to [[!E.164]].
+          SHOULD format the phone number to adhere to [[E.164]].
           </li>
           <li>If <var>isRetry</var> is true, resolve
           <var>response</var>.<a>[[\retryPromise]]</a> with undefined.
@@ -5247,7 +5245,7 @@
           It is common for merchants and other payees to delegate checkout and
           other e-commerce activities to payment service providers through an
           <a>iframe</a>. This API supports payee-authorized cross-origin
-          iframes through [[!HTML]]'s <a>allowpaymentrequest</a> attribute.
+          iframes through [[HTML]]'s <a>allowpaymentrequest</a> attribute.
         </p>
         <p class="Note">
           <a>Payment handlers</a> have access to both the origin that hosts the
@@ -5344,13 +5342,13 @@
         <dd>
           <dfn data-lt="country subdivision names">Country subdivision
           name</dfn> and <dfn>country subdivision code element</dfn> are
-          defined in [[!ISO3166-2]].
+          defined in [[ISO3166-2]].
         </dd>
         <dt>
           Infra
         </dt>
         <dd>
-          The [[!INFRA] specification defines how to <dfn data-cite=
+          The [[INFRA] specification defines how to <dfn data-cite=
           "!INFRA#strip-leading-and-trailing-ascii-whitespace">strip leading
           and trailing ascii whitespace</dfn>. It also defines the concept of a
           <dfn data-cite="!INFRA#list">list</dfn> and <dfn data-cite=
@@ -5361,14 +5359,14 @@
         </dt>
         <dd>
           The term <dfn data-lt="payment method identifiers">payment method
-          identifier</dfn> is defined by [[!payment-method-id]]. It's an unique
+          identifier</dfn> is defined by [[payment-method-id]]. It's an unique
           identifier for a <a>payment method</a>.
         </dd>
         <dt>
           HTML
         </dt>
         <dd>
-          The following are defined by [[!HTML]]: <code><dfn data-cite=
+          The following are defined by [[HTML]]: <code><dfn data-cite=
           "!HTML/webappapis.html#eventhandler">EventHandler</dfn></code>,
           <dfn data-cite="!HTML/webappapis.html#queue-a-task">queue a
           task</dfn>, <dfn data-cite=
@@ -5402,7 +5400,7 @@
           "!ECMASCRIPT#sec-native-error-types-used-in-this-standard-typeerror">TypeError</dfn></code>,
           and <code><dfn data-cite=
           "!ECMASCRIPT#sec-json.stringify">JSON.stringify</dfn></code> are
-          defined by [[!ECMASCRIPT]].
+          defined by [[ECMASCRIPT]].
           <p>
             The term <dfn data-lt=
             "JSON-serialized|JSON-serializing">JSON-serialize</dfn> applied to
@@ -5422,7 +5420,7 @@
           with</dfn> <var>r</var>, <dfn data-cite=
           "!PROMISES-GUIDE#upon-fulfillment">upon fulfillment</dfn> and
           <dfn data-cite="!PROMISES-GUIDE#upon-rejection">upon rejection</dfn>
-          are defined by [[!PROMISES-GUIDE]].
+          are defined by [[PROMISES-GUIDE]].
         </dd>
         <dt>
           DOM
@@ -5440,7 +5438,7 @@
           "!DOM#dom-event-istrusted">isTrusted</dfn></code> attribute,
           <dfn data-cite="!DOM#context-object">context object</dfn>, and
           <dfn data-cite="!DOM#stop-immediate-propagation-flag">stop immediate
-          propagation flag</dfn> are defined by [[!DOM]].
+          propagation flag</dfn> are defined by [[DOM]].
         </dd>
         <dt>
           Web IDL
@@ -5449,8 +5447,8 @@
           <p>
             When this specification says to <dfn data-cite=
             "!WEBIDL#dfn-throw">throw</dfn> an error, the <a>user agent</a>
-            must throw an error as described in [[!WEBIDL]]. When this occurs
-            in a sub-algorithm, this results in termination of execution of the
+            must throw an error as described in [[WEBIDL]]. When this occurs in
+            a sub-algorithm, this results in termination of execution of the
             sub-algorithm and all ancestor algorithms until one is reached that
             explicitly describes procedures for catching exceptions.
           </p>
@@ -5458,12 +5456,12 @@
             The algorithm for <dfn data-cite=
             "!WEBIDL#dfn-convert-idl-to-ecmascript-value" data-lt=
             "converting">converting an ECMAScript value to a dictionary</dfn>
-            is defined by [[!WEBIDL]].
+            is defined by [[WEBIDL]].
           </p>
           <p>
             <code><dfn data-cite=
             "!WEBIDL#dfn-DOMException">DOMException</dfn></code> and the
-            following <a>DOMException</a> types from [[!WEBIDL]] are used:
+            following <a>DOMException</a> types from [[WEBIDL]] are used:
             "<code><dfn data-cite=
             "!WEBIDL#aborterror">AbortError</dfn></code>",
             "<code><dfn data-cite=
