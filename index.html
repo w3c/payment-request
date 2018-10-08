@@ -196,7 +196,7 @@
         </dt>
         <dd>
           Steps that return an object or <a data-cite=
-          "!WEBIDL#idl-dictionary">dictionary</a> that a merchant uses to
+          "WEBIDL#idl-dictionary">dictionary</a> that a merchant uses to
           process or validate the transaction. The structure of this object is
           specific to each <a>payment method</a>. For an example of such an
           object, see the <code><a data-cite=
@@ -209,8 +209,8 @@
         <dd>
           Steps that describe how to handle the user changing payment method or
           monetary instrument (e.g., from a debit card to a credit card) that
-          results in a <a data-cite="!WEBIDL#idl-dictionary">dictionary</a> or
-          <a data-cite="!WEBIDL#idl-object">object</a> or null.
+          results in a <a data-cite="WEBIDL#idl-dictionary">dictionary</a> or
+          <a data-cite="WEBIDL#idl-object">object</a> or null.
         </dd>
       </dl>
       <p>
@@ -648,7 +648,7 @@
           <li data-tests=
           "allowpaymentrequest/active-document-cross-origin.https.sub.html, allowpaymentrequest/active-document-same-origin.https.html, allowpaymentrequest/removing-allowpaymentrequest.https.sub.html, allowpaymentrequest/setting-allowpaymentrequest-timing.https.sub.html, allowpaymentrequest/setting-allowpaymentrequest.https.sub.html">
           If the <a>current settings object</a>'s <a data-cite=
-          "!HTML#responsible-document">responsible document</a> is not
+          "HTML#responsible-document">responsible document</a> is not
           <a>allowed to use</a> the feature indicated by attribute name
           <a>allowpaymentrequest</a>, then <a>throw</a> a
           "<a>SecurityError</a>" <a>DOMException</a>.
@@ -731,7 +731,7 @@
             options</var> is present and set to true, process shipping options:
             <ol>
               <li>Let <var>options</var> be an empty <code><a data-cite=
-              "!WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
+              "WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
               </li>
               <li>If the <a>shippingOptions</a> member of <var>details</var> is
               present, then:
@@ -777,7 +777,7 @@
           modifiers:
             <ol>
               <li>Let <var>modifiers</var> be an empty <code><a data-cite=
-              "!WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentDetailsModifier</a>&gt;.
+              "WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentDetailsModifier</a>&gt;.
               </li>
               <li>If the <a>modifiers</a> member of <var>details</var> is
               present, then:
@@ -923,11 +923,11 @@
           <li>Let <var>request</var> be the <a>context object</a>.
           </li>
           <li>Let <var>document</var> be <var>request</var>'s <a data-cite=
-          "!HTML#concept-relevant-global">relevant global object</a>'s
-          <a data-cite="!HTML#concept-document-window">associated Document</a>.
+          "HTML#concept-relevant-global">relevant global object</a>'s
+          <a data-cite="HTML#concept-document-window">associated Document</a>.
           </li>
           <li data-tests="rejects_if_not_active.https.html">If
-          <var>document</var> is not <a data-cite="!HTML#fully-active">fully
+          <var>document</var> is not <a data-cite="HTML#fully-active">fully
           active</a>, then return <a>a promise rejected with</a> an
           "<a>AbortError</a>" <a>DOMException</a>.
           </li>
@@ -992,19 +992,19 @@
               <var>paymentMethod</var> tuple.
               </li>
               <li>Let <var>data</var> be the result of <a data-cite=
-              "!ECMASCRIPT#sec-json.parse">JSON-parsing</a> the second element
+              "ECMASCRIPT#sec-json.parse">JSON-parsing</a> the second element
               in the <var>paymentMethod</var> tuple.
               </li>
               <li>If required by the specification that defines the
               <var>identifier</var>, then <a data-cite=
-              "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
+              "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
               <var>data</var> to an IDL value of the type specified there.
               Otherwise, <a data-cite=
-              "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
-              <a data-cite="!WEBIDL#idl-object">object</a>.
+              "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
+              <a data-cite="WEBIDL#idl-object">object</a>.
               </li>
               <li>If conversion results in an <a data-cite=
-              "!WEBIDL#dfn-exception">exception</a> <var>error</var>:
+              "WEBIDL#dfn-exception">exception</a> <var>error</var>:
                 <ol>
                   <li>Set <var>request</var>.<a>[[\state]]</a> to
                   "<a>closed</a>".
@@ -1053,7 +1053,7 @@
           with the <var>handlers</var>. The user agent SHOULD prioritize the
           preference of the user when presenting payment methods. It is
           RECOMMENDED that the language of the user interface match the
-          <a data-cite="!HTML#language">language</a> of <a data-cite=
+          <a data-cite="HTML#language">language</a> of <a data-cite=
           "HTML#the-body-element-2">the body element</a>.
           </li>
           <li data-tests=
@@ -1081,9 +1081,9 @@
             <p>
               For the <a>payment handler</a> selected by the end-user, the user
               agent MUST pass the <a data-cite=
-              "!WEBIDL#dfn-convert-ecmascript-to-idl-value">converted</a>
-              second element in the <var>paymentMethod</var> tuple. Optionally,
-              the user agent SHOULD send the appropriate data from
+              "WEBIDL#dfn-convert-ecmascript-to-idl-value">converted</a> second
+              element in the <var>paymentMethod</var> tuple. Optionally, the
+              user agent SHOULD send the appropriate data from
               <var>request</var> to the user-selected <a>payment handler</a> in
               order to guide the user through the payment process. This
               includes the various attributes and internal slots of
@@ -1098,7 +1098,7 @@
             </p>
             <p data-tests="rejects_if_not_active.https.html">
               If <var>document</var> stops being <a data-cite=
-              "!HTML#fully-active">fully active</a> while the user interface is
+              "HTML#fully-active">fully active</a> while the user interface is
               being shown, or no longer is by the time this step is reached,
               then:
             </p>
@@ -1238,18 +1238,18 @@
               <var>paymentMethod</var> tuple.
               </li>
               <li>Let <var>data</var> be the result of <a data-cite=
-              "!ECMASCRIPT#sec-json.parse">JSON-parsing</a> the second element
+              "ECMASCRIPT#sec-json.parse">JSON-parsing</a> the second element
               in the <var>paymentMethod</var> tuple.
               </li>
               <li>If required by the specification that defines the
               <var>identifier</var>, then <a data-cite=
-              "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
+              "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
               <var>data</var> to an IDL value. Otherwise, <a data-cite=
-              "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
-              <a data-cite="!WEBIDL#idl-object">object</a>.
+              "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
+              <a data-cite="WEBIDL#idl-object">object</a>.
               </li>
               <li>If conversion results in an <a data-cite=
-              "!WEBIDL#dfn-exception">exception</a> <var>error</var>, reject
+              "WEBIDL#dfn-exception">exception</a> <var>error</var>, reject
               <var>promise</var> with <var>error</var> and terminate this
               algorithm.
               </li>
@@ -1559,7 +1559,7 @@
         <dd>
           <p>
             A [[ISO4217]] <a data-cite=
-            "!ecma-402#sec-iswellformedcurrencycode">well-formed</a> 3-letter
+            "ecma-402#sec-iswellformedcurrencycode">well-formed</a> 3-letter
             alphabetic code (i.e., the numeric codes are not supported). Their
             canonical form is upper case. However, the set of combinations of
             currency code for which localized currency symbols are available is
@@ -1573,7 +1573,7 @@
             <p>
               User agents implementing this specification enforce [[ISO4217]]'s
               3-letter codes format via ECMAScript’s <a data-cite=
-              "!ecma-402#sec-iswellformedcurrencycode">isWellFormedCurrencyCode</a>
+              "ecma-402#sec-iswellformedcurrencycode">isWellFormedCurrencyCode</a>
               abstract operation, which is invoked as part of the <a>check and
               canonicalize amount</a> algorithm. When a code does not adhere to
               the [[ISO4217]] defined format, a <a>RangeError</a> is thrown.
@@ -1652,7 +1652,7 @@
         </p>
         <ol data-link-for="PaymentCurrencyAmount">
           <li>If the result of <a data-cite=
-          "!ecma-402#sec-iswellformedcurrencycode">IsWellFormedCurrencyCode</a>(<var>amount</var>.<a>currency</a>)
+          "ecma-402#sec-iswellformedcurrencycode">IsWellFormedCurrencyCode</a>(<var>amount</var>.<a>currency</a>)
           is false, then throw a <a>RangeError</a> exception, optionally
           informing the developer that the currency is invalid.
           </li>
@@ -1661,7 +1661,7 @@
           the developer that the currency is invalid.
           </li>
           <li>Set <var>amount</var>.<a>currency</a> to the result of
-          <a data-cite="!INFRA#ascii-uppercase">ASCII uppercasing</a>
+          <a data-cite="INFRA#ascii-uppercase">ASCII uppercasing</a>
           <var>amount</var>.<a>currency</a>.
           </li>
         </ol>
@@ -1876,7 +1876,7 @@
           </dt>
           <dd>
             Represents validation errors with the shipping address that is
-            associated with the <a data-cite="!DOM#event-target">event
+            associated with the <a data-cite="DOM#event-target">event
             target</a>.
           </dd>
           <dt>
@@ -2316,7 +2316,7 @@
                 <li>Set <var>country</var> the result of <a>strip leading and
                 trailing ASCII whitespace</a> from
                 <var>details</var>["<a>country</a>"] and performing
-                <a data-cite="!INFRA#ascii-uppercase">ASCII uppercasing</a>.
+                <a data-cite="INFRA#ascii-uppercase">ASCII uppercasing</a>.
                 </li>
                 <li>If <var>country</var> is not a valid [[ISO3166-1]] alpha-2
                 code, throw a <a>RangeError</a> exception.
@@ -2332,7 +2332,7 @@
                 <li>Let <var>regionCode</var> be the result of <a>strip leading
                 and trailing ASCII whitespace</a> from
                 <var>details</var>["<a>regionCode</a>"] and then
-                  <a data-cite="!INFRA#ascii-uppercase">ASCII uppercasing</a>
+                  <a data-cite="INFRA#ascii-uppercase">ASCII uppercasing</a>
                   the result.
                 </li>
                 <li>Let <var>putativeCountrySubdivisionCodeElement</var> be the
@@ -2386,7 +2386,7 @@
                     names</a> for a <var>regionCode</var>, it is RECOMMENDED
                     the user agent select one by matching on:
                       <ol>
-                        <li>The <a data-cite="!HTML#language">language</a> of
+                        <li>The <a data-cite="HTML#language">language</a> of
                         <a data-cite="HTML#the-body-element-2">the body
                         element</a>.
                         </li>
@@ -2716,7 +2716,7 @@
                   signal your support for it to remain in <a href=
                   "https://github.com/w3c/payment-request/issues/608">issue
                   608</a>.
-                </p>A <a data-cite="!BCP47#section-2">language tag</a>
+                </p>A <a data-cite="BCP47#section-2">language tag</a>
                 representing the <a>language code</a>, or the empty string.
               </td>
             </tr>
@@ -2839,7 +2839,7 @@
             </p>
             <p>
               A <a>language code</a>, represented as a <a data-cite=
-              "!BCP47#section-2">language tag</a>.
+              "BCP47#section-2">language tag</a>.
             </p>
           </dd>
           <dt>
@@ -3055,7 +3055,7 @@
           </li>
           <li>If "languageCode" is not in <var>redactList</var>, set
           <var>details</var>["<a>languageCode</a>"] to a <a data-cite=
-          "!BCP47#section-4.5">canonicalized language tag</a>, or to the empty
+          "BCP47#section-4.5">canonicalized language tag</a>, or to the empty
           string if none was provided.
             <div class="issue atrisk" data-number="608"></div>
           </li>
@@ -3266,12 +3266,12 @@
           <var>response</var>.<a>[[\request]]</a>.
           </li>
           <li>Let <var>document</var> be <var>request</var>'s <a data-cite=
-          "!HTML#concept-relevant-global">relevant global object</a>'s
-          <a data-cite="!HTML#concept-document-window">associated Document</a>.
+          "HTML#concept-relevant-global">relevant global object</a>'s
+          <a data-cite="HTML#concept-document-window">associated Document</a>.
           </li>
           <li data-tests=
           "payment-response/rejects_if_not_active-manual.https.html">If
-          <var>document</var> is not <a data-cite="!HTML#fully-active">fully
+          <var>document</var> is not <a data-cite="HTML#fully-active">fully
           active</a>, then return <a>a promise rejected with</a> an
           "<a>AbortError</a>" <a>DOMException</a>.
           </li>
@@ -3295,14 +3295,14 @@
           If <var>errorFields</var>'s <a>paymentMethod</a> member was passed,
           and if required by the specification that defines
           <var>response</var>'s <a>payment method</a>, then <a data-cite=
-          "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
+          "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
           <var>errorFields</var> <a>paymentMethod</a> to an IDL value of the
           type specified there. Otherwise, <a data-cite=
-          "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
-          <a data-cite="!WEBIDL#idl-object">object</a>.
+          "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
+          <a data-cite="WEBIDL#idl-object">object</a>.
           </li>
-          <li>If conversion results in a <a data-cite="!WEBIDL#dfn-exception">
-            exception</a> <var>error</var>:
+          <li>If conversion results in a <a data-cite=
+          "WEBIDL#dfn-exception">exception</a> <var>error</var>:
             <ol>
               <li>Reject <var>retryPromise</var> with <var>error</var>.
               </li>
@@ -3325,7 +3325,7 @@
           <li data-tests=
           "payment-response/rejects_if_not_active-manual.https.html">If
           <var>document</var> stops being <a data-cite=
-          "!HTML#fully-active">fully active</a> while the user interface is
+          "HTML#fully-active">fully active</a> while the user interface is
           being shown, or no longer is by the time this step is reached, then:
             <ol>
               <li>Close down the user interface.
@@ -3480,8 +3480,8 @@
           <dfn>details</dfn> attribute
         </h2>
         <p>
-          An <a data-cite="!WEBIDL#idl-object">object</a> or <a data-cite=
-          "!WEBIDL#idl-dictionary">dictionary</a> generated by a <a>payment
+          An <a data-cite="WEBIDL#idl-object">object</a> or <a data-cite=
+          "WEBIDL#idl-dictionary">dictionary</a> generated by a <a>payment
           method</a> that a merchant can use to process or validate a
           transaction (depending on the <a>payment method</a>).
         </p>
@@ -3491,7 +3491,7 @@
             "payment-method-id#standardized-payment-method-identifiers">standardized
             payment method identifier</a>, such as <a data-cite=
             "payment-method-basic-card">Basic Card</a> ("basic-card"), defines
-            its own unique <a data-cite="!WEBIDL#idl-dictionary">IDL
+            its own unique <a data-cite="WEBIDL#idl-dictionary">IDL
             dictionary</a> for use with the <a>details</a> attribute. The shape
             of this data (i.e., its members and their corresponding types and
             formats) differs depending on which standardized payment method
@@ -3637,7 +3637,7 @@
           parallel</a>.
           </li>
           <li>If <var>document</var> stops being <a data-cite=
-          "!HTML#fully-active">fully active</a> while the user interface is
+          "HTML#fully-active">fully active</a> while the user interface is
           being shown, or no longer is by the time this step is reached, then:
             <ol>
               <li>Close down the user interface.
@@ -3870,13 +3870,13 @@
           <ol class="algorithm">
             <li>Let <var>base</var> be the <a data-cite=
             "dom#context-object">event</a>’s <a data-cite=
-            "!html/multipage/webappapis.html#relevant-settings-object">relevant
+            "html/multipage/webappapis.html#relevant-settings-object">relevant
             settings object</a>’s <a data-cite=
-            "!html/multipage/webappapis.html#api-base-url">API base URL</a>.
+            "html/multipage/webappapis.html#api-base-url">API base URL</a>.
             </li>
             <li data-link-for="MerchantValidationEventInit">Let
             <var>validationURL</var> be the result of <a data-cite=
-            "!url#concept-url-parser">URL parsing</a>
+            "url#concept-url-parser">URL parsing</a>
             <var>eventInitDict</var>["<a>validationURL</a>"] and
             <var>base</var>.
             </li>
@@ -4430,8 +4430,8 @@
           A <a>payment handler</a> MAY run the <dfn>payment method changed
           algorithm</dfn> when the user changes <a>payment method</a> with
           <var>methodDetails</var>, which is either <a data-cite=
-          "!WEBIDL#idl-dictionary">dictionary</a> or an <a data-cite=
-          "!WEBIDL#idl-object">object</a> or null, and a <var>methodName</var>,
+          "WEBIDL#idl-dictionary">dictionary</a> or an <a data-cite=
+          "WEBIDL#idl-object">object</a> or null, and a <var>methodName</var>,
           which is a DOMString that represents the <a>payment method
           identifier</a> of the <a>payment handler</a> the user is interacting
           with:
@@ -4479,14 +4479,14 @@
           "<a>interactive</a>".
           </li>
           <li>Let <var>event</var> be the result of <a data-cite=
-          "!DOM#concept-event-create">creating an event</a> using the
+          "DOM#concept-event-create">creating an event</a> using the
           <a>PaymentRequestUpdateEvent</a> interface.
           </li>
           <li>Initialize <var>event</var>'s <code><a data-cite=
-          "!DOM#dom-event-type">type</a></code> attribute to <var>name</var>.
+          "DOM#dom-event-type">type</a></code> attribute to <var>name</var>.
           </li>
           <li>
-            <a data-cite="!DOM#concept-event-dispatch">Dispatch</a>
+            <a data-cite="DOM#concept-event-dispatch">Dispatch</a>
             <var>event</var> at <var>request</var>.
           </li>
           <li data-link-for="PaymentRequestUpdateEvent">If
@@ -4554,15 +4554,15 @@
                 </ol>
               </li>
               <li>Let <var>event</var> be the result of <a data-cite=
-              "!DOM#concept-event-create">creating an event</a> using
+              "DOM#concept-event-create">creating an event</a> using
               <a>PaymentRequestUpdateEvent</a>.
               </li>
               <li>Initialize <var>event</var>'s <code><a data-cite=
-              "!DOM#dom-event-type">type</a></code> attribute to
+              "DOM#dom-event-type">type</a></code> attribute to
               "<a>payerdetailchange</a>".
               </li>
               <li>
-                <a data-cite="!DOM#concept-event-dispatch">Dispatch</a>
+                <a data-cite="DOM#concept-event-dispatch">Dispatch</a>
                 <var>event</var> at <var>response</var>.
               </li>
               <li data-link-for="PaymentRequestUpdateEvent">If
@@ -4802,17 +4802,17 @@
             <var>value</var>:
             <ol data-link-for="PaymentDetailsBase">
               <li>Let <var>details</var> be the result of <a data-cite=
-              "!WEBIDL#es-dictionary">converting</a> <var>value</var> to a <a>
-                PaymentDetailsUpdate</a> dictionary. If this <a>throws</a> an
-                exception, <a>abort the update</a> with <var>request</var> and
-                with the thrown exception.
+              "WEBIDL#es-dictionary">converting</a> <var>value</var> to a
+              <a>PaymentDetailsUpdate</a> dictionary. If this <a>throws</a> an
+              exception, <a>abort the update</a> with <var>request</var> and
+              with the thrown exception.
               </li>
               <li>Let <var>serializedModifierData</var> be an empty list.
               </li>
               <li>Let <var>selectedShippingOption</var> be null.
               </li>
               <li>Let <var>shippingOptions</var> be an empty
-                <code><a data-cite="!WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
+                <code><a data-cite="WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
               </li>
               <li>Validate and canonicalize the details:
                 <ol>
@@ -5076,7 +5076,7 @@
           <p>
             To <dfn>abort the update</dfn> with a <a>PaymentRequest</a>
             <var>request</var> and <a data-cite=
-            "!WEBIDL#dfn-exception">exception</a> <var>exception</var>:
+            "WEBIDL#dfn-exception">exception</a> <var>exception</var>:
           </p>
           <ol class="algorithm">
             <li>Optionally, show an error message to the user when letting them
@@ -5191,7 +5191,7 @@
               <li>If <var>opaqueData</var> is invalid, as per the validation
               rules of the <a>payment handler</a>, <a>abort the update</a> with
               <var>request</var> and an appropriate <a data-cite=
-              "!webidl#dfn-exception">exception</a> and return.
+              "webidl#dfn-exception">exception</a> and return.
               </li>
               <li>Otherwise, set <var>request</var>.<a>[[\updating]]</a> to
               false.
@@ -5231,7 +5231,7 @@
         </h2>
         <p>
           The API defined in this specification is only exposed in
-          <a data-cite="!secure-contexts#secure-contexts">secure contexts</a>.
+          <a data-cite="secure-contexts#secure-contexts">secure contexts</a>.
           In practice, this means that this API is only available over HTTPS.
           This is to limit the possibly of payment method data (e.g., credit
           card numbers) being sent in the clear.
@@ -5349,9 +5349,9 @@
         </dt>
         <dd>
           The [[INFRA] specification defines how to <dfn data-cite=
-          "!INFRA#strip-leading-and-trailing-ascii-whitespace">strip leading
-          and trailing ascii whitespace</dfn>. It also defines the concept of a
-          <dfn data-cite="!INFRA#list">list</dfn> and <dfn data-cite=
+          "INFRA#strip-leading-and-trailing-ascii-whitespace">strip leading and
+          trailing ascii whitespace</dfn>. It also defines the concept of a
+          <dfn data-cite="INFRA#list">list</dfn> and <dfn data-cite=
           "INFRA#code-point">code point</dfn>.
         </dd>
         <dt>
@@ -5367,24 +5367,24 @@
         </dt>
         <dd>
           The following are defined by [[HTML]]: <code><dfn data-cite=
-          "!HTML/webappapis.html#eventhandler">EventHandler</dfn></code>,
-          <dfn data-cite="!HTML/webappapis.html#queue-a-task">queue a
+          "HTML/webappapis.html#eventhandler">EventHandler</dfn></code>,
+          <dfn data-cite="HTML/webappapis.html#queue-a-task">queue a
           task</dfn>, <dfn data-cite=
-          "!HTML/webappapis.html#user-interaction-task-source">user interaction
+          "HTML/webappapis.html#user-interaction-task-source">user interaction
           task source</dfn>, <dfn data-cite=
-          "!HTML/webappapis.html#top-level-browsing-context">top-level browsing
+          "HTML/webappapis.html#top-level-browsing-context">top-level browsing
           context</dfn>, <dfn data-cite=
-          "!HTML/webappapis.html#current-settings-object">current settings
+          "HTML/webappapis.html#current-settings-object">current settings
           object</dfn>, <dfn data-cite=
-          "!HTML/iframe-embed-object.html#allowed-to-use">allowed to use</dfn>,
+          "HTML/iframe-embed-object.html#allowed-to-use">allowed to use</dfn>,
           <dfn data-cite=
-          "!HTML/interaction.html#triggered-by-user-activation">triggered by
+          "HTML/interaction.html#triggered-by-user-activation">triggered by
           user activation</dfn>, <dfn data-cite=
-          "!HTML/infrastructure.html#in-parallel">in parallel</dfn>, the
+          "HTML/infrastructure.html#in-parallel">in parallel</dfn>, the
           <code><dfn data-cite=
-          "!HTML/iframe-embed-object.html#the-iframe-element">iframe</dfn></code>
+          "HTML/iframe-embed-object.html#the-iframe-element">iframe</dfn></code>
           element, and the <code><dfn data-cite=
-          "!HTML/iframe-embed-object.html#attr-iframe-allowpaymentrequest">allowpaymentrequest</dfn></code>
+          "HTML/iframe-embed-object.html#attr-iframe-allowpaymentrequest">allowpaymentrequest</dfn></code>
           attribute.
         </dd>
         <dt>
@@ -5392,14 +5392,14 @@
         </dt>
         <dd>
           The terms <dfn data-cite=
-          "!ECMASCRIPT#sec-promise-objects">Promise</dfn>, <dfn data-cite=
-          "!ECMASCRIPT#sec-object-internal-methods-and-internal-slots">internal
+          "ECMASCRIPT#sec-promise-objects">Promise</dfn>, <dfn data-cite=
+          "ECMASCRIPT#sec-object-internal-methods-and-internal-slots">internal
           slot</dfn>, <code><dfn data-cite=
-          "!ECMASCRIPT#sec-native-error-types-used-in-this-standard-rangeerror">
-          RangeError</dfn></code>, <code><dfn data-cite=
-          "!ECMASCRIPT#sec-native-error-types-used-in-this-standard-typeerror">TypeError</dfn></code>,
+          "ECMASCRIPT#sec-native-error-types-used-in-this-standard-rangeerror">RangeError</dfn></code>,
+          <code><dfn data-cite=
+          "ECMASCRIPT#sec-native-error-types-used-in-this-standard-typeerror">TypeError</dfn></code>,
           and <code><dfn data-cite=
-          "!ECMASCRIPT#sec-json.stringify">JSON.stringify</dfn></code> are
+          "ECMASCRIPT#sec-json.stringify">JSON.stringify</dfn></code> are
           defined by [[ECMASCRIPT]].
           <p>
             The term <dfn data-lt=
@@ -5414,31 +5414,30 @@
           Writing Promise-Using Specifications
         </dt>
         <dd>
-          The terms <dfn data-cite="!PROMISES-GUIDE#a-new-promise">a new
+          The terms <dfn data-cite="PROMISES-GUIDE#a-new-promise">a new
           promise</dfn>, <dfn data-cite=
-          "!PROMISES-GUIDE#a-promise-rejected-with">a promise rejected
+          "PROMISES-GUIDE#a-promise-rejected-with">a promise rejected
           with</dfn> <var>r</var>, <dfn data-cite=
-          "!PROMISES-GUIDE#upon-fulfillment">upon fulfillment</dfn> and
-          <dfn data-cite="!PROMISES-GUIDE#upon-rejection">upon rejection</dfn>
+          "PROMISES-GUIDE#upon-fulfillment">upon fulfillment</dfn> and
+          <dfn data-cite="PROMISES-GUIDE#upon-rejection">upon rejection</dfn>
           are defined by [[PROMISES-GUIDE]].
         </dd>
         <dt>
           DOM
         </dt>
         <dd>
-          The <code><dfn data-cite="!DOM#event">Event</dfn></code> interface,
+          The <code><dfn data-cite="DOM#event">Event</dfn></code> interface,
           the <code><dfn data-cite=
-          "!DOM#interface-eventtarget">EventTarget</dfn></code> interface, the
-          <code><dfn data-cite="!DOM#dictdef-eventinit">EventInit</dfn></code>
+          "DOM#interface-eventtarget">EventTarget</dfn></code> interface, the
+          <code><dfn data-cite="DOM#dictdef-eventinit">EventInit</dfn></code>
           dictionary, and the terms <dfn data-cite=
-          "!DOM#concept-event-fire">fire an event</dfn>, <dfn data-cite=
-          "!DOM#dispatch-flag">dispatch flag</dfn>, <dfn data-cite=
-          "!DOM#stop-propagation-flag">stop propagation flag</dfn>,
-          <code><dfn data-cite=
-          "!DOM#dom-event-istrusted">isTrusted</dfn></code> attribute,
-          <dfn data-cite="!DOM#context-object">context object</dfn>, and
-          <dfn data-cite="!DOM#stop-immediate-propagation-flag">stop immediate
-          propagation flag</dfn> are defined by [[DOM]].
+          "DOM#concept-event-fire">fire an event</dfn>, <dfn data-cite=
+          "DOM#dispatch-flag">dispatch flag</dfn>, <dfn data-cite=
+          "DOM#stop-propagation-flag">stop propagation flag</dfn>,
+          <code><dfn data-cite="DOM#dom-event-istrusted">isTrusted</dfn></code>
+          attribute, <dfn data-cite="DOM#context-object">context object</dfn>,
+          and <dfn data-cite="DOM#stop-immediate-propagation-flag">stop
+          immediate propagation flag</dfn> are defined by [[DOM]].
         </dd>
         <dt>
           Web IDL
@@ -5446,32 +5445,31 @@
         <dd>
           <p>
             When this specification says to <dfn data-cite=
-            "!WEBIDL#dfn-throw">throw</dfn> an error, the <a>user agent</a>
-            must throw an error as described in [[WEBIDL]]. When this occurs in
-            a sub-algorithm, this results in termination of execution of the
+            "WEBIDL#dfn-throw">throw</dfn> an error, the <a>user agent</a> must
+            throw an error as described in [[WEBIDL]]. When this occurs in a
+            sub-algorithm, this results in termination of execution of the
             sub-algorithm and all ancestor algorithms until one is reached that
             explicitly describes procedures for catching exceptions.
           </p>
           <p>
             The algorithm for <dfn data-cite=
-            "!WEBIDL#dfn-convert-idl-to-ecmascript-value" data-lt=
+            "WEBIDL#dfn-convert-idl-to-ecmascript-value" data-lt=
             "converting">converting an ECMAScript value to a dictionary</dfn>
             is defined by [[WEBIDL]].
           </p>
           <p>
             <code><dfn data-cite=
-            "!WEBIDL#dfn-DOMException">DOMException</dfn></code> and the
+            "WEBIDL#dfn-DOMException">DOMException</dfn></code> and the
             following <a>DOMException</a> types from [[WEBIDL]] are used:
+            "<code><dfn data-cite="WEBIDL#aborterror">AbortError</dfn></code>",
             "<code><dfn data-cite=
-            "!WEBIDL#aborterror">AbortError</dfn></code>",
+            "WEBIDL#invalidstateerror">InvalidStateError</dfn></code>",
             "<code><dfn data-cite=
-            "!WEBIDL#invalidstateerror">InvalidStateError</dfn></code>",
+            "WEBIDL#notallowederror">NotAllowedError</dfn></code>",
             "<code><dfn data-cite=
-            "!WEBIDL#notallowederror">NotAllowedError</dfn></code>",
+            "WEBIDL#notsupportederror">NotSupportedError</dfn></code>", and
             "<code><dfn data-cite=
-            "!WEBIDL#notsupportederror">NotSupportedError</dfn></code>", and
-            "<code><dfn data-cite=
-            "!WEBIDL#securityerror">SecurityError</dfn></code>".
+            "WEBIDL#securityerror">SecurityError</dfn></code>".
           </p>
         </dd>
       </dl>
