@@ -130,11 +130,6 @@
           before proceeding along the W3C Recommendation track.
         </p>
         <ul>
-          <li data-link-for="PaymentItem">
-            <a>PaymentItem</a>'s <a>type</a> member and the
-            <a>PaymentItemType</a> enum (see <a href=
-            "https://github.com/w3c/payment-request/issues/163">issue 163</a>).
-          </li>
           <li data-link-for="PaymentRequest">As the <code>optional
           detailsPromise</code> argument of the <a>show()</a> method was added
           late in the Candidate Recommendation phase, the working group is
@@ -2082,8 +2077,6 @@
           required DOMString label;
           required PaymentCurrencyAmount amount;
           boolean pending = false;
-          // Note: type member is "at risk" of being removed!
-          PaymentItemType type;
         };
       </pre>
       <p>
@@ -2117,63 +2110,6 @@
           the user interface for the payment request.
         </dd>
       </dl>
-      <div class="issue atrisk">
-        <p>
-          This feature has been marked "<a>at risk</a>". Firefox plans to
-          experiment with this feature during the Candidate Recommendation
-          phase. If you'd like for this feature to remain in the specification,
-          please signal your support for it to remain in <a href=
-          "https://github.com/w3c/payment-request/issues/163">issue 163</a>.
-        </p>
-        <dl>
-          <dt>
-            <dfn>type</dfn> member
-          </dt>
-          <dd data-tests="PaymentItem/type_member.https.html">
-            A <a>PaymentItemType</a> enum value, which a developer can use to
-            explicitly indicate that this member is of a particular type. A
-            user agent MAY use the value of <a>type</a> to assist in the
-            presentation of <a>PaymentItem</a> by, for example, visually
-            grouping types together or other otherwise distinguishing them from
-            other types (or from items that have no associated type).
-          </dd>
-          <dd></dd>
-        </dl>
-      </div>
-    </section>
-    <div class="issue atrisk">
-      <p>
-        This feature has been marked "<a>at risk</a>". Firefox plans to
-        experiment with this feature during the Candidate Recommendation phase.
-        If you'd like for this feature to remain in the specification, please
-        signal your support for it to remain in <a href=
-        "https://github.com/w3c/payment-request/issues/163">issue 163</a>.
-      </p>
-      <section data-dfn-for="PaymentItemType">
-        <h2>
-          <dfn>PaymentItemType</dfn> enum
-        </h2>
-        <pre class="idl">
-          enum PaymentItemType {
-            "tax"
-          };
-        </pre>
-        <p>
-          The <a>PaymentItemType</a> serves to categorize a <a>PaymentItem</a>
-          into particular types.
-        </p>
-        <dl>
-          <dt>
-            "<dfn>tax</dfn>"
-          </dt>
-          <dd>
-            Indicates that the corresponding <a>PaymentItem</a> represents a
-            form of taxation. Examples include sales tax, goods and services
-            tax, value added tax, an so on.
-          </dd>
-        </dl>
-      </section>
-    </div>
     <section>
       <h2>
         Physical addresses
