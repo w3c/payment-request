@@ -141,11 +141,6 @@
           implemented relatively quickly, the feature will remain in this
           version of the specification.
           </li>
-          <li data-link-for="PaymentAddress">Due to <a>PaymentAddress</a>'s <a>
-            languageCode</a> attribute only being implemented in one browser
-            (Chrome), the attribute, and all its associated spec text, is <a>at
-            risk</a>.
-          </li>
         </ul>
       </section>
     </section>
@@ -2165,14 +2160,6 @@
           The sorting code as used in, for example, France.
         </dd>
         <dt>
-          <dfn>Language code</dfn>
-        </dt>
-        <dd>
-          The language in which the address is provided. It's used to determine
-          the field separators and the order of fields when formatting the
-          address for display.
-        </dd>
-        <dt>
           <dfn>Organization</dfn>
         </dt>
         <dd>
@@ -2202,8 +2189,6 @@
             readonly attribute DOMString city;
             readonly attribute DOMString country;
             readonly attribute DOMString dependentLocality;
-            // "languageCode" is a feature at risk
-            readonly attribute DOMString languageCode;
             readonly attribute DOMString organization;
             readonly attribute DOMString phone;
             readonly attribute DOMString postalCode;
@@ -2336,18 +2321,6 @@
                     <var>region</var>.
                     </li>
                   </ol>
-                </li>
-              </ol>
-            </li>
-            <li>If <var>details</var>["<a>languageCode</a>"] is present:
-              <ol>
-                <li>If <a data-cite=
-                "ecma-402#sec-isstructurallyvalidlanguagetag">IsStructurallyValidLanguageTag</a>(<var>details</var>["<a>languageCode</a>"])
-                is false, throw a <a>RangeError</a> exception.
-                </li>
-                <li>Set <var>address</var>.<a>[[\languageCode]]</a> to
-                <a data-cite=
-                "ecma-402#sec-canonicalizelanguagetag">CanonicalizeLanguageTag</a>(<var>details</var>["<a>languageCode</a>"]).
                 </li>
               </ol>
             </li>
@@ -2509,22 +2482,6 @@
         </section>
         <section>
           <h2>
-            <dfn>languageCode</dfn> attribute
-          </h2>
-          <p class="issue atrisk">
-            This feature has been marked "<a>at risk</a>". If you'd like for
-            this feature to remain in the specification, please signal your
-            support for it to remain in <a href=
-            "https://github.com/w3c/payment-request/issues/608">issue 608</a>.
-          </p>
-          <p>
-            Represents the <a>language code</a> of the address. When getting,
-            returns the value of the <a>PaymentAddress</a>'s
-            <a>[[\languageCode]]</a> internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
             <dfn>organization</dfn> attribute
           </h2>
           <p data-link-for="">
@@ -2643,21 +2600,6 @@
             </tr>
             <tr>
               <td>
-                <dfn>[[\languageCode]]</dfn>
-              </td>
-              <td>
-                <p class="issue atrisk">
-                  This feature has been marked "<a>at risk</a>". If you'd like
-                  for this feature to remain in the specification, please
-                  signal your support for it to remain in <a href=
-                  "https://github.com/w3c/payment-request/issues/608">issue
-                  608</a>.
-                </p>A <a data-cite="BCP47#section-2">language tag</a>
-                representing the <a>language code</a>, or the empty string.
-              </td>
-            </tr>
-            <tr>
-              <td>
                 <dfn>[[\organization]]</dfn>
               </td>
               <td>
@@ -2697,7 +2639,6 @@
             DOMString dependentLocality;
             DOMString postalCode;
             DOMString sortingCode;
-            DOMString languageCode;
             DOMString organization;
             DOMString recipient;
             DOMString phone;
@@ -2763,22 +2704,6 @@
             A <a>sorting code</a>.
           </dd>
           <dt>
-            <dfn>languageCode</dfn> member
-          </dt>
-          <dd>
-            <p class="issue atrisk">
-              This feature has been marked "<a>at risk</a>". If you'd like for
-              this feature to remain in the specification, please signal your
-              support for it to remain in <a href=
-              "https://github.com/w3c/payment-request/issues/608">issue
-              608</a>.
-            </p>
-            <p>
-              A <a>language code</a>, represented as a <a data-cite=
-              "BCP47#section-2">language tag</a>.
-            </p>
-          </dd>
-          <dt>
             <dfn>organization</dfn> member
           </dt>
           <dd>
@@ -2811,7 +2736,6 @@
             DOMString city;
             DOMString country;
             DOMString dependentLocality;
-            DOMString languageCode;
             DOMString organization;
             DOMString phone;
             DOMString postalCode;
@@ -2833,8 +2757,7 @@
         <p class="note">
           Developers need to be aware that users might not have the ability to
           fix certain parts of an address. As such, they need to be mindful to
-          not to ask the user to fix things they might not have control over
-          (e.g., <a>languageCode</a>).
+          not to ask the user to fix things they might not have control over.
         </p>
         <dl>
           <dt>
@@ -2872,15 +2795,6 @@
             In the user agent's UI, this member corresponds to the input field
             that provided the <a>PaymentAddress</a>'s <a data-link-for=
             "PaymentAddress">dependentLocality</a> attribute's value.
-          </dd>
-          <dt>
-            <dfn>languageCode</dfn> member
-          </dt>
-          <dd>
-            Denotes that the <a>language code</a> has a validation error. In
-            the user agent's UI, this member corresponds to the input field
-            that provided the <a>PaymentAddress</a>'s <a data-link-for=
-            "PaymentAddress">languageCode</a> attribute's value.
           </dd>
           <dt>
             <dfn>organization</dfn> member
@@ -2988,12 +2902,6 @@
                 phone number to the merchant without the end user's consent.
               </p>
             </aside>
-          </li>
-          <li>If "languageCode" is not in <var>redactList</var>, set
-          <var>details</var>["<a>languageCode</a>"] to a <a data-cite=
-          "BCP47#section-4.5">canonicalized language tag</a>, or to the empty
-          string if none was provided.
-            <div class="issue atrisk" data-number="608"></div>
           </li>
           <li>If "city" is not in <var>redactList</var>, set
           <var>details</var>["<a>city</a>"] to the user-provided city, or to
