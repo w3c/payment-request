@@ -178,8 +178,8 @@
           How a payment handler determines whether it, or the user, can
           potentially "make a payment" is also an implementation detail of a
           payment handler. For an example, see the <a data-cite=
-          "payment-method-basic-card#steps-to-check-if-a-payment-can-be-made">can
-          make payment</a> algorithm of [[payment-method-basic-card]].
+          "?payment-method-basic-card#steps-to-check-if-a-payment-can-be-made">can
+          make payment</a> algorithm of [[?payment-method-basic-card]].
         </dd>
         <dt>
           <dfn>Steps to respond to a payment request</dfn>:
@@ -190,8 +190,8 @@
           process or validate the transaction. The structure of this object is
           specific to each <a>payment method</a>. For an example of such an
           object, see the <code><a data-cite=
-          "payment-method-basic-card#dom-basiccardresponse">BasicCardResponse</a></code>
-          dictionary of [[payment-method-basic-card]].
+          "?payment-method-basic-card#dom-basiccardresponse">BasicCardResponse</a></code>
+          dictionary of [[?payment-method-basic-card]].
         </dd>
         <dt>
           <dfn>Steps for when a user changes payment method</dfn> (optional)
@@ -1881,8 +1881,8 @@
           <dd>
             <p>
               <a>Payment method</a> specific errors. See, for example,
-              [[payment-method-basic-card]]'s <a data-cite=
-              "payment-method-basic-card#basiccarderrors-dictionary"><code>BasicCardErrors</code></a>.
+              [[?payment-method-basic-card]]'s <a data-cite=
+              "?payment-method-basic-card#basiccarderrors-dictionary"><code>BasicCardErrors</code></a>.
             </p>
           </dd>
         </dl>
@@ -2105,6 +2105,7 @@
           the user interface for the payment request.
         </dd>
       </dl>
+    </section>
     <section>
       <h2>
         Physical addresses
@@ -3237,8 +3238,8 @@
             </dt>
             <dd>
               A payment method specific errors. See, for example,
-              [[payment-method-basic-card]]'s <a data-cite=
-              "payment-method-basic-card#basiccarderrors-dictionary"><code>BasicCardErrors</code></a>.
+              [[?payment-method-basic-card]]'s <a data-cite=
+              "?payment-method-basic-card#basiccarderrors-dictionary"><code>BasicCardErrors</code></a>.
             </dd>
           </dl>
         </section>
@@ -3334,7 +3335,7 @@
             Each <a data-cite=
             "payment-method-id#standardized-payment-method-identifiers">standardized
             payment method identifier</a>, such as <a data-cite=
-            "payment-method-basic-card">Basic Card</a> ("basic-card"), defines
+            "?payment-method-basic-card">Basic Card</a> ("basic-card"), defines
             its own unique <a data-cite="WEBIDL#idl-dictionary">IDL
             dictionary</a> for use with the <a>details</a> attribute. The shape
             of this data (i.e., its members and their corresponding types and
