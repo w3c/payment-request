@@ -1202,7 +1202,9 @@
           then return <a>a promise rejected with</a> an
           "<a>InvalidStateError</a>" <a>DOMException</a>.
           </li>
-          <li>Optionally, at the <a>user agent</a>'s discretion, return <a>a
+          <li data-tests=
+          "payment-request/payment-request-canmakepayment-method-protection.https.html">
+          Optionally, at the <a>user agent</a>'s discretion, return <a>a
           promise rejected with</a> a "<a>NotAllowedError</a>"
           <a>DOMException</a>.
             <p class="note" data-link-for="PaymentRequest">
@@ -1216,10 +1218,10 @@
               time period in which those calls were made.
             </p>
           </li>
-          <li>Let <var>promise</var> be <a>a new promise</a>.
+          <li>Let <var>hasHandlerPromise</var> be <a>a new promise</a>.
           </li>
-          <li>Return <var>promise</var>, and perform the remaining steps <a>in
-          parallel</a>.
+          <li>Return <var>hasHandlerPromise</var>, and perform the remaining
+          steps <a>in parallel</a>.
           </li>
           <li>For each <var>paymentMethod</var> tuple in
           <var>request</var>.<a>[[\serializedMethodData]]</a>:
@@ -1227,40 +1229,14 @@
               <li>Let <var>identifier</var> be the first element in the
               <var>paymentMethod</var> tuple.
               </li>
-              <li>Let <var>data</var> be the result of <a data-cite=
-              "ECMASCRIPT#sec-json.parse">JSON-parsing</a> the second element
-              in the <var>paymentMethod</var> tuple.
-              </li>
-              <li>If required by the specification that defines the
-              <var>identifier</var>, then <a data-cite=
-              "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
-              <var>data</var> to an IDL value. Otherwise, <a data-cite=
-              "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
-              <a data-cite="WEBIDL#idl-object">object</a>.
-              </li>
-              <li>If conversion results in an <a data-cite=
-              "WEBIDL#dfn-exception">exception</a> <var>error</var>, reject
-              <var>promise</var> with <var>error</var> and terminate this
+              <li>If there user agent has a <a>payment handler</a> that support
+              handling payment requests for <var>identifier</var>, resolve
+              <var>hasHandlerPromise</var> with true and terminate this
               algorithm.
-              </li>
-              <li>Let <var>handlers</var> be a <a>list</a> of registered
-              <a>payment handlers</a> that are authorized and can handle
-              payment request for <var>identifier</var>.
-              </li>
-              <li>For each <var>handler</var> in <var>handlers</var>:
-                <ol>
-                  <li>Let <var>canMakePayment</var> be the result of running
-                  <var>handler</var>'s <a>steps to check if a payment can be
-                  made</a> with <var>data</var>.
-                  </li>
-                  <li>If <var>canMakePayment</var> is true, resolve
-                  <var>promise</var> with true, and return.
-                  </li>
-                </ol>
               </li>
             </ol>
           </li>
-          <li>Resolve <var>promise</var> with false.
+          <li>Resolve <var>hasHandlerPromise</var> with false.
           </li>
         </ol>
       </section>
