@@ -887,9 +887,10 @@
             The <a>show()</a> method is called when a developer wants to begin
             user interaction for the payment request. The <a>show()</a> method
             returns a <a>Promise</a> that will be resolved when the <a>user
-            accepts the payment request</a>. Some kind of user interface will
-            be presented to the user to facilitate the payment request after
-            the <a>show()</a> method returns.
+            accepts the payment request</a>, or rejected if the <a>user aborts
+            the payment request</a>. Some kind of user interface will be
+            presented to the user to facilitate the payment request after the
+            <a>show()</a> method returns.
           </p>
           <p>
             It is not possible to show multiple <a>PaymentRequest</a>s at the
@@ -4578,12 +4579,12 @@
           "PaymentResponse.payerPhone">payerPhone</a> value, the user agent
           SHOULD format the phone number to adhere to [[E.164]].
           </li>
+          <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
+          </li>
           <li>If <var>isRetry</var> is true, resolve
           <var>response</var>.<a>[[\retryPromise]]</a> with undefined.
           Otherwise, resolve <var>request</var>.<a>[[\acceptPromise]]</a> with
           <var>response</var>.
-          </li>
-          <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
           </li>
         </ol>
       </section>
@@ -4601,10 +4602,6 @@
         <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
           the user is interacting with.
-          </li>
-          <li>If the <var>request</var>.<a>[[\updating]]</a> is true, then
-          terminate this algorithm and take no further action. The <a>user
-          agent</a> user interface SHOULD ensure that this never occurs.
           </li>
           <li>If <var>request</var>.<a>[[\state]]</a> is not
           "<a>interactive</a>", then terminate this algorithm and take no
@@ -4637,6 +4634,9 @@
           <li>Otherwise, reject <var>request</var>.<a>[[\acceptPromise]]</a>
           with <var>error</var>.
           </li>
+          <li>Abort the current user interaction and close down any remaining
+          user interface.
+          </li>
         </ol>
       </section>
       <section>
@@ -4654,10 +4654,11 @@
           blocked. The user agent SHOULD provide the user with a means to abort
           a payment request. Implementations MAY choose to implement a timeout
           for pending updates if <var>detailsPromise</var> doesn't settle in a
-          reasonable amount of time. If an implementation chooses to implement
-          a timeout, they MUST execute the steps listed below in the "upon
-          rejection" path. Such a timeout is a fatal error for the payment
-          request.
+          reasonable amount of time.
+        </p>
+        <p>
+          In either case (timeout occurs or the user manually aborts), the user
+          agent MUST run the <a>user aborts the payment request algorithm</a>.
         </p>
         <ol class="algorithm">
           <li>Set <var>request</var>.<a>[[\updating]]</a> to true.
