@@ -614,13 +614,6 @@
         showing</dfn> boolean, which prevents showing more than one payment UI
         at a time.
       </p>
-      <p class="note">
-        Each payment handler controls what happens when multiple browsing
-        context simultaneously call the <a>show()</a> method. For instance,
-        some payment handlers will allow multiple payment UIs to be shown in
-        different browser tabs/windows. Other payment handlers might only allow
-        a single payment UI to be shown for the entire user agent.
-      </p>
       <section>
         <h2>
           Constructor
@@ -896,12 +889,13 @@
             be presented to the user to facilitate the payment request after
             the <a>show()</a> method returns.
           </p>
-          <p>
-            It is not possible to show multiple <a>PaymentRequest</a>s at the
-            same time within one <a>user agent</a>. If a <a>PaymentRequest</a>
-            is already showing, calling <a>show()</a> —from any Web site— will
-            return <a>a promise rejected with</a> an "<a>AbortError</a>"
-            <a>DOMException</a>.
+          <p class="note">
+            Each payment handler controls what happens when multiple browsing
+            context simultaneously call the <a>show()</a> method. For instance,
+            some payment handlers will allow multiple payment UIs to be shown
+            in different browser tabs/windows. Other payment handlers might
+            only allow a single payment UI to be shown for the entire user
+            agent.
           </p>
         </div>
         <p data-tests="payment-request-show-method.https.html">
