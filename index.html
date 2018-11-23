@@ -265,7 +265,7 @@
         optionally a list of goods or services being purchased, for physical
         goods, and shipping options. Additionally, it can optionally include
         "modifiers" to how payments are made. For example, "if you pay with a
-        credit card of type X, it incurs a US$3.00 processing fee".
+        card belonging to network X, it incurs a US$3.00 processing fee".
         </li>
         <li>The <var>options</var>: Optionally, a list of things as
         <a>PaymentOptions</a> that the site needs to deliver the good or
@@ -296,7 +296,6 @@
               supportedMethods: "basic-card",
               data: {
                 supportedNetworks: ["visa", "mastercard"],
-                supportedTypes: ["debit", "credit"],
               },
             },
             {
@@ -371,29 +370,30 @@
             Conditional modifications to payment request
           </h4>
           <p>
-            Here we see how to add a processing fee for using a credit card.
-            Notice that it requires recalculating the total.
+            Here we see how to add a processing fee for using a card on a
+            particular network. Notice that it requires recalculating the
+            total.
           </p>
           <pre class="example js" title=
           "Modifying payment request based on card type">
-          // Credit card incurs a $3.00 processing fee.
-          const creditCardFee = {
-            label: "Credit card processing fee",
+          // Certain cards incurs a $3.00 processing fee.
+          const cardFee = {
+            label: "Card processing fee",
             amount: { currency: "USD", value: "3.00" },
           };
 
           // Modifiers apply when the user chooses to pay with
-          // a credit card.
+          // a card.
           const modifiers = [
             {
-              additionalDisplayItems: [creditCardFee],
+              additionalDisplayItems: [cardFee],
               supportedMethods: "basic-card",
               total: {
                 label: "Total due",
                 amount: { currency: "USD", value: "68.00" },
               },
               data: {
-                supportedTypes: "credit",
+                supportedNetworks: networks,
               },
             },
           ];
