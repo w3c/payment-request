@@ -781,10 +781,8 @@
               <li>If the <a>modifiers</a> member of <var>details</var> is
               present, then:
                 <ol>
-                  <li>Set <var>modifiers</var> to
-                  <var>details</var>.<a>modifiers</a>.
-                  </li>
-                  <li>For each <var>modifier</var> of <var>modifiers</var>:
+                  <li>For each <var>modifier</var> of
+                  <var>details</var>.<a>modifiers</a>:
                     <ol>
                       <li>If the <a data-lt=
                       "PaymentDetailsModifier.total">total</a> member of <var>
@@ -814,11 +812,30 @@
                           </li>
                         </ol>
                       </li>
+                      <li>Let <var>identifier</var> be the value of the
+                      <a data-lt=
+                      "PaymentDetailsModifier.supportedMethods">supportedMethods</a>
+                      member of <var>modifier</var>.
+                      </li>
+                      <li>If required by the specification that defines the
+                      <var>identifier</var>, then <a data-cite=
+                      "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
+                      <var>data</var> to an IDL value of the type specified
+                      there. Otherwise, <a data-cite=
+                      "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
+                      to <a data-cite="WEBIDL#idl-object">object</a>. Rethrow
+                      any exceptions.
+                      </li>
+                      <li>If the user agent does not have an available
+                      <a>payment handler</a> for <var>identifer</var>,
+                      continue.
+                      </li>
                       <li>If the <a data-lt=
                       "PaymentDetailsModifier.data">data</a> member of
                       <var>modifier</var> is missing, let
-                      <var>serializedData</var> be null. Otherwise, let
-                      <var>serializedData</var> be the result of
+                      <var>serializedData</var> be null.
+                      </li>
+                      <li>Let <var>serializedData</var> be the result of
                       <a>JSON-serializing</a> <var>modifier</var>.<a data-lt=
                       "PaymentDetailsModifier.data">data</a> into a string.
                       Rethrow any exceptions.
