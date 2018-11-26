@@ -623,8 +623,6 @@
           feature, then <a>throw</a> a "<a>SecurityError</a>"
           <a>DOMException</a>.
           </li>
-          <li>Let <var>serializedMethodData</var> be an empty list.
-          </li>
           <li>Establish the request's id:
             <ol>
               <li data-tests="payment-request-id-attribute.https.html">If <var>
@@ -635,6 +633,8 @@
                 [[RFC4122]].
               </li>
             </ol>
+          </li>
+          <li>Let <var>serializedMethodData</var> be an empty list.
           </li>
           <li>Process payment methods:
             <ol data-link-for="PaymentMethodData">
