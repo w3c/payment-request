@@ -1051,8 +1051,8 @@
           If <var>detailsPromise</var> was passed, then:
             <ol>
               <li>Run the <a>update a <code>PaymentRequest</code>'s details
-              algorithm</a> with <var>detailsPromise</var> and
-              <var>request</var>.
+              algorithm</a> with <var>detailsPromise</var>, <var>request</var>,
+              and null.
               </li>
               <li>Wait for the <var>detailsPromise</var> to settle.
                 <p class="note">
@@ -1972,6 +1972,7 @@
       <pre class="idl">
         dictionary PaymentOptions {
           boolean requestPayerName = false;
+          boolean requestBillingAddress = false;
           boolean requestPayerEmail = false;
           boolean requestPayerPhone = false;
           boolean requestShipping = false;
@@ -1984,6 +1985,19 @@
         options desired for the payment request.
       </p>
       <dl>
+        <dt>
+          <dfn>requestBillingAddress</dfn> member
+        </dt>
+        <dd data-link-for="PaymentMethodChangeEvent">
+          A boolean that instructs the <a>user agent</a> to get the billing
+          address associated with a <a>payment method</a> (e.g., the billing
+          address associated with a credit card). Typically, the user agent
+          will return the billing address as part of the
+          <a>PaymentMethodChangeEvent</a>'s <a>methodDetails</a>, albeit
+          possibly with parts of the address redacted for privacy reasons. A
+          merchant can use this information to, for example, calculate tax in
+          certain jurisdictions.
+        </dd>
         <dt>
           <dfn>requestPayerName</dfn> member
         </dt>
@@ -4034,9 +4048,16 @@
             </li>
             <li>Set <var>event</var>.<a>[[\waitForUpdate]]</a> to true.
             </li>
+            <li>Let <var>pmi</var> be null.
+            </li>
+            <li>If <var>event</var> has a <a data-link-for=
+            "PaymentMethodChangeEvent">methodName</a> attribute, set
+            <var>pmi</var> to the <a data-link-for="PaymentMethodChangeEvent">
+              methodName</a> attribute's value.
+            </li>
             <li>Run the <a>update a <code>PaymentRequest</code>'s details
-            algorithm</a> with <var>detailsPromise</var> and
-            <var>request</var>.
+            algorithm</a> with <var>detailsPromise</var>, <var>request</var>,
+            and <var>pmi</var>.
             </li>
           </ol>
         </section>
@@ -4589,16 +4610,18 @@
         <p>
           The <dfn>update a <code>PaymentRequest</code>'s details
           algorithm</dfn> takes a <a>PaymentDetailsUpdate</a>
-          <var>detailsPromise</var> and a <a>PaymentRequest</a>
-          <var>request</var>. The steps are conditional on the
-          <var>detailsPromise</var> settling. If <var>detailsPromise</var>
-          never settles then the payment request is blocked. The user agent
-          SHOULD provide the user with a means to abort a payment request.
-          Implementations MAY choose to implement a timeout for pending updates
-          if <var>detailsPromise</var> doesn't settle in a reasonable amount of
-          time. If an implementation chooses to implement a timeout, they MUST
-          execute the steps listed below in the "upon rejection" path. Such a
-          timeout is a fatal error for the payment request.
+          <var>detailsPromise</var>, a <a>PaymentRequest</a>
+          <var>request</var>, and <var>pmi</var> that is either a DOMString or
+          null (a <a>payment method identifier</a>). The steps are conditional
+          on the <var>detailsPromise</var> settling. If
+          <var>detailsPromise</var> never settles then the payment request is
+          blocked. The user agent SHOULD provide the user with a means to abort
+          a payment request. Implementations MAY choose to implement a timeout
+          for pending updates if <var>detailsPromise</var> doesn't settle in a
+          reasonable amount of time. If an implementation chooses to implement
+          a timeout, they MUST execute the steps listed below in the "upon
+          rejection" path. Such a timeout is a fatal error for the payment
+          request.
         </p>
         <ol class="algorithm">
           <li>Set <var>request</var>.<a>[[\updating]]</a> to true.
@@ -4777,6 +4800,24 @@
                         </ol>
                       </li>
                     </ol>
+                  </li>
+                </ol>
+              </li>
+              <li data-link-for="PaymentDetailsUpdate">If the
+              <a>paymentMethodErrors</a> member is present and
+              <var>identifier</var> is not null:
+                <ol>
+                  <li>If required by the specification that defines the
+                  <var>pmi</var>, then <a data-cite=
+                  "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> <a>
+                    paymentMethodErrors</a> to an IDL value.
+                  </li>
+                  <li>If conversion results in a <a data-cite=
+                  "!WEBIDL#dfn-exception">exception</a> <var>error</var>,
+                  <a>abort the update</a> with <var>error</var>.
+                  </li>
+                  <li>The <a>payment handler</a> SHOULD display an error for
+                  each relevant erroneous field of <a>paymentMethodErrors</a>.
                   </li>
                 </ol>
               </li>
