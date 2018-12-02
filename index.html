@@ -3125,26 +3125,62 @@
           <li>Set <var>response</var>.<a>[[\retryPromise]]</a> to
           <var>retryPromise</var>.
           </li>
-          <li data-link-for="PaymentValidationErrors" data-tests=
-          "PaymentValidationErrors/retry-shows-error-member-manual.https.html">
-          If <var>errorFields</var>'s <a>paymentMethod</a> member was passed,
-          and if required by the specification that defines
-          <var>response</var>'s <a>payment method</a>, then <a data-cite=
-          "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
-          <var>errorFields</var> <a>paymentMethod</a> to an IDL value of the
-          type specified there. Otherwise, <a data-cite=
-          "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
-          <a data-cite="WEBIDL#idl-object">object</a>.
-          </li>
-          <li>If conversion results in a <a data-cite=
-          "WEBIDL#dfn-exception">exception</a> <var>error</var>:
+          <li>If <var>errorFields</var> was passed:
             <ol>
-              <li>Reject <var>retryPromise</var> with <var>error</var>.
+              <li>Optionally, show a warning in the developer console if any of
+              the following are true:
+                <ol>
+                  <li>
+                    <var>request</var>.<a>[[\options]]</a>["<a data-link-for=
+                    "PaymentOptions">requestPayerName</a>"] is false, and
+                    <var>errorFields</var>["<a data-link-for=
+                    "PaymentValidationErrors">payer</a>"]["<a data-link-for=
+                    "PayerErrors">name</a>"] is present.
+                  </li>
+                  <li>
+                    <var>request</var>.<a>[[\options]]</a>["<a data-link-for=
+                    "PaymentOptions">requestPayerEmail</a>"] is false, and
+                    <var>errorFields</var>["<a data-link-for=
+                    "PaymentValidationErrors">payer</a>"]["<a data-link-for=
+                    "PayerErrors">email</a>"] is present.
+                  </li>
+                  <li>
+                    <var>request</var>.<a>[[\options]]</a>["<a data-link-for=
+                    "PaymentOptions">requestPayerPhone</a>"] is false, and
+                    <var>errorFields</var>["<a data-link-for=
+                    "PaymentValidationErrors">payer</a>"]["<a data-link-for=
+                    "PayerErrors">phone</a>"] is present.
+                  </li>
+                  <li>
+                    <var>request</var>.<a>[[\options]]</a>["<a data-link-for=
+                    "PaymentOptions">requestShipping</a>"] is false, and
+                    <var>errorFields</var>["<a data-link-for=
+                    "PaymentValidationErrors">shippingAddress</a>"] is present.
+                  </li>
+                </ol>
               </li>
-              <li>Set <a>user agent</a>'s <a>payment request is showing</a>
-              boolean to false.
+              <li data-link-for="PaymentValidationErrors" data-tests=
+              "PaymentValidationErrors/retry-shows-error-member-manual.https.html">
+              If <var>errorFields</var>["<a>paymentMethod</a>] member was
+              passed, and if required by the specification that defines
+              <var>response</var>'s <a>payment method</a>, then <a data-cite=
+              "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
+              <var>errorFields</var>'s <a>paymentMethod</a> member to an IDL
+              value of the type specified there. Otherwise, <a data-cite=
+              "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
+              <a data-cite="WEBIDL#idl-object">object</a>.
               </li>
-              <li>Return.
+              <li>If conversion results in a <a data-cite=
+              "WEBIDL#dfn-exception">exception</a> <var>error</var>:
+                <ol>
+                  <li>Reject <var>retryPromise</var> with <var>error</var>.
+                  </li>
+                  <li>Set <a>user agent</a>'s <a>payment request is showing</a>
+                  boolean to false.
+                  </li>
+                  <li>Return.
+                  </li>
+                </ol>
               </li>
             </ol>
           </li>
