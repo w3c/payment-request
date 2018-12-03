@@ -3495,14 +3495,14 @@
           promise rejected with</a> an "<a>InvalidStateError</a>"
           <a>DOMException</a>.
           </li>
+          <li data-tests="payment-response/retry-method-manual.https.html">If
+          <var>response</var>.<a>[[\retryPromise]]</a> is not null, return <a>
+            a promise rejected with</a> an "<a>InvalidStateError</a>"
+            <a>DOMException</a>.
+          </li>
           <li>Let <var>promise</var> be <a>a new promise</a>.
           </li>
           <li>Set <var>response</var>.<a>[[\complete]]</a> to true.
-          </li>
-          <li data-tests="payment-response/retry-method-manual.https.html">If
-          <var>response</var>.<a>[[\retryPromise]]</a> is not null, reject
-          <var>promise</var> with an "<a>InvalidStateError</a>"
-          <a>DOMException</a>.
           </li>
           <li>Return <var>promise</var> and perform the remaining steps <a>in
           parallel</a>.
