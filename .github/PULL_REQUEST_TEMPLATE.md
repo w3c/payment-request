@@ -5,7 +5,8 @@ The following tasks have been completed:
  * [ ] Confirmed there are no ReSpec errors/warnings.
  * [ ] Modified Web platform tests (link)
  * [ ] Modified MDN Docs (link)
-
+ * [ ] Has undergone security/privacy review (link)
+ 
 Implementation commitment:
 
  * [ ] Safari (link to issue)
@@ -13,4 +14,4 @@ Implementation commitment:
  * [ ] Firefox (link to issue)
  * [ ] Edge (public signal)
 
-Optional, Impact on Payment Handler spec?
+Optional, impact on Payment Handler spec?
