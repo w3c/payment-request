@@ -3632,6 +3632,29 @@
         specified on the <a>iframe</a> element.
       </p>
     </section>
+    <section class="informative">
+      <h2>
+        Interaction with Feature Policy Specification
+      </h2>
+      <p>
+        The <a data-cite="feature-policy">Feature Policy</a> specification
+        defines the "<code>payment</code>" feature, which controls whether the
+        current document is allowed to use the <a>PaymentRequest</a> interface.
+        Please refer to the <a data-cite="feature-policy">Feature Policy</a>
+        specification for usage examples, implementation details, and normative
+        conformance requirements.
+      </p>
+      <p>
+        Additionally, for details of how the "<code>payment</code>" feature and
+        an <a>iframe</a>'s <a>allowpaymentrequest</a> attribute work together
+        please see the <code><a data-cite=
+        "feature-policy#iframe-allowpaymentrequest-attribute">allowpaymentrequest</a></code>
+        section and the <a data-cite=
+        "feature-policy/#process-feature-policy-attributes">process feature
+        policy attributes</a> algorithm in the <a data-cite=
+        "feature-policy">Feature Policy</a> specification.
+      </p>
+    </section>
     <section>
       <h2>
         Events
