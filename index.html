@@ -623,8 +623,6 @@
           feature, then <a>throw</a> a "<a>SecurityError</a>"
           <a>DOMException</a>.
           </li>
-          <li>Let <var>serializedMethodData</var> be an empty list.
-          </li>
           <li>Establish the request's id:
             <ol>
               <li data-tests="payment-request-id-attribute.https.html">If <var>
@@ -635,6 +633,8 @@
                 [[RFC4122]].
               </li>
             </ol>
+          </li>
+          <li>Let <var>serializedMethodData</var> be an empty list.
           </li>
           <li>Process payment methods:
             <ol data-link-for="PaymentMethodData">
@@ -794,7 +794,9 @@
                       "PaymentDetailsModifier.data">data</a> into a string.
                       Rethrow any exceptions.
                       </li>
-                      <li>Add <var>serializedData</var> to
+                      <li>Add the tuple (<var>modifier</var>.<a data-lt=
+                      "PaymentDetailsModifier.supportedMethods">supportedMethods</a>,
+                      <var>serializedData</var>) to
                       <var>serializedModifierData</var>.
                       </li>
                       <li>Remove the <a data-lt="PaymentDetailsModifier.data">
@@ -1055,19 +1057,32 @@
               </li>
             </ol>
           </li>
+          <li>Let <var>handler</var> be the <a>payment handler</a> selected by
+          the end-user.
+          </li>
+          <li>Let <var>modifiers</var> be an empty list.
+          </li>
+          <li>For each <var>tuple</var> in <a>[[\serializedModifierData]]</a>:
+            <ol>
+              <li>If the first element of <var>tuple</var> (a <a>PMI</a>)
+              matches the <a>payment method identifier</a> of
+              <var>handler</var>, then append the second element of
+              <var>tuple</var> (the serialized method data) to
+              <var>modifiers</var>.
+              </li>
+            </ol>
+          </li>
           <li>
             <p>
-              For the <a>payment handler</a> selected by the end user, the user
-              agent MUST pass the <a data-cite=
+              Pass the <a data-cite=
               "WEBIDL#dfn-convert-ecmascript-to-idl-value">converted</a> second
-              element in the <var>paymentMethod</var> tuple and the
-              <var>request</var>'s <a>[[\serializedModifierData]]</a> internal
-              slot. Optionally, the user agent SHOULD send the appropriate data
-              from <var>request</var> to the user-selected <a>payment
-              handler</a> in order to guide the user through the payment
-              process. This includes the various attributes and other internal
-              slots of <var>request</var> (some MAY be excluded for privacy
-              reasons where appropriate).
+              element in the <var>paymentMethod</var> tuple and
+              <var>modifiers</var>. Optionally, the user agent SHOULD send the
+              appropriate data from <var>request</var> to the user-selected
+              <a>payment handler</a> in order to guide the user through the
+              payment process. This includes the various attributes and other
+              internal slots of <var>request</var> (some MAY be excluded for
+              privacy reasons where appropriate).
             </p>
             <p>
               Handling of multiple applicable modifiers in the
@@ -5257,8 +5272,8 @@ Object.assign(details, { modifiers });
           Payment Method Identifiers
         </dt>
         <dd>
-          The term <dfn data-lt="payment method identifiers">payment method
-          identifier</dfn> is defined by [[payment-method-id]]. It's an unique
+          The term <dfn data-lt="PMI">payment method identifier</dfn>, or PMI
+          for short, is defined by [[payment-method-id]]. It's an unique
           identifier for a <a>payment method</a>.
         </dd>
         <dt>
