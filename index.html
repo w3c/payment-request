@@ -644,14 +644,6 @@
           act as follows:
         </p>
         <ol data-link-for="PaymentDetailsBase" class="algorithm">
-          <li data-tests=
-          "allowpaymentrequest/active-document-cross-origin.https.sub.html, allowpaymentrequest/active-document-same-origin.https.html, allowpaymentrequest/removing-allowpaymentrequest.https.sub.html, allowpaymentrequest/setting-allowpaymentrequest-timing.https.sub.html, allowpaymentrequest/setting-allowpaymentrequest.https.sub.html">
-          If the <a>current settings object</a>'s <a data-cite=
-          "HTML#responsible-document">responsible document</a> is not
-          <a>allowed to use</a> the feature indicated by attribute name
-          <a>allowpaymentrequest</a>, then <a>throw</a> a
-          "<a>SecurityError</a>" <a>DOMException</a>.
-          </li>
           <li>Let <var>serializedMethodData</var> be an empty list.
           </li>
           <li>Establish the request's id:
@@ -3623,26 +3615,17 @@
     </section>
     <section class="informative">
       <h2>
-        <code>PaymentRequest</code> and <code>iframe</code> elements
-      </h2>
-      <p data-tests=
-      "allowpaymentrequest/active-document-cross-origin.https.sub.html, allowpaymentrequest/active-document-same-origin.https.html, allowpaymentrequest/allowpaymentrequest-attribute-cross-origin-bc-containers.https.html, allowpaymentrequest/allowpaymentrequest-attribute-same-origin-bc-containers.https.html, allowpaymentrequest/basic.https.html, allowpaymentrequest/no-attribute-cross-origin-bc-containers.https.html, allowpaymentrequest/no-attribute-same-origin-bc-containers.https.html, allowpaymentrequest/removing-allowpaymentrequest.https.sub.html, allowpaymentrequest/setting-allowpaymentrequest-timing.https.sub.html, allowpaymentrequest/setting-allowpaymentrequest.https.sub.html">
-        To indicate that a cross-origin <a>iframe</a> is allowed to invoke the
-        payment request API, the <a>allowpaymentrequest</a> attribute can be
-        specified on the <a>iframe</a> element.
-      </p>
-    </section>
-    <section class="informative">
-      <h2>
         Interaction with Feature Policy Specification
       </h2>
       <p>
         The <a data-cite="feature-policy">Feature Policy</a> specification
-        defines the "<code>payment</code>" feature, which controls whether the
-        current document is allowed to use the <a>PaymentRequest</a> interface.
-        Please refer to the <a data-cite="feature-policy">Feature Policy</a>
-        specification for usage examples, implementation details, and normative
-        conformance requirements.
+        defines the "<code>payment</code>" feature and the <code><dfn data-cit=
+        "feature-policy#attr-iframe-allowpaymentrequest">allowpaymentrequest</dfn></code>
+        attribute for <a>iframe</a> element, which control whether a particular
+        document, including cross-origin documents, is <a>allowed to use</a>
+        the <a>PaymentRequest</a> interface. Please refer to the <a data-cite=
+        "feature-policy">Feature Policy</a> specification for usage examples,
+        implementation details, and normative conformance requirements.
       </p>
       <p>
         Additionally, for details of how the "<code>payment</code>" feature and
@@ -5197,7 +5180,8 @@
           It is common for merchants and other payees to delegate checkout and
           other e-commerce activities to payment service providers through an
           <a>iframe</a>. This API supports payee-authorized cross-origin
-          iframes through [[HTML]]'s <a>allowpaymentrequest</a> attribute.
+          iframes through [[Feature-Policy]]'s <a>allowpaymentrequest</a>
+          attribute.
         </p>
         <p class="Note">
           <a>Payment handlers</a> have access to both the origin that hosts the
@@ -5347,9 +5331,7 @@
           "HTML/infrastructure.html#in-parallel">in parallel</dfn>, the
           <code><dfn data-cite=
           "HTML/iframe-embed-object.html#the-iframe-element">iframe</dfn></code>
-          element, and the <code><dfn data-cite=
-          "HTML/iframe-embed-object.html#attr-iframe-allowpaymentrequest">allowpaymentrequest</dfn></code>
-          attribute.
+          element.
         </dd>
         <dt>
           ECMAScript
