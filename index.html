@@ -609,12 +609,21 @@
           member is set.
         </p>
       </div>
-      <p data-link-for="PaymentRequest">
-        Because the simultaneous display of multiple <a>PaymentRequest</a> user
-        interfaces might confuse the user, this specification limits the
-        <a>user agent</a> to displaying one at a time via the <a>show()</a>
-        method. This is ensured by a <dfn>payment request is showing</dfn>
-        boolean.
+      <p>
+        A <var>request</var>'s <dfn>payment-relevant browsing context</dfn> is
+        that <a>PaymentRequest</a>'s <a data-cite=
+        "HTML#concept-relevant-global">relevant global object</a>'s browsing
+        context's <a>top-level browsing context</a>. Every <a>payment-relevant
+        browsing context</a> has a <dfn>payment request is showing</dfn>
+        boolean, which prevents showing more than one payment UI at a time.
+      </p>
+      <p class="Note">
+        The <a>payment request is showing</a> boolean simply prevents more than
+        one payment UI being shown in a single browser tab. However, a
+        <a>payment handler</a> can restrict the <a>user agent</a> to showing
+        only one payment UI across all browser windows and tabs. Other payment
+        handlers might allow showing a payment UI across disparate browser
+        tabs.
       </p>
       <section>
         <h2>
@@ -892,11 +901,12 @@
             the <a>show()</a> method returns.
           </p>
           <p>
-            It is not possible to show multiple <a>PaymentRequest</a>s at the
-            same time within one <a>user agent</a>. If a <a>PaymentRequest</a>
-            is already showing, calling <a>show()</a> —from any Web site— will
-            return <a>a promise rejected with</a> an "<a>AbortError</a>"
-            <a>DOMException</a>.
+            Each payment handler controls what happens when multiple browsing
+            context simultaneously call the <a>show()</a> method. For instance,
+            some payment handlers will allow multiple payment UIs to be shown
+            in different browser tabs/windows. Other payment handlers might
+            only allow a single payment UI to be shown for the entire user
+            agent.
           </p>
         </div>
         <p data-tests="payment-request-show-method.https.html">
@@ -935,9 +945,10 @@
           then return <a>a promise rejected with</a> an
           "<a>InvalidStateError</a>" <a>DOMException</a>.
           </li>
-          <li>If the <a>user agent</a>'s <a>payment request is showing</a>
-          boolean is true, then return <a>a promise rejected with</a> an
-          "<a>AbortError</a>" <a>DOMException</a>.
+          <li>If <var>request</var>'s <a>payment-relevant browsing
+          context</a>'s <a>payment request is showing</a> boolean is true, then
+          return <a>a promise rejected with</a> an "<a>AbortError</a>"
+          <a>DOMException</a>.
           </li>
           <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>interactive</a>".
           </li>
@@ -967,8 +978,8 @@
               advantage of this step.
             </p>
           </li>
-          <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
-          boolean to true.
+          <li>Set <var>request</var>'s <a>payment-relevant browsing
+          context</a>'s <a>payment request is showing</a> boolean to true.
           </li>
           <li>Return <var>acceptPromise</var> and perform the remaining steps
           <a>in parallel</a>.
@@ -1001,8 +1012,9 @@
                   </li>
                   <li>Reject <var>acceptPromise</var> with <var>error</var>.
                   </li>
-                  <li>Set <a>user agent</a>'s <a>payment request is showing</a>
-                  boolean to false.
+                  <li>Set <var>request</var>'s <a>payment-relevant browsing
+                  context</a>'s <a>payment request is showing</a> boolean to
+                  false.
                   </li>
                   <li>Terminate this algorithm.
                   </li>
@@ -1032,8 +1044,8 @@
               <li>Reject <var>acceptPromise</var> with
               "<a>NotSupportedError</a>" <a>DOMException</a>.
               </li>
-              <li>Set <a>user agent</a>'s <a>payment request is showing</a>
-              boolean to false.
+              <li>Set <var>request</var>'s <a>payment-relevant browsing
+              context</a>'s <a>payment request is showing</a> boolean to false.
               </li>
               <li>Terminate this algorithm.
               </li>
@@ -1095,8 +1107,8 @@
             <ol>
               <li>Close down the user interface.
               </li>
-              <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
-              boolean to false.
+              <li>Set <var>request</var>'s <a>payment-relevant browsing
+              context</a>'s <a>payment request is showing</a> boolean to false.
               </li>
               <li>Reject <var>acceptPromise</var> with an "<a>AbortError</a>"
               <a>DOMException</a>.
@@ -1204,9 +1216,9 @@
           </li>
           <li data-tests=
           "payment-request/payment-request-canmakepayment-method-protection.https.html">
-          Optionally, at the <a>user agent</a>'s discretion, return <a>a
-          promise rejected with</a> a "<a>NotAllowedError</a>"
-          <a>DOMException</a>.
+          Optionally, at the <a>top-level browsing context</a>'s discretion,
+          return <a>a promise rejected with</a> a "<a>NotAllowedError</a>" <a>
+            DOMException</a>.
             <p class="note" data-link-for="PaymentRequest">
               This allows user agents to apply heuristics to detect and prevent
               abuse of the <a>canMakePayment()</a> method for fingerprinting
@@ -3170,6 +3182,9 @@
               "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
               <a data-cite="WEBIDL#idl-object">object</a>.
               </li>
+              <li>Set <var>request</var>'s <a>payment-relevant browsing
+              context</a>'s <a>payment request is showing</a> boolean to false.
+              </li>
               <li>If conversion results in a <a data-cite=
               "WEBIDL#dfn-exception">exception</a> <var>error</var>:
                 <ol>
@@ -3201,8 +3216,8 @@
             <ol>
               <li>Close down the user interface.
               </li>
-              <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
-              boolean to false.
+              <li>Set <var>request</var>'s <a>payment-relevant browsing
+              context</a>'s <a>payment request is showing</a> boolean to false.
               </li>
               <li>Reject <var>retryPromise</var> with an "<a>AbortError</a>"
               <a>DOMException</a>.
@@ -3513,8 +3528,8 @@
             <ol>
               <li>Close down the user interface.
               </li>
-              <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
-              boolean to false.
+              <li>Set <var>request</var>'s <a>payment-relevant browsing
+              context</a>'s <a>payment request is showing</a> boolean to false.
               </li>
               <li>Reject <var>promise</var> with an "<a>AbortError</a>"
               <a>DOMException</a>.
@@ -3527,8 +3542,8 @@
               agent</a> MAY use the value <var>result</var> to influence the
               user experience.
               </li>
-              <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
-              boolean to false.
+              <li>Set <var>request</var>'s <a>payment-relevant browsing
+              context</a>'s <a>payment request is showing</a> boolean to false.
               </li>
               <li>Resolve <var>promise</var> with undefined.
               </li>
@@ -4609,8 +4624,8 @@
           </li>
           <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
           </li>
-          <li>Set the <a>user agent</a>'s <a>payment request is showing</a>
-          boolean to false.
+          <li>Set <var>request</var>'s <a>payment-relevant browsing
+          context</a>'s <a>payment request is showing</a> boolean to false.
           </li>
           <li>Let <var>error</var> be an "<a>AbortError</a>"
           <a>DOMException</a>.
@@ -4989,8 +5004,9 @@
               <a>Queue a task</a> on the <a>user interaction task source</a> to
               perform the following steps:
               <ol>
-                <li>Set the <a>user agent</a>'s <a>payment request is
-                showing</a> boolean to false.
+                <li>Set <var>request</var>'s <a>payment-relevant browsing
+                context</a>'s <a>payment request is showing</a> boolean to
+                false.
                 </li>
                 <li>Set <var>request</var>.<a>[[\state]]</a> to
                 "<a>closed</a>".
