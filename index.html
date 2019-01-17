@@ -945,10 +945,15 @@
           then return <a>a promise rejected with</a> an
           "<a>InvalidStateError</a>" <a>DOMException</a>.
           </li>
-          <li>If <var>request</var>'s <a>payment-relevant browsing
-          context</a>'s <a>payment request is showing</a> boolean is true, then
-          return <a>a promise rejected with</a> an "<a>AbortError</a>"
-          <a>DOMException</a>.
+          <li>If the <a>user agent</a>'s <a>payment request is showing</a>
+          boolean is true, then:
+            <ol>
+              <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
+              </li>
+              <li>Return <a>a promise rejected with</a> an
+              "<a>AbortError</a>" <a>DOMException</a>.
+              </li>
+            </ol>
           </li>
           <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>interactive</a>".
           </li>
