@@ -1,5 +1,5 @@
 {
-  "group": ["83744"],
-  "contacts": ["ianbjacobs"],
-  "shortName": "payment-request"
+  "group": ["83744"]
+,   "contacts": ["ianbjacobs"]
+,   "repo-type":  "rec-track"
 }
