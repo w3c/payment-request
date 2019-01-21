@@ -663,7 +663,8 @@
               </li>
             </ol>
           </li>
-          <li>Let <var>serializedMethodData</var> be an empty list.
+          <li>Let <var>paymentMethods</var> be an empty
+          sequence&lt;<a>PaymentMethodData</a>&gt;.
           </li>
           <li>Process payment methods:
             <ol data-link-for="PaymentMethodData">
@@ -678,24 +679,31 @@
                   to <a data-cite=
                   "payment-method-id#dfn-validate-a-payment-method-identifier">
                     validate a payment method identifier</a> with
-                    <var>paymentMethod</var>.<a data-lt=
-                    "PaymentMethodData.supportedMethods">supportedMethods</a>.
-                    If it returns false, then throw a <a>RangeError</a>
-                    exception. Optionally, inform the developer that the
-                    payment method identifier is invalid.
+                    <var>paymentMethod</var>.<a>supportedMethods</a>. If it
+                    returns false, then throw a <a>RangeError</a> exception.
+                    Optionally, inform the developer that the payment method
+                    identifier is invalid.
                   </li>
-                  <li>If the <a data-lt="PaymentMethodData.data">data</a>
-                  member of <var>paymentMethod</var> is missing, let
-                  <var>serializedData</var> be null. Otherwise, let
-                  <var>serializedData</var> be the result of
-                  <a>JSON-serializing</a>
-                    <var>paymentMethod</var>.<a data-lt="PaymentMethodData.data">data</a>
-                    into a string. Rethrow any exceptions.
+                  <li>If <var>paymentMethod</var>.<a>data</a> is present:
+                    <ol>
+                      <li>
+                        <a>JSON-serialize</a>
+                        <var>paymentMethod</var>.<a>data</a>. Rethrow any
+                        exceptions.
+                      </li>
+                      <li>If required by the specification that defines the
+                      <var>paymentMethod</var>.<a>supportedMethods</a>, replace
+                      <var>paymentMethod</var>.<a>data</a> with a
+                      <a>converted</a> IDL value of the type specified there
+                      (e.g., a <a data-cite=
+                      "payment-method-basic-card#dom-basiccardrequest">BasicCardRequest</a>
+                      in the case of [[?payment-method-basic-card]]). Rethrow
+                      any exceptions.
+                      </li>
+                    </ol>
                   </li>
-                  <li>Add the tuple (<var>paymentMethod</var>.<a data-lt=
-                  "PaymentMethodData.supportedMethods">supportedMethods</a>,
-                  <var>serializedData</var>) to
-                  <var>serializedMethodData</var>.
+                  <li>Append <var>paymentMethod</var> to
+                  <var>paymentMethods</var>.
                   </li>
                 </ol>
               </li>
@@ -770,8 +778,6 @@
               </li>
             </ol>
           </li>
-          <li>Let <var>serializedModifierData</var> be an empty list.
-          </li>
           <li data-link-for="PaymentDetailsBase">Process payment details
           modifiers:
             <ol>
@@ -783,73 +789,53 @@
                 <ol>
                   <li>For each <var>modifier</var> of
                   <var>details</var>.<a>modifiers</a>:
-                    <ol>
-                      <li>If the <a data-lt=
-                      "PaymentDetailsModifier.total">total</a> member of <var>
-                        modifier</var> is present, then:
+                    <ol data-link-for="PaymentDetailsModifier">
+                      <li>If the <a>total</a> member of <var>modifier</var> is
+                      present, then:
                         <ol>
                           <li data-tests=
                           "payment-request-ctor-currency-code-checks.https.html">
                             <a>Check and canonicalize total amount</a>
-                            <var>modifier</var>.<a data-lt=
-                            "PaymentDetailsModifier.total">total</a>.<a data-lt="PaymentItem.amount">amount</a>.
-                            Rethrow any exceptions.
-                          </li>
-                        </ol>
-                      </li>
-                      <li>If the <a data-lt=
-                      "PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>
-                      member of <var>modifier</var> is present, then for each
-                      <var>item</var> of <var>modifier</var>.<a data-lt=
-                      "PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>:
-                        <ol>
-                          <li data-tests=
-                          "payment-request-ctor-currency-code-checks.https.html">
-                            <a>Check and canonicalize amount</a>
-                            <var>item</var>.<a data-lt=
+                            <var>modifier</var>.<a>total</a>.<a data-lt=
                             "PaymentItem.amount">amount</a>. Rethrow any
                             exceptions.
                           </li>
                         </ol>
                       </li>
-                      <li>Let <var>identifier</var> be the value of the
-                      <a data-lt=
-                      "PaymentDetailsModifier.supportedMethods">supportedMethods</a>
-                      member of <var>modifier</var>.
-                      </li>
-                      <li data-tests=
-                      "constructor_convert_method_data.https.html">If required
-                      by the specification that defines the
-                      <var>identifier</var>, then <a data-cite=
-                      "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
-                      <a data-lt="PaymentDetailsModifier.data">data</a> member
-                      of <var>modifier</var> to an IDL value of the type
-                      specified there. Otherwise, <a data-cite=
-                      "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
-                      to <a data-cite="WEBIDL#idl-object">object</a>. Rethrow
-                      any exceptions.
+                      <li>If the <a>additionalDisplayItems</a> member of <var>
+                        modifier</var> is present, then for each
+                        <var>item</var> of
+                        <var>modifier</var>.<a>additionalDisplayItems</a>:
+                        <ol data-link-for="PaymentItem">
+                          <li data-tests=
+                          "payment-request-ctor-currency-code-checks.https.html">
+                            <a>Check and canonicalize amount</a>
+                            <var>item</var>.<a>amount</a>. Rethrow any
+                            exceptions.
+                          </li>
+                        </ol>
                       </li>
                       <li>If the user agent does not have an available
-                      <a>payment handler</a> for <var>identifier</var>,
-                      continue.
+                      <a>payment handler</a> for
+                      <var>modifier</var>.<a>supportedMethods</a>, continue.
                       </li>
-                      <li>If the <a data-lt=
-                      "PaymentDetailsModifier.data">data</a> member of
-                      <var>modifier</var> is missing, let
-                      <var>serializedData</var> be null.
-                      </li>
-                      <li>Otherwise, let <var>serializedData</var> be the
-                      result of <a>JSON-serializing</a>
-                      <var>modifier</var>.<a data-lt=
-                      "PaymentDetailsModifier.data">data</a> into a string.
-                      Rethrow any exceptions.
-                      </li>
-                      <li>Add <var>serializedData</var> to
-                      <var>serializedModifierData</var>.
-                      </li>
-                      <li>Remove the <a data-lt="PaymentDetailsModifier.data">
-                        data</a> member of <var>modifier</var>, if it is
-                        present.
+                      <li>If <var>modifier</var>.<a>data</a> is present:
+                        <ol>
+                          <li>
+                            <a>JSON-serialize</a>
+                            <var>modifier</var>.<a>data</a>. Rethrow any
+                            exceptions.
+                          </li>
+                          <li>If required by the specification that defines the
+                          <var>modifier</var>.<a>supportedMethods</a>, replace
+                          <var>modifier</var>.<a>data</a> with a
+                          <a>converted</a> IDL value of the type specified
+                          there (e.g., a <a data-cite=
+                          "payment-method-basic-card#dom-basiccardrequest">BasicCardRequest</a>
+                          in the case of [[?payment-method-basic-card]]).
+                          Rethrow any exceptions.
+                          </li>
+                        </ol>
                       </li>
                     </ol>
                   </li>
@@ -871,11 +857,8 @@
           </li>
           <li>Set <var>request</var>.<a>[[\details]]</a> to <var>details</var>.
           </li>
-          <li>Set <var>request</var>.<a>[[\serializedModifierData]]</a> to
-          <var>serializedModifierData</var>.
-          </li>
-          <li>Set <var>request</var>.<a>[[\serializedMethodData]]</a> to <var>
-            serializedMethodData</var>.
+          <li>Set <var>request</var>.<a>[[\paymentMethods]]</a> to
+          <var>paymentMethods</var>.
           </li>
           <li>Set <var>request</var>.<a>[[\response]]</a> to null.
           </li>
@@ -1012,40 +995,9 @@
           </li>
           <li>Let <var>handlers</var> be an empty <a>list</a>.
           </li>
-          <li>For each <var>paymentMethod</var> tuple in
-          <var>request</var>.<a>[[\serializedMethodData]]</a>:
+          <li>For each <var>paymentMethod</var> of
+          <var>request</var>.<a>[[\paymentMethods]]</a>:
             <ol>
-              <li>Let <var>identifier</var> be the first element in the
-              <var>paymentMethod</var> tuple.
-              </li>
-              <li>Let <var>data</var> be the result of <a data-cite=
-              "ECMASCRIPT#sec-json.parse">JSON-parsing</a> the second element
-              in the <var>paymentMethod</var> tuple.
-              </li>
-              <li>If required by the specification that defines the
-              <var>identifier</var>, then <a data-cite=
-              "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
-              <var>data</var> to an IDL value of the type specified there.
-              Otherwise, <a data-cite=
-              "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
-              <a data-cite="WEBIDL#idl-object">object</a>.
-              </li>
-              <li>If conversion results in an <a data-cite=
-              "WEBIDL#dfn-exception">exception</a> <var>error</var>:
-                <ol>
-                  <li>Set <var>request</var>.<a>[[\state]]</a> to
-                  "<a>closed</a>".
-                  </li>
-                  <li>Reject <var>acceptPromise</var> with <var>error</var>.
-                  </li>
-                  <li>Set <var>request</var>'s <a>payment-relevant browsing
-                  context</a>'s <a>payment request is showing</a> boolean to
-                  false.
-                  </li>
-                  <li>Terminate this algorithm.
-                  </li>
-                </ol>
-              </li>
               <li>Let <var>registeredHandlers</var> be a <a>list</a> of
               registered payment handlers for the payment method
               <var>identifier</var>.
@@ -1261,14 +1213,12 @@
           <li>Return <var>hasHandlerPromise</var>, and perform the remaining
           steps <a>in parallel</a>.
           </li>
-          <li>For each <var>paymentMethod</var> tuple in
-          <var>request</var>.<a>[[\serializedMethodData]]</a>:
-            <ol>
-              <li>Let <var>identifier</var> be the first element in the
-              <var>paymentMethod</var> tuple.
-              </li>
+          <li>For each <var>paymentMethod</var> of
+          <var>request</var>.<a>[[\paymentMethods]]</a>:
+            <ol data-link-for="PaymentMethodData">
               <li>If there user agent has a <a>payment handler</a> that support
-              handling payment requests for <var>identifier</var>, resolve
+              handling payment requests for
+              <var>paymentMethod</var>.<a>supportedMethods</a>, resolve
               <var>hasHandlerPromise</var> with true and terminate this
               algorithm.
               </li>
@@ -1376,24 +1326,11 @@
           </tr>
           <tr>
             <td>
-              <dfn>[[\serializedMethodData]]</dfn>
+              <dfn>[[\paymentMethods]]</dfn>
             </td>
             <td>
-              The <code>methodData</code> supplied to the constructor, but
-              represented as tuples containing supported methods and a string
-              or null for data (instead of the original object form).
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <dfn>[[\serializedModifierData]]</dfn>
-            </td>
-            <td>
-              A list containing the serialized string form of each <a data-lt=
-              "PaymentDetailsModifier.data">data</a> member for each
-              corresponding item in the sequence
-              <a>[[\details]]</a>.<a data-lt="PaymentDetailsBase">modifier</a>,
-              or null if no such member was present.
+              A sequence of <a>PaymentMethodData</a> with which the payment
+              request was constructed.
             </td>
           </tr>
           <tr>
@@ -1404,12 +1341,7 @@
               The current <a>PaymentDetailsBase</a> for the payment request
               initially supplied to the constructor and then updated with calls
               to <a data-lt=
-              "PaymentRequestUpdateEvent.updateWith">updateWith()</a>. Note
-              that all <a data-lt="PaymentDetailsModifier.data">data</a>
-              members of <a>PaymentDetailsModifier</a> instances contained in
-              the <a data-lt="PaymentDetailsBase.modifiers">modifiers</a>
-              member will be removed, as they are instead stored in serialized
-              form in the <a>[[\serializedModifierData]]</a> internal slot.
+              "PaymentRequestUpdateEvent.updateWith">updateWith()</a>.
             </td>
           </tr>
           <tr>
@@ -4738,8 +4670,6 @@
               exception, <a>abort the update</a> with <var>request</var> and
               with the thrown exception.
               </li>
-              <li>Let <var>serializedModifierData</var> be an empty list.
-              </li>
               <li>Let <var>selectedShippingOption</var> be null.
               </li>
               <li>Let <var>shippingOptions</var> be an empty
@@ -4820,9 +4750,6 @@
                       <li>Let <var>modifiers</var> be the sequence
                       <var>details</var>.<a>modifiers</a>.
                       </li>
-                      <li>Let <var>serializedModifierData</var> be an empty
-                      list.
-                      </li>
                       <li>For each <a>PaymentDetailsModifier</a>
                       <var>modifier</var> in <var>modifiers</var>:
                         <ol data-link-for="PaymentDetailsModifier">
@@ -4866,23 +4793,24 @@
                               </li>
                             </ol>
                           </li>
-                          <li>If the <a data-lt="PaymentDetailsModifier.data">
-                            data</a> member of <var>modifier</var> is missing,
-                            let <var>serializedData</var> be null. Otherwise,
-                            let <var>serializedData</var> be the result of
-                            <a>JSON-serializing</a>
-                            <var>modifier</var>.<a data-lt=
-                            "PaymentDetailsModifier.data">data</a> into a
-                            string. If <a>JSON-serializing</a> throws an
-                            exception, then <a>abort the update</a> with
-                            <var>request</var> and that exception.
-                          </li>
-                          <li>Add <var>serializedData</var> to
-                          <var>serializedModifierData</var>.
-                          </li>
-                          <li>Remove the <a data-lt=
-                          "PaymentDetailsModifier.data">data</a> member of
-                          <var>modifier</var>, if it is present.
+                          <li>If <var>modifier</var>.<a>data</a> is present:
+                            <ol>
+                              <li>
+                                <a>JSON-serialize</a>
+                                <var>modifier</var>.<a>data</a>. If
+                                <a>JSON-serializing</a> throws an exception,
+                                then <a>abort the update</a> with
+                                <var>request</var> and that exception.
+                              </li>
+                              <li>If required by the specification that defines
+                              the <var>modifier</var>.<a>supportedMethods</a>,
+                              replace <var>modifier</var>.<a>data</a> with a
+                              <a>converted</a> IDL value of the type specified
+                              there. If <a>converting</a> throws an exception,
+                              then <a>abort the update</a> with
+                              <var>request</var> and that exception.
+                              </li>
+                            </ol>
                           </li>
                         </ol>
                       </li>
@@ -4950,10 +4878,6 @@
                       <li>Set
                       <var>request</var>.<a>[[\details]]</a>.<a>modifiers</a>
                       to <var>details</var>.<a>modifiers</a>.
-                      </li>
-                      <li>Set
-                      <var>request</var>.<a>[[\serializedModifierData]]</a> to
-                      <var>serializedModifierData</var>.
                       </li>
                     </ol>
                   </li>
@@ -5415,9 +5339,9 @@
           </p>
           <p>
             The algorithm for <dfn data-cite=
-            "WEBIDL#dfn-convert-ecmascript-to-idl-value" data-lt=
-            "converting">converting an ECMAScript value to a dictionary</dfn>
-            is defined by [[WEBIDL]].
+            "WEBIDL#dfn-convert-idl-to-ecmascript-value" data-lt=
+            "converting|convert|converted">converting an ECMAScript value to a
+            dictionary</dfn> is defined by [[WEBIDL]].
           </p>
           <p>
             <code><dfn data-cite=
