@@ -343,28 +343,28 @@
         </p>
         <pre class="example js" title=
         "Modifying payment request based on card type">
-        // Certain cards incurs a $3.00 processing fee.
-        const cardFee = {
-          label: "Card processing fee",
-          amount: { currency: "USD", value: "3.00" },
-        };
+          // Certain cards incurs a $3.00 processing fee.
+          const cardFee = {
+            label: "Card processing fee",
+            amount: { currency: "USD", value: "3.00" },
+          };
 
-        // Modifiers apply when the user chooses to pay with
-        // a card.
-        const modifiers = [
-          {
-            additionalDisplayItems: [cardFee],
-            supportedMethods: "basic-card",
-            total: {
-              label: "Total due",
-              amount: { currency: "USD", value: "68.00" },
+          // Modifiers apply when the user chooses to pay with
+          // a card.
+          const modifiers = [
+            {
+              additionalDisplayItems: [cardFee],
+              supportedMethods: "basic-card",
+              total: {
+                label: "Total due",
+                amount: { currency: "USD", value: "68.00" },
+              },
+              data: {
+                supportedNetworks: networks,
+              },
             },
-            data: {
-              supportedNetworks: networks,
-            },
-          },
-        ];
-        Object.assign(details, { modifiers });
+          ];
+          Object.assign(details, { modifiers });
         </pre>
       </section>
       <section>
@@ -3313,12 +3313,12 @@
             </dd>
           </dl>
           <pre class="example js" title="Payer-related validation errors">
-          const payer = {
-            email: "The domain is invalid.",
-            phone: "Unknown country code.",
-            name: "Not in database.",
-          };
-          await response.retry({ payer });
+            const payer = {
+              email: "The domain is invalid.",
+              phone: "Unknown country code.",
+              name: "Not in database.",
+            };
+            await response.retry({ payer });
           </pre>
         </section>
       </section>
