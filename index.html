@@ -2193,6 +2193,20 @@
           The <a>PaymentAddress</a> interface represents a <a>physical
           address</a>.
         </p>
+        <aside class="note" title="What happened to regionCode?">
+          <p>
+            This specification once included a <code>regionCode</code>
+            attribute, which provided developers with a [[?ISO3166-2]] country
+            subdivision code element representation of an address' region
+            (e.g., "CA" for California). Unfortunately, the attribute was
+            removed due to lack of implementations. The Web Payments Working
+            Group fully recognizes the importance of the
+            <code>regionCode</code> attribute, and is <a href=
+            "https://github.com/w3c/payment-request/issues/663">committed
+            bringing the attribute back</a> in a future revision of this
+            specification.
+          </p>
+        </aside>
         <section>
           <h2>
             Internal constructor
