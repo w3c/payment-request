@@ -307,70 +307,69 @@
             },
           };
         </pre>
-        <section>
-          <h4>
-            Adding shipping options
-          </h4>
-          <p>
-            Here we see an example of how to add two shipping options to the
-            <var>details</var>.
-          </p>
-          <pre class="example js" title="Adding shipping options">
-            const shippingOptions = [
-              {
-                id: "standard",
-                label: "🚛 Ground Shipping (2 days)",
-                amount: { currency: "USD", value: "5.00" },
-                selected: true,
-              },
-              {
-                id: "drone",
-                label: "🚀 Drone Express (2 hours)",
-                amount: { currency: "USD", value: "25.00" }
-              },
-            ];
-            Object.assign(details, { shippingOptions });
-          </pre>
-        </section>
-        <section>
-          <h4>
-            Conditional modifications to payment request
-          </h4>
-          <p>
-            Here we see how to add a processing fee for using a card on a
-            particular network. Notice that it requires recalculating the
-            total.
-          </p>
-          <pre class="example js" title=
-          "Modifying payment request based on card type">
-          // Certain cards incurs a $3.00 processing fee.
-          const cardFee = {
-            label: "Card processing fee",
-            amount: { currency: "USD", value: "3.00" },
-          };
-
-          // Modifiers apply when the user chooses to pay with
-          // a card.
-          const modifiers = [
-            {
-              additionalDisplayItems: [cardFee],
-              supportedMethods: "basic-card",
-              total: {
-                label: "Total due",
-                amount: { currency: "USD", value: "68.00" },
-              },
-              data: {
-                supportedNetworks: networks,
-              },
-            },
-          ];
-          Object.assign(details, { modifiers });
-          </pre>
-        </section>
       </section>
       <section>
         <h3>
-          Requesting specific information from the end-user
+          Adding shipping options
+        </h3>
+        <p>
+          Here we see an example of how to add two shipping options to the
+          <var>details</var>.
+        </p>
+        <pre class="example js" title="Adding shipping options">
+          const shippingOptions = [
+            {
+              id: "standard",
+              label: "🚛 Ground Shipping (2 days)",
+              amount: { currency: "USD", value: "5.00" },
+              selected: true,
+            },
+            {
+              id: "drone",
+              label: "🚀 Drone Express (2 hours)",
+              amount: { currency: "USD", value: "25.00" }
+            },
+          ];
+          Object.assign(details, { shippingOptions });
+        </pre>
+      </section>
+      <section>
+        <h3>
+          Conditional modifications to payment request
+        </h3>
+        <p>
+          Here we see how to add a processing fee for using a card on a
+          particular network. Notice that it requires recalculating the total.
+        </p>
+        <pre class="example js" title=
+        "Modifying payment request based on card type">
+        // Certain cards incurs a $3.00 processing fee.
+        const cardFee = {
+          label: "Card processing fee",
+          amount: { currency: "USD", value: "3.00" },
+        };
+
+        // Modifiers apply when the user chooses to pay with
+        // a card.
+        const modifiers = [
+          {
+            additionalDisplayItems: [cardFee],
+            supportedMethods: "basic-card",
+            total: {
+              label: "Total due",
+              amount: { currency: "USD", value: "68.00" },
+            },
+            data: {
+              supportedNetworks: networks,
+            },
+          },
+        ];
+        Object.assign(details, { modifiers });
+        </pre>
+      </section>
+      <section>
+        <h3>
+          Requesting specific information from the end user
         </h3>
         <p>
           Some financial transactions require a user to provide specific
@@ -383,7 +382,7 @@
           from the end user and return it to the merchant when the user accepts
           the payment request.
         </p>
-        <pre class="example" title="The `options` argument">
+        <pre class="example js" title="The `options` argument">
           const options = {
             requestPayerEmail: false,
             requestPayerName: true,
@@ -401,7 +400,7 @@
           construct a <a>PaymentRequest</a> and request that the browser
           present it to the user:
         </p>
-        <pre class="example" title="Constructing a `PaymentRequest`">
+        <pre class="example js" title="Constructing a `PaymentRequest`">
           async function doPaymentRequest() {
             try {
               const request = new PaymentRequest(methodData, details, options);
@@ -442,7 +441,7 @@
           (or modifying their cost), removing items that cannot ship to a
           particular address, etc.
         </p>
-        <pre class="example" title="Registering event handlers">
+        <pre class="example js" title="Registering event handlers">
           const request = new PaymentRequest(methodData, details, options);
           // Async update to details
           request.onshippingaddresschange = ev =&gt; {
@@ -488,7 +487,7 @@
           the fields of a <a>physical address</a> that are erroneous while also
           providing helpful error messages to be displayed to the end user.
         </p>
-        <pre class="example">
+        <pre class="example js">
           request.onshippingaddresschange = ev =&gt; {
             ev.updateWith(validateAddress(request.shippingAddress));
           };
@@ -517,7 +516,7 @@
           POST the resulting JSON back to a server using the <a data-cite=
           "fetch">Fetch API</a>:
         </p>
-        <pre class="example" title="POSTing with `fetch()`">
+        <pre class="example js" title="POSTing with `fetch()`">
           async function doPaymentRequest() {
             const payRequest = new PaymentRequest(methodData, details, options);
             const payResponse = await payRequest.show();
@@ -1060,7 +1059,7 @@
           </li>
           <li>
             <p>
-              For the <a>payment handler</a> selected by the end-user, the user
+              For the <a>payment handler</a> selected by the end user, the user
               agent MUST pass the <a data-cite=
               "WEBIDL#dfn-convert-ecmascript-to-idl-value">converted</a> second
               element in the <var>paymentMethod</var> tuple. Optionally, the
@@ -2873,7 +2872,7 @@
               <p>
                 To maintain user's privacy, implementers need to be mindful
                 that a shipping address's associated phone number might be
-                different or the same from that of the end-user's. As such,
+                different or the same from that of the end user's. As such,
                 implementers need to take care to not provide the end user's
                 phone number to the merchant without the end user's consent.
               </p>
@@ -3172,7 +3171,7 @@
               </li>
               <li data-link-for="PaymentValidationErrors">By matching the
               members of <var>errorFields</var> to input fields in the user
-              agent's UI, indicate to the end-user that something is wrong with
+              agent's UI, indicate to the end user that something is wrong with
               the data of the payment response. For example, a user agent might
               draw the user's attention to the erroneous <var>errorFields</var>
               in the browser's UI and display the value of each field in a
@@ -3186,7 +3185,7 @@
           </li>
           <li>Otherwise, if <var>errorFields</var> was not passed, signal to
           the end user to attempt to retry the payment. Re-enable any UI
-          element that affords the end-user the ability to retry accepting the
+          element that affords the end user the ability to retry accepting the
           payment request.
           </li>
           <li data-tests=
@@ -3996,10 +3995,11 @@
             </p>
             <p>
               To prevent the user interface from blocking (and to reflect
-              changes made by the end-user through the UI), developers need to
+              changes made by the end user through the UI), developers need to
               immediately call <a>updateWith()</a>.
             </p>
-            <pre class="example" title="how to use `updateWith()` correctly.">
+            <pre class="example js" title=
+            "how to use `updateWith()` correctly.">
               // ❌ Bad - this won't work!
               request.onshippingaddresschange = async ev =&gt; {
                 // await goes to next tick, and updateWith()
@@ -4021,7 +4021,7 @@
               Additionally, <a>[[\waitForUpdate]]</a> prevents reuse of
               <a>PaymentRequestUpdateEvent</a>.
             </p>
-            <pre class="example" title="can only call `updateWith()` once">
+            <pre class="example js" title="can only call `updateWith()` once">
               // ❌ Bad - calling updateWith() doesn't work!
               request.addEventListener("shippingaddresschange", ev =&gt; {
                 ev.updateWith(details); // this is ok.
