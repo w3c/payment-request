@@ -646,9 +646,8 @@
         <ol data-link-for="PaymentDetailsBase" class="algorithm">
           <li>If the <a>current settings object</a>'s <a data-cite=
           "HTML#responsible-document">responsible document</a> is not
-          <a>allowed to use</a> the feature indicated by attribute name
-          <a>allowpaymentrequest</a>, then <a>throw</a> a
-          "<a>SecurityError</a>" <a>DOMException</a>.
+          <a>allowed to use</a> the "<a>payment</a>" feature, then <a>throw</a>
+          a "<a>SecurityError</a>" <a>DOMException</a>.
           </li>
           <li>Let <var>serializedMethodData</var> be an empty list.
           </li>
@@ -948,8 +947,8 @@
             <ol>
               <li>Set <var>request</var>.<a>[[\state]]</a> to "<a>closed</a>".
               </li>
-              <li>Return <a>a promise rejected with</a> an
-              "<a>AbortError</a>" <a>DOMException</a>.
+              <li>Return <a>a promise rejected with</a> an "<a>AbortError</a>"
+              <a>DOMException</a>.
               </li>
             </ol>
           </li>
@@ -3215,9 +3214,9 @@
             </ol>
           </li>
           <li>Otherwise, if <var>errorFields</var> was not passed, signal to
-          the end user to attempt to retry the payment. Re-enable
-          any UI element that affords the end-user the ability to retry
-          accepting the payment request.
+          the end user to attempt to retry the payment. Re-enable any UI
+          element that affords the end-user the ability to retry accepting the
+          payment request.
           </li>
           <li data-tests=
           "payment-response/rejects_if_not_active-manual.https.html">If
@@ -3626,31 +3625,46 @@
       <p>
         To indicate that a cross-origin <a>iframe</a> is allowed to invoke the
         payment request API, the <a>allowpaymentrequest</a> attribute can be
-        specified on the <a>iframe</a> element.
+        specified on the <a>iframe</a> element. See <a href=
+        "#feature-policy"></a> for details of how <a>allowpaymentrequest</a>
+        and <a data-cite="feature-policy">Feature Policy</a> interact.
       </p>
     </section>
-    <section class="informative">
+    <section id="feature-policy">
       <h2>
-        Interaction with Feature Policy Specification
+        Feature Policy Integration
       </h2>
       <p>
-        The <a data-cite="feature-policy">Feature Policy</a> specification
-        defines the "<code>payment</code>" feature, which controls whether a
-        particular document, including cross-origin documents, is <a>allowed to
-        use</a> the <a>PaymentRequest</a> interface. Please refer to the
-        <a data-cite="feature-policy">Feature Policy</a> specification for
-        usage examples, implementation details, and conformance requirements.
+        This specification defines a policy-controlled feature identified by
+        the string "<code><dfn data-lt="payment-feature" data-no-default=
+        "">payment</dfn></code>". Its <a href=
+        "feature-policy#default-allowlist">default allowlist</a> is
+        '<code>self</code>'.
       </p>
-      <p>
-        Additionally, for details of how the "<code>payment</code>" feature and
-        an <a>iframe</a>'s <a>allowpaymentrequest</a> attribute work together
-        please see the <code><a data-cite=
-        "feature-policy#iframe-allowpaymentrequest-attribute">allowpaymentrequest</a></code>
-        section and the <a data-cite=
-        "feature-policy/#process-feature-policy-attributes">process feature
-        policy attributes</a> algorithm in the <a data-cite=
-        "feature-policy">Feature Policy</a> specification.
-      </p>
+      <div class="note">
+        <p>
+          A <a data-cite="html#concept-document">document</a>’s <a data-cite=
+          "html/multipage/dom.html#concept-document-feature-policy">feature
+          policy</a> determines whether any content in that document is allowed
+          to construct <a>PaymentRequest</a> instances. If disabled in any
+          document, no content in the document will be <a>allowed to use</a>
+          the <a>PaymentRequest</a> constructor (trying to create an instance
+          will throw).
+        </p>
+        <p>
+          The <a>allowpaymentrequest</a> attribute of the HTML <a>iframe</a>
+          element affects the <a data-cite=
+          "feature-policy#container-policy">container policy</a> for any
+          document nested in that iframe. Unless overridden by the
+          <code><a data-cite=
+          "html/multipage/iframe-embed-object.html#attr-iframe-allow">allow</a></code>
+          attribute, setting <a>allowpaymentrequest</a> on an iframe is
+          equivalent to <code>&lt;iframe allow="fullscreen *"&gt;</code>, as
+          described in <a href=
+          "feature-policy#iframe-allowpaymentrequest-attribute">Feature Policy
+          §iframe-allowpaymentrequest-attribute</a>.
+        </p>
+      </div>
     </section>
     <section>
       <h2>
