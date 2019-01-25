@@ -92,15 +92,6 @@
         Pull requests with proposed specification text for outstanding issues
         are strongly encouraged.
       </p>
-      <div class="note" title="Sending comments on this document">
-        <p>
-          If you wish to make comments regarding this document, please raise
-          them as <a href=
-          "https://github.com/w3c/payment-request/issues">GitHub issues</a>.
-          Only send comments by email if you are unable to raise issues on
-          GitHub (see links below). All comments are welcome.
-        </p>
-      </div>
       <p>
         The working group will demonstrate implementation experience by
         producing an <a href=
@@ -114,35 +105,6 @@
         There has been no change in dependencies on other workings groups
         during the development of this specification.
       </p>
-      <section id="at-risk">
-        <h2>
-          Features at risk
-        </h2>
-        <p>
-          As this specification enters the Candidate Recommendation phase of
-          the W3C standardization process, the working group has identified the
-          following feature(s) as being "<dfn>at risk</dfn>" of being removed
-          from the specification. The working group seeks input from
-          implementers, developers, and the general public on whether these
-          features should remain in the specification. If no compelling use
-          cases are received, or if there is limited interest from
-          implementers, these features will be removed from the specification
-          before proceeding along the W3C Recommendation track.
-        </p>
-        <ul>
-          <li data-link-for="PaymentRequest">As the <code>optional
-          detailsPromise</code> argument of the <a>show()</a> method was added
-          late in the Candidate Recommendation phase, the working group is
-          treating it "at risk" and considering moving it to a future version
-          of the specification. This is to avoid this version of the
-          specification from being delayed from progressing along the
-          Recommendation Track, in case we can't get two interoperable
-          implementations in a timely manner. However, if it gets interoperably
-          implemented relatively quickly, the feature will remain in this
-          version of the specification.
-          </li>
-        </ul>
-      </section>
     </section>
     <section class='informative'>
       <h2>
@@ -154,13 +116,13 @@
         transaction:
       </p>
       <ul>
-        <li>the payee: the merchant that runs an online store, or other party
+        <li>The payee: the merchant that runs an online store, or other party
         that requests to be paid.
         </li>
-        <li>the payer: the party that makes a purchase at that online store,
+        <li>The payer: the party that makes a purchase at that online store,
         and who authenticates and authorizes payment as required.
         </li>
-        <li>the <dfn>payment method</dfn> provider: the party that provides the
+        <li>The <dfn>payment method</dfn> provider: the party that provides the
         means (e.g., credit card) that the payer uses to pay, and that is
         accepted by the payee.
         </li>
@@ -212,7 +174,7 @@
       </p>
       <section id="goals">
         <h2>
-          Goals
+          Goals and scope
         </h2>
         <ul>
           <li>Allow the user agent to act as intermediary between merchants,
@@ -230,17 +192,15 @@
           payment transactions to the web.
           </li>
         </ul>
-        <section id="out-of-scope">
-          <h2>
-            Out of scope
-          </h2>
-          <ul>
-            <li>Create a new <a>payment method</a>
-            </li>
-            <li>Integrate directly with payment processors
-            </li>
-          </ul>
-        </section>
+        <p>
+          The following are out of scope for this specification:
+        </p>
+        <ul>
+          <li>Create a new <a>payment method</a>.
+          </li>
+          <li>Integrate directly with payment processors.
+          </li>
+        </ul>
       </section>
     </section>
     <section class="informative">
@@ -282,13 +242,17 @@
       </p>
       <section>
         <h3>
-          The <code>methodData</code> argument
+          Declaring multiple ways of paying
         </h3>
         <p>
-          The <var>methodData</var> sequence contains <a>PaymentMethodData</a>
-          dictionaries containing the <a>payment method identifiers</a> for the
-          <a>payment methods</a> that the web site accepts and any associated
-          <a>payment method</a> specific data.
+          When constructing a new <a>PaymentRequest</a>, a merchant uses the
+          first argument (<var>methodData</var>) to list the different ways a
+          user can pay for things (e.g., credit cards, Apple Pay, Google Pay,
+          etc.). More specifically, the <var>methodData</var> sequence contains
+          <a>PaymentMethodData</a> dictionaries containing the <a>payment
+          method identifiers</a> for the <a>payment methods</a> that the
+          merchant accepts and any associated <a>payment method</a> specific
+          data (e.g., which credit card networks are supported).
         </p>
         <pre class="example js" title="The `methodData` argument">
           const methodData = [
@@ -310,12 +274,15 @@
       </section>
       <section>
         <h3>
-          The <code>details</code> argument
+          Describing what is being paid for
         </h3>
         <p>
-          The <var>details</var> contains information about the transaction
-          that the user is being asked to complete, such as the line items in
-          an order.
+          When constructing a new <a>PaymentRequest</a>, a merchant uses the
+          second argument of the constructor (<var>details</var>) to provide
+          the details of the transaction that the user is being asked to
+          complete. This includes the total of the order and, optionally, some
+          line items that provide can provide a detailed breakdown of what is
+          being paid for.
         </p>
         <pre class="example js" title="The `details` argument">
           const details = {
@@ -340,42 +307,42 @@
             },
           };
         </pre>
-        <section>
-          <h4>
-            Shipping options
-          </h4>
-          <p>
-            Here we see an example of how to add two shipping options to the
-            <var>details</var>.
-          </p>
-          <pre class="example js" title="Adding shipping options">
-            const shippingOptions = [
-              {
-                id: "standard",
-                label: "🚛 Ground Shipping (2 days)",
-                amount: { currency: "USD", value: "5.00" },
-                selected: true,
-              },
-              {
-                id: "drone",
-                label: "🚀 Drone Express (2 hours)",
-                amount: { currency: "USD", value: "25.00" }
-              },
-            ];
-            Object.assign(details, { shippingOptions });
-          </pre>
-        </section>
-        <section>
-          <h4>
-            Conditional modifications to payment request
-          </h4>
-          <p>
-            Here we see how to add a processing fee for using a card on a
-            particular network. Notice that it requires recalculating the
-            total.
-          </p>
-          <pre class="example js" title=
-          "Modifying payment request based on card type">
+      </section>
+      <section>
+        <h3>
+          Adding shipping options
+        </h3>
+        <p>
+          Here we see an example of how to add two shipping options to the
+          <var>details</var>.
+        </p>
+        <pre class="example js" title="Adding shipping options">
+          const shippingOptions = [
+            {
+              id: "standard",
+              label: "🚛 Ground Shipping (2 days)",
+              amount: { currency: "USD", value: "5.00" },
+              selected: true,
+            },
+            {
+              id: "drone",
+              label: "🚀 Drone Express (2 hours)",
+              amount: { currency: "USD", value: "25.00" }
+            },
+          ];
+          Object.assign(details, { shippingOptions });
+        </pre>
+      </section>
+      <section>
+        <h3>
+          Conditional modifications to payment request
+        </h3>
+        <p>
+          Here we see how to add a processing fee for using a card on a
+          particular network. Notice that it requires recalculating the total.
+        </p>
+        <pre class="example js" title=
+        "Modifying payment request based on card type">
           // Certain cards incurs a $3.00 processing fee.
           const cardFee = {
             label: "Card processing fee",
@@ -398,19 +365,24 @@
             },
           ];
           Object.assign(details, { modifiers });
-          </pre>
-        </section>
+        </pre>
       </section>
       <section>
         <h3>
-          The <code>options</code> argument
+          Requesting specific information from the end user
         </h3>
         <p>
-          The <var>options</var> dictionary contains information the developer
-          needs from the user to perform the payment (e.g., the payer's name
-          and shipping address).
+          Some financial transactions require a user to provide specific
+          information in order for a merchant to fulfill a purchase (e.g., the
+          user's shipping address, in case a physical good needs to be
+          shipped). To request this information, a merchant can pass a third
+          optional argument (<var>options</var>) to the <a>PaymentRequest</a>
+          constructor indicating what information they require. When the
+          payment request is shown, the user agent will request this information
+          from the end user and return it to the merchant when the user accepts
+          the payment request.
         </p>
-        <pre class="example" title="The `options` argument">
+        <pre class="example js" title="The `options` argument">
           const options = {
             requestPayerEmail: false,
             requestPayerName: true,
@@ -428,7 +400,7 @@
           construct a <a>PaymentRequest</a> and request that the browser
           present it to the user:
         </p>
-        <pre class="example" title="Constructing a `PaymentRequest`">
+        <pre class="example js" title="Constructing a `PaymentRequest`">
           async function doPaymentRequest() {
             try {
               const request = new PaymentRequest(methodData, details, options);
@@ -444,11 +416,12 @@
           }
           async function validateResponse(response) {
             try {
-              if (await checkAllValuesAreGood(response)) {
-                await response.complete("success");
-              } else {
-                await response.complete("fail");
+              const errors = await checkAllValuesAreGood(response);
+              if (errors.length) {
+                await request.retry(errors);
+                return validateResponse(response);
               }
+              await response.complete("success");
             } catch (err) {
               // Something went wrong...
               await response.complete("fail");
@@ -468,7 +441,7 @@
           (or modifying their cost), removing items that cannot ship to a
           particular address, etc.
         </p>
-        <pre class="example" title="Registering event handlers">
+        <pre class="example js" title="Registering event handlers">
           const request = new PaymentRequest(methodData, details, options);
           // Async update to details
           request.onshippingaddresschange = ev =&gt; {
@@ -514,7 +487,7 @@
           the fields of a <a>physical address</a> that are erroneous while also
           providing helpful error messages to be displayed to the end user.
         </p>
-        <pre class="example">
+        <pre class="example js">
           request.onshippingaddresschange = ev =&gt; {
             ev.updateWith(validateAddress(request.shippingAddress));
           };
@@ -543,7 +516,7 @@
           POST the resulting JSON back to a server using the <a data-cite=
           "fetch">Fetch API</a>:
         </p>
-        <pre class="example" title="POSTing with `fetch()`">
+        <pre class="example js" title="POSTing with `fetch()`">
           async function doPaymentRequest() {
             const payRequest = new PaymentRequest(methodData, details, options);
             const payResponse = await payRequest.show();
@@ -1083,7 +1056,7 @@
           </li>
           <li>
             <p>
-              For the <a>payment handler</a> selected by the end-user, the user
+              For the <a>payment handler</a> selected by the end user, the user
               agent MUST pass the <a data-cite=
               "WEBIDL#dfn-convert-ecmascript-to-idl-value">converted</a> second
               element in the <var>paymentMethod</var> tuple. Optionally, the
@@ -2199,7 +2172,6 @@
             readonly attribute DOMString postalCode;
             readonly attribute DOMString recipient;
             readonly attribute DOMString region;
-            readonly attribute DOMString regionCode;
             readonly attribute DOMString sortingCode;
             readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
           };
@@ -2208,16 +2180,24 @@
           The <a>PaymentAddress</a> interface represents a <a>physical
           address</a>.
         </p>
+        <aside class="note" title="What happened to regionCode?">
+          <p>
+            This specification once included a <code>regionCode</code>
+            attribute that provided developers with a [[?ISO3166-2]] country
+            subdivision code element representation of an address' region
+            (e.g., "CA" for California). Unfortunately, the attribute was
+            removed due to lack of implementations. The Web Payments Working
+            Group fully recognizes the importance of the
+            <code>regionCode</code> attribute and is <a href=
+            "https://github.com/w3c/payment-request/issues/663">committed
+            bringing the attribute back</a> in a future revision of this
+            specification.
+          </p>
+        </aside>
         <section>
           <h2>
             Internal constructor
           </h2>
-          <div class="issue" data-number="653">
-            Currently, this constructor algorithm is only used internally by a
-            user agent. It is not available to scripts. However, discussions
-            are underway in the working group to make this into a public
-            constructor.
-          </div>
           <p>
             The steps to <dfn data-lt=
             "PaymentAddress.PaymentAddress()">internally construct a
@@ -2249,83 +2229,6 @@
                 </li>
                 <li>Set <var>address</var>.<a>[[\country]]</a> to
                 <var>country</var>.
-                </li>
-              </ol>
-            </li>
-            <li>If <var>details</var>["<a>regionCode</a>"] is present and not
-            the empty string:
-              <ol>
-                <li>Let <var>regionCode</var> be the result of <a>strip leading
-                and trailing ASCII whitespace</a> from
-                <var>details</var>["<a>regionCode</a>"] and then
-                  <a data-cite="INFRA#ascii-uppercase">ASCII uppercasing</a>
-                  the result.
-                </li>
-                <li>Let <var>putativeCountrySubdivisionCodeElement</var> be the
-                concatenation of <var>address</var>.<a>[[\country]]</a>, a
-                single U+002D (-) <a>code point</a>, and <var>regionCode</var>.
-                </li>
-                <li>
-                  <p>
-                    If <var>putativeCountrySubdivisionCodeElement</var> is not
-                    a valid <a>country subdivision code element</a> as per
-                    [[ISO3166-2]]'s section 5.2 "Structure of country
-                    subdivision code elements" (non-normative details below),
-                    throw a <a>RangeError</a> exception.
-                  </p>
-                  <div class="note" title=
-                  "Structure of country subdivision code elements">
-                    <p>
-                      <strong>Do not implement from this note.</strong> The
-                      structure of a <a>country subdivision code element</a> is
-                      formally defined in [[ISO3166-2]] (section 5.2). Although
-                      the structure is not expected to change at the time of
-                      writing, implementers are expected to track updates to
-                      [[ISO3166-2]] directly from ISO.
-                    </p>
-                    <p>
-                      As [[ISO3166-2]] is not freely available to the general
-                      public, the structure of a <a>country subdivision code
-                      element</a> at the time of publication is as follows:
-                    </p>
-                    <ul>
-                      <li>Two <a>code points</a> that match an [[ISO3166-1]]
-                      alpha-2 country code.
-                      </li>
-                      <li>A single U+002D (-) <a>code point</a>.
-                      </li>
-                      <li>One, two, or three <a data-cite=
-                      "INFRA#ascii-alphanumeric">ASCII alphanumeric</a> code
-                      points, in any order.
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li>Set <var>address</var>.<a>[[\regionCode]]</a> to
-                <var>regionCode</var>.
-                </li>
-                <li>If <var>details</var>["<a>region</a>"] is not present:
-                  <ol>
-                    <li>Let <var>region</var> be the corresponding <a>country
-                    subdivision name</a> for <var>regionCode</var>. Where
-                    [[ISO3166-2]] defines multiple <a>country subdivision
-                    names</a> for a <var>regionCode</var>, it is RECOMMENDED
-                    the user agent select one by matching on:
-                      <ol>
-                        <li>The <a data-cite="HTML#language">language</a> of
-                        <a data-cite="HTML#the-body-element-2">the body
-                        element</a>.
-                        </li>
-                        <li>The user's preferred languages.
-                        </li>
-                        <li>Any other criteria the user agent deems suitable.
-                        </li>
-                      </ol>
-                    </li>
-                    <li>Set <var>details</var>["<a>region</a>"] to
-                    <var>region</var>.
-                    </li>
-                  </ol>
                 </li>
               </ol>
             </li>
@@ -2432,17 +2335,6 @@
             Represents the <a>region</a> of the address. When getting, returns
             the value of the <a>PaymentAddress</a>'s <a>[[\region]]</a>
             internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>regionCode</dfn> attribute
-          </h2>
-          <p data-link-for="">
-            Represents the <a>region</a> of the address as a code element of an
-            [[ISO3166-2]] country subdivision name (e.g., "CA" for California,
-            USA). When getting, returns the value of the
-            <a>PaymentAddress</a>'s <a>[[\regionCode]]</a> internal slot.
           </p>
         </section>
         <section>
@@ -2560,19 +2452,6 @@
             </tr>
             <tr>
               <td>
-                <dfn>[[\regionCode]]</dfn>
-              </td>
-              <td>
-                The empty string, or one to three code points that represent a
-                <a>region</a> as the code element of an [[ISO3166-2]] country
-                subdivision name (i.e., the characters after the hyphen in an
-                ISO3166-2 <a>country subdivision code element</a>, such as "CA"
-                for the state of California in the USA, or "11" for the Lisbon
-                district of Portugal).
-              </td>
-            </tr>
-            <tr>
-              <td>
                 <dfn>[[\city]]</dfn>
               </td>
               <td>
@@ -2639,7 +2518,6 @@
             DOMString country;
             sequence&lt;DOMString&gt; addressLine;
             DOMString region;
-            DOMString regionCode;
             DOMString city;
             DOMString dependentLocality;
             DOMString postalCode;
@@ -2672,17 +2550,6 @@
           </dt>
           <dd>
             A <a>region</a>.
-          </dd>
-          <dt>
-            <dfn>regionCode</dfn> member
-          </dt>
-          <dd>
-            The empty string, or one to three code points that represent a
-            <a>region</a> as the code element of an [[ISO3166-2]] country
-            subdivision name (i.e., the characters after the hyphen in an
-            ISO3166-2 <a>country subdivision code element</a>, such as "CA" for
-            the state of California in the USA, or "11" for the Lisbon district
-            of Portugal).
           </dd>
           <dt>
             <dfn>city</dfn> member
@@ -2746,7 +2613,6 @@
             DOMString postalCode;
             DOMString recipient;
             DOMString region;
-            DOMString regionCode;
             DOMString sortingCode;
           };
         </pre>
@@ -2847,16 +2713,6 @@
             "PaymentAddress">region</a> attribute's value.
           </dd>
           <dt>
-            <dfn>regionCode</dfn> member
-          </dt>
-          <dd>
-            Denotes that the region code representation of the <a>region</a>
-            has a validation error. In the user agent's UI, this member
-            corresponds to the input field that provided the
-            <a>PaymentAddress</a>'s <a data-link-for=
-            "PaymentAddress">regionCode</a> attribute's value.
-          </dd>
-          <dt>
             <dfn>sortingCode</dfn> member
           </dt>
           <dd>
@@ -2902,7 +2758,7 @@
               <p>
                 To maintain user's privacy, implementers need to be mindful
                 that a shipping address's associated phone number might be
-                different or the same from that of the end-user's. As such,
+                different or the same from that of the end user's. As such,
                 implementers need to take care to not provide the end user's
                 phone number to the merchant without the end user's consent.
               </p>
@@ -2954,19 +2810,13 @@
               address for a particular country, it might not provide a field
               for the user to input a <a>region</a>. In such cases, the user
               agent returns an empty string for both <a>PaymentAddress</a>'s
-              <a data-link-for="PaymentAddress">region</a> and
-              <a data-link-for="PaymentAddress">regionCode</a> attributes - but
-              the address can still serve its intended purpose (e.g., be valid
-              for shipping or billing purposes).
+              <a data-link-for="PaymentAddress">region</a> attribute - but the
+              address can still serve its intended purpose (e.g., be valid for
+              shipping or billing purposes).
             </p>
             <ol>
               <li>Set <var>details</var>["<a>region</a>"] to the user-provided
               region, or to the empty string if none was provided.
-              </li>
-              <li>If <var>details</var>["<a>region</a>"] has a corresponding
-              <a>country subdivision code element</a>, set
-              <var>details</var>["<a>regionCode</a>"] to that <a>country
-              subdivision code element</a>.
               </li>
             </ol>
           </li>
@@ -3201,7 +3051,7 @@
               </li>
               <li data-link-for="PaymentValidationErrors">By matching the
               members of <var>errorFields</var> to input fields in the user
-              agent's UI, indicate to the end-user that something is wrong with
+              agent's UI, indicate to the end user that something is wrong with
               the data of the payment response. For example, a user agent might
               draw the user's attention to the erroneous <var>errorFields</var>
               in the browser's UI and display the value of each field in a
@@ -3215,7 +3065,7 @@
           </li>
           <li>Otherwise, if <var>errorFields</var> was not passed, signal to
           the end user to attempt to retry the payment. Re-enable any UI
-          element that affords the end-user the ability to retry accepting the
+          element that affords the end user the ability to retry accepting the
           payment request.
           </li>
           <li data-tests=
@@ -3343,12 +3193,12 @@
             </dd>
           </dl>
           <pre class="example js" title="Payer-related validation errors">
-          const payer = {
-            email: "The domain is invalid.",
-            phone: "Unknown country code.",
-            name: "Not in database.",
-          };
-          await response.retry({ payer });
+            const payer = {
+              email: "The domain is invalid.",
+              phone: "Unknown country code.",
+              name: "Not in database.",
+            };
+            await response.retry({ payer });
           </pre>
         </section>
       </section>
@@ -4062,10 +3912,11 @@
             </p>
             <p>
               To prevent the user interface from blocking (and to reflect
-              changes made by the end-user through the UI), developers need to
+              changes made by the end user through the UI), developers need to
               immediately call <a>updateWith()</a>.
             </p>
-            <pre class="example" title="how to use `updateWith()` correctly.">
+            <pre class="example js" title=
+            "how to use `updateWith()` correctly.">
               // ❌ Bad - this won't work!
               request.onshippingaddresschange = async ev =&gt; {
                 // await goes to next tick, and updateWith()
@@ -4087,7 +3938,7 @@
               Additionally, <a>[[\waitForUpdate]]</a> prevents reuse of
               <a>PaymentRequestUpdateEvent</a>.
             </p>
-            <pre class="example" title="can only call `updateWith()` once">
+            <pre class="example js" title="can only call `updateWith()` once">
               // ❌ Bad - calling updateWith() doesn't work!
               request.addEventListener("shippingaddresschange", ev =&gt; {
                 ev.updateWith(details); // this is ok.
@@ -5173,7 +5024,7 @@
       </h2>
       <section class="informative" data-link-for="PaymentRequest">
         <h2>
-          User Protections with <code>show()</code> method
+          User protections with <code>show()</code> method
         </h2>
         <p>
           To help ensure that users do not inadvertently share sensitive
