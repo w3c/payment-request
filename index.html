@@ -663,6 +663,15 @@
                     <var>paymentMethod</var>.<a data-lt="PaymentMethodData.data">data</a>
                     into a string. Rethrow any exceptions.
                   </li>
+                  <li>If required by the specification that defines the
+                  <var>paymentMethod</var>.<a>supportedMethods</a>,
+                    <a data-lt="converting">convert</a>
+                    <var>paymentMethod</var>.<a>data</a> to an IDL value of the
+                    type specified there (e.g., a <a data-cite=
+                    "payment-method-basic-card#dom-basiccardrequest">BasicCardRequest</a>
+                    in the case of [[?payment-method-basic-card]]). Rethrow any
+                    exceptions.
+                  </li>
                   <li>Add the tuple (<var>paymentMethod</var>.<a data-lt=
                   "PaymentMethodData.supportedMethods">supportedMethods</a>,
                   <var>serializedData</var>) to
