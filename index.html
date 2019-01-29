@@ -619,8 +619,9 @@
         <ol data-link-for="PaymentDetailsBase" class="algorithm">
           <li>If the <a>current settings object</a>'s <a data-cite=
           "HTML#responsible-document">responsible document</a> is not
-          <a>allowed to use</a> the "<a>payment</a>" feature, then <a>throw</a>
-          a "<a>SecurityError</a>" <a>DOMException</a>.
+          <a>allowed to use</a> the "<a data-lt="payment-feature">payment</a>"
+          feature, then <a>throw</a> a "<a>SecurityError</a>"
+          <a>DOMException</a>.
           </li>
           <li>Let <var>serializedMethodData</var> be an empty list.
           </li>
@@ -3486,7 +3487,7 @@
       </h2>
       <p>
         This specification defines a policy-controlled feature identified by
-        the string "<code><dfn data-lt="payment-feature" data-no-default=
+        the string "<code><dfn data-lt="payment-feature" data-nodefault=
         "">payment</dfn></code>". Its <a href=
         "feature-policy#default-allowlist">default allowlist</a> is
         '<code>self</code>'.
