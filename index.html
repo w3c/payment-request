@@ -1105,6 +1105,12 @@
                 modifier applies specifically to cards on the "visa" network.
               </p>
               <pre class="js">
+const details = {
+  total: {
+    label: "Total due",
+    amount: { currency: "USD", value: "65.00" },
+  },
+};
 // All cards incur a $3.00 processing fee.
 const cardFee = {
   label: "Card processing fee",
@@ -1119,7 +1125,7 @@ const visaFee = {
 
 // Modifiers apply when the user chooses to pay with
 // a credit card.
-const modifiers = [
+details.modifiers = [
   // Applies to all cards...
   {
     additionalDisplayItems: [cardFee],
@@ -1141,11 +1147,10 @@ const modifiers = [
       amount: { currency: "USD", value: "51.00" },
     },
     data: {
-      supportedNetworks: ["visa"] // Visa network only
+      supportedNetworks: ["visa"], // Visa network only
     },
   },
 ];
-Object.assign(details, { modifiers });
               </pre>
               <p>
                 If the modifiers array in the example above was to be reversed
