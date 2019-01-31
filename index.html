@@ -623,8 +623,6 @@
           feature, then <a>throw</a> a "<a>SecurityError</a>"
           <a>DOMException</a>.
           </li>
-          <li>Let <var>serializedMethodData</var> be an empty list.
-          </li>
           <li>Establish the request's id:
             <ol>
               <li data-tests="payment-request-id-attribute.https.html">If <var>
@@ -635,6 +633,8 @@
                 [[RFC4122]].
               </li>
             </ol>
+          </li>
+          <li>Let <var>serializedMethodData</var> be an empty list.
           </li>
           <li>Process payment methods:
             <ol data-link-for="PaymentMethodData">
@@ -794,7 +794,9 @@
                       "PaymentDetailsModifier.data">data</a> into a string.
                       Rethrow any exceptions.
                       </li>
-                      <li>Add <var>serializedData</var> to
+                      <li>Add the tuple (<var>modifier</var>.<a data-lt=
+                      "PaymentDetailsModifier.supportedMethods">supportedMethods</a>,
+                      <var>serializedData</var>) to
                       <var>serializedModifierData</var>.
                       </li>
                       <li>Remove the <a data-lt="PaymentDetailsModifier.data">
@@ -1055,19 +1057,109 @@
               </li>
             </ol>
           </li>
+          <li>Let <var>handler</var> be the <a>payment handler</a> selected by
+          the end-user.
+          </li>
+          <li>Let <var>modifiers</var> be an empty list.
+          </li>
+          <li>For each <var>tuple</var> in <a>[[\serializedModifierData]]</a>:
+            <ol>
+              <li>If the first element of <var>tuple</var> (a <a>PMI</a>)
+              matches the <a>payment method identifier</a> of
+              <var>handler</var>, then append the second element of
+              <var>tuple</var> (the serialized method data) to
+              <var>modifiers</var>.
+              </li>
+            </ol>
+          </li>
           <li>
             <p>
-              For the <a>payment handler</a> selected by the end user, the user
-              agent MUST pass the <a data-cite=
+              Pass the <a data-cite=
               "WEBIDL#dfn-convert-ecmascript-to-idl-value">converted</a> second
-              element in the <var>paymentMethod</var> tuple. Optionally, the
-              user agent SHOULD send the appropriate data from
-              <var>request</var> to the user-selected <a>payment handler</a> in
-              order to guide the user through the payment process. This
-              includes the various attributes and internal slots of
-              <var>request</var> (some MAY be excluded for privacy reasons
-              where appropriate).
+              element in the <var>paymentMethod</var> tuple and
+              <var>modifiers</var>. Optionally, the user agent SHOULD send the
+              appropriate data from <var>request</var> to the user-selected
+              <a>payment handler</a> in order to guide the user through the
+              payment process. This includes the various attributes and other
+              internal slots of <var>request</var> (some MAY be excluded for
+              privacy reasons where appropriate).
             </p>
+            <p>
+              Handling of multiple applicable modifiers in the
+              <a>[[\serializedModifierData]]</a> internal slot is <a>payment
+              handler</a> specific and beyond the scope of this specification.
+              Nevertheless, it is RECOMMENDED that <a>payment handlers</a> use
+              a "last one wins" approach with items in the
+              <a>[[\serializedModifierData]]</a> list: that is to say, an item
+              at the end of the list always takes precedence over any item at
+              the beginning of the list (see example below).
+            </p>
+            <aside class="example" title=
+            "Handling of multiple applicable modifiers">
+              <p>
+                This example uses the <a data-cite=
+                "payment-method-basic-card">Basic-Card</a> payment method to
+                demonstrate precedence order of
+                <a>[[\serializedModifierData]]</a>. The first modifier applies
+                equally to all cards, irrespective of network. The second
+                modifier applies specifically to cards on the "visa" network.
+              </p>
+              <pre class="js">
+const details = {
+  total: {
+    label: "Total due",
+    amount: { currency: "USD", value: "65.00" },
+  },
+};
+// All cards incur a $3.00 processing fee.
+const cardFee = {
+  label: "Card processing fee",
+  amount: { currency: "USD", value: "3.00" },
+};
+
+// But visa card incurs a $1.00 processing fee.
+const visaFee = {
+  label: "Visa processing fee",
+  amount: { currency: "USD", value: "1.00" },
+};
+
+// Modifiers apply when the user chooses to pay with
+// a credit card.
+details.modifiers = [
+  // Applies to all cards...
+  {
+    additionalDisplayItems: [cardFee],
+    supportedMethods: "basic-card",
+    total: {
+      label: "Total due",
+      amount: { currency: "USD", value: "53.00" },
+    },
+    data: {
+      supportedNetworks: [], // All networks
+    },
+  },
+  // Applies only to visa cards...
+  {
+    additionalDisplayItems: [visaFee],
+    supportedMethods: "basic-card",
+    total: {
+      label: "Total due",
+      amount: { currency: "USD", value: "51.00" },
+    },
+    data: {
+      supportedNetworks: ["visa"], // Visa network only
+    },
+  },
+];
+              </pre>
+              <p>
+                If the modifiers array in the example above was to be reversed
+                (i.e., <code class="js">supportedNetworks: []</code> was to
+                come last in the modifiers list), then it would take precedence
+                over the "visa" modifier even though the visa modifier matches
+                visa cards more specifically. This is because "last one wins".
+              </p>
+            </aside>
             <p>
               The <var>acceptPromise</var> will later be resolved or rejected
               by either the <a>user accepts the payment request algorithm</a>
@@ -5185,8 +5277,8 @@
           Payment Method Identifiers
         </dt>
         <dd>
-          The term <dfn data-lt="payment method identifiers">payment method
-          identifier</dfn> is defined by [[payment-method-id]]. It's an unique
+          The term <dfn data-lt="PMI">payment method identifier</dfn>, or PMI
+          for short, is defined by [[payment-method-id]]. It's an unique
           identifier for a <a>payment method</a>.
         </dd>
         <dt>
