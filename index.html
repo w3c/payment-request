@@ -39,6 +39,20 @@
           company: "Facebook",
           w3cid: 88345,
         },
+        {
+          name: "Ian Jacobs",
+          url: "http://www.w3.org/People/Jacobs/",
+          company: "W3C",
+          companyURL: "https://www.w3.org/",
+          w3cid: 2175,
+        },
+        {
+          name: "Rouslan Solomakhin",
+          url: "https://github.com/rsolomakhin",
+          company: "Google",
+          companyURL: "https://www.google.com/",
+          w3cid: 83784,
+        },
       ],
       crEnd: "2018-10-31",
       license: "w3c-software-doc",
@@ -936,8 +950,8 @@
               to <a>show()</a> to protect the user, then return a promise
               rejected with a "<a>SecurityError</a>" <a>DOMException</a>. For
               example, the <a>user agent</a> may limit the rate at which a page
-              can call <a>show()</a>, as described in the <a href=
-              "#privacy">privacy considerations</a> section.
+              can call <a>show()</a>, as described in section <a href=
+              "#privacy"></a>.
             </p>
           </li>
           <li>If <var>request</var>.<a>[[\state]]</a> is not "<a>created</a>"
@@ -1683,10 +1697,7 @@
           A <a>valid decimal monetary value</a> containing a monetary amount.
         </dd>
       </dl>
-      <p>
-        The following example shows how to represent US$55.00.
-      </p>
-      <pre class="example js">
+      <pre class="example js" title="How to represent US$55.00">
         {
           "currency": "USD",
           "value": "55.00"
