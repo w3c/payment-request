@@ -5333,16 +5333,15 @@
       </section>
       <section>
         <h2>
-          canMakePayment and hasEnrolledInstrument() protections
+          hasEnrolledInstrument() protections
         </h2>
         <p data-link-for="PaymentRequest">
-          The <a>canMakePayment()</a> and <a>hasEnrolledInstrument()</a> methods
-          enable the payee to check if the user is ready to take advantage of
-          the API before calling <a>show()</a> so that it can fall back to a
-          legacy checkout experience if not. Because this method shares some
-          information with the payee, user agents are expected to protect the
-          user from abuse of the method, for example, by restricting the number
-          or frequency of calls.
+          The <a>hasEnrolledInstrument()</a> method enables the payee to check
+          if the user is ready to take advantage of the API before calling
+          <a>show()</a> so that it can fall back to a legacy checkout experience
+          if not. Because this method shares some information with the payee,
+          user agents are expected to protect the user from abuse of the method,
+          for example, by restricting the number or frequency of calls.
         </p>
       </section>
     </section>
