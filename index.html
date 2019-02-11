@@ -1318,38 +1318,9 @@
           </p>
         </div>
         <p data-tests="payment-request-canmakepayment-method.https.html">
-          The <a>canMakePayment()</a> method MUST act as follows:
+          The <a>canMakePayment()</a> method MUST run the <a>can make payment
+          algorithm</a> with <var>checkForInstruments</var> set to false.
         </p>
-        <ol class="algorithm">
-          <li>Let <var>request</var> be the <a>PaymentRequest</a> object on
-          which the method was called.
-          </li>
-          <li>If <var>request</var>.<a>[[\state]]</a> is not "<a>created</a>",
-          then return <a>a promise rejected with</a> an
-          "<a>InvalidStateError</a>" <a>DOMException</a>.
-          </li>
-          <li>Let <var>hasHandlerPromise</var> be <a>a new promise</a>.
-          </li>
-          <li>Return <var>hasHandlerPromise</var>, and perform the remaining
-          steps <a>in parallel</a>.
-          </li>
-          <li>For each <var>paymentMethod</var> tuple in
-          <var>request</var>.<a>[[\serializedMethodData]]</a>:
-            <ol>
-              <li>Let <var>identifier</var> be the first element in the
-              <var>paymentMethod</var> tuple.
-              </li>
-              <li>If the user agent has a <a>payment handler</a> that supports
-              handling payment requests for <var>identifier</var>, or if it can
-              perform just-in-time installation of a suitable payment handler,
-              resolve <var>hasHandlerPromise</var> with true and terminate this
-              algorithm.
-              </li>
-            </ol>
-          </li>
-          <li>Resolve <var>hasHandlerPromise</var> with false.
-          </li>
-        </ol>
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
         <h2>
@@ -1365,79 +1336,9 @@
           discretion.
         </p>
         <p data-tests="payment-request-hasenrolledinstrument-method.https.html">
-          The <a>hasEnrolledInstrument()</a> method MUST act as follows:
+          The <a>hasEnrolledInstrument()</a> method MUST run the <a>can make
+          payment algorithm</a> with <var>checkForInstruments</var> set to true.
         </p>
-        <ol class="algorithm">
-          <li>Let <var>request</var> be the <a>PaymentRequest</a> object on
-          which the method was called.
-          </li>
-          <li>If <var>request</var>.<a>[[\state]]</a> is not "<a>created</a>",
-          then return <a>a promise rejected with</a> an
-          "<a>InvalidStateError</a>" <a>DOMException</a>.
-          </li>
-          <li data-tests=
-          "payment-request/payment-request-hasenrolledinstrument-method-protection.https.html">
-          Optionally, at the <a>top-level browsing context</a>'s discretion,
-          return <a>a promise rejected with</a> a "<a>NotAllowedError</a>" <a>
-          DOMException</a>.
-            <p class="note" data-link-for="PaymentRequest">
-              This allows user agents to apply heuristics to detect and prevent
-              abuse of the <a>hasEnrolledInstrument()</a> method for
-              fingerprinting purposes, such as creating <a>PaymentRequest</a>
-              objects with a variety of supported <a>payment methods</a> and
-              calling <a>hasEnrolledInstrument()</a> on them one after the
-              other. For example, a user agent may restrict the number of
-              successful calls that can be made based on the <a>top-level
-              browsing context</a> or the time period in which those calls were
-              made.
-            </p>
-          </li>
-          <li>Let <var>promise</var> be <a>a new promise</a>.
-          </li>
-          <li>Return <var>promise</var> and perform the remaining steps <a>in
-          parallel</a>.
-          </li>
-          <li>For each <var>paymentMethod</var> tuple in
-          <var>request</var>.<a>[[\serializedMethodData]]</a>:
-            <ol>
-              <li>Let <var>identifier</var> be the first element in the
-              <var>paymentMethod</var> tuple.
-              </li>
-              <li>Let <var>data</var> be the result of <a data-cite=
-              "ECMASCRIPT#sec-json.parse">JSON-parsing</a> the second element
-              in the <var>paymentMethod</var> tuple.
-              </li>
-              <li>If required by the specification that defines the
-              <var>identifier</var>, then <a data-cite=
-              "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
-              <var>data</var> to an IDL value. Otherwise, <a data-cite=
-              "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
-              <a data-cite="WEBIDL#idl-object">object</a>.
-              </li>
-              <li>If conversion results in an <a data-cite=
-              "WEBIDL#dfn-exception">exception</a> <var>error</var>, reject
-              <var>promise</var> with <var>error</var> and terminate this
-              algorithm.
-              </li>
-              <li>Let <var>handlers</var> be a <a>list</a> of registered
-              <a>payment handlers</a> that are authorized and can handle
-              payment request for <var>identifier</var>.
-              </li>
-              <li>For each <var>handler</var> in <var>handlers</var>:
-                <ol>
-                  <li>Let <var>hasEnrolledInstrument</var> be the result of
-                  running <var>handler</var>'s <a>steps to check if a payment
-                  can be made</a> with <var>data</var>.
-                  </li>
-                  <li>If <var>hasEnrolledInstrument</var> is true, resolve
-                  <var>promise</var> with true, and return.
-                  </li>
-                </ol>
-              </li>
-            </ol>
-          <li>Resolve <var>promise</var> with false.
-          </li>
-        </ol>
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
         <h2>
@@ -4340,6 +4241,99 @@
       </section>
       <section>
         <h2>
+          Can make payment algorithm
+        </h2>
+        <p>
+          The <dfn>can make payment algorithm</dfn> checks if the <a>user
+          agent</a> supports making payment with a <a>PaymentRequest</a>. It
+          takes a boolean argument, <var>checkForInstruments</var>, that
+          specifies whether the algorithm should check for existence of enrolled
+          instruments in addition to basic support of a <a>payment method</a>.
+        </p>
+        <ol class="algorithm">
+          <li>Let <var>request</var> be the <a>PaymentRequest</a> object on
+          which the method was called.
+          </li>
+          <li>If <var>request</var>.<a>[[\state]]</a> is not "<a>created</a>",
+          then return <a>a promise rejected with</a> an
+          "<a>InvalidStateError</a>" <a>DOMException</a>.
+          </li>
+          <li data-tests=
+          "payment-request/payment-request-hasenrolledinstrument-method-protection.https.html">
+          If <var>checkForInstruments</var> is true, optionally, at the
+          <a>top-level browsing context</a>'s discretion, return <a>a promise
+          rejected with</a> a "<a>NotAllowedError</a>" <a> DOMException</a>.
+            <p class="note" data-link-for="PaymentRequest">
+              This allows user agents to apply heuristics to detect and prevent
+              abuse of the <a>hasEnrolledInstrument()</a> method for
+              fingerprinting purposes, such as creating <a>PaymentRequest</a>
+              objects with a variety of supported <a>payment methods</a> and
+              calling <a>hasEnrolledInstrument()</a> on them one after the
+              other. For example, a user agent may restrict the number of
+              successful calls that can be made based on the <a>top-level
+              browsing context</a> or the time period in which those calls were
+              made.
+            </p>
+          </li>
+          <li>Let <var>promise</var> be <a>a new promise</a>.
+          </li>
+          <li>Return <var>promise</var>, and perform the remaining
+          steps <a>in parallel</a>.
+          </li>
+          <li>For each <var>paymentMethod</var> tuple in
+          <var>request</var>.<a>[[\serializedMethodData]]</a>:
+            <ol>
+              <li>Let <var>identifier</var> be the first element in the
+              <var>paymentMethod</var> tuple.
+              </li>
+              <li>If <var>checkForInstruments</var> is false, resolve <var>
+              promise</var> with true and terminate this algorithm if either the
+              user agent has a <a>payment handler</a> that supports handling
+              payment requests for <var>identifier</var>, or if it can perform
+              just-in-time installation of a suitable payment handler.
+              </li>
+              <li>If <var>checkForInstruments</var> is true:
+                <ol>
+                  <li>Let <var>data</var> be the result of <a data-cite=
+                  "ECMASCRIPT#sec-json.parse">JSON-parsing</a> the second element
+                  in the <var>paymentMethod</var> tuple.
+                  </li>
+                  <li>If required by the specification that defines the
+                  <var>identifier</var>, then <a data-cite=
+                  "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
+                  <var>data</var> to an IDL value. Otherwise, <a data-cite=
+                  "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
+                  <a data-cite="WEBIDL#idl-object">object</a>.
+                  </li>
+                  <li>If conversion results in an <a data-cite=
+                  "WEBIDL#dfn-exception">exception</a> <var>error</var>, reject
+                  <var>promise</var> with <var>error</var> and terminate this
+                  algorithm.
+                  </li>
+                  <li>Let <var>handlers</var> be a <a>list</a> of registered
+                  <a>payment handlers</a> that are authorized and can handle
+                  payment request for <var>identifier</var>.
+                  </li>
+                  <li>For each <var>handler</var> in <var>handlers</var>:
+                    <ol>
+                      <li>Let <var>hasEnrolledInstrument</var> be the result of
+                      running <var>handler</var>'s <a>steps to check if a payment
+                      can be made</a> with <var>data</var>.
+                      </li>
+                      <li>If <var>hasEnrolledInstrument</var> is true, resolve
+                      <var>promise</var> with true and terminate this algorithm.
+                      </li>
+                    </ol>
+                  </li>
+                </ol>
+            </ol>
+          </li>
+          <li>Resolve <var>promise</var> with false.
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h2>
           Shipping address changed algorithm
         </h2>
         <p data-tests=
@@ -5339,15 +5333,16 @@
       </section>
       <section>
         <h2>
-          canMakePayment() protections
+          canMakePayment and hasEnrolledInstrument() protections
         </h2>
         <p data-link-for="PaymentRequest">
-          The <a>canMakePayment()</a> method enables the payee to call
-          <a>show()</a> if the user is ready to take advantage of the API, or
-          to fall back to a legacy checkout experience if not. Because this
-          method shares some information with the payee, user agents are
-          expected to protect the user from abuse of the method, for example,
-          by restricting the number or frequency of calls.
+          The <a>canMakePayment()</a> and <a>hasEnrolledInstrument()</a> methods
+          enable the payee to check if the user is ready to take advantage of
+          the API before calling <a>show()</a> so that it can fall back to a
+          legacy checkout experience if not. Because this method shares some
+          information with the payee, user agents are expected to protect the
+          user from abuse of the method, for example, by restricting the number
+          or frequency of calls.
         </p>
       </section>
     </section>
