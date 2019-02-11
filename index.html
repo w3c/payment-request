@@ -1304,12 +1304,12 @@
         </h2>
         <div class="note" title="canMakePayment() vs hasEnrolledInstrument()">
           <p>
-            The <a>canMakePayment()</a> method can be used by the developer to
-            determine if the <a>PaymentRequest</a> object can be used to make a
-            payment, before they call <a>show()</a>. It returns a <a>Promise</a>
-            that will be fulfilled with true if the <a>user agent</a> supports
-            any of the desired <a>payment methods</a> supplied to the
-            <a>PaymentRequest</a> constructor, and false if none are supported.
+            The <a>canMakePayment()</a> method returns a <a>Promise</a>
+            that is fulfilled with true if the <a>user agent</a> supports
+            any of the <a data-link-for="PaymentMethodData">supportedMethods</a>
+            supplied to the <a>PaymentRequest</a>
+            <a data-lt="PaymentRequest.PaymentRequest()">constructor</a>, or
+            false if none are supported.
           </p>
           <p>
             A true result from <a>canMakePayment()</a> does not imply that the
