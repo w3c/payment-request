@@ -1304,12 +1304,10 @@
         </h2>
         <div class="note" title="canMakePayment() vs hasEnrolledInstrument()">
           <p>
-            The <a>canMakePayment()</a> method returns a <a>Promise</a>
-            that is fulfilled with true if the <a>user agent</a> supports
-            any of the <a data-link-for="PaymentMethodData">supportedMethods</a>
-            supplied to the <a>PaymentRequest</a>
-            <a data-lt="PaymentRequest.PaymentRequest()">constructor</a>, or
-            false if none are supported.
+            The <a>canMakePayment()</a> method can be used by the developer to
+            determine if the <a>user agent</a> has support for one of the
+            desired <a>payment methods</a>. See <a href="#canMakePayment-privacy">
+            privacy considerations</a>.
           </p>
           <p>
             A true result from <a>canMakePayment()</a> does not imply that the
@@ -1328,12 +1326,10 @@
         </h2>
         <p class="note">
           The <a>hasEnrolledInstrument()</a> method can be used by the developer
-          to determine if the <a>user agent</a> not only has support for one of
-          the desired <a>payment methods</a> but is also "ready for payment" (
-          e.g., when showing a "buy now" button). If the method is called too
-          often, the user agent may return <a>a promise rejected
-          with </a> a "<a>NotAllowedError</a>" <a>DOMException</a> at its
-          discretion.
+          to determine if the <a>user agent</a> has support for one of the
+          desired <a>payment methods</a> and if a <a>payment handler</a> has an
+          instrument ready for payment. See
+          <a href="#canMakePayment-privacy">privacy considerations</a>.
         </p>
         <p data-tests="payment-request-hasenrolledinstrument-method.https.html">
           The <a>hasEnrolledInstrument()</a> method MUST run the <a>can make
@@ -4249,7 +4245,7 @@
           which the <a>PaymentRequest</a> was constructed. It takes a boolean
           argument, <var>checkForInstruments</var>, that specifies whether the
           algorithm checks for existence of enrolled instruments in addition to
-          supporting <a>payment method</a>.
+          supporting a <a>payment method</a>.
         </p>
         <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object on
@@ -4263,7 +4259,7 @@
           "payment-request-hasenrolledinstrument-method-protection.https.html, payment-request-canmakepayment-method-protection.https.html">
           Optionally, at the <a>top-level browsing context</a>'s discretion,
           return <a>a promise rejected with</a> a "<a>NotAllowedError</a>"
-          <a> DOMException</a>.
+          <a>DOMException</a>.
             <p class="note" data-link-for="PaymentRequest">
               This allows user agents to apply heuristics to detect and prevent
               abuse of the calling method for fingerprinting purposes, such as
@@ -4303,11 +4299,6 @@
                   <var>data</var> to an IDL value. Otherwise, <a data-cite=
                   "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
                   <a data-cite="WEBIDL#idl-object">object</a>.
-                  </li>
-                  <li>If conversion results in an <a data-cite=
-                  "WEBIDL#dfn-exception">exception</a> <var>error</var>, reject
-                  <var>promise</var> with <var>error</var> and terminate this
-                  algorithm.
                   </li>
                   <li>Let <var>handlers</var> be a <a>list</a> of registered
                   <a>payment handlers</a> that are authorized and can handle
@@ -5330,18 +5321,19 @@
           consent.
         </p>
       </section>
-      <section>
+      <section id="canMakePayment-privacy">
         <h2>
-          canMakePayment() and hasEnrolledInstrument() protections
+          <code>canMakePayment()</code> and <code>hasEnrolledInstrument()</code>
+          protections
         </h2>
         <p data-link-for="PaymentRequest">
           The <a>canMakePayment()</a> and <a>hasEnrolledInstrument()</a> methods
-          enable the payee to check if the user is ready to take advantage of
-          the API before calling <a>show()</a> so that it can fall back to a
-          legacy checkout experience if not. Because this method shares some
-          information with the payee, user agents are expected to protect the
-          user from abuse of the method, for example, by restricting the number
-          or frequency of calls.
+          have the potential to expose user information that could be abused for
+          fingerprinting purposes. The API allows the user agent to restrict the
+          number or frequency of calls to reduce the risk of fingerprinting.
+          User agents MAY allow the user to control the response to either
+          method via UI or provide their own means to protection (e.g., always
+          returning with true).
         </p>
       </section>
     </section>
