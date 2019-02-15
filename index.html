@@ -4286,17 +4286,10 @@
               <li>Let <var>identifier</var> be the first element in the
               <var>paymentMethod</var> tuple.
               </li>
-              <li>If <var>checkForInstruments</var> is false:
-                <ol>
-                  <li>If the user agent has a <a>payment handler</a> that
-                  supports handling payment requests for <var>identifier</var>,
-                  resolve <var>promise</var> with true and terminate this
-                  algorithm.
-                  </li>
-                  <li>If the user agent does not have a suitable <a>payment
-                  handler</a>, resolve <var>promise</var> with false and
-                  terminate this algorithm.</li>
-                </ol>
+              <li>If <var>checkForInstruments</var> is false, and the user agent
+                has a <a>payment handler</a> that supports handling payment
+                requests for <var>identifier</var>, resolve <var>promise</var>
+                with true and terminate this algorithm.
               </li>
               <li>If <var>checkForInstruments</var> is true:
                 <ol>
