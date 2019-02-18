@@ -119,6 +119,55 @@
         There has been no change in dependencies on other workings groups
         during the development of this specification.
       </p>
+      <section>
+        <h3>
+          Changes since last publication
+        </h3>
+        <p>
+          Substantive changes to Payment Request API since the 9 July 2018
+          version are as follows. If complete list of changes, including all
+          editorial changes is viewable in the <a href=
+          "https://github.com/w3c/payment-request/commits/gh-pages">commit
+          history</a>.
+        </p>
+        <ul>
+          <li>Added support for notification when the user selects a payment
+          method, but before confirming payment. This allows merchant to update
+          totals, validate acceptance, etc.
+          </li>
+          <li>Added support to notify site of billing address selection. This
+          allows a merchant to update a total (e.g., for VAT in Europe). To
+          enhance privacy, only some billing address data is returned to the
+          merchant as long as the user has not confirmed payment.
+          </li>
+          <li>Added support for <a data-lt=
+          "PaymentResponse.retry()">retry()</a> and fine-grain error reporting
+          to the user.
+          </li>
+          <li>Added support for merchant validation by the payment handler.
+          </li>
+          <li data-link-for="PaymentRequest">Clearer definition of
+          <a>canMakePayment()</a> and worked to align implementations.
+          <a>canMakePayment()</a> does not reveal whether payment handler is
+          primed to pay.
+          </li>
+          <li>Removed <code>languageCode</code> and <code>regionCode</code>
+          from <a>PaymentAddress</a>.
+          </li>
+          <li>Removed <code>currencySystem</code>.
+          </li>
+          <li>"<a>Payment request is showing</a>" boolean now attached to
+          top-level browsing context. Previously, only a single payment UI was
+          allowed to be shown at a time across the whole browser. This now
+          allows multiple browser tabs to show a payment UI at the same time
+          (for payment handlers that can support that).
+          </li>
+          <li>Integrated with <a data-cite="feature-policy"></a>.
+          </li>
+          <li>Defined handling of multiple applicable modifiers.
+          </li>
+        </ul>
+      </section>
     </section>
     <section class='informative'>
       <h2>
