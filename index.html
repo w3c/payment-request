@@ -2303,6 +2303,7 @@
             readonly attribute DOMString postalCode;
             readonly attribute DOMString recipient;
             readonly attribute DOMString region;
+            readonly attribute DOMString regionCode;
             readonly attribute DOMString sortingCode;
             readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
           };
@@ -2311,20 +2312,6 @@
           The <a>PaymentAddress</a> interface represents a <a>physical
           address</a>.
         </p>
-        <aside class="note" title="What happened to regionCode?">
-          <p>
-            This specification once included a <code>regionCode</code>
-            attribute that provided developers with a [[?ISO3166-2]] country
-            subdivision code element representation of an address' region
-            (e.g., "CA" for California). Unfortunately, the attribute was
-            removed due to lack of implementations. The Web Payments Working
-            Group fully recognizes the importance of the
-            <code>regionCode</code> attribute and is <a href=
-            "https://github.com/w3c/payment-request/issues/663">committed to
-            bringing the attribute back</a> in a future revision of this
-            specification.
-          </p>
-        </aside>
         <section>
           <h2>
             Internal constructor
@@ -2358,7 +2345,84 @@
                 </li>
               </ol>
             </li>
-            <li>Let |cleanAddressLines| be an empty list.
+            <li>If <var>details</var>["<a>regionCode</a>"] is present and not
+            the empty string:
+              <ol>
+                <li>Let <var>regionCode</var> be the result of <a>strip leading
+                and trailing ASCII whitespace</a> from
+                <var>details</var>["<a>regionCode</a>"] and then
+                  <a data-cite="INFRA#ascii-uppercase">ASCII uppercasing</a>
+                  the result.
+                </li>
+                <li>Let <var>putativeCountrySubdivisionCodeElement</var> be the
+                concatenation of <var>address</var>.<a>[[\country]]</a>, a
+                single U+002D (-) <a>code point</a>, and <var>regionCode</var>.
+                </li>
+                <li>
+                  <p>
+                    If <var>putativeCountrySubdivisionCodeElement</var> is not
+                    a valid <a>country subdivision code element</a> as per
+                    [[ISO3166-2]]'s section 5.2 "Structure of country
+                    subdivision code elements" (non-normative details below),
+                    throw a <a>RangeError</a> exception.
+                  </p>
+                  <div class="note" title=
+                  "Structure of country subdivision code elements">
+                    <p>
+                      <strong>Do not implement from this note.</strong> The
+                      structure of a <a>country subdivision code element</a> is
+                      formally defined in [[ISO3166-2]] (section 5.2). Although
+                      the structure is not expected to change at the time of
+                      writing, implementers are expected to track updates to
+                      [[ISO3166-2]] directly from ISO.
+                    </p>
+                    <p>
+                      As [[ISO3166-2]] is not freely available to the general
+                      public, the structure of a <a>country subdivision code
+                      element</a> at the time of publication is as follows:
+                    </p>
+                    <ul>
+                      <li>Two <a>code points</a> that match an [[ISO3166-1]]
+                      alpha-2 country code.
+                      </li>
+                      <li>A single U+002D (-) <a>code point</a>.
+                      </li>
+                      <li>One, two, or three <a data-cite=
+                      "INFRA#ascii-alphanumeric">ASCII alphanumeric</a> code
+                      points, in any order.
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li>Set <var>address</var>.<a>[[\regionCode]]</a> to
+                <var>regionCode</var>.
+                </li>
+                <li>If <var>details</var>["<a>region</a>"] is not present:
+                  <ol>
+                    <li>Let <var>region</var> be the corresponding <a>country
+                    subdivision name</a> for <var>regionCode</var>. Where
+                    [[ISO3166-2]] defines multiple <a>country subdivision
+                    names</a> for a <var>regionCode</var>, it is RECOMMENDED
+                    the user agent select one by matching on:
+                      <ol>
+                        <li>The <a data-cite="HTML#language">language</a> of
+                        <a data-cite="HTML#the-body-element-2">the body
+                        element</a>.
+                        </li>
+                        <li>The user's preferred languages.
+                        </li>
+                        <li>Any other criteria the user agent deems suitable.
+                        </li>
+                      </ol>
+                    </li>
+                    <li>Set <var>details</var>["<a>region</a>"] to
+                    <var>region</var>.
+                    </li>
+                  </ol>
+                </li>
+              </ol>
+            </li>
+            <li>Let <var>cleanAddressLines</var> be an empty list.
             </li>
             <li>If |details|["<a>addressLine</a>"] is present, then for each
             |item| in |details|["<a>addressLine</a>"]:
@@ -2449,6 +2513,17 @@
             Represents the <a>region</a> of the address. When getting, returns
             the value of the <a>PaymentAddress</a>'s <a>[[\region]]</a>
             internal slot.
+          </p>
+        </section>
+        <section>
+          <h2>
+            <dfn>regionCode</dfn> attribute
+          </h2>
+          <p data-link-for="">
+            Represents the <a>region</a> of the address as a code element of an
+            [[ISO3166-2]] country subdivision name (e.g., "CA" for California,
+            USA). When getting, returns the value of the
+            <a>PaymentAddress</a>'s <a>[[\regionCode]]</a> internal slot.
           </p>
         </section>
         <section>
@@ -2566,6 +2641,19 @@
             </tr>
             <tr>
               <td>
+                <dfn>[[\regionCode]]</dfn>
+              </td>
+              <td>
+                The empty string, or one to three code points that represent a
+                <a>region</a> as the code element of an [[ISO3166-2]] country
+                subdivision name (i.e., the characters after the hyphen in an
+                ISO3166-2 <a>country subdivision code element</a>, such as "CA"
+                for the state of California in the USA, or "11" for the Lisbon
+                district of Portugal).
+              </td>
+            </tr>
+            <tr>
+              <td>
                 <dfn>[[\city]]</dfn>
               </td>
               <td>
@@ -2632,6 +2720,7 @@
             DOMString country;
             sequence&lt;DOMString&gt; addressLine;
             DOMString region;
+            DOMString regionCode;
             DOMString city;
             DOMString dependentLocality;
             DOMString postalCode;
@@ -2664,6 +2753,17 @@
           </dt>
           <dd>
             A <a>region</a>.
+          </dd>
+          <dt>
+            <dfn>regionCode</dfn> member
+          </dt>
+          <dd>
+            The empty string, or one to three code points that represent a
+            <a>region</a> as the code element of an [[ISO3166-2]] country
+            subdivision name (i.e., the characters after the hyphen in an
+            ISO3166-2 <a>country subdivision code element</a>, such as "CA" for
+            the state of California in the USA, or "11" for the Lisbon district
+            of Portugal).
           </dd>
           <dt>
             <dfn>city</dfn> member
@@ -2727,6 +2827,7 @@
             DOMString postalCode;
             DOMString recipient;
             DOMString region;
+            DOMString regionCode;
             DOMString sortingCode;
           };
         </pre>
@@ -2825,6 +2926,16 @@
             agent's UI, this member corresponds to the input field that
             provided the <a>PaymentAddress</a>'s <a data-link-for=
             "PaymentAddress">region</a> attribute's value.
+          </dd>
+          <dt>
+            <dfn>regionCode</dfn> member
+          </dt>
+          <dd>
+            Denotes that the region code representation of the <a>region</a>
+            has a validation error. In the user agent's UI, this member
+            corresponds to the input field that provided the
+            <a>PaymentAddress</a>'s <a data-link-for=
+            "PaymentAddress">regionCode</a> attribute's value.
           </dd>
           <dt>
             <dfn>sortingCode</dfn> member
@@ -2941,13 +3052,19 @@
               address for a particular country, it might not provide a field
               for the user to input a <a>region</a>. In such cases, the user
               agent returns an empty string for both <a>PaymentAddress</a>'s
-              <a data-link-for="PaymentAddress">region</a> attribute - but the
-              address can still serve its intended purpose (e.g., be valid for
-              shipping or billing purposes).
+              <a data-link-for="PaymentAddress">region</a> and
+              <a data-link-for="PaymentAddress">regionCode</a> attributes - but
+              the address can still serve its intended purpose (e.g., be valid
+              for shipping or billing purposes).
             </p>
             <ol>
               <li>Set |details|["<a>region</a>"] to the user-provided region,
               or to the empty string if none was provided.
+              </li>
+              <li>If <var>details</var>["<a>region</a>"] has a corresponding
+              <a>country subdivision code element</a>, set
+              <var>details</var>["<a>regionCode</a>"] to that <a>country
+              subdivision code element</a>.
               </li>
             </ol>
           </li>
