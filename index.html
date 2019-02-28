@@ -132,8 +132,8 @@
         </p>
         <ul>
           <li>Added support for notification when the user selects a payment
-          handler, but before confirming payment. This allows merchant to update
-          totals, validate acceptance, etc.
+          handler, but before confirming payment. This allows merchant to
+          update totals, validate acceptance, etc.
           </li>
           <li>Added support to notify site of billing address selection. This
           allows a merchant to update a total (e.g., for VAT in Europe). To
@@ -344,8 +344,8 @@
           second argument of the constructor (<var>details</var>) to provide
           the details of the transaction that the user is being asked to
           complete. This includes the total of the order and, optionally, some
-          line items that can provide a detailed breakdown of what is
-          being paid for.
+          line items that can provide a detailed breakdown of what is being
+          paid for.
         </p>
         <pre class="example js" title="The `details` argument">
           const details = {
@@ -1441,7 +1441,7 @@
         <p data-tests="onmerchantvalidation-attribute.https.html">
           A <a>PaymentRequest</a>'s <a>onmerchantvalidation</a> attribute is an
           <a>EventHandler</a> for a <a>MerchantValidationEvent</a> named
-          <a>merchantvalidation</a>.
+          "<a>merchantvalidation</a>".
         </p>
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
@@ -1485,7 +1485,7 @@
         <p data-tests="onpaymentmenthodchange-attribute.https.html">
           A <a>PaymentRequest</a>'s <a>onpaymentmethodchange</a> attribute is
           an <a>EventHandler</a> for a <a>PaymentMethodChangeEvent</a> named
-          <a>paymentmethodchange</a>.
+          "<a>paymentmethodchange</a>".
         </p>
       </section>
       <section>
@@ -2801,8 +2801,8 @@
         </p>
         <p class="note">
           Developers need to be aware that users might not have the ability to
-          fix certain parts of an address. As such, they need to be mindful
-          not to ask the user to fix things they might not have control over.
+          fix certain parts of an address. As such, they need to be mindful not
+          to ask the user to fix things they might not have control over.
         </p>
         <dl>
           <dt>
@@ -3302,11 +3302,11 @@
             </dt>
             <dd>
               A general description of an error with the payment from which the
-              user can attempt to recover. For example, the user may recover by retrying the
-              payment. A developer can optionally pass the <a>error</a> member
-              on its own to give a general overview of validation issues, or it
-              can be passed in combination with other members of the
-              <a>PaymentValidationErrors</a> dictionary.
+              user can attempt to recover. For example, the user may recover by
+              retrying the payment. A developer can optionally pass the
+              <a>error</a> member on its own to give a general overview of
+              validation issues, or it can be passed in combination with other
+              members of the <a>PaymentValidationErrors</a> dictionary.
             </dd>
             <dt>
               <dfn>paymentMethod</dfn> member
@@ -3521,9 +3521,9 @@
         <p>
           After the payment request has been accepted and the
           <a>PaymentResponse</a> returned to the caller, but before the caller
-          calls <a>complete()</a>, the payment request user interface remains in
-          a pending state. At this point the user interface SHOULD not offer a
-          cancel command because acceptance of the payment request has been
+          calls <a>complete()</a>, the payment request user interface remains
+          in a pending state. At this point the user interface SHOULD NOT offer
+          a cancel command because acceptance of the payment request has been
           returned. However, if something goes wrong and the developer never
           calls <a>complete()</a> then the user interface is blocked.
         </p>
@@ -4140,9 +4140,8 @@
             <li>Let <var>event</var> be this <a>PaymentRequestUpdateEvent</a>
             instance.
             </li>
-            <li>If <var>event</var>'s <a>isTrusted</a> attribute is false,
-            then <a>throw</a> an "<a>InvalidStateError</a>"
-            <a>DOMException</a>.
+            <li>If <var>event</var>'s <a>isTrusted</a> attribute is false, then
+            <a>throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
             </li>
             <li>If <var>event</var>.<a>[[\waitForUpdate]]</a> is true, then <a>
               throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
@@ -5323,9 +5322,9 @@
       <p>
         For the user-facing aspects of Payment Request API, implementations
         integrate with platform accessibility APIs via form controls and other
-        input modalities. Furthermore, to increase the intelligibility of total,
-        shipping addresses, and contact information, implementations format
-        data according to system conventions.
+        input modalities. Furthermore, to increase the intelligibility of
+        total, shipping addresses, and contact information, implementations
+        format data according to system conventions.
       </p>
     </section>
     <section id="dependencies">
@@ -5417,10 +5416,10 @@
           The terms <dfn data-cite="PROMISES-GUIDE#a-new-promise">a new
           promise</dfn>, <dfn data-cite=
           "PROMISES-GUIDE#a-promise-rejected-with">a promise rejected
-          with</dfn>, <dfn data-cite=
-          "PROMISES-GUIDE#upon-fulfillment">upon fulfillment</dfn> and
-          <dfn data-cite="PROMISES-GUIDE#upon-rejection">upon rejection</dfn>
-          are defined by [[PROMISES-GUIDE]].
+          with</dfn>, <dfn data-cite="PROMISES-GUIDE#upon-fulfillment">upon
+          fulfillment</dfn> and <dfn data-cite=
+          "PROMISES-GUIDE#upon-rejection">upon rejection</dfn> are defined by
+          [[PROMISES-GUIDE]].
         </dd>
         <dt>
           DOM
