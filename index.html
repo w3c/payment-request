@@ -124,7 +124,7 @@
           Changes since last publication
         </h3>
         <p>
-          Substantive changes to Payment Request API since the 9 July 2018
+          Substantive changes to the Payment Request API since the 9 July 2018
           version are as follows. The complete list of changes, including all
           editorial changes, is viewable in the <a href=
           "https://github.com/w3c/payment-request/commits/gh-pages">commit
@@ -344,7 +344,7 @@
           second argument of the constructor (<var>details</var>) to provide
           the details of the transaction that the user is being asked to
           complete. This includes the total of the order and, optionally, some
-          line items that provide can provide a detailed breakdown of what is
+          line items that can provide a detailed breakdown of what is
           being paid for.
         </p>
         <pre class="example js" title="The `details` argument">
@@ -393,7 +393,7 @@
               amount: { currency: "USD", value: "25.00" }
             },
           ];
-          Object.assign(details, { shippingOptions });
+          Object.assign(details, { "shippingOptions": shippingOptions });
         </pre>
       </section>
       <section>
@@ -1398,7 +1398,7 @@
               <li>Let <var>identifier</var> be the first element in the
               <var>paymentMethod</var> tuple.
               </li>
-              <li>If there user agent has a <a>payment handler</a> that support
+              <li>If the user agent has a <a>payment handler</a> that supports
               handling payment requests for <var>identifier</var>, resolve
               <var>hasHandlerPromise</var> with true and terminate this
               algorithm.
@@ -1441,7 +1441,7 @@
         <p data-tests="onmerchantvalidation-attribute.https.html">
           A <a>PaymentRequest</a>'s <a>onmerchantvalidation</a> attribute is an
           <a>EventHandler</a> for a <a>MerchantValidationEvent</a> named
-          "<a>merchantvalidation</a>".
+          <a>merchantvalidation</a>.
         </p>
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
@@ -1485,7 +1485,7 @@
         <p data-tests="onpaymentmenthodchange-attribute.https.html">
           A <a>PaymentRequest</a>'s <a>onpaymentmethodchange</a> attribute is
           an <a>EventHandler</a> for a <a>PaymentMethodChangeEvent</a> named
-          "<a>paymentmethodchange</a>".
+          <a>paymentmethodchange</a>.
         </p>
       </section>
       <section>
@@ -1606,7 +1606,7 @@
               <dfn>[[\updating]]</dfn>
             </td>
             <td>
-              true is there is a pending <a data-lt=
+              True if there is a pending <a data-lt=
               "PaymentRequestUpdateEvent.updateWith">updateWith()</a> call to
               update the payment request and false otherwise.
             </td>
@@ -1693,7 +1693,7 @@
         </dt>
         <dd>
           <p>
-            A [[ISO4217]] <a data-cite=
+            An [[ISO4217]] <a data-cite=
             "ecma-402#sec-iswellformedcurrencycode">well-formed</a> 3-letter
             alphabetic code (i.e., the numeric codes are not supported). Their
             canonical form is upper case. However, the set of combinations of
@@ -1993,7 +1993,7 @@
             <dfn>total</dfn> member
           </dt>
           <dd>
-            A <a>PaymentItem</a> contains the non-negative <a data-lt=
+            A <a>PaymentItem</a> containing a non-negative <a data-lt=
             "PaymentItem.amount">amount</a>.
             <p class="note">
               Algorithms in this specification that accept a
@@ -2118,7 +2118,7 @@
           "<dfn>delivery</dfn>"
         </dt>
         <dd>
-          This refers to the address being collected as being used for
+          This refers to the address being collected as the destination for
           delivery. This is commonly faster than shipping. For example, it
           might be used for food delivery.
         </dd>
@@ -2368,7 +2368,7 @@
             removed due to lack of implementations. The Web Payments Working
             Group fully recognizes the importance of the
             <code>regionCode</code> attribute and is <a href=
-            "https://github.com/w3c/payment-request/issues/663">committed
+            "https://github.com/w3c/payment-request/issues/663">committed to
             bringing the attribute back</a> in a future revision of this
             specification.
           </p>
@@ -2447,11 +2447,6 @@
             leading and trailing ASCII whitespace</a> from
             <var>details</var>["<a>postalCode</a>"] and set
             <var>address</var>.<a>[[\postalCode]]</a> to the result.
-            </li>
-            <li>If <var>details</var>["<a>sortingCode</a>"] is present,
-            <a>strip leading and trailing ASCII whitespace</a> from
-            <var>details</var>["<a>sortingCode</a>"] and set
-            <var>address</var>.<a>[[\sortingCode]]</a> to the result.
             </li>
             <li>If <var>details</var>["<a>sortingCode</a>"] is present,
             <a>strip leading and trailing ASCII whitespace</a> from
@@ -2707,7 +2702,7 @@
           };
         </pre>
         <p>
-          A <a>AddressInit</a> is passed when <a data-lt=
+          An <a>AddressInit</a> is passed when <a data-lt=
           "PaymentAddress.PaymentAddress()">constructing</a> a
           <a>PaymentAddress</a>. Its members are as follows.
         </p>
@@ -2806,7 +2801,7 @@
         </p>
         <p class="note">
           Developers need to be aware that users might not have the ability to
-          fix certain parts of an address. As such, they need to be mindful to
+          fix certain parts of an address. As such, they need to be mindful
           not to ask the user to fix things they might not have control over.
         </p>
         <dl>
@@ -2935,7 +2930,7 @@
           or to the empty string if none was provided.
             <aside class="note" title="Privacy of phone number">
               <p>
-                To maintain user's privacy, implementers need to be mindful
+                To maintain users' privacy, implementers need to be mindful
                 that a shipping address's associated phone number might be
                 different or the same from that of the end user's. As such,
                 implementers need to take care to not provide the end user's
@@ -3307,7 +3302,7 @@
             </dt>
             <dd>
               A general description of an error with the payment from which the
-              user can attempt to recover from by, for example, retrying a
+              user can attempt to recover. For example, the user may recover by retrying the
               payment. A developer can optionally pass the <a>error</a> member
               on its own to give a general overview of validation issues, or it
               can be passed in combination with other members of the
@@ -3525,9 +3520,9 @@
         </p>
         <p>
           After the payment request has been accepted and the
-          <a>PaymentResponse</a> returned to the caller but before the caller
-          calls <a>complete()</a> the payment request user interface remains in
-          a pending state. At this point the user interface ought not offer a
+          <a>PaymentResponse</a> returned to the caller, but before the caller
+          calls <a>complete()</a>, the payment request user interface remains in
+          a pending state. At this point the user interface SHOULD not offer a
           cancel command because acceptance of the payment request has been
           returned. However, if something goes wrong and the developer never
           calls <a>complete()</a> then the user interface is blocked.
@@ -3943,7 +3938,7 @@
                 "mechvalidation.waitForUpdate">[[\waitForUpdate]]</dfn>
               </td>
               <td>
-                A boolean indicating whether an <a>complete()</a>-initiated
+                A boolean indicating whether a <a>complete()</a>-initiated
                 update is currently in progress.
               </td>
             </tr>
@@ -4118,7 +4113,7 @@
               <a>PaymentRequestUpdateEvent</a>.
             </p>
             <pre class="example js" title="can only call `updateWith()` once">
-              // ❌ Bad - calling updateWith() doesn't work!
+              // ❌ Bad - calling updateWith() twice doesn't work!
               request.addEventListener("shippingaddresschange", ev =&gt; {
                 ev.updateWith(details); // this is ok.
                 // 💥 [[waitForUpdate]] is true, throws "InvalidStateError".
@@ -4145,7 +4140,7 @@
             <li>Let <var>event</var> be this <a>PaymentRequestUpdateEvent</a>
             instance.
             </li>
-            <li>If <var>event</var>'s <a>isTrusted</a> attribute is false, then
+            <li>If <var>event</var>'s <a>isTrusted</a> attribute is false,
             then <a>throw</a> an "<a>InvalidStateError</a>"
             <a>DOMException</a>.
             </li>
@@ -5226,7 +5221,7 @@
           The API defined in this specification is only exposed in
           <a data-cite="secure-contexts#secure-contexts">secure contexts</a>.
           In practice, this means that this API is only available over HTTPS.
-          This is to limit the possibly of payment method data (e.g., credit
+          This is to limit the possibility of payment method data (e.g., credit
           card numbers) being sent in the clear.
         </p>
       </section>
@@ -5328,7 +5323,7 @@
       <p>
         For the user-facing aspects of Payment Request API, implementations
         integrate with platform accessibility APIs via form controls and other
-        input modalities. Furthermore to increase the intelligibility of total,
+        input modalities. Furthermore, to increase the intelligibility of total,
         shipping addresses, and contact information, implementations format
         data according to system conventions.
       </p>
@@ -5353,7 +5348,7 @@
           Infra
         </dt>
         <dd>
-          The [[INFRA] specification defines how to <dfn data-cite=
+          The [[INFRA]] specification defines how to <dfn data-cite=
           "INFRA#strip-leading-and-trailing-ascii-whitespace">strip leading and
           trailing ascii whitespace</dfn>. It also defines the concept of a
           <dfn data-cite="INFRA#list">list</dfn> and <dfn data-cite=
@@ -5422,7 +5417,7 @@
           The terms <dfn data-cite="PROMISES-GUIDE#a-new-promise">a new
           promise</dfn>, <dfn data-cite=
           "PROMISES-GUIDE#a-promise-rejected-with">a promise rejected
-          with</dfn> <var>r</var>, <dfn data-cite=
+          with</dfn>, <dfn data-cite=
           "PROMISES-GUIDE#upon-fulfillment">upon fulfillment</dfn> and
           <dfn data-cite="PROMISES-GUIDE#upon-rejection">upon rejection</dfn>
           are defined by [[PROMISES-GUIDE]].
