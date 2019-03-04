@@ -1977,17 +1977,17 @@
             <dfn>error</dfn> member
           </dt>
           <dd>
-            A human-readable string. When the payment request is updated using
+            A human-readable string that explains why goods cannot be shipped
+            to the chosen shipping address, or any other reason why no shipping
+            options are available. When the payment request is updated using
             <a data-lt="PaymentRequestUpdateEvent.updateWith">updateWith()</a>,
             the <a>PaymentDetailsUpdate</a> can contain a message in the
-            <a>error</a> member that will be displayed to the user, if the
+            <a>error</a> member that will be displayed to the user if the
             <a>PaymentDetailsUpdate</a> indicates that there are no valid
             <a data-lt="PaymentDetailsBase.shippingOptions">shippingOptions</a>
             (and the <a>PaymentRequest</a> was constructed with the <a data-lt=
             "PaymentOptions.requestShipping">requestShipping</a> option set to
-            true). This can be used to explain why goods cannot be shipped to
-            the chosen shipping address, or any other reason why no shipping
-            options are available.
+            true).
           </dd>
           <dt>
             <dfn>total</dfn> member
