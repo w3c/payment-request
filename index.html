@@ -5302,12 +5302,10 @@
           by:
         </p>
         <ul data-link-for="PaymentRequest">
-          <li>allowing the user to configure the user agent to turn off
-          <a>canMakePayment()</a>;
+          <li>Allowing the user to configure the user agent to turn off
+          <a>canMakePayment()</a>.
           </li>
-          <li>informing the user when <a>canMakePayment()</a> is called;
-          </li>
-          <li>rate-limiting the frequency of calls to <a>canMakePayment()</a>
+          <li>Rate-limiting the frequency of calls to <a>canMakePayment()</a>
           with different parameters.
           </li>
         </ul>
@@ -5315,9 +5313,10 @@
           For rate-limiting the user agent might look at repeated calls from:
         </p>
         <ul>
-          <li>the same effective top-level domain plus one (eTLD+1);
+          <li>the same effective top-level domain plus one (eTLD+1).
           </li>
-          <li>the top-level browsing context;
+          <li>the top-level browsing context. Alternatively, the user agent may
+          block access to the API entirely for origins know to be bad actors.
           </li>
           <li>for an iframe, the origin of the iframe content.
           </li>
