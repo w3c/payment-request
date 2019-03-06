@@ -1977,17 +1977,17 @@
             <dfn>error</dfn> member
           </dt>
           <dd>
-            A human-readable string. When the payment request is updated using
+            A human-readable string that explains why goods cannot be shipped
+            to the chosen shipping address, or any other reason why no shipping
+            options are available. When the payment request is updated using
             <a data-lt="PaymentRequestUpdateEvent.updateWith">updateWith()</a>,
             the <a>PaymentDetailsUpdate</a> can contain a message in the
-            <a>error</a> member that will be displayed to the user, if the
+            <a>error</a> member that will be displayed to the user if the
             <a>PaymentDetailsUpdate</a> indicates that there are no valid
             <a data-lt="PaymentDetailsBase.shippingOptions">shippingOptions</a>
             (and the <a>PaymentRequest</a> was constructed with the <a data-lt=
             "PaymentOptions.requestShipping">requestShipping</a> option set to
-            true). This can be used to explain why goods cannot be shipped to
-            the chosen shipping address, or any other reason why no shipping
-            options are available.
+            true).
           </dd>
           <dt>
             <dfn>total</dfn> member
@@ -2904,9 +2904,28 @@
         <p>
           The steps to <dfn>create a <code>PaymentAddress</code> from
           user-provided input</dfn> are given by the following algorithm. The
-          algorithm takes a <a>list</a> <var>redactList</var>, for which user
-          input will not be gathered.
+          algorithm takes a <a>list</a> <var>redactList</var>.
         </p>
+        <div class="note" title=
+        "Privacy of recipient information (the redactList)">
+          <p>
+            The <var>redactList</var> optionally gives user agents the
+            possibility to limit the amount of personal information about the
+            recipient that the API shares with the merchant.
+          </p>
+          <p>
+            For merchants, the resulting <a>PaymentAddress</a> object provides
+            enough information to, for example, calculate shipping costs, but,
+            in most cases, not enough information to physically locate and
+            uniquely identify the recipient.
+          </p>
+          <p>
+            Unfortunately, even with the <var>redactList</var>, recipient
+            anonymity cannot be assured. This is because in some countries
+            postal codes are so fine-grained that they can uniquely identify a
+            recipient.
+          </p>
+        </div>
         <ol data-link-for="AddressInit">
           <li>Let <var>details</var> be an <a>AddressInit</a> dictionary with
           no members present.
@@ -4341,6 +4360,10 @@
                 </div>Let <var>redactList</var> be the empty list. Optionally,
                 set <var>redactList</var> to « "organization", "phone",
                 "recipient", "addressLine", "dependentLocality" ».
+              </li>
+              <li>Let <var>redactList</var> be the empty list. Optionally, set
+              <var>redactList</var> to « "organization", "phone", "recipient",
+              "addressLine" ».
               </li>
               <li>Let <var>address</var> be the result of running the steps to
               <a>create a <code>PaymentAddress</code> from user-provided
