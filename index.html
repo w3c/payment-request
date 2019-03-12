@@ -5303,7 +5303,8 @@
         </p>
         <ul data-link-for="PaymentRequest">
           <li>Allowing the user to configure the user agent to turn off
-          <a>canMakePayment()</a>.
+          <a>canMakePayment()</a>, which would cause the user agent to return <a>a promise rejected with</a> a "<a>NotAllowedError</a>" <a>
+            DOMException</a>.
           </li>
           <li>Informing the user of what data is shared by
           <a>canMakePayment()</a>;
