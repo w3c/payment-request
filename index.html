@@ -222,10 +222,21 @@
           <dfn>Steps for when a user changes payment method</dfn> (optional)
         </dt>
         <dd>
-          Steps that describe how to handle the user changing payment method or
-          monetary instrument (e.g., from a debit card to a credit card) that
-          results in a <a data-cite="WEBIDL#idl-dictionary">dictionary</a> or
-          <a data-cite="WEBIDL#idl-object">object</a> or null.
+          <p>
+            Steps that describe how to handle the user changing payment method
+            or monetary instrument (e.g., from a debit card to a credit card)
+            that results in a <a data-cite=
+            "WEBIDL#idl-dictionary">dictionary</a> or <a data-cite=
+            "WEBIDL#idl-object">object</a> or null.
+          </p>
+          <p>
+            A <a>payment handler</a> that define <a>steps for when a user
+            changes payment method</a> MUST redact the <a>address line</a>,
+            <a>dependent locality</a>, <a>organization</a>, <a>phone
+            number</a>, and <a>recipient</a> from any <a>PaymentAddress</a>
+            included in the <a>PaymentMethodChangeEvent</a>'s <a data-link-for=
+            "PaymentMethodChangeEvent">methodDetails</a> attribute.
+          </p>
         </dd>
       </dl>
       <p>
@@ -4403,9 +4414,11 @@
         <p class="note" title=
         "Privacy of information shared by paymentmethodchange event">
           When the user selects or changes a payment method (e.g., a credit
-          card), the <a>PaymentMethodChangeEvent</a> will often contain address
-          information so that the merchant can perform tax calculations and
-          update the total.
+          card), the <a>PaymentMethodChangeEvent</a> includes redacted billing
+          address information for the purpose of performing tax calculations.
+          Redacted attributes include, but are not limited to, <a>address
+          line</a>, <a>dependent locality</a>, <a>organization</a>,
+          <a>phone number</a>, and <a>recipient</a>.
         </p>
         <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
