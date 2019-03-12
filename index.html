@@ -4398,7 +4398,14 @@
           "WEBIDL#idl-object">object</a> or null, and a <var>methodName</var>,
           which is a DOMString that represents the <a>payment method
           identifier</a> of the <a>payment handler</a> the user is interacting
-          with:
+          with.
+        </p>
+        <p class="note" title=
+        "Privacy of information shared by paymentmethodchange event">
+          When the user selects or changes a payment method (e.g., a credit
+          card), the <a>PaymentMethodChangeEvent</a> will often contain address
+          information so that the merchant can perform tax calculations and
+          update the total.
         </p>
         <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
@@ -5299,6 +5306,13 @@
           "PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>
           member with a third-party <a>payment handler</a> without user
           consent.
+        </p>
+        <p>
+          Where sharing of privacy sensitive information might not be obvious
+          to users (e.g., <a data-lt=
+          "payment method changed algorithm">changing payment methods</a>), it
+          is RECOMMEDED that user agents inform user of exactly what
+          information is being shared with a merchant.
         </p>
       </section>
       <section>
