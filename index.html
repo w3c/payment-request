@@ -5295,7 +5295,7 @@
         <p data-link-for="PaymentRequest">
           The <a>canMakePayment()</a> method enables the payee to determine
           — before calling <a>show()</a> — whether the user agent knows of any <a>payment handlers</a> available to the user that support the  <a>payment methods</a> provided to the <a>PaymentRequest<a> <a data-lt="PaymentRequest.PaymentRequest()">constructor</a>.
-          advantage of the API. This enables the payee to fall back to a legacy
+         If no <a>payment handlers</a> support the <a>payment methods</a>, this enables the payee to fall back to a legacy
           checkout experience. Because this method shares some information with
           the payee, user agents are expected to protect the user from abuse of
           the method. For example, user agents may reduce user fingerprinting
