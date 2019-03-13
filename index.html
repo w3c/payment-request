@@ -231,9 +231,9 @@
           </p>
           <p>
             A <a>payment handler</a> that defines <a>steps for when a user
-            changes payment method</a> MUST redact the <a>address line</a>, 
-            <a>organization</a>, <a>phone number</a>, and <a>recipient</a>
-            from any <a>PaymentAddress</a> included in the 
+            changes payment method</a> MUST redact the <a>address line</a>,
+            <a>organization</a>, <a>phone number</a>, and <a>recipient</a> from
+            any <a>PaymentAddress</a> included in the
             <a>PaymentMethodChangeEvent</a>'s <a data-link-for=
             "PaymentMethodChangeEvent">methodDetails</a> attribute.
           </p>
@@ -4430,8 +4430,8 @@
           card), the <a>PaymentMethodChangeEvent</a> includes redacted billing
           address information for the purpose of performing tax calculations.
           Redacted attributes include, but are not limited to, <a>address
-          line</a>, <a>dependent locality</a>, <a>organization</a>,
-          <a>phone number</a>, and <a>recipient</a>.
+          line</a>, <a>dependent locality</a>, <a>organization</a>, <a>phone
+          number</a>, and <a>recipient</a>.
         </p>
         <ol class="algorithm">
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
@@ -5341,55 +5341,53 @@
           Merchant Validation
         </h2>
         <p data-link-for="MerchantValidationEvent">
-          A <a>payment handler</a> MUST NOT encode personally identifiable
-          information about a user into the <a>MerchantValidationEvent</a>'s
-          <a>validationURL</a> attribute.
+          It is important that the <a>validationURL</a> in a
+          <a>MerchantValidationEvent</a> does not expose personally identifying
+          information to unauthorized parties.
         </p>
       </section>
-        <h2 id="canmakepayment-protections">
-          <code>canMakePayment()</code> protections
-        </h2>
-        <p data-link-for="PaymentRequest">
-          The <a>canMakePayment()</a> method enables the payee to determine —
-          before calling <a>show()</a> — whether the user agent knows of any
-          <a>payment handlers</a> available to the user that support the
-          <a>payment methods</a> provided to the <a>PaymentRequest</a>
-          <a data-lt="PaymentRequest.PaymentRequest()">constructor</a>. If no
-          <a>payment handlers</a> support the <a>payment methods</a>, this
-          enables the payee to fall back to a legacy checkout experience.
-          Because this method shares some potentially unique information with
-          the payee, user agents are expected to protect the user from abuse of
-          the method. For example, user agents can reduce user fingerprinting
-          by:
-        </p>
-        <ul data-link-for="PaymentRequest">
-          <li>Allowing the user to configure the user agent to turn off
-          <a>canMakePayment()</a>, which would return <a>a promise rejected
-          with</a> a "<a>NotAllowedError</a>" <a>DOMException</a>.
-          </li>
-          <li>Rate-limiting the frequency of calls to <a>canMakePayment()</a>
-          with different parameters.
-          </li>
-        </ul>
-        <p>
-          For rate-limiting the user agent might look at repeated calls from:
-        </p>
-        <ul>
-          <li>the same effective top-level domain plus one (eTLD+1).
-          </li>
-          <li>the top-level browsing context. Alternatively, the user agent may
-          block access to the API entirely for origins know to be bad actors.
-          </li>
-          <li>the origin of an <a>iframe</a> or popup window.
-          </li>
-        </ul>
-        <p>
-          These rate-limiting techniques intend to increase the cost associated
-          with repeated calls, whether it is the cost of managing multiple
-          eTLDs or the user experience friction of opening multiple windows
-          (tabs or pop-ups).
-        </p>
-      </section>
+      <h2 id="canmakepayment-protections">
+        <code>canMakePayment()</code> protections
+      </h2>
+      <p data-link-for="PaymentRequest">
+        The <a>canMakePayment()</a> method enables the payee to determine —
+        before calling <a>show()</a> — whether the user agent knows of any
+        <a>payment handlers</a> available to the user that support the
+        <a>payment methods</a> provided to the <a>PaymentRequest</a>
+        <a data-lt="PaymentRequest.PaymentRequest()">constructor</a>. If no
+        <a>payment handlers</a> support the <a>payment methods</a>, this
+        enables the payee to fall back to a legacy checkout experience. Because
+        this method shares some potentially unique information with the payee,
+        user agents are expected to protect the user from abuse of the method.
+        For example, user agents can reduce user fingerprinting by:
+      </p>
+      <ul data-link-for="PaymentRequest">
+        <li>Allowing the user to configure the user agent to turn off
+        <a>canMakePayment()</a>, which would return <a>a promise rejected
+        with</a> a "<a>NotAllowedError</a>" <a>DOMException</a>.
+        </li>
+        <li>Rate-limiting the frequency of calls to <a>canMakePayment()</a>
+        with different parameters.
+        </li>
+      </ul>
+      <p>
+        For rate-limiting the user agent might look at repeated calls from:
+      </p>
+      <ul>
+        <li>the same effective top-level domain plus one (eTLD+1).
+        </li>
+        <li>the top-level browsing context. Alternatively, the user agent may
+        block access to the API entirely for origins know to be bad actors.
+        </li>
+        <li>the origin of an <a>iframe</a> or popup window.
+        </li>
+      </ul>
+      <p>
+        These rate-limiting techniques intend to increase the cost associated
+        with repeated calls, whether it is the cost of managing multiple eTLDs
+        or the user experience friction of opening multiple windows (tabs or
+        pop-ups).
+      </p>
     </section>
     <section class="informative">
       <h2>
