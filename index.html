@@ -5341,10 +5341,10 @@
           Merchant Validation
         </h2>
         <p data-link-for="MerchantValidationEvent">
-          A <a>payment handler</a> MUST NOT encode personally identifiable
-          information about a user into the <a>MerchantValidationEvent</a>'s
-          <a>validationURL</a> attribute.
-        </p>
+	  It is important that the <a>validationURL</a> in a
+	  <a>MerchantValidationEvent</a> does not expose personally
+	  identifying information to unauthorized parties.        
+	</p>
       </section>
         <h2 id="canmakepayment-protections">
           <code>canMakePayment()</code> protections
