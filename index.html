@@ -74,7 +74,7 @@
       doJsonLd: true,
       highlightVars: true,
       pluralize: true,
-      xrefs: true,
+      xref: true,
     };
     </script>
     <style>
@@ -86,7 +86,7 @@
     li { margin-top: 0.5em; margin-bottom: 0.5em;}
     </style>
   </head>
-  <body>
+  <body data-cite="html webidl INFRA URL ECMASCRIPT DOM PROMISES-GUIDE">
     <h1 id="title">
       Payment Request API
     </h1>
@@ -211,10 +211,9 @@
           <dfn>Steps to respond to a payment request</dfn>:
         </dt>
         <dd>
-          Steps that return an object or <a data-cite=
-          "WEBIDL#idl-dictionary">dictionary</a> that a merchant uses to
-          process or validate the transaction. The structure of this object is
-          specific to each <a>payment method</a>. For an example of such an
+          Steps that return an object or <a>dictionary</a> that a merchant uses
+          to process or validate the transaction. The structure of this object
+          is specific to each <a>payment method</a>. For an example of such an
           object, see the <code><a data-cite=
           "?payment-method-basic-card#dom-basiccardresponse">BasicCardResponse</a></code>
           dictionary of [[?payment-method-basic-card]].
@@ -226,8 +225,7 @@
           <p>
             Steps that describe how to handle the user changing payment method
             or monetary instrument (e.g., from a debit card to a credit card)
-            that results in a <a data-cite=
-            "WEBIDL#idl-dictionary">dictionary</a> or <a data-cite=
+            that results in a <a>dictionary</a> or <a data-cite=
             "WEBIDL#idl-object">object</a> or null.
           </p>
           <p>
@@ -589,7 +587,7 @@
           <a>PaymentResponse</a> provides a <a>toJSON()</a> method that
           serializes the object directly into JSON. This makes it trivial to
           POST the resulting JSON back to a server using the <a data-cite=
-          "fetch">Fetch API</a>:
+          "fetch"></a>:
         </p>
         <pre class="example js" title="POSTing with `fetch()`">
           async function doPaymentRequest() {
@@ -659,8 +657,7 @@
       </div>
       <p>
         A <var>request</var>'s <dfn>payment-relevant browsing context</dfn> is
-        that <a>PaymentRequest</a>'s <a data-cite=
-        "HTML#concept-relevant-global">relevant global object</a>'s browsing
+        that <a>PaymentRequest</a>'s <a>relevant global object</a>'s browsing
         context's <a>top-level browsing context</a>. Every <a>payment-relevant
         browsing context</a> has a <dfn>payment request is showing</dfn>
         boolean, which prevents showing more than one payment UI at a time.
@@ -692,11 +689,10 @@
           act as follows:
         </p>
         <ol data-link-for="PaymentDetailsBase" class="algorithm">
-          <li>If the <a>current settings object</a>'s <a data-cite=
-          "HTML#responsible-document">responsible document</a> is not
-          <a>allowed to use</a> the "<a data-lt="payment-feature">payment</a>"
-          feature, then <a>throw</a> a "<a>SecurityError</a>"
-          <a>DOMException</a>.
+          <li>If the <a>current settings object</a>'s <a>responsible
+          document</a> is not <a>allowed to use</a> the "<a data-lt=
+          "payment-feature">payment</a>" feature, then <a>throw</a> a
+          "<a>SecurityError</a>" <a>DOMException</a>.
           </li>
           <li>Establish the request's id:
             <ol>
@@ -753,7 +749,7 @@
                           specification that defines the
                           <var>paymentMethod</var>.<a>supportedMethods</a>
                           (e.g., a <a data-cite=
-                          "payment-method-basic-card#dom-basiccardrequest">BasicCardRequest</a>
+                          "?payment-method-basic-card#dom-basiccardrequest">BasicCardRequest</a>
                           in the case of [[?payment-method-basic-card]]).
                           Rethrow any exceptions.
                         </p>
@@ -801,8 +797,8 @@
           "PaymentOptions.requestShipping">requestShipping</a> member of <var>
             options</var> is present and set to true, process shipping options:
             <ol>
-              <li>Let <var>options</var> be an empty <code><a data-cite=
-              "WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
+              <li>Let <var>options</var> be an empty
+              <code><a>sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
               </li>
               <li>If the <a>shippingOptions</a> member of <var>details</var> is
               present, then:
@@ -847,8 +843,8 @@
           <li data-link-for="PaymentDetailsBase">Process payment details
           modifiers:
             <ol>
-              <li>Let <var>modifiers</var> be an empty <code><a data-cite=
-              "WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentDetailsModifier</a>&gt;.
+              <li>Let <var>modifiers</var> be an empty
+              <code><a>sequence</a></code>&lt;<a>PaymentDetailsModifier</a>&gt;.
               </li>
               <li>If the <a>modifiers</a> member of <var>details</var> is
               present, then:
@@ -996,14 +992,12 @@
           </li>
           <li>Let <var>request</var> be the <a>context object</a>.
           </li>
-          <li>Let <var>document</var> be <var>request</var>'s <a data-cite=
-          "HTML#concept-relevant-global">relevant global object</a>'s
-          <a data-cite="HTML#concept-document-window">associated Document</a>.
+          <li>Let <var>document</var> be <var>request</var>'s <a>relevant
+          global object</a>'s <a>associated Document</a>.
           </li>
           <li data-tests="rejects_if_not_active.https.html">If
-          <var>document</var> is not <a data-cite="HTML#fully-active">fully
-          active</a>, then return <a>a promise rejected with</a> an
-          "<a>AbortError</a>" <a>DOMException</a>.
+          <var>document</var> is not <a>fully active</a>, then return <a>a
+          promise rejected with</a> an "<a>AbortError</a>" <a>DOMException</a>.
           </li>
           <li>
             <p>
@@ -1076,15 +1070,12 @@
               in the <var>paymentMethod</var> tuple.
               </li>
               <li>If required by the specification that defines the
-              <var>identifier</var>, then <a data-cite=
-              "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
-              <var>data</var> to an IDL value of the type specified there.
-              Otherwise, <a data-cite=
-              "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
-              <a data-cite="WEBIDL#idl-object">object</a>.
+              <var>identifier</var>, then <a>convert</a> <var>data</var> to an
+              IDL value of the type specified there. Otherwise, <a>convert</a>
+              to <a data-cite="WEBIDL#idl-object">object</a>.
               </li>
-              <li>If conversion results in an <a data-cite=
-              "WEBIDL#dfn-exception">exception</a> <var>error</var>:
+              <li>If conversion results in an <a>exception</a>
+              <var>error</var>:
                 <ol>
                   <li>Set <var>request</var>.<a>[[\state]]</a> to
                   "<a>closed</a>".
@@ -1175,15 +1166,14 @@
           </li>
           <li>
             <p>
-              Pass the <a data-cite=
-              "WEBIDL#dfn-convert-ecmascript-to-idl-value">converted</a> second
-              element in the <var>paymentMethod</var> tuple and
-              <var>modifiers</var>. Optionally, the user agent SHOULD send the
-              appropriate data from <var>request</var> to the user-selected
-              <a>payment handler</a> in order to guide the user through the
-              payment process. This includes the various attributes and other
-              internal slots of <var>request</var> (some MAY be excluded for
-              privacy reasons where appropriate).
+              Pass the <a data-lt="convert">converted</a> second element in the
+              <var>paymentMethod</var> tuple and <var>modifiers</var>.
+              Optionally, the user agent SHOULD send the appropriate data from
+              <var>request</var> to the user-selected <a>payment handler</a> in
+              order to guide the user through the payment process. This
+              includes the various attributes and other internal slots of
+              <var>request</var> (some MAY be excluded for privacy reasons
+              where appropriate).
             </p>
             <p>
               Handling of multiple applicable modifiers in the
@@ -1198,9 +1188,8 @@
             <aside class="example" title=
             "Handling of multiple applicable modifiers">
               <p>
-                This example uses the <a data-cite=
-                "payment-method-basic-card">Basic-Card</a> payment method to
-                demonstrate precedence order of
+                This example uses the "basic-card" payment method to from
+                [[?payment-method-basic-card]] demonstrate precedence order of
                 <a>[[\serializedModifierData]]</a>. The first modifier applies
                 equally to all cards, irrespective of network. The second
                 modifier applies specifically to cards on the "visa" network.
@@ -1268,10 +1257,9 @@
               are triggered through interaction with the user interface.
             </p>
             <p data-tests="rejects_if_not_active.https.html">
-              If <var>document</var> stops being <a data-cite=
-              "HTML#fully-active">fully active</a> while the user interface is
-              being shown, or no longer is by the time this step is reached,
-              then:
+              If <var>document</var> stops being <a>fully active</a> while the
+              user interface is being shown, or no longer is by the time this
+              step is reached, then:
             </p>
             <ol>
               <li>Close down the user interface.
@@ -1761,9 +1749,9 @@
           Validity checkers
         </h3>
         <p>
-          A <dfn data-cite="INFRA#javascript-string">JavaScript string</dfn> is
-          a <dfn>valid decimal monetary value</dfn> if it consists of the
-          following <a>code points</a> in the given order:
+          A <dfn>JavaScript string</dfn> is a <dfn>valid decimal monetary
+          value</dfn> if it consists of the following <a>code points</a> in the
+          given order:
         </p>
         <ol>
           <li>Optionally, a single U+002D (-), to indicate that the amount is
@@ -1796,9 +1784,8 @@
           monetary value</a>, throw a <a>TypeError</a>, optionally informing
           the developer that the currency is invalid.
           </li>
-          <li>Set <var>amount</var>.<a>currency</a> to the result of
-          <a data-cite="INFRA#ascii-uppercase">ASCII uppercasing</a>
-          <var>amount</var>.<a>currency</a>.
+          <li>Set <var>amount</var>.<a>currency</a> to the result of <a>ASCII
+          uppercasing</a> <var>amount</var>.<a>currency</a>.
           </li>
         </ol>
         <p>
@@ -2404,8 +2391,8 @@
               <ol>
                 <li>Set <var>country</var> the result of <a>strip leading and
                 trailing ASCII whitespace</a> from
-                <var>details</var>["<a>country</a>"] and performing
-                <a data-cite="INFRA#ascii-uppercase">ASCII uppercasing</a>.
+                <var>details</var>["<a>country</a>"] and performing <a>ASCII
+                uppercasing</a>.
                 </li>
                 <li>If <var>country</var> is not a valid [[ISO3166-1]] alpha-2
                 code, throw a <a>RangeError</a> exception.
@@ -2481,8 +2468,7 @@
             <dfn>toJSON()</dfn> method
           </h2>
           <p>
-            When called, runs [[WEBIDL]]'s <a data-cite=
-            "WEBIDL#default-tojson-operation">default toJSON operation</a>.
+            When called, runs [[WEBIDL]]'s <a>default toJSON operation</a>.
           </p>
         </section>
         <section>
@@ -3161,15 +3147,13 @@
           <li>Let <var>request</var> be
           <var>response</var>.<a>[[\request]]</a>.
           </li>
-          <li>Let <var>document</var> be <var>request</var>'s <a data-cite=
-          "HTML#concept-relevant-global">relevant global object</a>'s
-          <a data-cite="HTML#concept-document-window">associated Document</a>.
+          <li>Let <var>document</var> be <var>request</var>'s <a>relevant
+          global object</a>'s <a>associated Document</a>.
           </li>
           <li data-tests=
           "payment-response/rejects_if_not_active-manual.https.html">If
-          <var>document</var> is not <a data-cite="HTML#fully-active">fully
-          active</a>, then return <a>a promise rejected with</a> an
-          "<a>AbortError</a>" <a>DOMException</a>.
+          <var>document</var> is not <a>fully active</a>, then return <a>a
+          promise rejected with</a> an "<a>AbortError</a>" <a>DOMException</a>.
           </li>
           <li>If <var>response</var>.<a>[[\complete]]</a> is true, return <a>a
           promise rejected with</a> an "<a>InvalidStateError</a>"
@@ -3224,18 +3208,15 @@
               "PaymentValidationErrors/retry-shows-error-member-manual.https.html">
               If <var>errorFields</var>["<a>paymentMethod</a>] member was
               passed, and if required by the specification that defines
-              <var>response</var>'s <a>payment method</a>, then <a data-cite=
-              "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a>
+              <var>response</var>'s <a>payment method</a>, then <a>convert</a>
               <var>errorFields</var>'s <a>paymentMethod</a> member to an IDL
-              value of the type specified there. Otherwise, <a data-cite=
-              "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> to
+              value of the type specified there. Otherwise, <a>convert</a> to
               <a data-cite="WEBIDL#idl-object">object</a>.
               </li>
               <li>Set <var>request</var>'s <a>payment-relevant browsing
               context</a>'s <a>payment request is showing</a> boolean to false.
               </li>
-              <li>If conversion results in a <a data-cite=
-              "WEBIDL#dfn-exception">exception</a> <var>error</var>:
+              <li>If conversion results in a <a>exception</a> <var>error</var>:
                 <ol>
                   <li>Reject <var>retryPromise</var> with <var>error</var>.
                   </li>
@@ -3267,9 +3248,9 @@
           </li>
           <li data-tests=
           "payment-response/rejects_if_not_active-manual.https.html">If
-          <var>document</var> stops being <a data-cite=
-          "HTML#fully-active">fully active</a> while the user interface is
-          being shown, or no longer is by the time this step is reached, then:
+          <var>document</var> stops being <a>fully active</a> while the user
+          interface is being shown, or no longer is by the time this step is
+          reached, then:
             <ol>
               <li>Close down the user interface.
               </li>
@@ -3404,8 +3385,7 @@
           <dfn>toJSON()</dfn> method
         </h2>
         <p>
-          When called, runs [[WEBIDL]]'s <a data-cite=
-          "WEBIDL#default-tojson-operation">default toJSON operation</a>.
+          When called, runs [[WEBIDL]]'s <a>default toJSON operation</a>.
         </p>
       </section>
       <section>
@@ -3423,22 +3403,21 @@
           <dfn>details</dfn> attribute
         </h2>
         <p>
-          An <a data-cite="WEBIDL#idl-object">object</a> or <a data-cite=
-          "WEBIDL#idl-dictionary">dictionary</a> generated by a <a>payment
-          method</a> that a merchant can use to process or validate a
-          transaction (depending on the <a>payment method</a>).
+          An <a data-cite="WEBIDL#idl-object">object</a> or <a>dictionary</a>
+          generated by a <a>payment method</a> that a merchant can use to
+          process or validate a transaction (depending on the <a>payment
+          method</a>).
         </p>
         <aside class="note">
           <p>
             Each <a data-cite=
             "payment-method-id#standardized-payment-method-identifiers">standardized
             payment method identifier</a>, such as <a data-cite=
-            "?payment-method-basic-card">Basic Card</a> ("basic-card"), defines
-            its own unique <a data-cite="WEBIDL#idl-dictionary">IDL
-            dictionary</a> for use with the <a>details</a> attribute. The shape
-            of this data (i.e., its members and their corresponding types and
-            formats) differs depending on which standardized payment method
-            identifier is selected by the end user.
+            "?payment-method-basic-card"></a> ("basic-card"), defines its own
+            unique IDL <a>dictionary</a> for use with the <a>details</a>
+            attribute. The shape of this data (i.e., its members and their
+            corresponding types and formats) differs depending on which
+            standardized payment method identifier is selected by the end user.
           </p>
           <p>
             Similarly, a <a data-cite=
@@ -3579,9 +3558,9 @@
           <li>Return <var>promise</var> and perform the remaining steps <a>in
           parallel</a>.
           </li>
-          <li>If <var>document</var> stops being <a data-cite=
-          "HTML#fully-active">fully active</a> while the user interface is
-          being shown, or no longer is by the time this step is reached, then:
+          <li>If <var>document</var> stops being <a>fully active</a> while the
+          user interface is being shown, or no longer is by the time this step
+          is reached, then:
             <ol>
               <li>Close down the user interface.
               </li>
@@ -3674,36 +3653,32 @@
         payment request API, the <a>allowpaymentrequest</a> attribute can be
         specified on the <a>iframe</a> element. See <a href=
         "#feature-policy"></a> for details of how <a>allowpaymentrequest</a>
-        and <a data-cite="feature-policy">Feature Policy</a> interact.
+        and <a data-cite="feature-policy"></a> interact.
       </p>
     </section>
-    <section id="feature-policy">
+    <section id="feature-policy" data-cite="feature-policy">
       <h2>
         Feature Policy integration
       </h2>
       <p>
         This specification defines a policy-controlled feature identified by
         the string "<code><dfn data-lt="payment-feature" data-nodefault=
-        "">payment</dfn></code>". Its <a data-cite=
-        "feature-policy#default-allowlist">default allowlist</a> is
+        "">payment</dfn></code>". Its <a>default allowlist</a> is
         '<code>self</code>'.
       </p>
       <div class="note">
         <p>
           A <a data-cite="html#concept-document">document</a>’s <a data-cite=
-          "html/multipage/dom.html#concept-document-feature-policy">feature
-          policy</a> determines whether any content in that document is allowed
-          to construct <a>PaymentRequest</a> instances. If disabled in any
-          document, no content in the document will be <a>allowed to use</a>
-          the <a>PaymentRequest</a> constructor (trying to create an instance
-          will throw).
+          "html">feature policy</a> determines whether any content in that
+          document is allowed to construct <a>PaymentRequest</a> instances. If
+          disabled in any document, no content in the document will be
+          <a>allowed to use</a> the <a>PaymentRequest</a> constructor (trying
+          to create an instance will throw).
         </p>
         <p>
           The <a>allowpaymentrequest</a> attribute of the HTML <a>iframe</a>
-          element affects the <a data-cite=
-          "feature-policy#container-policy">container policy</a> for any
-          document nested in that iframe. Unless overridden by the
-          <code><a data-cite=
+          element affects the <a>container policy</a> for any document nested
+          in that iframe. Unless overridden by the <code><a data-cite=
           "html/multipage/iframe-embed-object.html#attr-iframe-allow">allow</a></code>
           attribute, setting <a>allowpaymentrequest</a> on an iframe is
           equivalent to <code>&lt;iframe allow="fullscreen *"&gt;</code>, as
@@ -3843,22 +3818,18 @@
           </h3>
           <p data-tests=
           "MerchantValidationEvent/constructor.https.html, MerchantValidationEvent/constructor.http.html">
-            The <a data-cite="dom#concept-event-constructor-ext">event
-            constructing steps</a>, which take a <a>MerchantValidationEvent</a>
-            <var>event</var>, are as follows:
+            The <a>event constructing steps</a>, which take a
+            <a>MerchantValidationEvent</a> <var>event</var>, are as follows:
           </p>
           <ol class="algorithm">
-            <li>Let <var>base</var> be the <a data-cite=
-            "dom#context-object">event</a>’s <a data-cite=
-            "html/multipage/webappapis.html#relevant-settings-object">relevant
-            settings object</a>’s <a data-cite=
-            "html/multipage/webappapis.html#api-base-url">API base URL</a>.
+            <li>Let <var>base</var> be the <a data-lt=
+            "context object">event</a>’s <a>relevant settings object</a>’s <a>
+              API base URL</a>.
             </li>
             <li data-link-for="MerchantValidationEventInit">Let
-            <var>validationURL</var> be the result of <a data-cite=
-            "url#concept-url-parser">URL parsing</a>
-            <var>eventInitDict</var>["<a>validationURL</a>"] and
-            <var>base</var>.
+            <var>validationURL</var> be the result of <a data-lt="URL parser">
+              URL parsing</a> <var>eventInitDict</var>["<a>validationURL</a>"]
+              and <var>base</var>.
             </li>
             <li>If <var>validationURL</var> is failure, throw a
             <a>TypeError</a>.
@@ -3887,9 +3858,9 @@
             <dfn>validationURL</dfn> attribute
           </h3>
           <p>
-            A <a data-cite="url#concept-url">URL</a> from which a developer can
-            fetch <a>payment handler</a>-specific verification data. By then
-            passing that data (or a promise that resolves with that data) to
+            A <a data-cite="url">URL</a> from which a developer can fetch
+            <a>payment handler</a>-specific verification data. By then passing
+            that data (or a promise that resolves with that data) to
             <a>complete()</a>, the user agent can verify that the payment
             request is from an authorized merchant.
           </p>
@@ -4293,7 +4264,7 @@
           <li>
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
-            <ol data-link-for="MerchantValidationEventInit">
+            <ol data-link-for="MerchantValidationEventInit" data-cite="dom">
               <li>Assert: <var>request</var>.<a>[[\updating]]</a> is false.
               </li>
               <li>Assert: <var>request</var>.<a>[[\state]]</a> is
@@ -4308,18 +4279,15 @@
               <li>Set <var>eventInitDict</var>["<a>methodName</a>"] to
               <var>methodName</var>.
               </li>
-              <li>Let <var>event</var> be the result of <a data-cite=
-              "dom#concept-event-constructor">constructing</a> a
-              <a>MerchantValidationEvent</a> with "<a>merchantvalidation</a>"
-              and <var>eventInitDict</var>.
+              <li>Let <var>event</var> be the result of <a data-lt=
+              "constructor">constructing</a> a <a>MerchantValidationEvent</a>
+              with "<a>merchantvalidation</a>" and <var>eventInitDict</var>.
               </li>
-              <li>Initialize <var>event</var>’s <a data-cite=
-              "dom#dom-event-istrusted"><code>isTrusted</code></a> attribute to
-              true.
+              <li>Initialize <var>event</var>’s <a><code>isTrusted</code></a>
+              attribute to true.
               </li>
               <li>
-                <a data-cite="dom#concept-event-dispatch">Dispatch</a>
-                <var>event</var> to <var>request</var>.
+                <a>Dispatch</a> <var>event</var> to <var>request</var>.
               </li>
             </ol>
           </li>
@@ -4415,15 +4383,14 @@
         <h2>
           Payment method changed algorithm
         </h2>
-        <p>
+        <p data-cite="WEBIDL">
           A <a>payment handler</a> MAY run the <dfn>payment method changed
           algorithm</dfn> when the user changes <a>payment method</a> with
-          <var>methodDetails</var>, which is a <a data-cite=
-          "WEBIDL#idl-dictionary">dictionary</a> or an <a data-cite=
-          "WEBIDL#idl-object">object</a> or null, and a <var>methodName</var>,
-          which is a DOMString that represents the <a>payment method
-          identifier</a> of the <a>payment handler</a> the user is interacting
-          with.
+          <var>methodDetails</var>, which is a <a>dictionary</a> or an
+          <a data-cite="WEBIDL#idl-object">object</a> or null, and a
+          <var>methodName</var>, which is a DOMString that represents the
+          <a>payment method identifier</a> of the <a>payment handler</a> the
+          user is interacting with.
         </p>
         <p class="note" title=
         "Privacy of information shared by paymentmethodchange event">
@@ -4484,8 +4451,7 @@
           "DOM#dom-event-type">type</a></code> attribute to <var>name</var>.
           </li>
           <li>
-            <a data-cite="DOM#concept-event-dispatch">Dispatch</a>
-            <var>event</var> at <var>request</var>.
+            <a>Dispatch</a> <var>event</var> at <var>request</var>.
           </li>
           <li data-link-for="PaymentRequestUpdateEvent">If
           <var>event</var>.<a>[[\waitForUpdate]]</a> is true, disable any part
@@ -4560,8 +4526,7 @@
               "<a>payerdetailchange</a>".
               </li>
               <li>
-                <a data-cite="DOM#concept-event-dispatch">Dispatch</a>
-                <var>event</var> at <var>response</var>.
+                <a>Dispatch</a> <var>event</var> at <var>response</var>.
               </li>
               <li data-link-for="PaymentRequestUpdateEvent">If
               <var>event</var>.<a>[[\waitForUpdate]]</a> is true, disable any
@@ -4803,18 +4768,17 @@
             <a>Upon fulfillment</a> of <var>detailsPromise</var> with value
             <var>value</var>:
             <ol data-link-for="PaymentDetailsBase">
-              <li>Let <var>details</var> be the result of <a data-cite=
-              "WEBIDL#es-dictionary">converting</a> <var>value</var> to a
-              <a>PaymentDetailsUpdate</a> dictionary. If this <a>throws</a> an
-              exception, <a>abort the update</a> with <var>request</var> and
-              with the thrown exception.
+              <li>Let <var>details</var> be the result of <a>converting</a>
+              <var>value</var> to a <a>PaymentDetailsUpdate</a> dictionary. If
+              this <a>throws</a> an exception, <a>abort the update</a> with
+              <var>request</var> and with the thrown exception.
               </li>
               <li>Let <var>serializedModifierData</var> be an empty list.
               </li>
               <li>Let <var>selectedShippingOption</var> be null.
               </li>
               <li>Let <var>shippingOptions</var> be an empty
-                <code><a data-cite="WEBIDL#idl-sequence">sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
+              <code><a>sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
               </li>
               <li>Validate and canonicalize the details:
                 <ol>
@@ -4967,12 +4931,12 @@
                 <ol>
                   <li>If required by the specification that defines the
                   <var>pmi</var>, then <a data-cite=
-                  "!WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> <a>
+                  "WEBIDL#dfn-convert-ecmascript-to-idl-value">convert</a> <a>
                     paymentMethodErrors</a> to an IDL value.
                   </li>
-                  <li>If conversion results in a <a data-cite=
-                  "!WEBIDL#dfn-exception">exception</a> <var>error</var>,
-                  <a>abort the update</a> with <var>error</var>.
+                  <li>If conversion results in a <a>exception</a>
+                  <var>error</var>, <a>abort the update</a> with
+                  <var>error</var>.
                   </li>
                   <li>The <a>payment handler</a> SHOULD display an error for
                   each relevant erroneous field of <a>paymentMethodErrors</a>.
@@ -5095,8 +5059,7 @@
           </h2>
           <p>
             To <dfn>abort the update</dfn> with a <a>PaymentRequest</a>
-            <var>request</var> and <a data-cite=
-            "WEBIDL#dfn-exception">exception</a> <var>exception</var>:
+            <var>request</var> and <a>exception</a> <var>exception</var>:
           </p>
           <ol class="algorithm">
             <li>Optionally, show an error message to the user when letting them
@@ -5211,8 +5174,8 @@
               </li>
               <li>If <var>opaqueData</var> is invalid, as per the validation
               rules of the <a>payment handler</a>, <a>abort the update</a> with
-              <var>request</var> and an appropriate <a data-cite=
-              "webidl#dfn-exception">exception</a> and return.
+              <var>request</var> and an appropriate <a>exception</a> and
+              return.
               </li>
               <li>Otherwise, set <var>request</var>.<a>[[\updating]]</a> to
               false.
@@ -5424,9 +5387,10 @@
         <dd>
           The [[INFRA]] specification defines how to <dfn data-cite=
           "INFRA#strip-leading-and-trailing-ascii-whitespace">strip leading and
-          trailing ascii whitespace</dfn>. It also defines the concept of a
-          <dfn data-cite="INFRA#list">list</dfn> and <dfn data-cite=
-          "INFRA#code-point">code point</dfn>.
+          trailing ascii whitespace</dfn> and <dfn data-cite=
+          "INFRA#ascii-uppercase">ASCII uppercasing</dfn>. It also defines the
+          concept of a <dfn data-cite="INFRA#list">list</dfn> and
+          <dfn data-cite="INFRA#code-point">code point</dfn>.
         </dd>
         <dt>
           Payment Method Identifiers
