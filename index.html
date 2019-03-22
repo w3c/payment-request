@@ -86,7 +86,7 @@
     li { margin-top: 0.5em; margin-bottom: 0.5em;}
     </style>
   </head>
-  <body data-cite="html webidl INFRA URL ECMASCRIPT DOM PROMISES-GUIDE">
+  <body data-cite="html webidl INFRA URL DOM">
     <h1 id="title">
       Payment Request API
     </h1>
@@ -993,7 +993,7 @@
           <li>Let <var>request</var> be the <a>context object</a>.
           </li>
           <li>Let <var>document</var> be <var>request</var>'s <a>relevant
-          global object</a>'s <a>associated Document</a>.
+          global object</a>'s <a>associated <code>Document</code></a>.
           </li>
           <li data-tests="rejects_if_not_active.https.html">If
           <var>document</var> is not <a>fully active</a>, then return <a>a
@@ -1126,7 +1126,7 @@
           preference of the user when presenting payment methods. It is
           RECOMMENDED that the language of the user interface match the
           <a data-cite="HTML#language">language</a> of <a data-cite=
-          "HTML#the-body-element-2">the body element</a>.
+          "HTML/multipage/dom.html#the-body-element-2">the body element</a>.
           </li>
           <li data-tests=
           "show-method-optional-promise-rejects-manual.https.html, show-method-optional-promise-resolves-manual.https.html">
@@ -1750,18 +1750,19 @@
         </h3>
         <p>
           A <dfn>JavaScript string</dfn> is a <dfn>valid decimal monetary
-          value</dfn> if it consists of the following <a>code points</a> in the
-          given order:
+          value</dfn> if it consists of the following <a data-lt=
+          "code point">code points</a> in the given order:
         </p>
         <ol>
           <li>Optionally, a single U+002D (-), to indicate that the amount is
           negative.
           </li>
-          <li>One or more <a>code points</a> in the range U+0030 (0) to U+0039
-          (9).
+          <li>One or more <a data-lt="code point">code points</a> in the range
+          U+0030 (0) to U+0039 (9).
           </li>
-          <li>Optionally, a single U+002E (.) followed by one or more <a>code
-          points</a> in the range U+0030 (0) to U+0039 (9).
+          <li>Optionally, a single U+002E (.) followed by one or more
+          <a data-lt="code point">code points</a> in the range U+0030 (0) to
+          U+0039 (9).
           </li>
         </ol>
         <div class="note">
@@ -1785,7 +1786,7 @@
           the developer that the currency is invalid.
           </li>
           <li>Set <var>amount</var>.<a>currency</a> to the result of <a>ASCII
-          uppercasing</a> <var>amount</var>.<a>currency</a>.
+          uppercase</a> <var>amount</var>.<a>currency</a>.
           </li>
         </ol>
         <p>
@@ -2392,7 +2393,7 @@
                 <li>Set <var>country</var> the result of <a>strip leading and
                 trailing ASCII whitespace</a> from
                 <var>details</var>["<a>country</a>"] and performing <a>ASCII
-                uppercasing</a>.
+                uppercase</a>.
                 </li>
                 <li>If <var>country</var> is not a valid [[ISO3166-1]] alpha-2
                 code, throw a <a>RangeError</a> exception.
@@ -3668,18 +3669,18 @@
       </p>
       <div class="note">
         <p>
-          A <a data-cite="html#concept-document">document</a>’s <a data-cite=
-          "html">feature policy</a> determines whether any content in that
-          document is allowed to construct <a>PaymentRequest</a> instances. If
-          disabled in any document, no content in the document will be
-          <a>allowed to use</a> the <a>PaymentRequest</a> constructor (trying
-          to create an instance will throw).
+          A <a data-cite="dom">document</a>’s <a data-cite="html">feature
+          policy</a> determines whether any content in that document is allowed
+          to construct <a>PaymentRequest</a> instances. If disabled in any
+          document, no content in the document will be <a>allowed to use</a>
+          the <a>PaymentRequest</a> constructor (trying to create an instance
+          will throw).
         </p>
         <p>
           The <a>allowpaymentrequest</a> attribute of the HTML <a>iframe</a>
           element affects the <a>container policy</a> for any document nested
           in that iframe. Unless overridden by the <code><a data-cite=
-          "html/multipage/iframe-embed-object.html#attr-iframe-allow">allow</a></code>
+          "html/iframe-embed-object.html#attr-iframe-allow">allow</a></code>
           attribute, setting <a>allowpaymentrequest</a> on an iframe is
           equivalent to <code>&lt;iframe allow="fullscreen *"&gt;</code>, as
           described in <a data-cite=
@@ -3858,11 +3859,11 @@
             <dfn>validationURL</dfn> attribute
           </h3>
           <p>
-            A <a data-cite="url">URL</a> from which a developer can fetch
-            <a>payment handler</a>-specific verification data. By then passing
-            that data (or a promise that resolves with that data) to
-            <a>complete()</a>, the user agent can verify that the payment
-            request is from an authorized merchant.
+            A <a>URL</a> from which a developer can fetch <a>payment
+            handler</a>-specific verification data. By then passing that data
+            (or a promise that resolves with that data) to <a>complete()</a>,
+            the user agent can verify that the payment request is from an
+            authorized merchant.
           </p>
           <p>
             When getting, returns the value it was <a data-cite=
@@ -4252,10 +4253,9 @@
           <li>Let <var>request</var> be the <a>PaymentRequest</a> object that
           the user is interacting with.
           </li>
-          <li>Let <var>validationURL</var> be a <a data-cite=
-          "url#absolute-url-string">absolute URL string</a> from which a
-          developer can fetch <a>payment handler</a>-specific verification
-          data.
+          <li>Let <var>validationURL</var> be a <a>absolute-URL string</a> from
+          which a developer can fetch <a>payment handler</a>-specific
+          verification data.
           </li>
           <li>Let <var>methodName</var> be the <a>payment method identifier</a>
           for the <a>payment handler</a> that is requiring <a>merchant
@@ -4264,7 +4264,7 @@
           <li>
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
-            <ol data-link-for="MerchantValidationEventInit" data-cite="dom">
+            <ol data-link-for="MerchantValidationEventInit">
               <li>Assert: <var>request</var>.<a>[[\updating]]</a> is false.
               </li>
               <li>Assert: <var>request</var>.<a>[[\state]]</a> is
@@ -4443,9 +4443,8 @@
           <li>Assert: <var>request</var>.<a>[[\state]]</a> is
           "<a>interactive</a>".
           </li>
-          <li>Let <var>event</var> be the result of <a data-cite=
-          "DOM#concept-event-create">creating an event</a> using the
-          <a>PaymentRequestUpdateEvent</a> interface.
+          <li>Let <var>event</var> be the result of <a>creating an event</a>
+          using the <a>PaymentRequestUpdateEvent</a> interface.
           </li>
           <li>Initialize <var>event</var>'s <code><a data-cite=
           "DOM#dom-event-type">type</a></code> attribute to <var>name</var>.
@@ -4517,9 +4516,8 @@
                   </li>
                 </ol>
               </li>
-              <li>Let <var>event</var> be the result of <a data-cite=
-              "DOM#concept-event-create">creating an event</a> using
-              <a>PaymentRequestUpdateEvent</a>.
+              <li>Let <var>event</var> be the result of <a>creating an
+              event</a> using <a>PaymentRequestUpdateEvent</a>.
               </li>
               <li>Initialize <var>event</var>'s <code><a data-cite=
               "DOM#dom-event-type">type</a></code> attribute to
@@ -5384,14 +5382,7 @@
         <dt>
           Infra
         </dt>
-        <dd>
-          The [[INFRA]] specification defines how to <dfn data-cite=
-          "INFRA#strip-leading-and-trailing-ascii-whitespace">strip leading and
-          trailing ascii whitespace</dfn> and <dfn data-cite=
-          "INFRA#ascii-uppercase">ASCII uppercasing</dfn>. It also defines the
-          concept of a <dfn data-cite="INFRA#list">list</dfn> and
-          <dfn data-cite="INFRA#code-point">code point</dfn>.
-        </dd>
+        <dd></dd>
         <dt>
           Payment Method Identifiers
         </dt>
@@ -5406,20 +5397,8 @@
         <dd>
           The following are defined by [[HTML]]: <code><dfn data-cite=
           "HTML/webappapis.html#eventhandler">EventHandler</dfn></code>,
-          <dfn data-cite="HTML/webappapis.html#queue-a-task">queue a
-          task</dfn>, <dfn data-cite=
-          "HTML/webappapis.html#user-interaction-task-source">user interaction
-          task source</dfn>, <dfn data-cite=
-          "HTML/webappapis.html#top-level-browsing-context">top-level browsing
-          context</dfn>, <dfn data-cite=
-          "HTML/webappapis.html#current-settings-object">current settings
-          object</dfn>, <dfn data-cite=
-          "HTML/iframe-embed-object.html#allowed-to-use">allowed to use</dfn>,
-          <dfn data-cite=
-          "HTML/interaction.html#triggered-by-user-activation">triggered by
-          user activation</dfn>, <dfn data-cite=
-          "HTML/infrastructure.html#in-parallel">in parallel</dfn>, the
-          <code><dfn data-cite=
+          <dfn data-cite="HTML/iframe-embed-object.html#allowed-to-use">allowed
+          to use</dfn>, the <code><dfn data-cite=
           "HTML/iframe-embed-object.html#the-iframe-element">iframe</dfn></code>
           element, and the <code><dfn data-cite=
           "HTML/iframe-embed-object.html#attr-iframe-allowpaymentrequest">allowpaymentrequest</dfn></code>
@@ -5468,14 +5447,9 @@
           the <code><dfn data-cite=
           "DOM#interface-eventtarget">EventTarget</dfn></code> interface, the
           <code><dfn data-cite="DOM#dictdef-eventinit">EventInit</dfn></code>
-          dictionary, and the terms <dfn data-cite=
-          "DOM#concept-event-fire">fire an event</dfn>, <dfn data-cite=
-          "DOM#dispatch-flag">dispatch flag</dfn>, <dfn data-cite=
-          "DOM#stop-propagation-flag">stop propagation flag</dfn>,
-          <code><dfn data-cite="DOM#dom-event-istrusted">isTrusted</dfn></code>
-          attribute, <dfn data-cite="DOM#context-object">context object</dfn>,
-          and <dfn data-cite="DOM#stop-immediate-propagation-flag">stop
-          immediate propagation flag</dfn> are defined by [[DOM]].
+          dictionary, <code><dfn data-cite=
+          "DOM#dom-event-istrusted">isTrusted</dfn></code> attribute, are
+          defined by [[DOM]].
         </dd>
         <dt>
           Web IDL
