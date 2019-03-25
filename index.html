@@ -228,14 +228,6 @@
             that results in a <a>dictionary</a> or <a data-cite=
             "WEBIDL#idl-object">object</a> or null.
           </p>
-          <p>
-            A <a>payment handler</a> that defines <a>steps for when a user
-            changes payment method</a> MUST redact the <a>address line</a>,
-            <a>organization</a>, <a>phone number</a>, and <a>recipient</a> from
-            any <a>PaymentAddress</a> included in the
-            <a>PaymentMethodChangeEvent</a>'s <a data-link-for=
-            "PaymentMethodChangeEvent">methodDetails</a> attribute.
-          </p>
         </dd>
       </dl>
       <p>
@@ -2147,14 +2139,15 @@
           <dfn>requestBillingAddress</dfn> member
         </dt>
         <dd data-link-for="PaymentMethodChangeEvent">
-          A boolean that instructs the <a>user agent</a> to get the billing
-          address associated with a <a>payment method</a> (e.g., the billing
-          address associated with a credit card). Typically, the user agent
-          will return the billing address as part of the
-          <a>PaymentMethodChangeEvent</a>'s <a>methodDetails</a>, albeit
-          possibly with parts of the address redacted for privacy reasons. A
+          A boolean that indicates whether the <a>user agent</a> SHOULD collect
+          and return the billing address associated with a <a>payment
+          method</a> (e.g., the billing address associated with a credit card).
+          Typically, the user agent will return the billing address as part of
+          the <a>PaymentMethodChangeEvent</a>'s <a>methodDetails</a>. A
           merchant can use this information to, for example, calculate tax in
-          certain jurisdictions.
+          certain jurisdictions and update the displayed total. See below for
+          privacy considerations regarding <a href="#user-info">exposing user
+          information</a>.
         </dd>
         <dt>
           <dfn>requestPayerName</dfn> member
@@ -5270,20 +5263,12 @@
         </p>
       </section>
       <section>
-        <h2>
+        <h2 id="user-info">
           Exposing user information
         </h2>
         <p>
           The <a>user agent</a> MUST NOT share information about the user with
           a developer (e.g., the shipping address) without user consent.
-        </p>
-        <p>
-          One way that the API supports limited information sharing is through
-          the "<var>redactList</var>" associated with the creation of
-          <a>physical addresses</a> throughout the API. This feature enables
-          user agents to provide the payee with enough information to compute
-          shipping costs or tax information, while limiting the payee's ability
-          to identify the payer via the address.
         </p>
         <p>
           The <a>user agent</a> MUST NOT share the values of the <a data-lt=
@@ -5293,6 +5278,38 @@
           member with a third-party <a>payment handler</a> without user
           consent.
         </p>
+        <p>
+          The <a>PaymentMethodChangeEvent</a> enables the payee to update the
+          displayed total based on information specific to a selected
+          <a>payment method</a>. For example, the billing address associated
+          with a selected <a>payment method</a> might affect the tax
+          computation (e.g., VAT), and it is desirable that the user interface
+          accurately display the total before the payer completes the
+          transaction. At the same time, it is desirable to share as little
+          information as possible prior to completion of the payment.
+          Therefore, when a <a>payment method</a> defines the <a>steps for when
+          a user changes payment method</a>, it is important to minimize the
+          data shared via the <a>PaymentMethodChangeEvent</a>'s
+          <a data-link-for="PaymentMethodChangeEvent">methodDetails</a>
+          attribute. Requirements and approaches for minimizing shared data are
+          likely to vary by <a>payment method</a> and might include:
+        </p>
+        <ul>
+          <li>Use of a "<var>redactList</var>" for <a>physical addresses</a>.
+          The current specification makes use of a "<var>redactList</var>" to
+          redact the <a>address line</a>, <a>organization</a>, <a>phone
+          number</a>, and <a>recipient</a> from a <a data-link-for=
+          "PaymentRequest">shippingAddress</a>.
+          </li>
+          <li>Support for instructions from the payee identifying specific
+          elements to exclude or include from the <a>payment method</a>
+          response data (returned through
+          <a>PaymentResponse</a>.<var>details</var>). The payee might provide
+          these instructions via <a>PaymentMethodData</a>.<var>data</var>,
+          enabling a <a>payment method</a> definition to evolve without
+          requiring changes to the current API.
+          </li>
+        </ul>
         <p>
           Where sharing of privacy-sensitive information might not be obvious
           to users (e.g., when <a data-lt=
