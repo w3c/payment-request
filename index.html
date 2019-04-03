@@ -162,7 +162,7 @@
           allows multiple browser tabs to show a payment UI at the same time
           (for those payment handlers able to support it).
           </li>
-          <li>Integrated with <a data-cite="feature-policy"></a>.
+          <li>Integrated with [[[feature-policy]]].
           </li>
           <li>Defined handling of multiple applicable modifiers.
           </li>
@@ -578,8 +578,7 @@
           back to a server for processing. To make this as easy as possible,
           <a>PaymentResponse</a> provides a <a>toJSON()</a> method that
           serializes the object directly into JSON. This makes it trivial to
-          POST the resulting JSON back to a server using the <a data-cite=
-          "fetch"></a>:
+          POST the resulting JSON back to a server using the [[[fetch]]]:
         </p>
         <pre class="example js" title="POSTing with `fetch()`">
           async function doPaymentRequest() {
@@ -3647,7 +3646,7 @@
         payment request API, the <a>allowpaymentrequest</a> attribute can be
         specified on the <a>iframe</a> element. See <a href=
         "#feature-policy"></a> for details of how <a>allowpaymentrequest</a>
-        and <a data-cite="feature-policy"></a> interact.
+        and [[[feature-policy]]] interact.
       </p>
     </section>
     <section id="feature-policy" data-cite="feature-policy">
