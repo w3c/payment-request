@@ -2345,23 +2345,22 @@
                 </li>
               </ol>
             </li>
-            <li>If <var>details</var>["<a>regionCode</a>"] is present and not
-            the empty string:
+            <li>If |details|["<a>regionCode</a>"] is present and not the empty
+            string:
               <ol>
-                <li>Let <var>regionCode</var> be the result of <a>strip leading
-                and trailing ASCII whitespace</a> from
-                <var>details</var>["<a>regionCode</a>"] and then
-                  <a data-cite="INFRA#ascii-uppercase">ASCII uppercasing</a>
-                  the result.
+                <li>Let |regionCode| be the result of <a>strip leading and
+                trailing ASCII whitespace</a> from
+                |details|["<a>regionCode</a>"] and then <a data-lt=
+                "ASCII uppercase">ASCII uppercasing</a> the result.
                 </li>
-                <li>Let <var>putativeCountrySubdivisionCodeElement</var> be the
-                concatenation of <var>address</var>.<a>[[\country]]</a>, a
-                single U+002D (-) <a>code point</a>, and <var>regionCode</var>.
+                <li>Let |putativeCountrySubdivisionCodeElement| be the
+                concatenation of |address|.<a>[[\country]]</a>, a single U+002D
+                (-) <a>code point</a>, and |regionCode|.
                 </li>
                 <li>
                   <p>
-                    If <var>putativeCountrySubdivisionCodeElement</var> is not
-                    a valid <a>country subdivision code element</a> as per
+                    If |putativeCountrySubdivisionCodeElement| is not a valid
+                    <a>country subdivision code element</a> as per
                     [[ISO3166-2]]'s section 5.2 "Structure of country
                     subdivision code elements" (non-normative details below),
                     throw a <a>RangeError</a> exception.
@@ -2394,16 +2393,15 @@
                     </ul>
                   </div>
                 </li>
-                <li>Set <var>address</var>.<a>[[\regionCode]]</a> to
-                <var>regionCode</var>.
+                <li>Set |address|.<a>[[\regionCode]]</a> to |regionCode|.
                 </li>
-                <li>If <var>details</var>["<a>region</a>"] is not present:
+                <li>If |details|["<a>region</a>"] is not present:
                   <ol>
-                    <li>Let <var>region</var> be the corresponding <a>country
-                    subdivision name</a> for <var>regionCode</var>. Where
-                    [[ISO3166-2]] defines multiple <a>country subdivision
-                    names</a> for a <var>regionCode</var>, it is RECOMMENDED
-                    the user agent select one by matching on:
+                    <li>Let |region| be the corresponding <a>country
+                    subdivision name</a> for |regionCode|. Where [[ISO3166-2]]
+                    defines multiple <a>country subdivision names</a> for a
+                    |regionCode|, it is RECOMMENDED the user agent select one
+                    by matching on:
                       <ol>
                         <li>The <a data-cite="HTML#language">language</a> of
                         <a data-cite="HTML#the-body-element-2">the body
@@ -2415,14 +2413,13 @@
                         </li>
                       </ol>
                     </li>
-                    <li>Set <var>details</var>["<a>region</a>"] to
-                    <var>region</var>.
+                    <li>Set |details|["<a>region</a>"] to |region|.
                     </li>
                   </ol>
                 </li>
               </ol>
             </li>
-            <li>Let <var>cleanAddressLines</var> be an empty list.
+            <li>Let |cleanAddressLines| be an empty list.
             </li>
             <li>If |details|["<a>addressLine</a>"] is present, then for each
             |item| in |details|["<a>addressLine</a>"]:
@@ -3061,10 +3058,9 @@
               <li>Set |details|["<a>region</a>"] to the user-provided region,
               or to the empty string if none was provided.
               </li>
-              <li>If <var>details</var>["<a>region</a>"] has a corresponding
-              <a>country subdivision code element</a>, set
-              <var>details</var>["<a>regionCode</a>"] to that <a>country
-              subdivision code element</a>.
+              <li>If |details|["<a>region</a>"] has a corresponding <a>country
+              subdivision code element</a>, set |details|["<a>regionCode</a>"]
+              to that <a>country subdivision code element</a>.
               </li>
             </ol>
           </li>
