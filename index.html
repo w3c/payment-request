@@ -13,21 +13,14 @@
       specStatus: "ED",
       formerEditors: [
         {
-          name: "Adrian Bateman",
-          company: "Microsoft Corporation",
-          w3cid: 42763,
-        },
-      ],
-      editors: [
-        {
-          name: "Marcos Cáceres",
-          company: "Mozilla",
-          w3cid: 39125,
-        },
-        {
           name: "Domenic Denicola",
           company: "Google",
           w3cid: 52873,
+        },
+        {
+          name: "Adrian Bateman",
+          company: "Microsoft Corporation",
+          w3cid: 42763,
         },
         {
           name: "Zach Koch",
@@ -39,12 +32,21 @@
           company: "Facebook",
           w3cid: 88345,
         },
+      ],
+      editors: [
         {
-          name: "Ian Jacobs",
-          url: "http://www.w3.org/People/Jacobs/",
-          company: "W3C",
-          companyURL: "https://www.w3.org/",
-          w3cid: 2175,
+          name: "Marcos Cáceres",
+          url: "https://github.com/marcoscaceres",
+          companyURL: "https://www.mozilla.com/",
+          company: "Mozilla",
+          w3cid: 39125,
+        },
+        {
+          name: "Danyao Wang",
+          url: "https://github.com/danyao",
+          company: "Google",
+          companyURL: "https://www.google.com/",
+          w3cid: 110796,
         },
         {
           name: "Rouslan Solomakhin",
@@ -53,11 +55,14 @@
           companyURL: "https://www.google.com/",
           w3cid: 83784,
         },
+        {
+          name: "Ian Jacobs",
+          url: "http://www.w3.org/People/Jacobs/",
+          company: "W3C",
+          companyURL: "https://www.w3.org/",
+          w3cid: 2175,
+        },
       ],
-      crEnd: "2019-05-08",
-      license: "w3c-software-doc",
-      previousMaturity: "CR",
-      previousPublishDate: "2018-08-30",
       wg: "Web Payments Working Group",
       wgURI: "https://www.w3.org/Payments/WG/",
       wgPatentURI: "https://www.w3.org/2004/01/pp-impl/83744/status",
@@ -66,15 +71,10 @@
         "https://w3c.github.io/test-results/payment-request/all.html",
       caniuse: "payment-request",
       lint: {
-        "no-headingless-sections": true,
-        "privsec-section": true,
-        "no-http-props": true,
         "check-punctuation": true,
       },
       doJsonLd: true,
-      highlightVars: true,
-      pluralize: true,
-      xref: true,
+      xref: "web-platform",
     };
     </script>
     <style>
@@ -86,7 +86,7 @@
     li { margin-top: 0.5em; margin-bottom: 0.5em;}
     </style>
   </head>
-  <body data-cite="HTML WEBIDL INFRA URL DOM">
+  <body>
     <h1 id="title">
       Payment Request API
     </h1>
