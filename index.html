@@ -2088,12 +2088,13 @@
         <dfn>PaymentOptions</dfn> dictionary
       </h2>
       <pre class="idl">
+        typedef (sequence&lt;AddressFields> or boolean) AddressParts;
         dictionary PaymentOptions {
           boolean requestPayerName = false;
-          boolean requestBillingAddress = false;
+          AddressParts requestBillingAddress = false;
           boolean requestPayerEmail = false;
           boolean requestPayerPhone = false;
-          boolean requestShipping = false;
+          AddressParts requestShipping = false;
           PaymentShippingType shippingType = "shipping";
         };
       </pre>
@@ -2623,6 +2624,91 @@
             </tr>
           </table>
         </section>
+      </section>
+      <section>
+        <h2>
+          <dfn>AddressFields</dfn> enum
+        </h2>
+        <pre class="idl">
+          enum AddressFields {
+            "addressLine",
+            "city",
+            "country",
+            "dependentLocality",
+            "organization",
+            "phone",
+            "postalCode",
+            "recipient",
+            "region",
+            "sortingCode"
+          };
+        </pre>
+        <p>
+          The {{AddressFields}} enum is used to represent individual parts of a
+          <a>physical address</a>.
+        </p>
+        <dl data-dfn-for="AddressFields">
+          <dt>
+            "<dfn>addressLine</dfn>"
+          </dt>
+          <dd>
+            The <a>address line</a>.
+          </dd>
+          <dt>
+            "<dfn>city</dfn>"
+          </dt>
+          <dd>
+            The <a>city</a>.
+          </dd>
+          <dt>
+            "<dfn>country</dfn>"
+          </dt>
+          <dd>
+            The <a>country</a>.
+          </dd>
+          <dt>
+            "<dfn>dependentLocality</dfn>"
+          </dt>
+          <dd>
+            The <a>dependent locality</a>.
+          </dd>
+          <dt>
+            "<dfn>organization</dfn>"
+          </dt>
+          <dd>
+            The <a>organization</a>.
+          </dd>
+          <dt>
+            "<dfn>phone</dfn>"
+          </dt>
+          <dd>
+            The <a>phone number</a>.
+          </dd>
+          <dt>
+            "<dfn>postalCode</dfn>"
+          </dt>
+          <dd>
+            <a>postal code</a>.
+          </dd>
+          <dt>
+            "<dfn>recipient</dfn>"
+          </dt>
+          <dd>
+            The <a>recipient</a>.
+          </dd>
+          <dt>
+            "<dfn>region</dfn>"
+          </dt>
+          <dd>
+            The <a>region</a>.
+          </dd>
+          <dt>
+            "<dfn>sortingCode</dfn>"
+          </dt>
+          <dd>
+            The <a>sorting Code</a>.
+          </dd>
+        </dl>
       </section>
       <section data-dfn-for="AddressInit" data-link-for="AddressInit">
         <h2>
