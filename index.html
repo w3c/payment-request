@@ -1341,7 +1341,7 @@
           to determine if the <a>user agent</a> has support for one of the
           desired <a>payment methods</a> and if a <a>payment handler</a> has an
           instrument ready for payment. See
-          <a href="#canMakePayment-privacy">privacy considerations</a>.
+          <a href="#canmakepayment-protections"></a>.
         </p>
         <p data-tests="payment-request-hasenrolledinstrument-method.https.html">
           The <a>hasEnrolledInstrument()</a> method MUST run the <a>can make
@@ -5276,9 +5276,9 @@
       <p data-link-for="PaymentRequest">
         The <a>canMakePayment()</a> and <a>hasEnrolledInstrument()</a> methods
         have the potential to expose user information that could be abused for
-        fingerprinting purposes.
-        User agents are expected to protect the user from abuse of the method.
-        For example, user agents can reduce user fingerprinting by:
+        fingerprinting purposes. User agents are expected to protect the user
+        from abuse of the method.  For example, user agents can reduce user
+        fingerprinting by:
       </p>
       <ul data-link-for="PaymentRequest">
         <li>Allowing the user to configure the user agent to turn off
