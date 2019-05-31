@@ -1318,8 +1318,8 @@
           <p>
             The <a>canMakePayment()</a> method can be used by the developer to
             determine if the <a>user agent</a> has support for one of the
-            desired <a>payment methods</a>. See <a href="#canMakePayment-privacy">
-            privacy considerations</a>.
+            desired <a>payment methods</a>. See <a href=
+            "#canMakePayment-privacy">privacy considerations</a>.
           </p>
           <p>
             A true result from <a>canMakePayment()</a> does not imply that the
@@ -1337,13 +1337,14 @@
           <dfn>hasEnrolledInstrument()</dfn> method
         </h2>
         <p class="note">
-          The <a>hasEnrolledInstrument()</a> method can be used by the developer
-          to determine if the <a>user agent</a> has support for one of the
-          desired <a>payment methods</a> and if a <a>payment handler</a> has an
-          instrument ready for payment. See
-          <a href="#canmakepayment-protections"></a>.
+          The <a>hasEnrolledInstrument()</a> method can be used by the
+          developer to determine if the <a>user agent</a> has support for one
+          of the desired <a>payment methods</a> and if a <a>payment handler</a>
+          has an instrument ready for payment. See <a href=
+          "#canmakepayment-protections"></a>.
         </p>
-        <p data-tests="payment-request-hasenrolledinstrument-method.https.html">
+        <p data-tests=
+        "payment-request-hasenrolledinstrument-method.https.html">
           The <a>hasEnrolledInstrument()</a> method MUST run the <a>can make
           payment algorithm</a> with |checkForInstruments| set to true.
         </p>
@@ -4207,40 +4208,40 @@
         </h2>
         <p>
           The <dfn>can make payment algorithm</dfn> checks if the <a>user
-          agent</a> supports making payment with the <a>payment methods</a> with
-          which the <a>PaymentRequest</a> was constructed. It takes a boolean
-          argument, |checkForInstruments|, that specifies whether the
+          agent</a> supports making payment with the <a>payment methods</a>
+          with which the <a>PaymentRequest</a> was constructed. It takes a
+          boolean argument, |checkForInstruments|, that specifies whether the
           algorithm checks for existence of enrolled instruments in addition to
           supporting a <a>payment method</a>.
         </p>
         <ol class="algorithm">
-          <li>Let |request| be the <a>PaymentRequest</a> object on
-          which the method was called.
+          <li>Let |request| be the <a>PaymentRequest</a> object on which the
+          method was called.
           </li>
-          <li>If |request|.<a>[[\state]]</a> is not "<a>created</a>",
-          then return <a>a promise rejected with</a> an
-          "<a>InvalidStateError</a>" <a>DOMException</a>.
+          <li>If |request|.<a>[[\state]]</a> is not "<a>created</a>", then
+          return <a>a promise rejected with</a> an "<a>InvalidStateError</a>"
+          <a>DOMException</a>.
           </li>
           <li data-tests=
           "payment-request-hasenrolledinstrument-method-protection.https.html, payment-request-canmakepayment-method-protection.https.html">
           Optionally, at the <a>top-level browsing context</a>'s discretion,
-          return <a>a promise rejected with</a> a "<a>NotAllowedError</a>"
-          <a>DOMException</a>.
+          return <a>a promise rejected with</a> a "<a>NotAllowedError</a>" <a>
+            DOMException</a>.
             <p class="note" data-link-for="PaymentRequest">
               This allows user agents to apply heuristics to detect and prevent
               abuse of the calling method for fingerprinting purposes, such as
-              creating <a>PaymentRequest</a> objects with a variety of supported
-              <a>payment methods</a> and triggering the <a>can make payment
-              algorithm</a> on them one after the other. For example, a user
-              agent may restrict the number of successful calls that can be made
-              based on the <a>top-level browsing context</a> or the time period
-              in which those calls were made.
+              creating <a>PaymentRequest</a> objects with a variety of
+              supported <a>payment methods</a> and triggering the <a>can make
+              payment algorithm</a> on them one after the other. For example, a
+              user agent may restrict the number of successful calls that can
+              be made based on the <a>top-level browsing context</a> or the
+              time period in which those calls were made.
             </p>
           </li>
           <li>Let |hasHandlerPromise| be <a>a new promise</a>.
           </li>
-          <li>Return |hasHandlerPromise|, and perform the remaining steps
-          <a>in parallel</a>.
+          <li>Return |hasHandlerPromise|, and perform the remaining steps <a>in
+          parallel</a>.
           </li>
           <li>For each |paymentMethod| tuple in |request|.
           <a>[[\serializedMethodData]]</a>:
@@ -4249,36 +4250,38 @@
               tuple.
               </li>
               <li>If |checkForInstruments| is false, and the user agent has a
-              <a>payment handler</a> that supports handling payment requests for
-              |identifier|, resolve |hasHandlerPromise| with true and terminate
-              this algorithm.
+              <a>payment handler</a> that supports handling payment requests
+              for |identifier|, resolve |hasHandlerPromise| with true and
+              terminate this algorithm.
               </li>
               <li>If |checkForInstruments| is true:
                 <ol>
                   <li>Let |data| be the result of <a data-cite=
-                      "ECMASCRIPT#sec-json.parse">JSON-parsing</a> the second
+                  "ECMASCRIPT#sec-json.parse">JSON-parsing</a> the second
                   element in the |paymentMethod| tuple.
                   </li>
                   <li>If required by the specification that defines the
                   |identifier|, then <a>convert</a> |data| to an IDL value.
                   Otherwise, <a>convert</a> to <a>object</a>.
                   </li>
-                  <li>Let |handlers| be a <a>list</a> of registered
-                  <a>payment handlers</a> that are authorized and can handle
-                  payment request for |identifier|.
+                  <li>Let |handlers| be a <a>list</a> of registered <a>payment
+                  handlers</a> that are authorized and can handle payment
+                  request for |identifier|.
                   </li>
                   <li>For each |handler| in |handlers|:
                     <ol>
                       <li>Let |hasEnrolledInstrument| be the result of running
-                      |handler|'s <a>steps to check if a payment can be made</a>
-                      with |data|.
+                      |handler|'s <a>steps to check if a payment can be
+                      made</a> with |data|.
                       </li>
                       <li>If |hasEnrolledInstrument| is true, resolve
-                      |hasHandlerPromise| with true and terminate this algorithm.
+                      |hasHandlerPromise| with true and terminate this
+                      algorithm.
                       </li>
                     </ol>
                   </li>
                 </ol>
+              </li>
             </ol>
           </li>
           <li>Resolve |hasHandlerPromise| with false.
@@ -5278,14 +5281,14 @@
         The <a>canMakePayment()</a> and <a>hasEnrolledInstrument()</a> methods
         have the potential to expose user information that could be abused for
         fingerprinting purposes. User agents are expected to protect the user
-        from abuse of the method.  For example, user agents can reduce user
+        from abuse of the method. For example, user agents can reduce user
         fingerprinting by:
       </p>
       <ul data-link-for="PaymentRequest">
         <li>Allowing the user to configure the user agent to turn off
         <a>canMakePayment()</a> and <a>hasEnrolledInstrument()</a>, which would
-        return <a>a promise rejected
-        with</a> a "<a>NotAllowedError</a>" <a>DOMException</a>.
+        return <a>a promise rejected with</a> a "<a>NotAllowedError</a>"
+        <a>DOMException</a>.
         </li>
         <li>Rate-limiting the frequency of calls with different parameters.
         </li>
