@@ -1318,8 +1318,8 @@
           <p>
             The <a>canMakePayment()</a> method can be used by the developer to
             determine if the <a>user agent</a> has support for one of the
-            desired <a>payment methods</a>. See <a href=
-            "#canMakePayment-privacy">privacy considerations</a>.
+            desired <a>payment methods</a>. See
+            [[[#canmakepayment-protections]]].
           </p>
           <p>
             A true result from <a>canMakePayment()</a> does not imply that the
@@ -1340,8 +1340,8 @@
           The <a>hasEnrolledInstrument()</a> method can be used by the
           developer to determine if the <a>user agent</a> has support for one
           of the desired <a>payment methods</a> and if a <a>payment handler</a>
-          has an instrument ready for payment. See <a href=
-          "#canmakepayment-protections"></a>.
+          has an instrument ready for payment. See
+          [[[#canmakepayment-protections]]].
         </p>
         <p data-tests=
         "payment-request-hasenrolledinstrument-method.https.html">
@@ -5274,43 +5274,45 @@
           information to unauthorized parties.
         </p>
       </section>
-      <h2 id="canmakepayment-protections">
-        <code>canMakePayment()</code> protections
-      </h2>
-      <p data-link-for="PaymentRequest">
-        The <a>canMakePayment()</a> and <a>hasEnrolledInstrument()</a> methods
-        have the potential to expose user information that could be abused for
-        fingerprinting purposes. User agents are expected to protect the user
-        from abuse of the method. For example, user agents can reduce user
-        fingerprinting by:
-      </p>
-      <ul data-link-for="PaymentRequest">
-        <li>Allowing the user to configure the user agent to turn off
-        <a>canMakePayment()</a> and <a>hasEnrolledInstrument()</a>, which would
-        return <a>a promise rejected with</a> a "<a>NotAllowedError</a>"
-        <a>DOMException</a>.
-        </li>
-        <li>Rate-limiting the frequency of calls with different parameters.
-        </li>
-      </ul>
-      <p>
-        For rate-limiting the user agent might look at repeated calls from:
-      </p>
-      <ul>
-        <li>the same effective top-level domain plus one (eTLD+1).
-        </li>
-        <li>the top-level browsing context. Alternatively, the user agent may
-        block access to the API entirely for origins know to be bad actors.
-        </li>
-        <li>the origin of an <a>iframe</a> or popup window.
-        </li>
-      </ul>
-      <p>
-        These rate-limiting techniques intend to increase the cost associated
-        with repeated calls, whether it is the cost of managing multiple eTLDs
-        or the user experience friction of opening multiple windows (tabs or
-        pop-ups).
-      </p>
+      <section>
+        <h2 id="canmakepayment-protections">
+          <code>canMakePayment()</code> protections
+        </h2>
+        <p data-link-for="PaymentRequest">
+          The <a>canMakePayment()</a> and <a>hasEnrolledInstrument()</a>
+          methods have the potential to expose user information that could be
+          abused for fingerprinting purposes. User agents are expected to
+          protect the user from abuse of the method. For example, user agents
+          can reduce user fingerprinting by:
+        </p>
+        <ul data-link-for="PaymentRequest">
+          <li>Allowing the user to configure the user agent to turn off
+          <a>canMakePayment()</a> and <a>hasEnrolledInstrument()</a>, which
+          would return <a>a promise rejected with</a> a
+          "<a>NotAllowedError</a>" <a>DOMException</a>.
+          </li>
+          <li>Rate-limiting the frequency of calls with different parameters.
+          </li>
+        </ul>
+        <p>
+          For rate-limiting the user agent might look at repeated calls from:
+        </p>
+        <ul>
+          <li>the same effective top-level domain plus one (eTLD+1).
+          </li>
+          <li>the top-level browsing context. Alternatively, the user agent may
+          block access to the API entirely for origins know to be bad actors.
+          </li>
+          <li>the origin of an <a>iframe</a> or popup window.
+          </li>
+        </ul>
+        <p>
+          These rate-limiting techniques intend to increase the cost associated
+          with repeated calls, whether it is the cost of managing multiple
+          eTLDs or the user experience friction of opening multiple windows
+          (tabs or pop-ups).
+        </p>
+      </section>
     </section>
     <section class="informative">
       <h2>
