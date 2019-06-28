@@ -2031,6 +2031,91 @@
         </dd>
       </dl>
     </section>
+    <section data-dfn-for="AddressParts">
+      <h2>
+        <dfn>AddressParts</dfn> enum
+      </h2>
+      <pre class="idl">
+        enum AddressParts {
+          "addressLine",
+          "city",
+          "country",
+          "dependentLocality",
+          "organization",
+          "phone",
+          "postalCode",
+          "recipient",
+          "region",
+          "sortingCode"
+        };
+      </pre>
+      <p>
+        The {{AddressParts}} enum is used to represent individual parts of a
+        <a>physical address</a>.
+      </p>
+      <dl data-dfn-for="AddressFields">
+        <dt>
+          "<dfn>addressLine</dfn>"
+        </dt>
+        <dd>
+          The <a>address line</a>.
+        </dd>
+        <dt>
+          "<dfn>city</dfn>"
+        </dt>
+        <dd>
+          The <a>city</a>.
+        </dd>
+        <dt>
+          "<dfn>country</dfn>"
+        </dt>
+        <dd>
+          The <a>country</a>.
+        </dd>
+        <dt>
+          "<dfn>dependentLocality</dfn>"
+        </dt>
+        <dd>
+          The <a>dependent locality</a>.
+        </dd>
+        <dt>
+          "<dfn>organization</dfn>"
+        </dt>
+        <dd>
+          The <a>organization</a>.
+        </dd>
+        <dt>
+          "<dfn>phone</dfn>"
+        </dt>
+        <dd>
+          The <a>phone number</a>.
+        </dd>
+        <dt>
+          "<dfn>postalCode</dfn>"
+        </dt>
+        <dd>
+          <a>postal code</a>.
+        </dd>
+        <dt>
+          "<dfn>recipient</dfn>"
+        </dt>
+        <dd>
+          The <a>recipient</a>.
+        </dd>
+        <dt>
+          "<dfn>region</dfn>"
+        </dt>
+        <dd>
+          The <a>region</a>.
+        </dd>
+        <dt>
+          "<dfn>sortingCode</dfn>"
+        </dt>
+        <dd>
+          The <a>sorting Code</a>.
+        </dd>
+      </dl>
+    </section>
     <section data-dfn-for="PaymentShippingType">
       <h2>
         <dfn>PaymentShippingType</dfn> enum
@@ -3952,6 +4037,7 @@
           [SecureContext, Exposed=Window]
           interface PaymentRequestUpdateEvent : Event {
             constructor(DOMString type, optional PaymentRequestUpdateEventInit eventInitDict = {});
+            Promise&lt;PaymentAddress&gt; requestShippingAddress(AddressParts addressParts);
             void updateWith(Promise&lt;PaymentDetailsUpdate&gt; detailsPromise);
           };
         </pre>
@@ -3980,6 +4066,39 @@
             <li>Return |event|.
             </li>
           </ol>
+        </section>
+        <section>
+          <h2>
+            <dfn data-lt="requestShippingAddress(addressParts)">requestShippingAddress()</dfn> method
+          </h2>
+          <aside class="note">
+            <p>
+              If a developer wants to incrementally request more granular details
+              of the user's shipping address, for example, to re-calculate
+              shipping cost, then they can call <a>requestShippingAddress()</a>
+              and provide a list of <a>AddressParts</a>, which will return a
+              promise that resolves to an <a>PaymentAddress</a> with the
+              requested address fields populated. This method can be called
+              repeatedly to incrementally request more parts as needed.
+            </p>
+            <p>
+              If a requested address part is also in the redact list of shipping
+              address, then the returned <a>PaymentAddress</a> will not have the
+              corresponding field populated.
+            </p>
+            <pre class="example js" title=
+            "how to use `requestShippingAddress()` correctly.">
+              request.onshippingaddresschange = ev =&gt; {
+                const promiseForUpdatingShippingCost =
+                    ev.requestShippingAddress(["country", "postal_code"])
+                        .then(address =&gt; {
+                          const promiseForUpdate = getNewDetails(address);
+                          return promiseForNewDetails;
+                        });
+                ev.updateWith(promiseForUpdatingShippingCost);
+              };
+            </pre>
+          </aside>
         </section>
         <section>
           <h2>
