@@ -607,7 +607,7 @@
         <dfn>PaymentRequest</dfn> interface
       </h2>
       <pre class="idl">
-        [Constructor(sequence&lt;PaymentMethodData&gt; methodData, PaymentDetailsInit details, optional PaymentOptions options),
+        [Constructor(sequence&lt;PaymentMethodData&gt; methodData, PaymentDetailsInit details, optional PaymentOptions options = {}),
         SecureContext, Exposed=Window]
         interface PaymentRequest : EventTarget {
           [NewObject]
@@ -3073,7 +3073,7 @@
           [NewObject]
           Promise&lt;void&gt; complete(optional PaymentComplete result = "unknown");
           [NewObject]
-          Promise&lt;void&gt; retry(optional PaymentValidationErrors errorFields);
+          Promise&lt;void&gt; retry(optional PaymentValidationErrors errorFields = {});
 
           attribute EventHandler onpayerdetailchange;
         };
@@ -3908,7 +3908,7 @@
           <dfn>PaymentMethodChangeEvent</dfn> interface
         </h2>
         <pre class="idl">
-          [Constructor(DOMString type, optional PaymentMethodChangeEventInit eventInitDict), SecureContext, Exposed=Window]
+          [Constructor(DOMString type, optional PaymentMethodChangeEventInit eventInitDict = {}), SecureContext, Exposed=Window]
           interface PaymentMethodChangeEvent : PaymentRequestUpdateEvent {
             readonly attribute DOMString methodName;
             readonly attribute object? methodDetails;
@@ -3968,7 +3968,7 @@
           <dfn>PaymentRequestUpdateEvent</dfn> interface
         </h2>
         <pre class="idl">
-          [Constructor(DOMString type, optional PaymentRequestUpdateEventInit eventInitDict), SecureContext, Exposed=Window]
+          [Constructor(DOMString type, optional PaymentRequestUpdateEventInit eventInitDict = {}), SecureContext, Exposed=Window]
           interface PaymentRequestUpdateEvent : Event {
             void updateWith(Promise&lt;PaymentDetailsUpdate&gt; detailsPromise);
           };
