@@ -1232,9 +1232,6 @@
               <li>Set |request|'s <a>payment-relevant browsing context</a>'s
               <a>payment request is showing</a> boolean to false.
               </li>
-              <li>Reject |acceptPromise| with an "<a>AbortError</a>"
-              <a>DOMException</a>.
-              </li>
             </ol>
           </li>
         </ol>
@@ -3186,19 +3183,18 @@
           affords the end user the ability to retry accepting the payment
           request.
           </li>
-          <li data-tests=
-          "payment-response/rejects_if_not_active-manual.https.html">If
-          |document| stops being <a>fully active</a> while the user interface
-          is being shown, or no longer is by the time this step is reached,
-          then:
+          <li>
+            <span data-tests=
+            "payment-response/rejects_if_not_active-manual.https.html">If
+            |document| stops being <a>fully active</a> while the user interface
+            is being shown, or no longer is by the time this step is reached,
+            then:
+            </span>
             <ol>
               <li>Close down the user interface.
               </li>
               <li>Set |request|'s <a>payment-relevant browsing context</a>'s
               <a>payment request is showing</a> boolean to false.
-              </li>
-              <li>Reject |retryPromise| with an "<a>AbortError</a>"
-              <a>DOMException</a>.
               </li>
             </ol>
           </li>
@@ -3504,9 +3500,6 @@
               </li>
               <li>Set |request|'s <a>payment-relevant browsing context</a>'s
               <a>payment request is showing</a> boolean to false.
-              </li>
-              <li>Reject |promise| with an "<a>AbortError</a>"
-              <a>DOMException</a>.
               </li>
             </ol>
           </li>
