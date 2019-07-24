@@ -87,7 +87,7 @@
     li { margin-top: 0.5em; margin-bottom: 0.5em;}
     </style>
   </head>
-  <body>
+  <body data-cite="promises-guide">
     <h1 id="title">
       Payment Request API
     </h1>
@@ -681,10 +681,10 @@
           |details|, |options|)</dfn></code> constructor MUST act as follows:
         </p>
         <ol data-link-for="PaymentDetailsBase" class="algorithm">
-          <li>If the <a>current settings object</a>'s <a>responsible
-          document</a> is not <a>allowed to use</a> the "<a data-lt=
-          "payment-feature">payment</a>" feature, then <a>throw</a> a
-          "<a>SecurityError</a>" <a>DOMException</a>.
+          <li>If the <a>current settings object</a>'s [=environment settings
+          object / responsible document=] is not <a>allowed to use</a> the
+          "<a data-lt="payment-feature">payment</a>" feature, then
+          [=exception/throw=] a "{{SecurityError}}" {{DOMException}}.
           </li>
           <li>Establish the request's id:
             <ol>
@@ -700,9 +700,9 @@
           </li>
           <li>Process payment methods:
             <ol data-link-for="PaymentMethodData">
-              <li>If the length of the |methodData| sequence is zero, then <a>
-                throw</a> a <a>TypeError</a>, optionally informing the
-                developer that at least one <a>payment method</a> is required.
+              <li>If the length of the |methodData| sequence is zero, then
+              [=exception/throw=] a <a>TypeError</a>, optionally informing the
+              developer that at least one <a>payment method</a> is required.
               </li>
               <li>For each |paymentMethod| of |methodData|:
                 <ol>
@@ -734,9 +734,9 @@
                       </li>
                       <li>
                         <p>
-                          <a data-lt="converting">Convert</a> |object| to an
-                          IDL value of the type specified by the specification
-                          that defines the
+                          <a data-lt="converted to an IDL value">Convert</a>
+                          |object| to an IDL value of the type specified by the
+                          specification that defines the
                           |paymentMethod|.<a>supportedMethods</a> (e.g., a
                           <a data-cite=
                           "?payment-method-basic-card#dom-basiccardrequest">BasicCardRequest</a>
@@ -962,8 +962,8 @@
           <li data-tests=
           "payment-request-show-method.https.html, show-method-postmessage-manual.https.html">
           If the method was not <a>triggered by user activation</a>, return <a>
-            a promise rejected with</a> with a "<a>SecurityError</a>"
-            <a>DOMException</a>.
+            a promise rejected with</a> with a "{{SecurityError}}"
+            {{DOMException}}.
           </li>
           <li>Let |request| be the <a>context object</a>.
           </li>
@@ -971,30 +971,30 @@
             associated <code>Document</code></a>.
           </li>
           <li data-tests="rejects_if_not_active.https.html">If |document| is
-          not <a>fully active</a>, then return <a>a promise rejected with</a>
-          an "<a>AbortError</a>" <a>DOMException</a>.
+          not [=Document/fully active=], then return <a>a promise rejected
+          with</a> an "{{AbortError}}" {{DOMException}}.
           </li>
           <li>
             <p>
               Optionally, if the <a>user agent</a> wishes to disallow the call
               to <a>show()</a> to protect the user, then return a promise
-              rejected with a "<a>SecurityError</a>" <a>DOMException</a>. For
+              rejected with a "{{SecurityError}}" {{DOMException}}. For
               example, the <a>user agent</a> may limit the rate at which a page
               can call <a>show()</a>, as described in section <a href=
               "#privacy"></a>.
             </p>
           </li>
           <li>If |request|.<a>[[\state]]</a> is not "<a>created</a>" then
-          return <a>a promise rejected with</a> an "<a>InvalidStateError</a>"
-          <a>DOMException</a>.
+          return <a>a promise rejected with</a> an "{{InvalidStateError}}"
+          {{DOMException}}.
           </li>
           <li>If the <a>user agent</a>'s <a>payment request is showing</a>
           boolean is true, then:
             <ol>
               <li>Set |request|.<a>[[\state]]</a> to "<a>closed</a>".
               </li>
-              <li>Return <a>a promise rejected with</a> an "<a>AbortError</a>"
-              <a>DOMException</a>.
+              <li>Return <a>a promise rejected with</a> an "{{AbortError}}"
+              {{DOMException}}.
               </li>
             </ol>
           </li>
@@ -1009,8 +1009,8 @@
               Optionally:
             </p>
             <ol>
-              <li>Reject |acceptPromise| with an "<a>AbortError</a>"
-              <a>DOMException</a>.
+              <li>Reject |acceptPromise| with an "{{AbortError}}"
+              {{DOMException}}.
               </li>
               <li>Set |request|.<a>[[\state]]</a> to "<a>closed</a>".
               </li>
@@ -1044,9 +1044,10 @@
               in the |paymentMethod| tuple.
               </li>
               <li data-cite="WebIDL infra">If required by the specification
-              that defines the |identifier|, then <a>convert</a> |data| to an
-              IDL value of the type specified there. Otherwise, <a>convert</a>
-              to {{object}}.
+              that defines the |identifier|, then <a data-lt=
+              "converted to an IDL value">convert</a> |data| to an IDL value of
+              the type specified there. Otherwise, <a data-lt=
+              "converted to an IDL value">convert</a> to {{object}}.
               </li>
               <li>If conversion results in an <a>exception</a> |error|:
                 <ol>
@@ -1081,8 +1082,8 @@
             <ol>
               <li>Set |request|.<a>[[\state]]</a> to "<a>closed</a>".
               </li>
-              <li>Reject |acceptPromise| with "<a>NotSupportedError</a>"
-              <a>DOMException</a>.
+              <li>Reject |acceptPromise| with "{{NotSupportedError}}"
+              {{DOMException}}.
               </li>
               <li>Set |request|'s <a>payment-relevant browsing context</a>'s
               <a>payment request is showing</a> boolean to false.
@@ -1134,13 +1135,13 @@
           </li>
           <li>
             <p>
-              Pass the <a data-lt="convert">converted</a> second element in the
-              |paymentMethod| tuple and |modifiers|. Optionally, the user agent
-              SHOULD send the appropriate data from |request| to the
-              user-selected <a>payment handler</a> in order to guide the user
-              through the payment process. This includes the various attributes
-              and other internal slots of |request| (some MAY be excluded for
-              privacy reasons where appropriate).
+              Pass the <a data-lt="converted to an IDL value">converted</a>
+              second element in the |paymentMethod| tuple and |modifiers|.
+              Optionally, the user agent SHOULD send the appropriate data from
+              |request| to the user-selected <a>payment handler</a> in order to
+              guide the user through the payment process. This includes the
+              various attributes and other internal slots of |request| (some
+              MAY be excluded for privacy reasons where appropriate).
             </p>
             <p>
               Handling of multiple applicable modifiers in the
@@ -1224,9 +1225,9 @@
               triggered through interaction with the user interface.
             </p>
             <p data-tests="rejects_if_not_active.https.html">
-              If |document| stops being <a>fully active</a> while the user
-              interface is being shown, or no longer is by the time this step
-              is reached, then:
+              If |document| stops being [=Document/fully active=] while the
+              user interface is being shown, or no longer is by the time this
+              step is reached, then:
             </p>
             <ol>
               <li>Close down the user interface.
@@ -1273,12 +1274,12 @@
           </li>
           <li>If |request|.<a>[[\response]]</a> is not null, and
           |request|.<a>[[\response]]</a>.<a>[[\retryPromise]]</a> is not null,
-          return <a>a promise rejected with</a> an "<a>InvalidStateError</a>"
-          <a>DOMException</a>.
+          return <a>a promise rejected with</a> an "{{InvalidStateError}}"
+          {{DOMException}}.
           </li>
           <li>If the value of |request|.<a>[[\state]]</a> is not
           "<a>interactive</a>" then return <a>a promise rejected with</a> an
-          "<a>InvalidStateError</a>" <a>DOMException</a>.
+          "{{InvalidStateError}}" {{DOMException}}.
           </li>
           <li>Let |promise| be <a>a new promise</a>.
           </li>
@@ -1293,13 +1294,13 @@
             perform the following steps:
             <ol>
               <li>If it is not possible to abort the current user interaction,
-              then reject |promise| with "<a>InvalidStateError</a>"
-              <a>DOMException</a> and abort these steps.
+              then reject |promise| with "{{InvalidStateError}}"
+              {{DOMException}} and abort these steps.
               </li>
               <li>Set |request|.<a>[[\state]]</a> to "<a>closed</a>".
               </li>
               <li>Reject the promise |request|.<a>[[\acceptPromise]]</a> with
-              an "<a>AbortError</a>" <a>DOMException</a>.
+              an "{{AbortError}}" {{DOMException}}.
               </li>
               <li>Resolve |promise| with undefined.
               </li>
@@ -1377,7 +1378,7 @@
         </h2>
         <p data-tests="onmerchantvalidation-attribute.https.html">
           A <a>PaymentRequest</a>'s <a>onmerchantvalidation</a> attribute is an
-          <a>EventHandler</a> for a <a>MerchantValidationEvent</a> named
+          {{EventHandler}} for a {{MerchantValidationEvent}} named
           "<a>merchantvalidation</a>".
         </p>
       </section>
@@ -1388,7 +1389,7 @@
         <p data-tests=
         "shipping-address-changed-manual.https.html, payment-request-onshippingaddresschange-attribute.https.html, algorithms-manual.https.html#shipping-address-changed-algo">
           A <a>PaymentRequest</a>'s <a>onshippingaddresschange</a> attribute is
-          an <a>EventHandler</a> for a <a>PaymentRequestUpdateEvent</a> named
+          an {{EventHandler}} for a {{PaymentRequestUpdateEvent}} named
           <a>shippingaddresschange</a>.
         </p>
       </section>
@@ -1411,7 +1412,7 @@
         <p data-tests=
         "payment-request-onshippingoptionchange-attribute.https.html">
           A <a>PaymentRequest</a>'s <a>onshippingoptionchange</a> attribute is
-          an <a>EventHandler</a> for a <a>PaymentRequestUpdateEvent</a> named
+          an {{EventHandler}} for a {{PaymentRequestUpdateEvent}} named
           <a>shippingoptionchange</a>.
         </p>
       </section>
@@ -1421,7 +1422,7 @@
         </h2>
         <p data-tests="onpaymentmenthodchange-attribute.https.html">
           A <a>PaymentRequest</a>'s <a>onpaymentmethodchange</a> attribute is
-          an <a>EventHandler</a> for a <a>PaymentMethodChangeEvent</a> named
+          an {{EventHandler}} for a {{PaymentMethodChangeEvent}} named
           "<a>paymentmethodchange</a>".
         </p>
       </section>
@@ -1943,8 +1944,7 @@
           </dt>
           <dd>
             Represents validation errors with the shipping address that is
-            associated with the <a data-cite="DOM#event-target">event
-            target</a>.
+            associated with the <a>potential event target</a>.
           </dd>
           <dt>
             <dfn>payerErrors</dfn> member
@@ -2094,10 +2094,10 @@
           and return the billing address associated with a <a>payment
           method</a> (e.g., the billing address associated with a credit card).
           Typically, the user agent will return the billing address as part of
-          the <a>PaymentMethodChangeEvent</a>'s <a>methodDetails</a>. A
-          merchant can use this information to, for example, calculate tax in
-          certain jurisdictions and update the displayed total. See below for
-          privacy considerations regarding <a href="#user-info">exposing user
+          the {{PaymentMethodChangeEvent}}'s <a>methodDetails</a>. A merchant
+          can use this information to, for example, calculate tax in certain
+          jurisdictions and update the displayed total. See below for privacy
+          considerations regarding <a href="#user-info">exposing user
           information</a>.
         </dd>
         <dt>
@@ -3082,15 +3082,15 @@
           </li>
           <li data-tests=
           "payment-response/rejects_if_not_active-manual.https.html">If
-          |document| is not <a>fully active</a>, then return <a>a promise
-          rejected with</a> an "<a>AbortError</a>" <a>DOMException</a>.
+          |document| is not [=Document/fully active=], then return <a>a promise
+          rejected with</a> an "{{AbortError}}" {{DOMException}}.
           </li>
           <li>If |response|.<a>[[\complete]]</a> is true, return <a>a promise
-          rejected with</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
+          rejected with</a> an "{{InvalidStateError}}" {{DOMException}}.
           </li>
           <li>If |response|.<a>[[\retryPromise]]</a> is not null, return <a>a
-          promise rejected with</a> an "<a>InvalidStateError</a>"
-          <a>DOMException</a>.
+          promise rejected with</a> an "{{InvalidStateError}}"
+          {{DOMException}}.
           </li>
           <li>Set |request|.<a>[[\state]]</a> to "<a>interactive</a>".
           </li>
@@ -3132,10 +3132,11 @@
               "PaymentValidationErrors/retry-shows-error-member-manual.https.html">
               If |errorFields|["<a>paymentMethod</a>] member was passed, and if
               required by the specification that defines |response|'s
-              <a>payment method</a>, then <a>convert</a> |errorFields|'s
+              <a>payment method</a>, then <a data-lt=
+              "converted to an IDL value">convert</a> |errorFields|'s
               <a>paymentMethod</a> member to an IDL value of the type specified
-              there. Otherwise, <a>convert</a> to <a data-cite=
-              "WEBIDL#idl-object">object</a>.
+              there. Otherwise, <a data-lt=
+              "converted to an IDL value">convert</a> to {{object}}.
               </li>
               <li>Set |request|'s <a>payment-relevant browsing context</a>'s
               <a>payment request is showing</a> boolean to false.
@@ -3172,10 +3173,9 @@
           <li>
             <span data-tests=
             "payment-response/rejects_if_not_active-manual.https.html">If
-            |document| stops being <a>fully active</a> while the user interface
-            is being shown, or no longer is by the time this step is reached,
-            then:
-            </span>
+            |document| stops being [=Document/fully active=] while the user
+            interface is being shown, or no longer is by the time this step is
+            reached, then:</span>
             <ol>
               <li>Close down the user interface.
               </li>
@@ -3464,11 +3464,11 @@
           <li>Let |response| be the <a>context object</a>.
           </li>
           <li>If |response|.<a>[[\complete]]</a> is true, return <a>a promise
-          rejected with</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
+          rejected with</a> an "{{InvalidStateError}}" {{DOMException}}.
           </li>
           <li data-tests="payment-response/retry-method-manual.https.html">If
           |response|.<a>[[\retryPromise]]</a> is not null, return <a>a promise
-          rejected with</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
+          rejected with</a> an "{{InvalidStateError}}" {{DOMException}}.
           </li>
           <li>Let |promise| be <a>a new promise</a>.
           </li>
@@ -3477,9 +3477,9 @@
           <li>Return |promise| and perform the remaining steps <a>in
           parallel</a>.
           </li>
-          <li>If |document| stops being <a>fully active</a> while the user
-          interface is being shown, or no longer is by the time this step is
-          reached, then:
+          <li>If |document| stops being [=Document/fully active=] while the
+          user interface is being shown, or no longer is by the time this step
+          is reached, then:
             <ol>
               <li>Close down the user interface.
               </li>
@@ -3566,10 +3566,11 @@
       </h2>
       <p>
         To indicate that a cross-origin <a>iframe</a> is allowed to invoke the
-        payment request API, the <a>allowpaymentrequest</a> attribute can be
-        specified on the <a>iframe</a> element. See <a href=
-        "#feature-policy"></a> for details of how <a>allowpaymentrequest</a>
-        and [[[feature-policy]]] interact.
+        payment request API, the {{ HTMLIFrameElement.allowPaymentRequest }}
+        attribute can be specified on the <a>iframe</a> element. See <a href=
+        "#feature-policy"></a> for details of how {{
+        HTMLIFrameElement.allowPaymentRequest }} and [[[feature-policy]]]
+        interact.
       </p>
     </section>
     <section id="feature-policy" data-cite="feature-policy">
@@ -3584,21 +3585,22 @@
       </p>
       <div class="note">
         <p>
-          A <a data-cite="DOM">document</a>’s <a data-cite="html">feature
-          policy</a> determines whether any content in that document is allowed
-          to construct <a>PaymentRequest</a> instances. If disabled in any
-          document, no content in the document will be <a>allowed to use</a>
-          the <a>PaymentRequest</a> constructor (trying to create an instance
-          will throw).
+          A <a>document</a>’s [=Document/feature policy=] determines whether
+          any content in that document is allowed to construct
+          <a>PaymentRequest</a> instances. If disabled in any document, no
+          content in the document will be <a>allowed to use</a> the
+          <a>PaymentRequest</a> constructor (trying to create an instance will
+          throw).
         </p>
         <p>
-          The <a>allowpaymentrequest</a> attribute of the HTML <a>iframe</a>
-          element affects the <a>container policy</a> for any document nested
-          in that iframe. Unless overridden by the <code><a data-cite=
+          The {{ HTMLIFrameElement.allowPaymentRequest }} attribute of the HTML
+          <a>iframe</a> element affects the <a>container policy</a> for any
+          document nested in that iframe. Unless overridden by the
+          <code><a data-cite=
           "html/iframe-embed-object.html#attr-iframe-allow">allow</a></code>
-          attribute, setting <a>allowpaymentrequest</a> on an iframe is
-          equivalent to <code>&lt;iframe allow="fullscreen *"&gt;</code>, as
-          described in <a data-cite=
+          attribute, setting {{ HTMLIFrameElement.allowPaymentRequest }} on an
+          iframe is equivalent to <code>&lt;iframe allow="fullscreen
+          *"&gt;</code>, as described in <a data-cite=
           "feature-policy#iframe-allowpaymentrequest-attribute">Feature Policy
           §allowpaymentrequest</a>.
         </p>
@@ -3632,7 +3634,7 @@
               <code><dfn>merchantvalidation</dfn></code>
             </td>
             <td>
-              <a>MerchantValidationEvent</a>
+              {{MerchantValidationEvent}}
             </td>
             <td>
               The user agent requires the merchant to perform merchant
@@ -3647,7 +3649,7 @@
               <code><dfn>shippingaddresschange</dfn></code>
             </td>
             <td>
-              <a>PaymentRequestUpdateEvent</a>
+              {{PaymentRequestUpdateEvent}}
             </td>
             <td>
               The user provides a new shipping address.
@@ -3661,7 +3663,7 @@
               <code><dfn>shippingoptionchange</dfn></code>
             </td>
             <td>
-              <a>PaymentRequestUpdateEvent</a>
+              {{PaymentRequestUpdateEvent}}
             </td>
             <td>
               The user chooses a new shipping option.
@@ -3675,7 +3677,7 @@
               <code><dfn>payerdetailchange</dfn></code>
             </td>
             <td>
-              <a>PaymentRequestUpdateEvent</a>
+              {{PaymentRequestUpdateEvent}}
             </td>
             <td>
               The user changes the payer name, the payer email, or the payer
@@ -3690,7 +3692,7 @@
               <code><dfn>paymentmethodchange</dfn></code>
             </td>
             <td>
-              <a>PaymentMethodChangeEvent</a>
+              {{PaymentMethodChangeEvent}}
             </td>
             <td>
               The user chooses a different <a>payment method</a> within a
@@ -3735,11 +3737,12 @@
           <p data-tests=
           "MerchantValidationEvent/constructor.https.html, MerchantValidationEvent/constructor.http.html">
             The <a>event constructing steps</a>, which take a
-            <a>MerchantValidationEvent</a> |event|, are as follows:
+            {{MerchantValidationEvent}} |event|, are as follows:
           </p>
           <ol class="algorithm">
             <li>Let |base| be the <a data-lt="context object">event</a>’s
-            <a>relevant settings object</a>’s <a>API base URL</a>.
+            <a>relevant settings object</a>’s [=environment settings object/api
+            base URL=].
             </li>
             <li data-link-for="MerchantValidationEventInit">Let |validationURL|
             be the result of <a data-lt="URL parser">URL parsing</a>
@@ -3771,15 +3774,14 @@
             <dfn>validationURL</dfn> attribute
           </h3>
           <p>
-            A <a data-cite="URL">URL</a> from which a developer can fetch
-            <a>payment handler</a>-specific verification data. By then passing
-            that data (or a promise that resolves with that data) to
-            <a>complete()</a>, the user agent can verify that the payment
-            request is from an authorized merchant.
+            A <a>URL</a> from which a developer can fetch <a>payment
+            handler</a>-specific verification data. By then passing that data
+            (or a promise that resolves with that data) to <a>complete()</a>,
+            the user agent can verify that the payment request is from an
+            authorized merchant.
           </p>
           <p>
-            When getting, returns the value it was <a data-cite=
-            "dom#inner-event-creation-steps">initialized</a> with.
+            When getting, returns the value it was initialized with.
           </p>
         </section>
         <section>
@@ -3787,32 +3789,31 @@
             <dfn>complete()</dfn> method
           </h3>
           <p data-tests="MerchantValidationEvent/complete-method.https.html">
-            The <a>MerchantValidationEvent</a>'s
+            The {{MerchantValidationEvent}}'s
             <code>complete(|merchantSessionPromise|)</code> method MUST act as
             follows:
           </p>
           <ol class="algorithm">
             <li>Let |event| be the <a>context object</a>.
             </li>
-            <li>If |event|'s <a>isTrusted</a> attribute is false, then
-            <a>throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
+            <li>If |event|'s {{ Event.isTrusted }} attribute is false, then
+            [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
             </li>
             <li>If |event|.<a data-lt=
             "mechvalidation.waitForUpdate">[[\waitForUpdate]]</a> is true, then
-            <a>throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
+            [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
             </li>
-            <li>Let |request| be |event|'s <a data-cite=
-            "dom#event-target">target</a>.
+            <li>Let |request| be |event|'s [=Event/target=].
             </li>
             <li>If |request|.<a>[[\state]]</a> is not "<a>interactive</a>",
-            then <a>throw</a> an "<a>InvalidStateError</a>"
-            <a>DOMException</a>.
+            then [=exception/throw=] an "{{InvalidStateError}}"
+            {{DOMException}}.
             </li>
-            <li>If |request|.<a>[[\updating]]</a> is true, then <a>throw</a> an
-            "<a>InvalidStateError</a>" <a>DOMException</a>.
+            <li>If |request|.<a>[[\updating]]</a> is true, then
+            [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
             </li>
-            <li>Set |event|'s <a>stop propagation flag</a> and <a>stop
-            immediate propagation flag</a>.
+            <li>Set |event|'s [=Event/stop propagation flag=] and [=Event/stop
+            immediate propagation flag=].
             </li>
             <li>Set |event|.<a data-lt=
             "mechvalidation.waitForUpdate">[[\waitForUpdate]]</a> to true.
@@ -3827,7 +3828,7 @@
             Internal Slots
           </h2>
           <p>
-            Instances of <a>MerchantValidationEvent</a> are created with the
+            Instances of {{MerchantValidationEvent}} are created with the
             internal slots in the following table:
           </p>
           <table>
@@ -3952,7 +3953,7 @@
           };
         </pre>
         <p>
-          The <a>PaymentRequestUpdateEvent</a> enables developers to update the
+          The {{PaymentRequestUpdateEvent}} enables developers to update the
           details of the payment request in response to a user interaction.
         </p>
         <section>
@@ -3967,10 +3968,8 @@
             |eventInitDict|)</code></a> constructor MUST act as follows:
           </p>
           <ol class="algorithm">
-            <li>Let |event| be the result of <a data-cite=
-            "DOM#concept-event-constructor">constructing</a> a
-            <a>PaymentRequestUpdateEvent</a> instance with |type| and
-            |eventInitDict|.
+            <li>Let |event| be the result of calling the [=Event/constructor=]
+            of {{PaymentRequestUpdateEvent}} with |type| and |eventInitDict|.
             </li>
             <li>Set |event|.<a>[[\waitForUpdate]]</a> to false.
             </li>
@@ -4016,7 +4015,7 @@
             </pre>
             <p>
               Additionally, <a>[[\waitForUpdate]]</a> prevents reuse of
-              <a>PaymentRequestUpdateEvent</a>.
+              {{PaymentRequestUpdateEvent}}.
             </p>
             <pre class="example js" title="can only call `updateWith()` once">
               // ❌ Bad - calling updateWith() twice doesn't work!
@@ -4043,32 +4042,32 @@
             act as follows:
           </p>
           <ol class="algorithm">
-            <li>Let |event| be this <a>PaymentRequestUpdateEvent</a> instance.
+            <li>Let |event| be this {{PaymentRequestUpdateEvent}} instance.
             </li>
-            <li>If |event|'s <a>isTrusted</a> attribute is false, then
-            <a>throw</a> an "<a>InvalidStateError</a>" <a>DOMException</a>.
+            <li>If |event|'s {{ Event.isTrusted }} attribute is false, then
+            [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
             </li>
-            <li>If |event|.<a>[[\waitForUpdate]]</a> is true, then <a>throw</a>
-            an "<a>InvalidStateError</a>" <a>DOMException</a>.
+            <li>If |event|.<a>[[\waitForUpdate]]</a> is true, then
+            [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
             </li>
-            <li>If |event|'s <a data-cite="DOM#event-target">target</a> is an
-            instance of <a>PaymentResponse</a>, let |request| be |event|'s
-            <a data-cite="DOM#event-target">target</a>.<a>[[\request]]</a>.
+            <li>If |event|'s [=Event/target=] is an instance of
+            <a>PaymentResponse</a>, let |request| be |event|'s
+            [=Event/target=].<a>[[\request]]</a>.
             </li>
             <li>Otherwise, let |request| be the value of |event|'s
-              <a data-cite="DOM#event-target">target</a>.
+            [=Event/target=].
             </li>
             <li>Assert: |request| is an instance of <a>PaymentRequest</a>.
             </li>
             <li>If |request|.<a>[[\state]]</a> is not "<a>interactive</a>",
-            then <a>throw</a> an "<a>InvalidStateError</a>"
-            <a>DOMException</a>.
+            then [=exception/throw=] an "{{InvalidStateError}}"
+            {{DOMException}}.
             </li>
-            <li>If |request|.<a>[[\updating]]</a> is true, then <a>throw</a> an
-            "<a>InvalidStateError</a>" <a>DOMException</a>.
+            <li>If |request|.<a>[[\updating]]</a> is true, then
+            [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
             </li>
-            <li>Set |event|'s <a>stop propagation flag</a> and <a>stop
-            immediate propagation flag</a>.
+            <li>Set |event|'s [=Event/stop propagation flag=] and [=Event/stop
+            immediate propagation flag=].
             </li>
             <li>Set |event|.<a>[[\waitForUpdate]]</a> to true.
             </li>
@@ -4089,7 +4088,7 @@
             Internal Slots
           </h2>
           <p>
-            Instances of <a>PaymentRequestUpdateEvent</a> are created with the
+            Instances of {{PaymentRequestUpdateEvent}} are created with the
             internal slots in the following table:
           </p>
           <table>
@@ -4150,8 +4149,7 @@
         <p>
           For <a>payment methods</a> that support <a>merchant validation</a>,
           the user agent runs the <dfn>request merchant validation
-          algorithm</dfn>. The algorithm takes a <a data-cite=
-          "webidl#idl-USVString"><code>USVString</code></a>
+          algorithm</dfn>. The algorithm takes a {{USVString}}
           |merchantSpecificURL|, provided by the <a>payment handler</a>:
         </p>
         <ol class="algorithm">
@@ -4181,12 +4179,11 @@
               </li>
               <li>Set |eventInitDict|["<a>methodName</a>"] to |methodName|.
               </li>
-              <li>Let |event| be the result of <a data-lt=
-              "constructor">constructing</a> a <a>MerchantValidationEvent</a>
-              with "<a>merchantvalidation</a>" and |eventInitDict|.
+              <li>Let |event| be the result of calling the
+              [=Event/constructor=] of {{MerchantValidationEvent}} with
+              "<a>merchantvalidation</a>" and |eventInitDict|.
               </li>
-              <li>Initialize |event|’s <a><code>isTrusted</code></a> attribute
-              to true.
+              <li>Initialize |event|’s {{ Event.isTrusted }} attribute to true.
               </li>
               <li>
                 <a>Dispatch</a> |event| to |request|.
@@ -4212,14 +4209,14 @@
           method was called.
           </li>
           <li>If |request|.<a>[[\state]]</a> is not "<a>created</a>", then
-          return <a>a promise rejected with</a> an "<a>InvalidStateError</a>"
-          <a>DOMException</a>.
+          return <a>a promise rejected with</a> an "{{InvalidStateError}}"
+          {{DOMException}}.
           </li>
           <li data-tests=
           "payment-request-hasenrolledinstrument-method-protection.https.html, payment-request-canmakepayment-method-protection.https.html">
           Optionally, at the <a>top-level browsing context</a>'s discretion,
-          return <a>a promise rejected with</a> a "<a>NotAllowedError</a>" <a>
-            DOMException</a>.
+          return <a>a promise rejected with</a> a "{{NotAllowedError}}"
+          {{DOMException}}.
             <p class="note" data-link-for="PaymentRequest">
               This allows user agents to apply heuristics to detect and prevent
               abuse of the calling method for fingerprinting purposes, such as
@@ -4254,8 +4251,10 @@
                   element in the |paymentMethod| tuple.
                   </li>
                   <li>If required by the specification that defines the
-                  |identifier|, then <a>convert</a> |data| to an IDL value.
-                  Otherwise, <a>convert</a> to <a>object</a>.
+                  |identifier|, then <a data-lt=
+                  "converted to an IDL value">convert</a> |data| to an IDL
+                  value. Otherwise, <a data-lt=
+                  "converted to an IDL value">convert</a> to {{object}}.
                   </li>
                   <li>Let |handlers| be a <a>list</a> of registered <a>payment
                   handlers</a> that are authorized and can handle payment
@@ -4372,15 +4371,15 @@
         <p data-cite="WEBIDL">
           A <a>payment handler</a> MAY run the <dfn>payment method changed
           algorithm</dfn> when the user changes <a>payment method</a> with
-          |methodDetails|, which is a <a>dictionary</a> or an <a data-cite=
-          "WEBIDL#idl-object">object</a> or null, and a |methodName|, which is
-          a DOMString that represents the <a>payment method identifier</a> of
-          the <a>payment handler</a> the user is interacting with.
+          |methodDetails|, which is a <a>dictionary</a> or an {{object}} or
+          null, and a |methodName|, which is a DOMString that represents the
+          <a>payment method identifier</a> of the <a>payment handler</a> the
+          user is interacting with.
         </p>
         <p class="note" title=
         "Privacy of information shared by paymentmethodchange event">
           When the user selects or changes a payment method (e.g., a credit
-          card), the <a>PaymentMethodChangeEvent</a> includes redacted billing
+          card), the {{PaymentMethodChangeEvent}} includes redacted billing
           address information for the purpose of performing tax calculations.
           Redacted attributes include, but are not limited to, <a>address
           line</a>, <a>dependent locality</a>, <a>organization</a>, <a>phone
@@ -4401,7 +4400,7 @@
               </li>
               <li data-link-for="PaymentMethodChangeEvent">
                 <a>Fire an event</a> named "<a>paymentmethodchange</a>" at
-                |request| using <a>PaymentMethodChangeEvent</a>, with its
+                |request| using {{PaymentMethodChangeEvent}}, with its
                 <a>methodName</a> attribute initialized to |methodName|, and
                 its <a>methodDetails</a> attribute initialized to
                 |methodDetails|.
@@ -4427,7 +4426,7 @@
           <li>Assert: |request|.<a>[[\state]]</a> is "<a>interactive</a>".
           </li>
           <li>Let |event| be the result of <a>creating an event</a> using the
-          <a>PaymentRequestUpdateEvent</a> interface.
+          {{PaymentRequestUpdateEvent}} interface.
           </li>
           <li>Initialize |event|'s <code><a data-cite=
           "DOM#dom-event-type">type</a></code> attribute to |name|.
@@ -4495,7 +4494,7 @@
                 </ol>
               </li>
               <li>Let |event| be the result of <a>creating an event</a> using
-              <a>PaymentRequestUpdateEvent</a>.
+              {{PaymentRequestUpdateEvent}}.
               </li>
               <li>Initialize |event|'s <code><a data-cite="DOM#dom-event-type">
                 type</a></code> attribute to "<a>payerdetailchange</a>".
@@ -4664,7 +4663,7 @@
           <li>Set |request|'s <a>payment-relevant browsing context</a>'s
           <a>payment request is showing</a> boolean to false.
           </li>
-          <li>Let |error| be an "<a>AbortError</a>" <a>DOMException</a>.
+          <li>Let |error| be an "{{AbortError}}" {{DOMException}}.
           </li>
           <li>Let |response| be |request|.<a>[[\response]]</a>.
           </li>
@@ -4720,18 +4719,19 @@
             <a>Upon rejection</a> of |detailsPromise|:
             <ol>
               <li>
-                <a>Abort the update</a> with |request| and an
-                "<a>AbortError</a>" <a>DOMException</a>.
+                <a>Abort the update</a> with |request| and an "{{AbortError}}"
+                {{DOMException}}.
               </li>
             </ol>
           </li>
           <li>
             <a>Upon fulfillment</a> of |detailsPromise| with value |value|:
             <ol data-link-for="PaymentDetailsBase">
-              <li>Let |details| be the result of <a>converting</a> |value| to a
-              <a>PaymentDetailsUpdate</a> dictionary. If this <a>throws</a> an
-              exception, <a>abort the update</a> with |request| and with the
-              thrown exception.
+              <li>Let |details| be the result of <a data-lt=
+              "converted to an IDL value">converting</a> |value| to a
+              <a>PaymentDetailsUpdate</a> dictionary. If this
+              [=exception/throw=] an exception, <a>abort the update</a> with
+              |request| and with the thrown exception.
               </li>
               <li>Let |serializedModifierData| be an empty list.
               </li>
@@ -4881,8 +4881,8 @@
               not null:
                 <ol>
                   <li>If required by the specification that defines the |pmi|,
-                  then <a>convert</a> <a>paymentMethodErrors</a> to an IDL
-                  value.
+                  then <a data-lt="converted to an IDL value">convert</a>
+                  <a>paymentMethodErrors</a> to an IDL value.
                   </li>
                   <li>If conversion results in a <a>exception</a> |error|, <a>
                     abort the update</a> with |error|.
@@ -5096,8 +5096,8 @@
             <a>Upon rejection</a> of |opaqueDataPromise|:
             <ol>
               <li>
-                <a>Abort the update</a> with |request| and an
-                "<a>AbortError</a>" <a>DOMException</a>.
+                <a>Abort the update</a> with |request| and an "{{AbortError}}"
+                {{DOMException}}.
               </li>
             </ol>
           </li>
@@ -5149,10 +5149,10 @@
         </h2>
         <p>
           The API defined in this specification is only exposed in
-          <a data-cite="secure-contexts#secure-context">secure contexts</a>. In
-          practice, this means that this API is only available over HTTPS. This
-          is to limit the possibility of payment method data (e.g., credit card
-          numbers) being sent in the clear.
+          <a data-cite="secure-contexts">secure contexts</a>. In practice, this
+          means that this API is only available over HTTPS. This is to limit
+          the possibility of payment method data (e.g., credit card numbers)
+          being sent in the clear.
         </p>
       </section>
       <section class="informative">
@@ -5163,7 +5163,8 @@
           It is common for merchants and other payees to delegate checkout and
           other e-commerce activities to payment service providers through an
           <a>iframe</a>. This API supports payee-authorized cross-origin
-          iframes through [[HTML]]'s <a>allowpaymentrequest</a> attribute.
+          iframes through [[HTML]]'s {{ HTMLIFrameElement.allowPaymentRequest
+          }} attribute.
         </p>
         <p class="Note">
           <a>Payment handlers</a> have access to both the origin that hosts the
@@ -5219,7 +5220,7 @@
           consent.
         </p>
         <p>
-          The <a>PaymentMethodChangeEvent</a> enables the payee to update the
+          The {{PaymentMethodChangeEvent}} enables the payee to update the
           displayed total based on information specific to a selected
           <a>payment method</a>. For example, the billing address associated
           with a selected <a>payment method</a> might affect the tax
@@ -5229,10 +5230,10 @@
           information as possible prior to completion of the payment.
           Therefore, when a <a>payment method</a> defines the <a>steps for when
           a user changes payment method</a>, it is important to minimize the
-          data shared via the <a>PaymentMethodChangeEvent</a>'s
-          <a data-link-for="PaymentMethodChangeEvent">methodDetails</a>
-          attribute. Requirements and approaches for minimizing shared data are
-          likely to vary by <a>payment method</a> and might include:
+          data shared via the {{PaymentMethodChangeEvent}}'s <a data-link-for=
+          "PaymentMethodChangeEvent">methodDetails</a> attribute. Requirements
+          and approaches for minimizing shared data are likely to vary by
+          <a>payment method</a> and might include:
         </p>
         <ul>
           <li>Use of a "|redactList|" for <a>physical addresses</a>. The
@@ -5263,7 +5264,7 @@
         </h2>
         <p data-link-for="MerchantValidationEvent">
           It is important that the <a>validationURL</a> in a
-          <a>MerchantValidationEvent</a> does not expose personally identifying
+          {{MerchantValidationEvent}} does not expose personally identifying
           information to unauthorized parties.
         </p>
       </section>
@@ -5281,8 +5282,8 @@
         <ul data-link-for="PaymentRequest">
           <li>Allowing the user to configure the user agent to turn off
           <a>canMakePayment()</a> and <a>hasEnrolledInstrument()</a>, which
-          would return <a>a promise rejected with</a> a
-          "<a>NotAllowedError</a>" <a>DOMException</a>.
+          would return <a>a promise rejected with</a> a "{{NotAllowedError}}"
+          {{DOMException}}.
           </li>
           <li>Rate-limiting the frequency of calls with different parameters.
           </li>
@@ -5336,29 +5337,12 @@
           defined in [[ISO3166-2]].
         </dd>
         <dt>
-          Infra
-        </dt>
-        <dd></dd>
-        <dt>
           Payment Method Identifiers
         </dt>
         <dd>
           The term <dfn data-lt="PMI">payment method identifier</dfn>, or PMI
           for short, is defined by [[payment-method-id]]. It's an unique
           identifier for a <a>payment method</a>.
-        </dd>
-        <dt>
-          HTML
-        </dt>
-        <dd>
-          The following are defined by [[HTML]]: <code><dfn data-cite=
-          "HTML/webappapis.html#eventhandler">EventHandler</dfn></code>,
-          <dfn data-cite="HTML/iframe-embed-object.html#allowed-to-use">allowed
-          to use</dfn>, the <code><dfn data-cite=
-          "HTML/iframe-embed-object.html#the-iframe-element">iframe</dfn></code>
-          element, and the <code><dfn data-cite=
-          "HTML/iframe-embed-object.html#attr-iframe-allowpaymentrequest">allowpaymentrequest</dfn></code>
-          attribute.
         </dd>
         <dt>
           ECMAScript
@@ -5381,63 +5365,6 @@
             value of the <a>JSON.stringify</a> function on the supplied object,
             passing the supplied object as the sole argument, and return the
             resulting string. This can throw an exception.
-          </p>
-        </dd>
-        <dt>
-          Writing Promise-Using Specifications
-        </dt>
-        <dd>
-          The terms <dfn data-cite="PROMISES-GUIDE#a-new-promise">a new
-          promise</dfn>, <dfn data-cite=
-          "PROMISES-GUIDE#a-promise-rejected-with">a promise rejected
-          with</dfn>, <dfn data-cite="PROMISES-GUIDE#upon-fulfillment">upon
-          fulfillment</dfn> and <dfn data-cite=
-          "PROMISES-GUIDE#upon-rejection">upon rejection</dfn> are defined by
-          [[PROMISES-GUIDE]].
-        </dd>
-        <dt>
-          DOM
-        </dt>
-        <dd>
-          The <code><dfn data-cite="DOM#event">Event</dfn></code> interface,
-          the <code><dfn data-cite=
-          "DOM#interface-eventtarget">EventTarget</dfn></code> interface, the
-          <code><dfn data-cite="DOM#dictdef-eventinit">EventInit</dfn></code>
-          dictionary, <code><dfn data-cite=
-          "DOM#dom-event-istrusted">isTrusted</dfn></code> attribute, are
-          defined by [[DOM]].
-        </dd>
-        <dt>
-          Web IDL
-        </dt>
-        <dd>
-          <p>
-            When this specification says to <dfn data-cite=
-            "WEBIDL#dfn-throw">throw</dfn> an error, the <a>user agent</a> must
-            throw an error as described in [[WEBIDL]]. When this occurs in a
-            sub-algorithm, this results in termination of execution of the
-            sub-algorithm and all ancestor algorithms until one is reached that
-            explicitly describes procedures for catching exceptions.
-          </p>
-          <p>
-            The algorithm for <dfn data-cite=
-            "WEBIDL#dfn-convert-ecmascript-to-idl-value" data-lt=
-            "converting">converting an ECMAScript value to a dictionary</dfn>
-            is defined by [[WEBIDL]].
-          </p>
-          <p>
-            <code><dfn data-cite=
-            "WEBIDL#dfn-DOMException">DOMException</dfn></code> and the
-            following <a>DOMException</a> types from [[WEBIDL]] are used:
-            "<code><dfn data-cite="WEBIDL#aborterror">AbortError</dfn></code>",
-            "<code><dfn data-cite=
-            "WEBIDL#invalidstateerror">InvalidStateError</dfn></code>",
-            "<code><dfn data-cite=
-            "WEBIDL#notallowederror">NotAllowedError</dfn></code>",
-            "<code><dfn data-cite=
-            "WEBIDL#notsupportederror">NotSupportedError</dfn></code>", and
-            "<code><dfn data-cite=
-            "WEBIDL#securityerror">SecurityError</dfn></code>".
           </p>
         </dd>
       </dl>
