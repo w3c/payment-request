@@ -141,9 +141,8 @@
           enhance privacy, only some billing address data is returned to the
           merchant as long as the user has not confirmed payment.
           </li>
-          <li>Added support for <a data-lt=
-          "PaymentResponse.retry()">retry()</a> and fine-grain error reporting
-          to the user.
+          <li data-link-for="PaymentResponse">Added support for {{retry()}} and
+          fine-grain error reporting to the user.
           </li>
           <li>Added support for merchant validation by the payment handler.
           </li>
@@ -152,10 +151,9 @@
           <a>canMakePayment()</a> does not reveal whether payment handler is
           primed to pay.
           </li>
-          <li>Removed <code>languageCode</code> and <code>regionCode</code>
-          from <a>PaymentAddress</a>.
+          <li>Removed `languageCode` and `regionCode` from {{PaymentAddress}}.
           </li>
-          <li>Removed <code>currencySystem</code>.
+          <li>Removed `currencySystem`.
           </li>
           <li>"<a>Payment request is showing</a>" boolean now attached to
           top-level browsing context. Previously, only a single payment UI was
@@ -226,8 +224,7 @@
           <p>
             Steps that describe how to handle the user changing payment method
             or monetary instrument (e.g., from a debit card to a credit card)
-            that results in a <a>dictionary</a> or <a data-cite=
-            "WEBIDL#idl-object">object</a> or null.
+            that results in a <a>dictionary</a> or {{object}} or null.
           </p>
         </dd>
       </dl>
@@ -276,7 +273,7 @@
       <p>
         In order to use the API, the developer needs to provide and keep track
         of a number of key pieces of information. These bits of information are
-        passed to the <a>PaymentRequest</a> constructor as arguments, and
+        passed to the {{PaymentRequest}} constructor as arguments, and
         subsequently used to update the payment request being displayed to the
         user. Namely, these bits of information are:
       </p>
@@ -301,7 +298,7 @@
         </li>
       </ul>
       <p data-link-for="PaymentRequest">
-        Once a <a>PaymentRequest</a> is constructed, it's presented to the end
+        Once a {{PaymentRequest}} is constructed, it's presented to the end
         user via the <a>show()</a> method. The <a>show()</a> returns a promise
         that, once the user confirms request for payment, results in a
         <a>PaymentResponse</a>.
@@ -311,10 +308,10 @@
           Declaring multiple ways of paying
         </h3>
         <p>
-          When constructing a new <a>PaymentRequest</a>, a merchant uses the
-          first argument (|methodData|) to list the different ways a user can
-          pay for things (e.g., credit cards, Apple Pay, Google Pay, etc.).
-          More specifically, the |methodData| sequence contains
+          When constructing a new {{PaymentRequest}}, a merchant uses the first
+          argument (|methodData|) to list the different ways a user can pay for
+          things (e.g., credit cards, Apple Pay, Google Pay, etc.). More
+          specifically, the |methodData| sequence contains
           <a>PaymentMethodData</a> dictionaries containing the <a>payment
           method identifiers</a> for the <a>payment methods</a> that the
           merchant accepts and any associated <a>payment method</a> specific
@@ -343,7 +340,7 @@
           Describing what is being paid for
         </h3>
         <p>
-          When constructing a new <a>PaymentRequest</a>, a merchant uses the
+          When constructing a new {{PaymentRequest}}, a merchant uses the
           second argument of the constructor (|details|) to provide the details
           of the transaction that the user is being asked to complete. This
           includes the total of the order and, optionally, some line items that
@@ -441,11 +438,11 @@
           information in order for a merchant to fulfill a purchase (e.g., the
           user's shipping address, in case a physical good needs to be
           shipped). To request this information, a merchant can pass a third
-          optional argument (|options|) to the <a>PaymentRequest</a>
-          constructor indicating what information they require. When the
-          payment request is shown, the user agent will request this
-          information from the end user and return it to the merchant when the
-          user accepts the payment request.
+          optional argument (|options|) to the {{PaymentRequest}} constructor
+          indicating what information they require. When the payment request is
+          shown, the user agent will request this information from the end user
+          and return it to the merchant when the user accepts the payment
+          request.
         </p>
         <pre class="example js" title="The `options` argument">
           const options = {
@@ -462,8 +459,8 @@
         </h3>
         <p>
           Having gathered all the prerequisite bits of information, we can now
-          construct a <a>PaymentRequest</a> and request that the browser
-          present it to the user:
+          construct a {{PaymentRequest}} and request that the browser present
+          it to the user:
         </p>
         <pre class="example js" title="Constructing a `PaymentRequest`">
           async function doPaymentRequest() {
@@ -545,12 +542,12 @@
           A developer can use the <a data-link-for=
           "PaymentDetailsUpdate">shippingAddressErrors</a> member of the
           <a>PaymentDetailsUpdate</a> dictionary to indicate that there are
-          validation errors with specific attributes of a
-          <a>PaymentAddress</a>. The <a data-link-for=
-          "PaymentDetailsUpdate">shippingAddressErrors</a> member is a
-          <a>AddressErrors</a> dictionary, whose members specifically demarcate
-          the fields of a <a>physical address</a> that are erroneous while also
-          providing helpful error messages to be displayed to the end user.
+          validation errors with specific attributes of a {{PaymentAddress}}.
+          The <a data-link-for="PaymentDetailsUpdate">shippingAddressErrors</a>
+          member is a <a>AddressErrors</a> dictionary, whose members
+          specifically demarcate the fields of a <a>physical address</a> that
+          are erroneous while also providing helpful error messages to be
+          displayed to the end user.
         </p>
         <pre class="example js">
           request.onshippingaddresschange = ev =&gt; {
@@ -632,14 +629,14 @@
       </pre>
       <div class="note">
         <p>
-          A developer creates a <a>PaymentRequest</a> to make a payment
-          request. This is typically associated with the user initiating a
-          payment process (e.g., by activating a "Buy," "Purchase," or
-          "Checkout" button on a web site, selecting a "Power Up" in an
-          interactive game, or paying at a kiosk in a parking structure). The
-          <a>PaymentRequest</a> allows developers to exchange information with
-          the <a>user agent</a> while the user is providing input (up to the
-          point of user approval or denial of the payment request).
+          A developer creates a {{PaymentRequest}} to make a payment request.
+          This is typically associated with the user initiating a payment
+          process (e.g., by activating a "Buy," "Purchase," or "Checkout"
+          button on a web site, selecting a "Power Up" in an interactive game,
+          or paying at a kiosk in a parking structure). The {{PaymentRequest}}
+          allows developers to exchange information with the <a>user agent</a>
+          while the user is providing input (up to the point of user approval
+          or denial of the payment request).
         </p>
         <p data-link-for="PaymentRequest">
           The <a>shippingAddress</a>, <a>shippingOption</a>, and
@@ -650,10 +647,10 @@
       </div>
       <p>
         A |request|'s <dfn>payment-relevant browsing context</dfn> is that
-        <a>PaymentRequest</a>'s <a>relevant global object</a>'s browsing
-        context's <a>top-level browsing context</a>. Every <a>payment-relevant
-        browsing context</a> has a <dfn>payment request is showing</dfn>
-        boolean, which prevents showing more than one payment UI at a time.
+        {{PaymentRequest}}'s <a>relevant global object</a>'s browsing context's
+        <a>top-level browsing context</a>. Every <a>payment-relevant browsing
+        context</a> has a <dfn>payment request is showing</dfn> boolean, which
+        prevents showing more than one payment UI at a time.
       </p>
       <p class="Note">
         The <a>payment request is showing</a> boolean simply prevents more than
@@ -668,8 +665,8 @@
           Constructor
         </h2>
         <p>
-          The <a>PaymentRequest</a> is constructed using the supplied sequence
-          of <a>PaymentMethodData</a> |methodData| including any <a>payment
+          The {{PaymentRequest}} is constructed using the supplied sequence of
+          <a>PaymentMethodData</a> |methodData| including any <a>payment
           method</a> specific <a data-lt="PaymentMethodData.data">data</a>, the
           <a>PaymentDetailsInit</a> |details|, and the <a>PaymentOptions</a>
           |options|.
@@ -684,7 +681,7 @@
           <li>If the <a>current settings object</a>'s [=environment settings
           object / responsible document=] is not <a>allowed to use</a> the
           "<a data-lt="payment-feature">payment</a>" feature, then
-          [=exception/throw=] a "{{SecurityError}}" {{DOMException}}.
+          [=exception/throw=] a {{"SecurityError"}} {{DOMException}}.
           </li>
           <li>Establish the request's id:
             <ol>
@@ -713,9 +710,9 @@
                     validate a payment method identifier</a> with
                     |paymentMethod|.<a data-lt=
                     "PaymentMethodData.supportedMethods">supportedMethods</a>.
-                    If it returns false, then throw a <a>RangeError</a>
-                    exception. Optionally, inform the developer that the
-                    payment method identifier is invalid.
+                    If it returns false, then throw a {{RangeError}} exception.
+                    Optionally, inform the developer that the payment method
+                    identifier is invalid.
                   </li>
                   <li>If the <a data-lt="PaymentMethodData.data">data</a>
                   member of |paymentMethod| is missing, let |serializedData| be
@@ -784,7 +781,7 @@
           "PaymentOptions.requestShipping">requestShipping</a> member of
           |options| is present and set to true, process shipping options:
             <ol>
-              <li>Let |options| be an empty
+              <li>Let |options:PaymentShippingOption| be an empty
               <code><a>sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
               </li>
               <li>If the <a>shippingOptions</a> member of |details| is present,
@@ -885,7 +882,7 @@
               </li>
             </ol>
           </li>
-          <li>Let |request| be a new <a>PaymentRequest</a>.
+          <li>Let |request:PaymentRequest| be a new {{PaymentRequest}}.
           </li>
           <li>Set |request|.<a>[[\options]]</a> to |options|.
           </li>
@@ -928,7 +925,7 @@
         </h2>
         <p data-tests="payment-request-id-attribute.https.html">
           When getting, the <a>id</a> attribute returns this
-          <a>PaymentRequest</a>'s <a>[[\details]]</a>.<a data-lt=
+          {{PaymentRequest}}'s <a>[[\details]]</a>.<a data-lt=
           "PaymentDetailsInit.id">id</a>.
         </p>
       </section>
@@ -962,30 +959,30 @@
           <li data-tests=
           "payment-request-show-method.https.html, show-method-postmessage-manual.https.html">
           If the method was not <a>triggered by user activation</a>, return <a>
-            a promise rejected with</a> with a "{{SecurityError}}"
+            a promise rejected with</a> with a {{"SecurityError"}}
             {{DOMException}}.
           </li>
-          <li>Let |request| be the <a>context object</a>.
+          <li>Let |request:PaymentRequest| be the <a>context object</a>.
           </li>
           <li>Let |document| be |request|'s <a>relevant global object</a>'s <a>
             associated <code>Document</code></a>.
           </li>
           <li data-tests="rejects_if_not_active.https.html">If |document| is
           not [=Document/fully active=], then return <a>a promise rejected
-          with</a> an "{{AbortError}}" {{DOMException}}.
+          with</a> an {{"AbortError"}} {{DOMException}}.
           </li>
           <li>
             <p>
               Optionally, if the <a>user agent</a> wishes to disallow the call
               to <a>show()</a> to protect the user, then return a promise
-              rejected with a "{{SecurityError}}" {{DOMException}}. For
+              rejected with a {{"SecurityError"}} {{DOMException}}. For
               example, the <a>user agent</a> may limit the rate at which a page
               can call <a>show()</a>, as described in section <a href=
               "#privacy"></a>.
             </p>
           </li>
           <li>If |request|.<a>[[\state]]</a> is not "<a>created</a>" then
-          return <a>a promise rejected with</a> an "{{InvalidStateError}}"
+          return <a>a promise rejected with</a> an {{"InvalidStateError"}}
           {{DOMException}}.
           </li>
           <li>If the <a>user agent</a>'s <a>payment request is showing</a>
@@ -993,14 +990,14 @@
             <ol>
               <li>Set |request|.<a>[[\state]]</a> to "<a>closed</a>".
               </li>
-              <li>Return <a>a promise rejected with</a> an "{{AbortError}}"
+              <li>Return <a>a promise rejected with</a> an {{"AbortError"}}
               {{DOMException}}.
               </li>
             </ol>
           </li>
           <li>Set |request|.<a>[[\state]]</a> to "<a>interactive</a>".
           </li>
-          <li>Let |acceptPromise| be <a>a new promise</a>.
+          <li>Let |acceptPromise:Promise| be <a>a new promise</a>.
           </li>
           <li>Set |request|.<a>[[\acceptPromise]]</a> to |acceptPromise|.
           </li>
@@ -1009,7 +1006,7 @@
               Optionally:
             </p>
             <ol>
-              <li>Reject |acceptPromise| with an "{{AbortError}}"
+              <li>Reject |acceptPromise| with an {{"AbortError"}}
               {{DOMException}}.
               </li>
               <li>Set |request|.<a>[[\state]]</a> to "<a>closed</a>".
@@ -1031,7 +1028,7 @@
           <li>Return |acceptPromise| and perform the remaining steps <a>in
           parallel</a>.
           </li>
-          <li>Let |handlers| be an empty <a>list</a>.
+          <li>Let |handlers:list| be an empty <a>list</a>.
           </li>
           <li>For each |paymentMethod| tuple in
           |request|.<a>[[\serializedMethodData]]</a>:
@@ -1082,7 +1079,7 @@
             <ol>
               <li>Set |request|.<a>[[\state]]</a> to "<a>closed</a>".
               </li>
-              <li>Reject |acceptPromise| with "{{NotSupportedError}}"
+              <li>Reject |acceptPromise| with {{"NotSupportedError"}}
               {{DOMException}}.
               </li>
               <li>Set |request|'s <a>payment-relevant browsing context</a>'s
@@ -1122,7 +1119,7 @@
           <li>Let |handler| be the <a>payment handler</a> selected by the
           end-user.
           </li>
-          <li>Let |modifiers| be an empty list.
+          <li>Let |modifiers:list| be an empty list.
           </li>
           <li>For each |tuple| in <a>[[\serializedModifierData]]</a>:
             <ol>
@@ -1270,18 +1267,18 @@
           The <a>abort()</a> method MUST act as follows:
         </p>
         <ol class="algorithm">
-          <li>Let |request| be the <a>context object</a>.
+          <li>Let |request:PaymentRequest| be the <a>context object</a>.
           </li>
           <li>If |request|.<a>[[\response]]</a> is not null, and
           |request|.<a>[[\response]]</a>.<a>[[\retryPromise]]</a> is not null,
-          return <a>a promise rejected with</a> an "{{InvalidStateError}}"
+          return <a>a promise rejected with</a> an {{"InvalidStateError"}}
           {{DOMException}}.
           </li>
           <li>If the value of |request|.<a>[[\state]]</a> is not
           "<a>interactive</a>" then return <a>a promise rejected with</a> an
-          "{{InvalidStateError}}" {{DOMException}}.
+          {{"InvalidStateError"}} {{DOMException}}.
           </li>
-          <li>Let |promise| be <a>a new promise</a>.
+          <li>Let |promise:Promise| be <a>a new promise</a>.
           </li>
           <li>Return |promise| and perform the remaining steps <a>in
           parallel</a>.
@@ -1294,13 +1291,13 @@
             perform the following steps:
             <ol>
               <li>If it is not possible to abort the current user interaction,
-              then reject |promise| with "{{InvalidStateError}}"
+              then reject |promise| with {{"InvalidStateError"}}
               {{DOMException}} and abort these steps.
               </li>
               <li>Set |request|.<a>[[\state]]</a> to "<a>closed</a>".
               </li>
               <li>Reject the promise |request|.<a>[[\acceptPromise]]</a> with
-              an "{{AbortError}}" {{DOMException}}.
+              an {{"AbortError"}} {{DOMException}}.
               </li>
               <li>Resolve |promise| with undefined.
               </li>
@@ -1352,10 +1349,10 @@
           <dfn>shippingAddress</dfn> attribute
         </h2>
         <p data-tests="shipping-address-changed-manual.https.html">
-          A <a>PaymentRequest</a>'s <a>shippingAddress</a> attribute is
-          populated when the user provides a shipping address. It is null by
-          default. When a user provides a shipping address, the <a>shipping
-          address changed algorithm</a> runs.
+          A {{PaymentRequest}}'s <a>shippingAddress</a> attribute is populated
+          when the user provides a shipping address. It is null by default.
+          When a user provides a shipping address, the <a>shipping address
+          changed algorithm</a> runs.
         </p>
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
@@ -1363,8 +1360,8 @@
           <dfn>shippingType</dfn> attribute
         </h2>
         <p data-tests="payment-request-shippingType-attribute.https.html">
-          A <a>PaymentRequest</a>'s <a>shippingType</a> attribute is the type
-          of shipping used to fulfill the transaction. Its value is either a
+          A {{PaymentRequest}}'s <a>shippingType</a> attribute is the type of
+          shipping used to fulfill the transaction. Its value is either a
           <a>PaymentShippingType</a> enum value, or null if none is provided by
           the developer during <a data-lt=
           "PaymentRequest.PaymentRequest()">construction</a> (see
@@ -1377,7 +1374,7 @@
           <dfn>onmerchantvalidation</dfn> attribute
         </h2>
         <p data-tests="onmerchantvalidation-attribute.https.html">
-          A <a>PaymentRequest</a>'s <a>onmerchantvalidation</a> attribute is an
+          A {{PaymentRequest}}'s <a>onmerchantvalidation</a> attribute is an
           {{EventHandler}} for a {{MerchantValidationEvent}} named
           "<a>merchantvalidation</a>".
         </p>
@@ -1388,8 +1385,8 @@
         </h2>
         <p data-tests=
         "shipping-address-changed-manual.https.html, payment-request-onshippingaddresschange-attribute.https.html, algorithms-manual.https.html#shipping-address-changed-algo">
-          A <a>PaymentRequest</a>'s <a>onshippingaddresschange</a> attribute is
-          an {{EventHandler}} for a {{PaymentRequestUpdateEvent}} named
+          A {{PaymentRequest}}'s <a>onshippingaddresschange</a> attribute is an
+          {{EventHandler}} for a {{PaymentRequestUpdateEvent}} named
           <a>shippingaddresschange</a>.
         </p>
       </section>
@@ -1399,10 +1396,10 @@
         </h2>
         <p data-tests=
         "payment-request-shippingOption-attribute.https.html, change-shipping-option-manual.https.html">
-          A <a>PaymentRequest</a>'s <a>shippingOption</a> attribute is
-          populated when the user chooses a shipping option. It is null by
-          default. When a user chooses a shipping option, the <a>shipping
-          option changed algorithm</a> runs.
+          A {{PaymentRequest}}'s <a>shippingOption</a> attribute is populated
+          when the user chooses a shipping option. It is null by default. When
+          a user chooses a shipping option, the <a>shipping option changed
+          algorithm</a> runs.
         </p>
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
@@ -1411,8 +1408,8 @@
         </h2>
         <p data-tests=
         "payment-request-onshippingoptionchange-attribute.https.html">
-          A <a>PaymentRequest</a>'s <a>onshippingoptionchange</a> attribute is
-          an {{EventHandler}} for a {{PaymentRequestUpdateEvent}} named
+          A {{PaymentRequest}}'s <a>onshippingoptionchange</a> attribute is an
+          {{EventHandler}} for a {{PaymentRequestUpdateEvent}} named
           <a>shippingoptionchange</a>.
         </p>
       </section>
@@ -1421,8 +1418,8 @@
           <dfn>onpaymentmethodchange</dfn> attribute
         </h2>
         <p data-tests="onpaymentmenthodchange-attribute.https.html">
-          A <a>PaymentRequest</a>'s <a>onpaymentmethodchange</a> attribute is
-          an {{EventHandler}} for a {{PaymentMethodChangeEvent}} named
+          A {{PaymentRequest}}'s <a>onpaymentmethodchange</a> attribute is an
+          {{EventHandler}} for a {{PaymentMethodChangeEvent}} named
           "<a>paymentmethodchange</a>".
         </p>
       </section>
@@ -1431,8 +1428,8 @@
           Internal Slots
         </h2>
         <p>
-          Instances of <a>PaymentRequest</a> are created with the internal
-          slots in the following table:
+          Instances of {{PaymentRequest}} are created with the internal slots
+          in the following table:
         </p>
         <table>
           <tr>
@@ -1565,7 +1562,7 @@
             </td>
             <td>
               Null, or the <a>PaymentResponse</a> instantiated by this
-              <a>PaymentRequest</a>.
+              {{PaymentRequest}}.
             </td>
           </tr>
         </table>
@@ -1649,7 +1646,7 @@
               "ecma-402#sec-iswellformedcurrencycode">isWellFormedCurrencyCode</a>
               abstract operation, which is invoked as part of the <a>check and
               canonicalize amount</a> algorithm. When a code does not adhere to
-              the [[ISO4217]] defined format, a <a>RangeError</a> is thrown.
+              the [[ISO4217]] defined format, a {{RangeError}} is thrown.
             </p>
             <p>
               Current implementations will therefore allow the use of
@@ -1723,8 +1720,8 @@
         <ol data-link-for="PaymentCurrencyAmount">
           <li>If the result of <a data-cite=
           "ecma-402#sec-iswellformedcurrencycode">IsWellFormedCurrencyCode</a>(|amount|.<a>currency</a>)
-          is false, then throw a <a>RangeError</a> exception, optionally
-          informing the developer that the currency is invalid.
+          is false, then throw a {{RangeError}} exception, optionally informing
+          the developer that the currency is invalid.
           </li>
           <li>If |amount|.<a>value</a> is not a <a>valid decimal monetary
           value</a>, throw a <a>TypeError</a>, optionally informing the
@@ -1783,7 +1780,7 @@
             for the payment request that the <a>user agent</a> MAY display.
             <aside class="note">
               It is the developer's responsibility, when generating or updating
-              a <a>PaymentRequest</a>, to verify that the <a data-lt=
+              a {{PaymentRequest}}, to verify that the <a data-lt=
               "PaymentDetailsInit.total">total</a> amount is the sum of these
               items.
             </aside>
@@ -1811,9 +1808,9 @@
             </p>
             <p>
               The <a>shippingOptions</a> member is only used if the
-              <a>PaymentRequest</a> was constructed with <a>PaymentOptions</a>
-              and <a data-lt=
-              "PaymentOptions.requestShipping">requestShipping</a> set to true.
+              {{PaymentRequest}} was constructed with <a>PaymentOptions</a> and
+              <a data-lt="PaymentOptions.requestShipping">requestShipping</a>
+              set to true.
             </p>
             <aside class="note">
               If the sequence has an item with the <a data-lt=
@@ -1921,7 +1918,7 @@
             <a>error</a> member that will be displayed to the user if the
             <a>PaymentDetailsUpdate</a> indicates that there are no valid
             <a data-lt="PaymentDetailsBase.shippingOptions">shippingOptions</a>
-            (and the <a>PaymentRequest</a> was constructed with the <a data-lt=
+            (and the {{PaymentRequest}} was constructed with the <a data-lt=
             "PaymentOptions.requestShipping">requestShipping</a> option set to
             true).
           </dd>
@@ -2082,7 +2079,7 @@
       </pre>
       <p class="note">
         The <a>PaymentOptions</a> dictionary is passed to the
-        <a>PaymentRequest</a> constructor and provides information about the
+        {{PaymentRequest}} constructor and provides information about the
         options desired for the payment request.
       </p>
       <dl>
@@ -2292,7 +2289,7 @@
           };
         </pre>
         <p>
-          The <a>PaymentAddress</a> interface represents a <a>physical
+          The {{PaymentAddress}} interface represents a <a>physical
           address</a>.
         </p>
         <aside class="note" title="What happened to regionCode?">
@@ -2316,11 +2313,11 @@
           <p>
             The steps to <dfn data-lt=
             "PaymentAddress.PaymentAddress()">internally construct a
-            <code>PaymentAddress</code></dfn> with an optional
-            <a>AddressInit</a> |details| are given by the following algorithm:
+            `PaymentAddress`</dfn> with an optional <a>AddressInit</a>
+            |details| are given by the following algorithm:
           </p>
           <ol data-link-for="AddressInit">
-            <li>Let |address| be a new instance of <a>PaymentAddress</a>.
+            <li>Let |address:PaymentAddress| be a new instance of {{PaymentAddress}}.
             </li>
             <li>Set |address|.<a>[[\addressLine]]</a> to the empty frozen
             array, and all other <a data-lt="PaymentAddress slots">internal
@@ -2336,13 +2333,13 @@
                 performing <a>ASCII uppercase</a>.
                 </li>
                 <li>If |country| is not a valid [[ISO3166-1]] alpha-2 code,
-                throw a <a>RangeError</a> exception.
+                throw a {{RangeError}} exception.
                 </li>
                 <li>Set |address|.<a>[[\country]]</a> to |country|.
                 </li>
               </ol>
             </li>
-            <li>Let |cleanAddressLines| be an empty list.
+            <li>Let |cleanAddressLines:list| be an empty list.
             </li>
             <li>If |details|["<a>addressLine</a>"] is present, then for each
             |item| in |details|["<a>addressLine</a>"]:
@@ -2411,8 +2408,8 @@
           </h2>
           <p data-link-for="">
             Represents the <a>country</a> of the address. When getting, returns
-            the value of the <a>PaymentAddress</a>'s <a>[[\country]]</a>
-            internal slot.
+            the value of the {{PaymentAddress}}'s <a>[[\country]]</a> internal
+            slot.
           </p>
         </section>
         <section>
@@ -2421,7 +2418,7 @@
           </h2>
           <p data-link-for="">
             Represents the <a>address line</a> of the address. When getting,
-            returns the value of the <a>PaymentAddress</a>'s
+            returns the value of the {{PaymentAddress}}'s
             <a>[[\addressLine]]</a> internal slot.
           </p>
         </section>
@@ -2431,8 +2428,8 @@
           </h2>
           <p data-link-for="">
             Represents the <a>region</a> of the address. When getting, returns
-            the value of the <a>PaymentAddress</a>'s <a>[[\region]]</a>
-            internal slot.
+            the value of the {{PaymentAddress}}'s <a>[[\region]]</a> internal
+            slot.
           </p>
         </section>
         <section>
@@ -2441,7 +2438,7 @@
           </h2>
           <p data-link-for="">
             Represents the <a>city</a> of the address. When getting, returns
-            the value of the <a>PaymentAddress</a>'s <a>[[\city]]</a> internal
+            the value of the {{PaymentAddress}}'s <a>[[\city]]</a> internal
             slot.
           </p>
         </section>
@@ -2451,7 +2448,7 @@
           </h2>
           <p>
             Represents the <a>dependent locality</a> of the address. When
-            getting, returns the value of the <a>PaymentAddress</a>'s
+            getting, returns the value of the {{PaymentAddress}}'s
             <a>[[\dependentLocality]]</a> internal slot.
           </p>
         </section>
@@ -2461,7 +2458,7 @@
           </h2>
           <p>
             Represents the <a>postal code</a> of the address. When getting,
-            returns the value of the <a>PaymentAddress</a>'s
+            returns the value of the {{PaymentAddress}}'s
             <a>[[\postalCode]]</a> internal slot.
           </p>
         </section>
@@ -2471,7 +2468,7 @@
           </h2>
           <p>
             Represents the <a>sorting code</a> of the address. When getting,
-            returns the value of the <a>PaymentAddress</a>'s
+            returns the value of the {{PaymentAddress}}'s
             <a>[[\sortingCode]]</a> internal slot.
           </p>
         </section>
@@ -2481,7 +2478,7 @@
           </h2>
           <p data-link-for="">
             Represents the <a>organization</a> of the address. When getting,
-            returns the value of the <a>PaymentAddress</a>'s
+            returns the value of the {{PaymentAddress}}'s
             <a>[[\organization]]</a> internal slot.
           </p>
         </section>
@@ -2491,8 +2488,8 @@
           </h2>
           <p data-link-for="">
             Represents the <a>recipient</a> of the address. When getting,
-            returns the value of the <a>PaymentAddress</a>'s
-            <a>[[\recipient]]</a> internal slot.
+            returns the value of the {{PaymentAddress}}'s <a>[[\recipient]]</a>
+            internal slot.
           </p>
         </section>
         <section>
@@ -2501,7 +2498,7 @@
           </h2>
           <p>
             Represents the <a>phone number</a> of the address. When getting,
-            returns the value of the <a>PaymentAddress</a>'s <a>[[\phone]]</a>
+            returns the value of the {{PaymentAddress}}'s <a>[[\phone]]</a>
             internal slot.
           </p>
         </section>
@@ -2628,7 +2625,7 @@
         <p>
           An <a>AddressInit</a> is passed when <a data-lt=
           "PaymentAddress.PaymentAddress()">constructing</a> a
-          <a>PaymentAddress</a>. Its members are as follows.
+          {{PaymentAddress}}. Its members are as follows.
         </p>
         <dl data-dfn-for="AddressInit" data-link-for="" data-sort="ascending">
           <dt>
@@ -2735,7 +2732,7 @@
           <dd>
             Denotes that the <a>address line</a> has a validation error. In the
             user agent's UI, this member corresponds to the input field that
-            provided the <a>PaymentAddress</a>'s <a data-link-for=
+            provided the {{PaymentAddress}}'s <a data-link-for=
             "PaymentAddress">addressLine</a> attribute's value.
           </dd>
           <dt>
@@ -2744,7 +2741,7 @@
           <dd>
             Denotes that the <a>city</a> has a validation error. In the user
             agent's UI, this member corresponds to the input field that
-            provided the <a>PaymentAddress</a>'s <a data-link-for=
+            provided the {{PaymentAddress}}'s <a data-link-for=
             "PaymentAddress">city</a> attribute's value.
           </dd>
           <dt>
@@ -2753,7 +2750,7 @@
           <dd>
             Denotes that the <a>country</a> has a validation error. In the user
             agent's UI, this member corresponds to the input field that
-            provided the <a>PaymentAddress</a>'s <a data-link-for=
+            provided the {{PaymentAddress}}'s <a data-link-for=
             "PaymentAddress">country</a> attribute's value.
           </dd>
           <dt>
@@ -2762,7 +2759,7 @@
           <dd>
             Denotes that the <a>dependent locality</a> has a validation error.
             In the user agent's UI, this member corresponds to the input field
-            that provided the <a>PaymentAddress</a>'s <a data-link-for=
+            that provided the {{PaymentAddress}}'s <a data-link-for=
             "PaymentAddress">dependentLocality</a> attribute's value.
           </dd>
           <dt>
@@ -2771,7 +2768,7 @@
           <dd>
             Denotes that the <a>organization</a> has a validation error. In the
             user agent's UI, this member corresponds to the input field that
-            provided the <a>PaymentAddress</a>'s <a data-link-for=
+            provided the {{PaymentAddress}}'s <a data-link-for=
             "PaymentAddress">organization</a> attribute's value.
           </dd>
           <dt>
@@ -2780,7 +2777,7 @@
           <dd>
             Denotes that the <a>phone number</a> has a validation error. In the
             user agent's UI, this member corresponds to the input field that
-            provided the <a>PaymentAddress</a>'s <a data-link-for=
+            provided the {{PaymentAddress}}'s <a data-link-for=
             "PaymentAddress">phone</a> attribute's value.
           </dd>
           <dt>
@@ -2789,7 +2786,7 @@
           <dd>
             Denotes that the <a>postal code</a> has a validation error. In the
             user agent's UI, this member corresponds to the input field that
-            provided the <a>PaymentAddress</a>'s <a data-link-for=
+            provided the {{PaymentAddress}}'s <a data-link-for=
             "PaymentAddress">postalCode</a> attribute's value.
           </dd>
           <dt>
@@ -2798,7 +2795,7 @@
           <dd>
             Denotes that the <a>recipient</a> has a validation error. In the
             user agent's UI, this member corresponds to the input field that
-            provided the <a>PaymentAddress</a>'s <a data-link-for=
+            provided the {{PaymentAddress}}'s <a data-link-for=
             "PaymentAddress">addressLine</a> attribute's value.
           </dd>
           <dt>
@@ -2807,7 +2804,7 @@
           <dd>
             Denotes that the <a>region</a> has a validation error. In the user
             agent's UI, this member corresponds to the input field that
-            provided the <a>PaymentAddress</a>'s <a data-link-for=
+            provided the {{PaymentAddress}}'s <a data-link-for=
             "PaymentAddress">region</a> attribute's value.
           </dd>
           <dt>
@@ -2816,19 +2813,19 @@
           <dd>
             The <a>sorting code</a> has a validation error. In the user agent's
             UI, this member corresponds to the input field that provided the
-            <a>PaymentAddress</a>'s <a data-link-for=
+            {{PaymentAddress}}'s <a data-link-for=
             "PaymentAddress">sortingCode</a> attribute's value.
           </dd>
         </dl>
       </section>
       <section>
         <h2>
-          Creating a <code>PaymentAddress</code> from user-provided input
+          Creating a `PaymentAddress` from user-provided input
         </h2>
         <p>
-          The steps to <dfn>create a <code>PaymentAddress</code> from
-          user-provided input</dfn> are given by the following algorithm. The
-          algorithm takes a <a>list</a> |redactList|.
+          The steps to <dfn>create a `PaymentAddress` from user-provided
+          input</dfn> are given by the following algorithm. The algorithm takes
+          a <a>list</a> |redactList|.
         </p>
         <div class="note" title=
         "Privacy of recipient information (the redactList)">
@@ -2838,7 +2835,7 @@
             the API shares with the merchant.
           </p>
           <p>
-            For merchants, the resulting <a>PaymentAddress</a> object provides
+            For merchants, the resulting {{PaymentAddress}} object provides
             enough information to, for example, calculate shipping costs, but,
             in most cases, not enough information to physically locate and
             uniquely identify the recipient.
@@ -2850,7 +2847,7 @@
           </p>
         </div>
         <ol data-link-for="AddressInit">
-          <li>Let |details| be an <a>AddressInit</a> dictionary with no members
+          <li>Let |details:AddressInit| be an <a>AddressInit</a> dictionary with no members
           present.
           </li>
           <li>If "addressLine" is not in |redactList|, set
@@ -2924,7 +2921,7 @@
               As such, when the user agent knows that the user is inputting the
               address for a particular country, it might not provide a field
               for the user to input a <a>region</a>. In such cases, the user
-              agent returns an empty string for both <a>PaymentAddress</a>'s
+              agent returns an empty string for both {{PaymentAddress}}'s
               <a data-link-for="PaymentAddress">region</a> attribute - but the
               address can still serve its intended purpose (e.g., be valid for
               shipping or billing purposes).
@@ -2941,8 +2938,7 @@
           </li>
           <li>
             <a data-lt="PaymentAddress.PaymentAddress()">Internally construct a
-            new <code>PaymentAddress</code></a> with |details| and return the
-            result.
+            new `PaymentAddress`</a> with |details| and return the result.
           </li>
         </ol>
       </section>
@@ -2973,7 +2969,7 @@
         <dd>
           A string identifier used to reference this
           <a>PaymentShippingOption</a>. It MUST be unique for a given
-          <a>PaymentRequest</a>.
+          {{PaymentRequest}}.
         </dd>
         <dt>
           <dfn>label</dfn> member
@@ -3073,28 +3069,28 @@
           The <code>retry(|errorFields|)</code> method MUST act as follows:
         </p>
         <ol class="algorithm">
-          <li>Let |response| be the <a>context object</a>.
+          <li>Let |response:PaymentResponse| be the <a>context object</a>.
           </li>
-          <li>Let |request| be |response|.<a>[[\request]]</a>.
+          <li>Let |request:PaymentRequest| be |response|.<a>[[\request]]</a>.
           </li>
-          <li>Let |document| be |request|'s <a>relevant global object</a>'s <a>
+          <li>Let |document:Document| be |request|'s <a>relevant global object</a>'s <a>
             associated Document</a>.
           </li>
           <li data-tests=
           "payment-response/rejects_if_not_active-manual.https.html">If
           |document| is not [=Document/fully active=], then return <a>a promise
-          rejected with</a> an "{{AbortError}}" {{DOMException}}.
+          rejected with</a> an {{"AbortError"}} {{DOMException}}.
           </li>
           <li>If |response|.<a>[[\complete]]</a> is true, return <a>a promise
-          rejected with</a> an "{{InvalidStateError}}" {{DOMException}}.
+          rejected with</a> an {{"InvalidStateError"}} {{DOMException}}.
           </li>
           <li>If |response|.<a>[[\retryPromise]]</a> is not null, return <a>a
-          promise rejected with</a> an "{{InvalidStateError}}"
+          promise rejected with</a> an {{"InvalidStateError"}}
           {{DOMException}}.
           </li>
           <li>Set |request|.<a>[[\state]]</a> to "<a>interactive</a>".
           </li>
-          <li>Let |retryPromise| be <a>a new promise</a>.
+          <li>Let |retryPromise:Promise| be <a>a new promise</a>.
           </li>
           <li>Set |response|.<a>[[\retryPromise]]</a> to |retryPromise|.
           </li>
@@ -3359,8 +3355,8 @@
         "payment-response/shippingAddress-attribute-manual.https.html">
           If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> member was set
-          to true in the <a>PaymentOptions</a> passed to the
-          <a>PaymentRequest</a> constructor, then <a data-lt=
+          to true in the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
+          constructor, then <a data-lt=
           "PaymentRequest.shippingAddress">shippingAddress</a> will be the full
           and final shipping address chosen by the user.
         </p>
@@ -3373,8 +3369,8 @@
         "payment-response/shippingOption-attribute-manual.https.html">
           If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> member was set
-          to true in the <a>PaymentOptions</a> passed to the
-          <a>PaymentRequest</a> constructor, then <a data-lt=
+          to true in the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
+          constructor, then <a data-lt=
           "PaymentRequest.shippingOption">shippingOption</a> will be the
           <a data-lt="PaymentShippingOption.id">id</a> attribute of the
           selected shipping option.
@@ -3387,8 +3383,8 @@
         <p data-tests="payment-response/payerName-attribute-manual.https.html">
           If the <a data-lt=
           "PaymentOptions.requestPayerName">requestPayerName</a> member was set
-          to true in the <a>PaymentOptions</a> passed to the
-          <a>PaymentRequest</a> constructor, then <a data-lt=
+          to true in the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
+          constructor, then <a data-lt=
           "PaymentResponse.payerName">payerName</a> will be the name provided
           by the user.
         </p>
@@ -3402,7 +3398,7 @@
           If the <a data-lt=
           "PaymentOptions.requestPayerEmail">requestPayerEmail</a> member was
           set to true in the <a>PaymentOptions</a> passed to the
-          <a>PaymentRequest</a> constructor, then <a data-lt=
+          {{PaymentRequest}} constructor, then <a data-lt=
           "PaymentResponse.payerEmail">payerEmail</a> will be the email address
           chosen by the user.
         </p>
@@ -3416,7 +3412,7 @@
           If the <a data-lt=
           "PaymentOptions.requestPayerPhone">requestPayerPhone</a> member was
           set to true in the <a>PaymentOptions</a> passed to the
-          <a>PaymentRequest</a> constructor, then <a data-lt=
+          {{PaymentRequest}} constructor, then <a data-lt=
           "PaymentResponse.payerPhone">payerPhone</a> will be the phone number
           chosen by the user.
         </p>
@@ -3461,16 +3457,16 @@
           follows:
         </p>
         <ol class="algorithm">
-          <li>Let |response| be the <a>context object</a>.
+          <li>Let |response:PaymentResponse| be the <a>context object</a>.
           </li>
           <li>If |response|.<a>[[\complete]]</a> is true, return <a>a promise
-          rejected with</a> an "{{InvalidStateError}}" {{DOMException}}.
+          rejected with</a> an {{"InvalidStateError"}} {{DOMException}}.
           </li>
           <li data-tests="payment-response/retry-method-manual.https.html">If
           |response|.<a>[[\retryPromise]]</a> is not null, return <a>a promise
-          rejected with</a> an "{{InvalidStateError}}" {{DOMException}}.
+          rejected with</a> an {{"InvalidStateError"}} {{DOMException}}.
           </li>
-          <li>Let |promise| be <a>a new promise</a>.
+          <li>Let |promise:Promise| be <a>a new promise</a>.
           </li>
           <li>Set |response|.<a>[[\complete]]</a> to true.
           </li>
@@ -3543,7 +3539,7 @@
               <dfn>[[\request]]</dfn>
             </td>
             <td>
-              The <a>PaymentRequest</a> instance that instantiated this
+              The {{PaymentRequest}} instance that instantiated this
               <a>PaymentResponse</a>.
             </td>
           </tr>
@@ -3587,10 +3583,9 @@
         <p>
           A <a>document</a>’s [=Document/feature policy=] determines whether
           any content in that document is allowed to construct
-          <a>PaymentRequest</a> instances. If disabled in any document, no
-          content in the document will be <a>allowed to use</a> the
-          <a>PaymentRequest</a> constructor (trying to create an instance will
-          throw).
+          {{PaymentRequest}} instances. If disabled in any document, no content
+          in the document will be <a>allowed to use</a> the {{PaymentRequest}}
+          constructor (trying to create an instance will throw).
         </p>
         <p>
           The {{ HTMLIFrameElement.allowPaymentRequest }} attribute of the HTML
@@ -3641,7 +3636,7 @@
               validation.
             </td>
             <td>
-              <a>PaymentRequest</a>
+              {{PaymentRequest}}
             </td>
           </tr>
           <tr>
@@ -3655,7 +3650,7 @@
               The user provides a new shipping address.
             </td>
             <td>
-              <a>PaymentRequest</a>
+              {{PaymentRequest}}
             </td>
           </tr>
           <tr>
@@ -3669,7 +3664,7 @@
               The user chooses a new shipping option.
             </td>
             <td>
-              <a>PaymentRequest</a>
+              {{PaymentRequest}}
             </td>
           </tr>
           <tr>
@@ -3699,7 +3694,7 @@
               <a>payment handler</a>.
             </td>
             <td>
-              <a>PaymentRequest</a>
+              {{PaymentRequest}}
             </td>
           </tr>
         </table>
@@ -3740,13 +3735,13 @@
             {{MerchantValidationEvent}} |event|, are as follows:
           </p>
           <ol class="algorithm">
-            <li>Let |base| be the <a data-lt="context object">event</a>’s
+            <li>Let |base:URL| be the <a data-lt="context object">event</a>’s
             <a>relevant settings object</a>’s [=environment settings object/api
             base URL=].
             </li>
-            <li data-link-for="MerchantValidationEventInit">Let |validationURL|
-            be the result of <a data-lt="URL parser">URL parsing</a>
-            |eventInitDict|["<a>validationURL</a>"] and |base|.
+            <li data-link-for="MerchantValidationEventInit">Let
+            |validationURL:URL| be the result of <a data-lt="URL parser">URL
+            parsing</a> |eventInitDict|["<a>validationURL</a>"] and |base|.
             </li>
             <li>If |validationURL| is failure, throw a <a>TypeError</a>.
             </li>
@@ -3758,8 +3753,8 @@
             "payment-method-id#dfn-validate-a-payment-method-identifier">validate
             a payment method identifier</a> with
             |eventInitDict|["<a>methodName</a>"]. If it returns false, then
-            throw a <a>RangeError</a> exception. Optionally, inform the
-            developer that the payment method identifier is invalid.
+            throw a {{RangeError}} exception. Optionally, inform the developer
+            that the payment method identifier is invalid.
             </li>
             <li>Initialize |event|.<a>methodName</a> attribute to
             |eventInitDict|["<a>methodName</a>"].
@@ -3794,23 +3789,24 @@
             follows:
           </p>
           <ol class="algorithm">
-            <li>Let |event| be the <a>context object</a>.
+            <li>Let |event:MerchantValidationEvent| be the <a>context
+            object</a>.
             </li>
             <li>If |event|'s {{ Event.isTrusted }} attribute is false, then
-            [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
+            [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
             </li>
             <li>If |event|.<a data-lt=
             "mechvalidation.waitForUpdate">[[\waitForUpdate]]</a> is true, then
-            [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
+            [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
             </li>
-            <li>Let |request| be |event|'s [=Event/target=].
+            <li>Let |request:PaymentRequest| be |event|'s [=Event/target=].
             </li>
             <li>If |request|.<a>[[\state]]</a> is not "<a>interactive</a>",
-            then [=exception/throw=] an "{{InvalidStateError}}"
+            then [=exception/throw=] an {{"InvalidStateError"}}
             {{DOMException}}.
             </li>
             <li>If |request|.<a>[[\updating]]</a> is true, then
-            [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
+            [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
             </li>
             <li>Set |event|'s [=Event/stop propagation flag=] and [=Event/stop
             immediate propagation flag=].
@@ -3968,8 +3964,9 @@
             |eventInitDict|)</code></a> constructor MUST act as follows:
           </p>
           <ol class="algorithm">
-            <li>Let |event| be the result of calling the [=Event/constructor=]
-            of {{PaymentRequestUpdateEvent}} with |type| and |eventInitDict|.
+            <li>Let |event:PaymentRequestUpdateEvent| be the result of calling
+            the [=Event/constructor=] of {{PaymentRequestUpdateEvent}} with
+            |type| and |eventInitDict|.
             </li>
             <li>Set |event|.<a>[[\waitForUpdate]]</a> to false.
             </li>
@@ -4042,36 +4039,37 @@
             act as follows:
           </p>
           <ol class="algorithm">
-            <li>Let |event| be this {{PaymentRequestUpdateEvent}} instance.
+            <li>Let |event:PaymentRequestUpdateEvent| be this
+            {{PaymentRequestUpdateEvent}} instance.
             </li>
             <li>If |event|'s {{ Event.isTrusted }} attribute is false, then
-            [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
+            [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
             </li>
             <li>If |event|.<a>[[\waitForUpdate]]</a> is true, then
-            [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
+            [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
             </li>
             <li>If |event|'s [=Event/target=] is an instance of
-            <a>PaymentResponse</a>, let |request| be |event|'s
+            <a>PaymentResponse</a>, let |request:PaymentRequest| be |event|'s
             [=Event/target=].<a>[[\request]]</a>.
             </li>
-            <li>Otherwise, let |request| be the value of |event|'s
-            [=Event/target=].
+            <li>Otherwise, let |request:PaymentRequest| be the value of
+            |event|'s [=Event/target=].
             </li>
-            <li>Assert: |request| is an instance of <a>PaymentRequest</a>.
+            <li>Assert: |request| is an instance of {{PaymentRequest}}.
             </li>
             <li>If |request|.<a>[[\state]]</a> is not "<a>interactive</a>",
-            then [=exception/throw=] an "{{InvalidStateError}}"
+            then [=exception/throw=] an {{"InvalidStateError"}}
             {{DOMException}}.
             </li>
             <li>If |request|.<a>[[\updating]]</a> is true, then
-            [=exception/throw=] an "{{InvalidStateError}}" {{DOMException}}.
+            [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
             </li>
             <li>Set |event|'s [=Event/stop propagation flag=] and [=Event/stop
             immediate propagation flag=].
             </li>
             <li>Set |event|.<a>[[\waitForUpdate]]</a> to true.
             </li>
-            <li>Let |pmi| be null.
+            <li>Let |pmi:URL?| be null.
             </li>
             <li>If |event| has a <a data-link-for=
             "PaymentMethodChangeEvent">methodName</a> attribute, set |pmi| to
@@ -4126,9 +4124,9 @@
         Algorithms
       </h2>
       <p>
-        When the internal slot <a>[[\state]]</a> of a <a>PaymentRequest</a>
-        object is set to "<a>interactive</a>", the <a>user agent</a> will
-        trigger the following algorithms based on user interaction.
+        When the internal slot <a>[[\state]]</a> of a {{PaymentRequest}} object
+        is set to "<a>interactive</a>", the <a>user agent</a> will trigger the
+        following algorithms based on user interaction.
       </p>
       <section>
         <h2>
@@ -4153,15 +4151,16 @@
           |merchantSpecificURL|, provided by the <a>payment handler</a>:
         </p>
         <ol class="algorithm">
-          <li>Let |request| be the <a>PaymentRequest</a> object that the user
-          is interacting with.
+          <li>Let |request:PaymentRequest| be the {{PaymentRequest}} object
+          that the user is interacting with.
           </li>
-          <li>Let |validationURL| be a <a>absolute-URL string</a> from which a
-          developer can fetch <a>payment handler</a>-specific verification
-          data.
+          <li>Let |validationURL:URL| be a <a>absolute-URL string</a> from
+          which a developer can fetch <a>payment handler</a>-specific
+          verification data.
           </li>
-          <li>Let |methodName| be the <a>payment method identifier</a> for the
-          <a>payment handler</a> that is requiring <a>merchant validation</a>.
+          <li>Let |methodName:URL or String| be the <a>payment method
+          identifier</a> for the <a>payment handler</a> that is requiring
+          <a>merchant validation</a>.
           </li>
           <li>
             <a>Queue a task</a> on the <a>user interaction task source</a> to
@@ -4171,16 +4170,16 @@
               </li>
               <li>Assert: |request|.<a>[[\state]]</a> is "<a>interactive</a>".
               </li>
-              <li>Let |eventInitDict| be an new
-              <a>MerchantValidationEventInit</a> dictionary.
+              <li>Let |eventInitDict:MerchantValidationEventInit| be an new <a>
+                MerchantValidationEventInit</a> dictionary.
               </li>
               <li>Set |eventInitDict|["<a>validationURL</a>"] to
               |validationURL|.
               </li>
               <li>Set |eventInitDict|["<a>methodName</a>"] to |methodName|.
               </li>
-              <li>Let |event| be the result of calling the
-              [=Event/constructor=] of {{MerchantValidationEvent}} with
+              <li>Let |event:MerchantValidationEvent| be the result of calling
+              the [=Event/constructor=] of {{MerchantValidationEvent}} with
               "<a>merchantvalidation</a>" and |eventInitDict|.
               </li>
               <li>Initialize |event|’s {{ Event.isTrusted }} attribute to true.
@@ -4199,36 +4198,36 @@
         <p>
           The <dfn>can make payment algorithm</dfn> checks if the <a>user
           agent</a> supports making payment with the <a>payment methods</a>
-          with which the <a>PaymentRequest</a> was constructed. It takes a
-          boolean argument, |checkForInstruments|, that specifies whether the
-          algorithm checks for existence of enrolled instruments in addition to
+          with which the {{PaymentRequest}} was constructed. It takes a boolean
+          argument, |checkForInstruments|, that specifies whether the algorithm
+          checks for existence of enrolled instruments in addition to
           supporting a <a>payment method</a>.
         </p>
         <ol class="algorithm">
-          <li>Let |request| be the <a>PaymentRequest</a> object on which the
-          method was called.
+          <li>Let |request:PaymentRequest| be the {{PaymentRequest}} object on
+          which the method was called.
           </li>
           <li>If |request|.<a>[[\state]]</a> is not "<a>created</a>", then
-          return <a>a promise rejected with</a> an "{{InvalidStateError}}"
+          return <a>a promise rejected with</a> an {{"InvalidStateError"}}
           {{DOMException}}.
           </li>
           <li data-tests=
           "payment-request-hasenrolledinstrument-method-protection.https.html, payment-request-canmakepayment-method-protection.https.html">
           Optionally, at the <a>top-level browsing context</a>'s discretion,
-          return <a>a promise rejected with</a> a "{{NotAllowedError}}"
+          return <a>a promise rejected with</a> a {{"NotAllowedError"}}
           {{DOMException}}.
             <p class="note" data-link-for="PaymentRequest">
               This allows user agents to apply heuristics to detect and prevent
               abuse of the calling method for fingerprinting purposes, such as
-              creating <a>PaymentRequest</a> objects with a variety of
-              supported <a>payment methods</a> and triggering the <a>can make
-              payment algorithm</a> on them one after the other. For example, a
-              user agent may restrict the number of successful calls that can
-              be made based on the <a>top-level browsing context</a> or the
-              time period in which those calls were made.
+              creating {{PaymentRequest}} objects with a variety of supported
+              <a>payment methods</a> and triggering the <a>can make payment
+              algorithm</a> on them one after the other. For example, a user
+              agent may restrict the number of successful calls that can be
+              made based on the <a>top-level browsing context</a> or the time
+              period in which those calls were made.
             </p>
           </li>
-          <li>Let |hasHandlerPromise| be <a>a new promise</a>.
+          <li>Let |hasHandlerPromise:Promise| be <a>a new promise</a>.
           </li>
           <li>Return |hasHandlerPromise|, and perform the remaining steps <a>in
           parallel</a>.
@@ -4290,8 +4289,8 @@
           provides a new shipping address. It MUST run the following steps:
         </p>
         <ol class="algorithm">
-          <li>Let |request| be the <a>PaymentRequest</a> object that the user
-          is interacting with.
+          <li>Let |request:PaymentRequest| be the {{PaymentRequest}} object
+          that the user is interacting with.
           </li>
           <li>
             <a>Queue a task</a> on the <a>user interaction task source</a> to
@@ -4304,7 +4303,7 @@
                     about the recipient that the API shares with the merchant.
                   </p>
                   <p>
-                    For merchants, the resulting <a>PaymentAddress</a> object
+                    For merchants, the resulting {{PaymentAddress}} object
                     provides enough information to, for example, calculate
                     shipping costs, but, in most cases, not enough information
                     to physically locate and uniquely identify the recipient.
@@ -4317,12 +4316,12 @@
                   </p>
                 </div>
               </li>
-              <li>Let |redactList| be the empty list. Set |redactList| to «
-              "organization", "phone", "recipient", "addressLine" ».
+              <li>Let |redactList:list| be the empty list. Set |redactList| to
+              « "organization", "phone", "recipient", "addressLine" ».
               </li>
-              <li>Let |address| be the result of running the steps to <a>create
-              a <code>PaymentAddress</code> from user-provided input</a> with
-              |redactList|.
+              <li>Let |address:PaymentAddress| be the result of running the
+              steps to <a>create a `PaymentAddress` from user-provided
+              input</a> with |redactList|.
               </li>
               <li>Set the <a data-lt=
               "PaymentRequest.shippingAddress">shippingAddress</a> attribute on
@@ -4345,8 +4344,8 @@
           chooses a new shipping option. It MUST run the following steps:
         </p>
         <ol class="algorithm">
-          <li>Let |request| be the <a>PaymentRequest</a> object that the user
-          is interacting with.
+          <li>Let |request:PaymentRequest| be the {{PaymentRequest}} object
+          that the user is interacting with.
           </li>
           <li>
             <a>Queue a task</a> on the <a>user interaction task source</a> to
@@ -4386,8 +4385,8 @@
           number</a>, and <a>recipient</a>.
         </p>
         <ol class="algorithm">
-          <li>Let |request| be the <a>PaymentRequest</a> object that the user
-          is interacting with.
+          <li>Let |request:PaymentRequest| be the {{PaymentRequest}} object
+          that the user is interacting with.
           </li>
           <li>
             <a>Queue a task</a> on the <a>user interaction task source</a> to
@@ -4416,8 +4415,8 @@
         <p data-tests="algorithms-manual.https.html">
           The <dfn>PaymentRequest updated algorithm</dfn> is run by other
           algorithms above to <a>fire an event</a> to indicate that a user has
-          made a change to a <a>PaymentRequest</a> called |request| with an
-          event name of |name|:
+          made a change to a {{PaymentRequest}} called |request| with an event
+          name of |name|:
         </p>
         <ol class="algorithm">
           <li>Assert: |request|.<a>[[\updating]]</a> is false. Only one update
@@ -4425,8 +4424,9 @@
           </li>
           <li>Assert: |request|.<a>[[\state]]</a> is "<a>interactive</a>".
           </li>
-          <li>Let |event| be the result of <a>creating an event</a> using the
-          {{PaymentRequestUpdateEvent}} interface.
+          <li>Let |event:PaymentRequestUpdateEvent| be the result of
+          <a>creating an event</a> using the {{PaymentRequestUpdateEvent}}
+          interface.
           </li>
           <li>Initialize |event|'s <code><a data-cite=
           "DOM#dom-event-type">type</a></code> attribute to |name|.
@@ -4452,12 +4452,12 @@
           |payer phone| in the user interface:
         </p>
         <ol class="algorithm">
-          <li>Let |request| be the <a>PaymentRequest</a> object that the user
-          is interacting with.
+          <li>Let |request:PaymentRequest| be the {{PaymentRequest}} object
+          that the user is interacting with.
           </li>
           <li>If |request|.<a>[[\response]]</a> is null, return.
           </li>
-          <li>Let |response| be |request|.<a>[[\response]]</a>.
+          <li>Let |response:PaymentResponse| be |request|.<a>[[\response]]</a>.
           </li>
           <li>
             <a>Queue a task</a> on the <a>user interaction task source</a> to
@@ -4467,7 +4467,8 @@
               </li>
               <li>Assert: |request|.<a>[[\state]]</a> is "<a>interactive</a>".
               </li>
-              <li>Let |options| be |request|.<a>[[\options]]</a>.
+              <li>Let |options:PaymentOptions| be
+              |request|.<a>[[\options]]</a>.
               </li>
               <li>If |payer name| changed and |options|.<a data-link-for=
               "PaymentOptions">requestPayerName</a> is true:
@@ -4493,8 +4494,8 @@
                   </li>
                 </ol>
               </li>
-              <li>Let |event| be the result of <a>creating an event</a> using
-              {{PaymentRequestUpdateEvent}}.
+              <li>Let |event:PaymentRequestUpdateEvent| be the result of
+              <a>creating an event</a> using {{PaymentRequestUpdateEvent}}.
               </li>
               <li>Initialize |event|'s <code><a data-cite="DOM#dom-event-type">
                 type</a></code> attribute to "<a>payerdetailchange</a>".
@@ -4525,8 +4526,8 @@
           following steps:
         </p>
         <ol class="algorithm">
-          <li>Let |request| be the <a>PaymentRequest</a> object that the user
-          is interacting with.
+          <li>Let |request:PaymentRequest| be the {{PaymentRequest}} object
+          that the user is interacting with.
           </li>
           <li>If the |request|.<a>[[\updating]]</a> is true, then terminate
           this algorithm and take no further action. The <a>user agent</a> user
@@ -4545,11 +4546,11 @@
           |request| is null, then terminate this algorithm and take no further
           action. The <a>user agent</a> SHOULD ensure that this never occurs.
           </li>
-          <li>Let |isRetry| be true if |request|.<a>[[\response]]</a> is not
-          null, false otherwise.
+          <li>Let |isRetry:boolean| be true if |request|.<a>[[\response]]</a>
+          is not null, false otherwise.
           </li>
-          <li>Let |response| be |request|.<a>[[\response]]</a> if |isRetry| is
-          true, or a new <a>PaymentResponse</a> otherwise.
+          <li>Let |response:PaymentResponse| be |request|.<a>[[\response]]</a>
+          if |isRetry| is true, or a new <a>PaymentResponse</a> otherwise.
           </li>
           <li>If |isRetry| if false, initialize the newly created |response|:
             <ol>
@@ -4568,7 +4569,8 @@
               </li>
             </ol>
           </li>
-          <li>Let |handler| be the <a>payment handler</a> selected by the user.
+          <li>Let |handler:payment handler| be the <a>payment handler</a>
+          selected by the user.
           </li>
           <li>Set the <a data-lt="PaymentResponse.methodName">methodName</a>
           attribute value of |response| to the <a>payment method identifier</a>
@@ -4583,20 +4585,18 @@
           |request|.<a>[[\options]]</a> is false, then set the <a data-lt=
           "PaymentResponse.shippingAddress">shippingAddress</a> attribute value
           of |response| to null. Otherwise:
-            <ol>
-              <li>Let |redactList| be the empty <a>list</a>.
+            <ol data-link-for="PaymentResponse">
+              <li>Let |redactList:list| be the empty <a>list</a>.
               </li>
-              <li>Let |shippingAddress| be the result of <a>create a
-              <code>PaymentAddress</code> from user-provided input</a> with
+              <li>Let |shippingAddress:PaymentAddress| be the result of
+              <a>create a `PaymentAddress` from user-provided input</a> with
               |redactList|.
               </li>
-              <li>Set the <a data-lt=
-              "PaymentResponse.shippingAddress">shippingAddress</a> attribute
-              value of |response| to |shippingAddress|.
+              <li>Set the {{shippingAddress}} attribute value of |response| to
+              |shippingAddress|.
               </li>
-              <li>Set the <a data-lt=
-              "PaymentRequest.shippingAddress">shippingAddress</a> attribute
-              value of |request| to |shippingAddress|.
+              <li>Set the {{shippingAddress}} attribute value of |request| to
+              |shippingAddress|.
               </li>
             </ol>
           </li>
@@ -4651,8 +4651,8 @@
           perform the following steps:
         </p>
         <ol class="algorithm">
-          <li>Let |request| be the <a>PaymentRequest</a> object that the user
-          is interacting with.
+          <li>Let |request:PaymentRequest| be the {{PaymentRequest}} object
+          that the user is interacting with.
           </li>
           <li>If |request|.<a>[[\state]]</a> is not "<a>interactive</a>", then
           terminate this algorithm and take no further action. The <a>user
@@ -4663,9 +4663,9 @@
           <li>Set |request|'s <a>payment-relevant browsing context</a>'s
           <a>payment request is showing</a> boolean to false.
           </li>
-          <li>Let |error| be an "{{AbortError}}" {{DOMException}}.
+          <li>Let |error| be an {{"AbortError"}} {{DOMException}}.
           </li>
-          <li>Let |response| be |request|.<a>[[\response]]</a>.
+          <li>Let |response:PaymentResponse| be |request|.<a>[[\response]]</a>.
           </li>
           <li>If |response| is not null:
             <ol>
@@ -4692,8 +4692,8 @@
         <p>
           The <dfn>update a <code>PaymentRequest</code>'s details
           algorithm</dfn> takes a <a>PaymentDetailsUpdate</a> |detailsPromise|,
-          a <a>PaymentRequest</a> |request|, and |pmi| that is either a
-          DOMString or null (a <a>payment method identifier</a>). The steps are
+          a {{PaymentRequest}} |request|, and |pmi| that is either a DOMString
+          or null (a <a>payment method identifier</a>). The steps are
           conditional on the |detailsPromise| settling. If |detailsPromise|
           never settles then the payment request is blocked. The user agent
           SHOULD provide the user with a means to abort a payment request.
@@ -4719,7 +4719,7 @@
             <a>Upon rejection</a> of |detailsPromise|:
             <ol>
               <li>
-                <a>Abort the update</a> with |request| and an "{{AbortError}}"
+                <a>Abort the update</a> with |request| and an {{"AbortError"}}
                 {{DOMException}}.
               </li>
             </ol>
@@ -4824,7 +4824,7 @@
                             |modifier|.<a data-lt=
                             "PaymentDetailsModifier.supportedMethods">supportedMethods</a>.
                             If it returns false, then <a>abort the update</a>
-                            with |request| and a <a>RangeError</a> exception.
+                            with |request| and a {{RangeError}} exception.
                             Optionally, inform the developer that the payment
                             method identifier is invalid.
                           </li>
@@ -4892,7 +4892,7 @@
                   </li>
                 </ol>
               </li>
-              <li>Update the <a>PaymentRequest</a> using the new details:
+              <li>Update the {{PaymentRequest}} using the new details:
                 <ol>
                   <li data-link-for="PaymentDetailsUpdate">If the <a>total</a>
                   member of |details| is present, then:
@@ -4999,8 +4999,8 @@
             Abort the update
           </h2>
           <p>
-            To <dfn>abort the update</dfn> with a <a>PaymentRequest</a>
-            |request| and <a>exception</a> |exception|:
+            To <dfn>abort the update</dfn> with a {{PaymentRequest}} |request|
+            and <a>exception</a> |exception|:
           </p>
           <ol class="algorithm">
             <li>Optionally, show an error message to the user when letting them
@@ -5018,7 +5018,8 @@
                 </li>
                 <li>Set |request|.<a>[[\state]]</a> to "<a>closed</a>".
                 </li>
-                <li>Let |response| be |request|.<a>[[\response]]</a>.
+                <li>Let |response:PaymentResponse| be
+                |request|.<a>[[\response]]</a>.
                 </li>
                 <li>If |response| is not null, then:
                   <ol>
@@ -5053,7 +5054,7 @@
             event.
           </p>
           <p>
-            Consequently, the <a>PaymentRequest</a> moves to a "<a>closed</a>"
+            Consequently, the {{PaymentRequest}} moves to a "<a>closed</a>"
             state. The error is signaled to the developer through the rejection
             of the <a>[[\acceptPromise]]</a>, i.e., the promise returned by
             <a data-lt="PaymentRequest.show">show()</a>.
@@ -5061,7 +5062,7 @@
           <p data-link-for="PaymentResponse">
             Similarly, <a>abort the update</a> occurring during <a>retry()</a>
             causes the <a>[[\retryPromise]]</a> to reject, and the
-            corresponding <a>PaymentRequest</a>'s <a>[[\complete]]</a> internal
+            corresponding {{PaymentRequest}}'s <a>[[\complete]]</a> internal
             slot will be set to true (i.e., it can no longer be used).
           </p>
         </div>
@@ -5072,7 +5073,7 @@
         </h2>
         <p>
           The <dfn>validate merchant's details algorithm</dfn> takes a
-          <a>Promise</a> |opaqueDataPromise| and a <a>PaymentRequest</a>
+          <a>Promise</a> |opaqueDataPromise| and a {{PaymentRequest}}
           |request|. The steps are conditional on the |opaqueDataPromise|
           settling. If |opaqueDataPromise| never settles then the payment
           request is blocked. The user agent SHOULD provide the user with a
@@ -5096,7 +5097,7 @@
             <a>Upon rejection</a> of |opaqueDataPromise|:
             <ol>
               <li>
-                <a>Abort the update</a> with |request| and an "{{AbortError}}"
+                <a>Abort the update</a> with |request| and an {{"AbortError"}}
                 {{DOMException}}.
               </li>
             </ol>
@@ -5169,7 +5170,7 @@
         <p class="Note">
           <a>Payment handlers</a> have access to both the origin that hosts the
           <a>iframe</a> and the origin of the <a>iframe</a> content (where the
-          <a>PaymentRequest</a> initiates).
+          {{PaymentRequest}} initiates).
         </p>
       </section>
       <section class="informative">
@@ -5177,7 +5178,7 @@
           Encryption of data fields
         </h2>
         <p>
-          The <a>PaymentRequest</a> API does not directly support encryption of
+          The {{PaymentRequest}} API does not directly support encryption of
           data fields. Individual <a>payment methods</a> may choose to include
           support for encrypted data but it is not mandatory that all
           <a>payment methods</a> support this.
@@ -5298,7 +5299,7 @@
         <ul data-link-for="PaymentRequest">
           <li>Allowing the user to configure the user agent to turn off
           <a>canMakePayment()</a> and <a>hasEnrolledInstrument()</a>, which
-          would return <a>a promise rejected with</a> a "{{NotAllowedError}}"
+          would return <a>a promise rejected with</a> a {{"NotAllowedError"}}
           {{DOMException}}.
           </li>
           <li>Rate-limiting the frequency of calls with different parameters.
