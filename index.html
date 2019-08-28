@@ -604,9 +604,13 @@
         <dfn>PaymentRequest</dfn> interface
       </h2>
       <pre class="idl">
-        [Constructor(sequence&lt;PaymentMethodData&gt; methodData, PaymentDetailsInit details, optional PaymentOptions options = {}),
-        SecureContext, Exposed=Window]
+        [SecureContext, Exposed=Window]
         interface PaymentRequest : EventTarget {
+          constructor(
+            sequence&lt;PaymentMethodData&gt; methodData,
+            PaymentDetailsInit details,
+            optional PaymentOptions options = {}
+          );
           [NewObject]
           Promise&lt;PaymentResponse&gt; show(optional Promise&lt;PaymentDetailsUpdate&gt; detailsPromise);
           [NewObject]
