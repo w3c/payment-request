@@ -87,7 +87,7 @@
     li { margin-top: 0.5em; margin-bottom: 0.5em;}
     </style>
   </head>
-  <body data-cite="promises-guide">
+  <body>
     <h1 id="title">
       Payment Request API
     </h1>
@@ -702,7 +702,7 @@
           <li>Process payment methods:
             <ol data-link-for="PaymentMethodData">
               <li>If the length of the |methodData| sequence is zero, then
-              [=exception/throw=] a <a>TypeError</a>, optionally informing the
+              [=exception/throw=] a {{TypeError}}, optionally informing the
               developer that at least one <a>payment method</a> is required.
               </li>
               <li>For each |paymentMethod| of |methodData|:
@@ -803,7 +803,7 @@
                         exceptions.
                       </li>
                       <li>If |seenIDs| contains |option|.<a>id</a>, then throw
-                      a <a>TypeError</a>. Optionally, inform the developer that
+                      a {{TypeError}}. Optionally, inform the developer that
                       shipping option IDs must be unique.
                       </li>
                       <li>Otherwise, append |option|.<a>id</a> to |seenIDs|.
@@ -941,7 +941,7 @@
           <p>
             The <a>show()</a> method is called when a developer wants to begin
             user interaction for the payment request. The <a>show()</a> method
-            returns a <a>Promise</a> that will be resolved when the <a>user
+            returns a {{Promise}} that will be resolved when the <a>user
             accepts the payment request</a>. Some kind of user interface will
             be presented to the user to facilitate the payment request after
             the <a>show()</a> method returns.
@@ -1260,7 +1260,7 @@
             A <a>user agent</a> might not always be able to abort a request.
             For example, if the <a>user agent</a> has delegated responsibility
             for the request to another app. In this situation, <a>abort()</a>
-            will reject the returned <a>Promise</a>.
+            will reject the returned {{Promise}}.
           </p>
           <p>
             See also the algorithm when the <a>user aborts the payment
@@ -1555,7 +1555,7 @@
               <dfn>[[\acceptPromise]]</dfn>
             </td>
             <td>
-              The pending <a>Promise</a> created during <a data-lt=
+              The pending {{Promise}} created during <a data-lt=
               "PaymentRequest.show">show</a> that will be resolved if the user
               accepts the payment request.
             </td>
@@ -1728,7 +1728,7 @@
           the developer that the currency is invalid.
           </li>
           <li>If |amount|.<a>value</a> is not a <a>valid decimal monetary
-          value</a>, throw a <a>TypeError</a>, optionally informing the
+          value</a>, throw a {{TypeError}}, optionally informing the
           developer that the currency is invalid.
           </li>
           <li>Set |amount|.<a>currency</a> to the result of <a>ASCII
@@ -1745,7 +1745,7 @@
             exceptions.
           </li>
           <li>If the first <a>code point</a> of |amount|.<a>value</a> is U+002D
-          (-), then throw a <a>TypeError</a> optionally informing the developer
+          (-), then throw a {{TypeError}} optionally informing the developer
           that a total's value can't be a negative number.
           </li>
         </ol>
@@ -2321,7 +2321,8 @@
             |details| are given by the following algorithm:
           </p>
           <ol data-link-for="AddressInit">
-            <li>Let |address:PaymentAddress| be a new instance of {{PaymentAddress}}.
+            <li>Let |address:PaymentAddress| be a new instance of
+            {{PaymentAddress}}.
             </li>
             <li>Set |address|.<a>[[\addressLine]]</a> to the empty frozen
             array, and all other <a data-lt="PaymentAddress slots">internal
@@ -2508,7 +2509,7 @@
         </section>
         <section data-link-for="">
           <h2>
-            <dfn data-lt="PaymentAddress slots" data-no-default="">Internal
+            <dfn data-lt="PaymentAddress slots" data-lt-nodefault="">Internal
             slots</dfn>
           </h2>
           <table>
@@ -2851,8 +2852,8 @@
           </p>
         </div>
         <ol data-link-for="AddressInit">
-          <li>Let |details:AddressInit| be an <a>AddressInit</a> dictionary with no members
-          present.
+          <li>Let |details:AddressInit| be an <a>AddressInit</a> dictionary
+          with no members present.
           </li>
           <li>If "addressLine" is not in |redactList|, set
           |details|["<a>addressLine</a>"] to the result of splitting the
@@ -3077,8 +3078,8 @@
           </li>
           <li>Let |request:PaymentRequest| be |response|.<a>[[\request]]</a>.
           </li>
-          <li>Let |document:Document| be |request|'s <a>relevant global object</a>'s <a>
-            associated Document</a>.
+          <li>Let |document:Document| be |request|'s <a>relevant global
+          object</a>'s <a>associated Document</a>.
           </li>
           <li data-tests=
           "payment-response/rejects_if_not_active-manual.https.html">If
@@ -3552,7 +3553,7 @@
               <dfn>[[\retryPromise]]</dfn>
             </td>
             <td>
-              Null, or a <a>Promise</a> that resolves when a <a>user accepts
+              Null, or a {{Promise}} that resolves when a <a>user accepts
               the payment request</a> or rejects if the <a>user aborts the
               payment request</a>.
             </td>
@@ -3709,9 +3710,9 @@
           <dfn>MerchantValidationEvent</dfn> interface
         </h2>
         <pre class="idl">
-          [Constructor(DOMString type, optional MerchantValidationEventInit eventInitDict = {}),
-          SecureContext, Exposed=Window]
+          [SecureContext, Exposed=Window]
           interface MerchantValidationEvent : Event {
+            constructor(DOMString type, optional MerchantValidationEventInit eventInitDict = {});
             readonly attribute DOMString methodName;
             readonly attribute USVString validationURL;
             void complete(Promise&lt;any&gt; merchantSessionPromise);
@@ -3747,7 +3748,7 @@
             |validationURL:URL| be the result of <a data-lt="URL parser">URL
             parsing</a> |eventInitDict|["<a>validationURL</a>"] and |base|.
             </li>
-            <li>If |validationURL| is failure, throw a <a>TypeError</a>.
+            <li>If |validationURL| is failure, throw a {{TypeError}}.
             </li>
             <li>Initialize |event|.<a>validationURL</a> attribute to
             |validationURL|.
@@ -3887,8 +3888,9 @@
           <dfn>PaymentMethodChangeEvent</dfn> interface
         </h2>
         <pre class="idl">
-          [Constructor(DOMString type, optional PaymentMethodChangeEventInit eventInitDict = {}), SecureContext, Exposed=Window]
+          [SecureContext, Exposed=Window]
           interface PaymentMethodChangeEvent : PaymentRequestUpdateEvent {
+            constructor(DOMString type, optional PaymentMethodChangeEventInit eventInitDict = {});
             readonly attribute DOMString methodName;
             readonly attribute object? methodDetails;
           };
@@ -3947,8 +3949,9 @@
           <dfn>PaymentRequestUpdateEvent</dfn> interface
         </h2>
         <pre class="idl">
-          [Constructor(DOMString type, optional PaymentRequestUpdateEventInit eventInitDict = {}), SecureContext, Exposed=Window]
+          [SecureContext, Exposed=Window]
           interface PaymentRequestUpdateEvent : Event {
+            constructor(DOMString type, optional PaymentRequestUpdateEventInit eventInitDict = {});
             void updateWith(Promise&lt;PaymentDetailsUpdate&gt; detailsPromise);
           };
         </pre>
@@ -4792,7 +4795,7 @@
                           If |seenIDs|[|option|.<a data-lt=
                           "PaymentShippingOption.id">id</a>] exists, then
                           <a>abort the update</a> with |request| and a
-                          <a>TypeError</a>.
+                          {{TypeError}}.
                           </li>
                           <li>Append |option|.<a data-lt=
                           "PaymentShippingOption.id">id</a> to |seenIDs|.
@@ -5077,7 +5080,7 @@
         </h2>
         <p>
           The <dfn>validate merchant's details algorithm</dfn> takes a
-          <a>Promise</a> |opaqueDataPromise| and a {{PaymentRequest}}
+          {{Promise}} |opaqueDataPromise| and a {{PaymentRequest}}
           |request|. The steps are conditional on the |opaqueDataPromise|
           settling. If |opaqueDataPromise| never settles then the payment
           request is blocked. The user agent SHOULD provide the user with a
@@ -5370,12 +5373,8 @@
         </dt>
         <dd>
           The terms <dfn data-cite=
-          "ECMASCRIPT#sec-promise-objects">Promise</dfn>, <dfn data-cite=
           "ECMASCRIPT#sec-object-internal-methods-and-internal-slots">internal
-          slot</dfn>, <code><dfn data-cite=
-          "ECMASCRIPT#sec-native-error-types-used-in-this-standard-rangeerror">RangeError</dfn></code>,
-          <code><dfn data-cite=
-          "ECMASCRIPT#sec-native-error-types-used-in-this-standard-typeerror">TypeError</dfn></code>,
+          slot</dfn>,
           and <code><dfn data-cite=
           "ECMASCRIPT#sec-json.stringify">JSON.stringify</dfn></code> are
           defined by [[ECMASCRIPT]].
@@ -5411,7 +5410,7 @@
         guard against running out of memory, or to work around
         platform-specific limitations. When an input exceeds
         implementation-specific limit, the user agent MUST throw, or, in the
-        context of a promise, reject with, a <a>TypeError</a> optionally
+        context of a promise, reject with, a {{TypeError}} optionally
         informing the developer of how a particular input exceeded an
         implementation-specific limit.
       </p>
