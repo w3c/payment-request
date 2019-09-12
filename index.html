@@ -4037,7 +4037,7 @@
           [SecureContext, Exposed=Window]
           interface PaymentRequestUpdateEvent : Event {
             constructor(DOMString type, optional PaymentRequestUpdateEventInit eventInitDict = {});
-            Promise&lt;PaymentAddress&gt; requestShippingAddress(AddressParts addressParts);
+            Promise&lt;PaymentAddress&gt; requestShippingAddress(sequence<AddressParts> addressParts);
             void updateWith(Promise&lt;PaymentDetailsUpdate&gt; detailsPromise);
           };
         </pre>
