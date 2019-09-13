@@ -2222,6 +2222,19 @@
           example, this would be set to true when physical goods need to be
           shipped by the merchant to the user. This would be set to false for
           the purchase of digital goods.
+          <aside class="note">
+            <p>
+              A developer may not need the full shipping address of a user, for
+              example, just having "country" may be sufficient to calculate
+              shipping cost. To be sensitive to user's privacy, developers should
+              prefer to use <a>PaymentRequestUpdateEvent.requestShippingAddress()
+              </a> to incrementally request only the address parts they need.
+            </p>
+            <p>
+              A future version of this specification may remove the all-in-one
+              {{PaymentOptions.requestShipping}} boolean.
+            </p>
+          </aside>
         </dd>
         <dt>
           <dfn>shippingType</dfn> member
@@ -4074,9 +4087,9 @@
           <aside class="note">
             <p>
               Detailed shipping address contains sensitive user information.
-              Developers are encouraged to use <a>requestShippingAddress()</a>
+              Developers are encouraged to use {{requestShippingAddress()}}
               to incrementally request pieces they require instead of asking for
-              all up front using the <a>PaymentOptions.requestShipping</a>
+              all up front using the {{PaymentOptions.requestShipping}}
               boolean. For example, if flat-rate shipping is available in
               country A but only variable per-region shipping is available in
               country B, a developer should request only "country" first and
@@ -4084,16 +4097,16 @@
             </p>
             <p>
               A future version of this specification may remove the all-in-one
-              <a>PaymentOptions.requestShipping</a> boolean.
+              {{PaymentOptions.requestShipping}} boolean.
             </p>
             <p>
-              A developer can call <a>requestShippingAddress()</a> repeatedly.
-              Each call returns a promise that resolves to a <a>PaymentAddress
-              </a> with all previously requested address fields populated.
+              A developer can call {{requestShippingAddress()}} repeatedly.
+              Each call returns a promise that resolves to a {{PaymentAddress}}
+              with all previously requested address fields populated.
             </p>
             <p>
               If a requested address part is also in the redact list of shipping
-              address, then the returned <a>PaymentAddress</a> will not have the
+              address, then the returned {{PaymentAddress}} will not have the
               corresponding field populated.
             </p>
             <pre class="example js" title=
@@ -4118,7 +4131,8 @@
             {{PaymentRequestUpdateEvent}} instance.
             </li>
             <li>If |event|'s {{ Event.isTrusted }} attribute is false, then
-            [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
+            return <a>a promise rejected with</a> an {{"InvalidStateError"}}
+            {{DOMException}}.
             </li>
             <li>If |event|'s [=Event/target=] is an instance of
             <a>PaymentResponse</a>, let |request:PaymentRequest| be |event|'s
@@ -4130,21 +4144,24 @@
             <li>Assert: |request| is an instance of {{PaymentRequest}}.
             </li>
             <li>If |request|.<a>[[\state]]</a> is not "<a>interactive</a>",
-            then [=exception/throw=] an {{"InvalidStateError"}}
+            then return <a> a promise rejected with</a> an {{"InvalidStateError"}}
             {{DOMException}}.
             </li>
-            <li>Let |shippingAddress| be the value of |request|'s
-              <a data-lt="PaymentRequest.shippingAddress">shippingAddress</a>
-              attribute.
+            <li>Let |shippingAddressPromise:Promise| be <a>a new promise</a>.</li>
+            <li>Return |shippingAddressPromise|, and perform the remaining steps <a>in
+            parallel</a>.
+            </li>
+            <li>Let |shippingAddress:PaymentAddress| be |request|'s
+            [=PaymentRequest/shippingAddress=].
               <aside class="note">
                 This address should have already been redacted according to the
                 <a>shipping address changed algorithm</a>.
               </aside>
             </li>
-            <li>Let |details| be an <a>AddressInit</a> dictionary with no
-              members present.
+            <li>Let |details:AddressInit| be an {{AddressInit}} dictionary with
+            no members present.
             </li>
-            <li>For each attribute |attributeName| in |shippingAddress|
+            <li>For each attribute |attributeName| in |shippingAddress:PaymentAddress|:
               <ol>
                 <li>Set |details|[|attributeName|] to the value of
                   |shippingAddress|.[[|attributeName|]] if it is not empty.
@@ -4152,18 +4169,18 @@
               </ol>
             </li>
             <li>Let |redactList| be the empty list. Set |redactList| to
-              « "organization", "phone", "recipient", "addressLine" ».
+            « "organization", "phone", "recipient", "addressLine" ».
             </li>
             <li>For each |addressPart| in |addressParts|:
               <ol>
-                <li>If |details|[|addresPart|] is already present, continue. </li>
-                <li>If |addressPart| is not in |redactList|, set |details|[|addressPart|]
-                to the user provided value for this addres part.
-                </li>
+                <li>If |details|[|addresPart|] is already present, continue.</li>
+                <li>If |addressPart| is in |redactList|, continue. </li>
+                <li>Set |details|[|addressPart|] to the user provided value.</li>
               </ol>
             </li>
             <li><a data-lt="PaymentAddress.PaymentAddress()">Internally construct
-            a new <a>PaymentAddress</a> with |details| and return the result.
+            a new <a>PaymentAddress</a> with |details| and resolve
+            |shippingAddressPromise| with the result.
             </li>
           </ol>
           </p>
