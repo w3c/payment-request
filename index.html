@@ -4037,7 +4037,7 @@
           [SecureContext, Exposed=Window]
           interface PaymentRequestUpdateEvent : Event {
             constructor(DOMString type, optional PaymentRequestUpdateEventInit eventInitDict = {});
-            Promise&lt;PaymentAddress&gt; requestShippingAddress(sequence<AddressParts> addressParts);
+            Promise&lt;PaymentAddress&gt; requestShippingAddress(sequence&lt;AddressParts&gt; addressParts);
             void updateWith(Promise&lt;PaymentDetailsUpdate&gt; detailsPromise);
           };
         </pre>
@@ -4073,13 +4073,23 @@
           </h2>
           <aside class="note">
             <p>
-              If a developer wants to incrementally request more granular details
-              of the user's shipping address, for example, to re-calculate
-              shipping cost, then they can call <a>requestShippingAddress()</a>
-              and provide a sequence of <a>AddressParts</a>, which will return a
-              promise that resolves to an <a>PaymentAddress</a> with the
-              requested address fields populated. This method can be called
-              repeatedly to incrementally request more parts as needed.
+              Detailed shipping address contains sensitive user information.
+              Developers are encouraged to use <a>requestShippingAddress()</a>
+              to incrementally request pieces they require instead of asking for
+              all up front using the <a>PaymentOptions.requestShipping</a>
+              boolean. For example, if flat-rate shipping is available in
+              country A but only variable per-region shipping is available in
+              country B, a developer should request only "country" first and
+              decide if "region" is needed.
+            </p>
+            <p>
+              A future version of this specification may remove the all-in-one
+              <a>PaymentOptions.requestShipping</a> boolean.
+            </p>
+            <p>
+              A developer can call <a>requestShippingAddress()</a> repeatedly.
+              Each call returns a promise that resolves to a <a>PaymentAddress
+              </a> with all previously requested address fields populated.
             </p>
             <p>
               If a requested address part is also in the redact list of shipping
@@ -4093,12 +4103,70 @@
                     ev.requestShippingAddress(["country", "postal_code"])
                         .then(address =&gt; {
                           const promiseForUpdate = getNewDetails(address);
-                          return promiseForNewDetails;
+                          return promiseForUpdate;
                         });
                 ev.updateWith(promiseForUpdatingShippingCost);
               };
             </pre>
           </aside>
+          <p>
+            The <a><code>requestShippingAddress(|addressParts|)</code></a> method MUST act as
+            follows:
+          </p>
+          <ol class="algorithm">
+            <li>Let |event:PaymentRequestUpdateEvent| be this
+            {{PaymentRequestUpdateEvent}} instance.
+            </li>
+            <li>If |event|'s {{ Event.isTrusted }} attribute is false, then
+            [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
+            </li>
+            <li>If |event|'s [=Event/target=] is an instance of
+            <a>PaymentResponse</a>, let |request:PaymentRequest| be |event|'s
+            [=Event/target=].<a>[[\request]]</a>.
+            </li>
+            <li>Otherwise, let |request:PaymentRequest| be the value of
+            |event|'s [=Event/target=].
+            </li>
+            <li>Assert: |request| is an instance of {{PaymentRequest}}.
+            </li>
+            <li>If |request|.<a>[[\state]]</a> is not "<a>interactive</a>",
+            then [=exception/throw=] an {{"InvalidStateError"}}
+            {{DOMException}}.
+            </li>
+            <li>Let |shippingAddress| be the value of |request|'s
+              <a data-lt="PaymentRequest.shippingAddress">shippingAddress</a>
+              attribute.
+              <aside class="note">
+                This address should have already been redacted according to the
+                <a>shipping address changed algorithm</a>.
+              </aside>
+            </li>
+            <li>Let |details| be an <a>AddressInit</a> dictionary with no
+              members present.
+            </li>
+            <li>For each attribute |attributeName| in |shippingAddress|
+              <ol>
+                <li>Set |details|[|attributeName|] to the value of
+                  |shippingAddress|.[[|attributeName|]] if it is not empty.
+                </li>
+              </ol>
+            </li>
+            <li>Let |redactList| be the empty list. Set |redactList| to
+              « "organization", "phone", "recipient", "addressLine" ».
+            </li>
+            <li>For each |addressPart| in |addressParts|:
+              <ol>
+                <li>If |details|[|addresPart|] is already present, continue. </li>
+                <li>If |addressPart| is not in |redactList|, set |details|[|addressPart|]
+                to the user provided value for this addres part.
+                </li>
+              </ol>
+            </li>
+            <li><a data-lt="PaymentAddress.PaymentAddress()">Internally construct
+            a new <a>PaymentAddress</a> with |details| and return the result.
+            </li>
+          </ol>
+          </p>
         </section>
         <section>
           <h2>
