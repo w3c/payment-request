@@ -2160,9 +2160,11 @@
         dictionary PaymentOptions {
           boolean requestPayerName = false;
           boolean requestBillingAddress = false;
+          sequence&lt;AddressParts&gt; requestBillingAddressParts = [];
           boolean requestPayerEmail = false;
           boolean requestPayerPhone = false;
           boolean requestShipping = false;
+          sequence&lt;AddressParts&gt; requestShippingAddressParts = [];
           PaymentShippingType shippingType = "shipping";
         };
       </pre>
@@ -2185,6 +2187,22 @@
           jurisdictions and update the displayed total. See below for privacy
           considerations regarding <a href="#user-info">exposing user
           information</a>.
+        </dd>
+        <dt>
+          <dfn>requestBillingAddressParts</dfn> member
+        </dt>
+        <dd>
+          A sequence of <a>AddressParts</a> that indicates fine-grained parts of
+          the billing address that the <a>user agent</a> SHOULD collect from
+          the user-selected payment handler. Additional pieces can be requested
+          incrementally using <a>PaymentMethodChangeEvent.requestBillingAddress
+          </a>.
+          <aside class="note">
+            The billing address is part of the payment-method specific response.
+            The <a>user agent</a> will pass on the merchant requested pieces to
+            the payment handler, but ultimately it is the responsibility of the
+            payment handler to ensure only the requested pieces are returned.
+          </aside>
         </dd>
         <dt>
           <dfn>requestPayerName</dfn> member
@@ -2227,14 +2245,21 @@
               A developer may not need the full shipping address of a user, for
               example, just having "country" may be sufficient to calculate
               shipping cost. To be sensitive to user's privacy, developers should
-              prefer to use <a>PaymentRequestUpdateEvent.requestShippingAddress()
+              prefer to use <a>requestShippingAddressParts</a> to specify an
+              initial restrictive set of address parts and then use
+              <a>PaymentRequestUpdateEvent.requestShippingAddress()
               </a> to incrementally request only the address parts they need.
             </p>
-            <p>
-              A future version of this specification may remove the all-in-one
-              {{PaymentOptions.requestShipping}} boolean.
-            </p>
           </aside>
+        </dd>
+        <dt>
+          <dfn>requestShippingAddressParts</dfn> member
+        </dt>
+        <dd>
+          A sequence of <a>AddressParts</a> that indicates fine-grained parts of
+          the shipping address that the <a>user agent</a> SHOULD collect and
+          return. Additional pieces can be requested incrementally as needed
+          using <a>PaymentRequestUpdateEvent.requestShippingAddress()</a>.
         </dd>
         <dt>
           <dfn>shippingType</dfn> member
@@ -3991,6 +4016,7 @@
             constructor(DOMString type, optional PaymentMethodChangeEventInit eventInitDict = {});
             readonly attribute DOMString methodName;
             readonly attribute object? methodDetails;
+            Promise&lt;object&gt; requestBillingAddress(sequence&lt;AddressParts&gt; addressParts);
           };
         </pre>
         <section>
@@ -4012,6 +4038,30 @@
             <a>methodName</a> member of <a>PaymentMethodChangeEventInit</a> for
             more information.
           </p>
+        </section>
+        <section>
+          <h2>
+            <dfn data-lt="requestBillingAddress(addressParts)">requestBillingAddress()</dfn> method
+          </h2>
+          <aside class="note">
+            <p>
+              Similar to shipping address, detailed billing address contains
+              sensitive user information. {{requestBillingAddress()}} provides
+              a similar mechanism as <a>PaymentRequestUpdateEvent.requestShippingAddress()</a>
+              for developers to incrementally query pieces as needed.
+            </p>
+            <pre class="example js" title="how to use `requestBillingAddress()` correct.">
+              request.onpaymentmethodchange = ev =&gt; {
+                const promiseForUpdatingTax =
+                  ev.requestBillingAddress(["country"])
+                      .then(methodDetails =&gt; {
+                        const promiseForUpdate = getNewTotal(methodDetails);
+                        return promiseForUpdate;
+                      });
+                  ev.updateWith(promiseForUpdatingTax);
+              };
+            </pre>
+          </aside>
         </section>
         <section data-dfn-for="PaymentMethodChangeEventInit" data-link-for=
         "PaymentMethodChangeEventInit">
@@ -4094,10 +4144,6 @@
               country A but only variable per-region shipping is available in
               country B, a developer should request only "country" first and
               decide if "region" is needed.
-            </p>
-            <p>
-              A future version of this specification may remove the all-in-one
-              {{PaymentOptions.requestShipping}} boolean.
             </p>
             <p>
               A developer can call {{requestShippingAddress()}} repeatedly.
