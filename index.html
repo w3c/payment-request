@@ -890,6 +890,8 @@
           </li>
           <li>Set |request|.<a>[[\options]]</a> to |options|.
           </li>
+          <li>Set |request|.<a>[[\requestedShippingAddressParts]]</a> to
+          |options|.<a data-lt="PaymentOptions.requestShippingAddressParts">requestShippingAddressParts</a>.
           <li>Set |request|.<a>[[\state]]</a> to "<a>created</a>".
           </li>
           <li>Set |request|.<a>[[\updating]]</a> to false.
@@ -1137,7 +1139,9 @@
           <li>
             <p>
               Pass the <a data-lt="converted to an IDL value">converted</a>
-              second element in the |paymentMethod| tuple and |modifiers|.
+              second element in the |paymentMethod| tuple, |modifiers|,
+              |request|.<a>[[\options]]</a>.<a data-lt="PaymentOptions.requestBillingAddress">requestBillingAddress</a> and
+              |request|.<a>[[\options]]</a>.<a data-lt="PaymentOptions.requestBillingAddressParts">requestBillingAddressParts</a>.
               Optionally, the user agent SHOULD send the appropriate data from
               |request| to the user-selected <a>payment handler</a> in order to
               guide the user through the payment process. This includes the
@@ -1488,6 +1492,20 @@
             </td>
             <td>
               The <a>PaymentOptions</a> supplied to the constructor.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\requestedShippingAddressParts]]</dfn>
+            </td>
+            <td>
+              The current <a>sequence</a>&lt;<a>AddressParts</a>&gt; specifying
+              the payee-requested shipping address parts, initially supplied to
+              the constructor via {{PaymentOptions}}'s
+              <a data-lt="PaymentOptions.requestShippingAddressParts">
+              requestShippingAddressParts</a> and then updated with calls to
+              <a data-lt="PaymentRequestUpdateEvent.requestShippingAddress">
+              requestShippingAddress()</a>.
             </td>
           </tr>
           <tr>
@@ -2181,27 +2199,32 @@
           A boolean that indicates whether the <a>user agent</a> SHOULD collect
           and return the billing address associated with a <a>payment
           method</a> (e.g., the billing address associated with a credit card).
-          Typically, the user agent will return the billing address as part of
-          the {{PaymentMethodChangeEvent}}'s <a>methodDetails</a>. A merchant
-          can use this information to, for example, calculate tax in certain
-          jurisdictions and update the displayed total. See below for privacy
-          considerations regarding <a href="#user-info">exposing user
-          information</a>.
+          The <a>user agent</a> returns the billing address as part of the
+          {{PaymentMethodChangeEvent}}'s <a>methodDetails</a> attribute and the
+          {{PaymentResponse}}'s <a>details</a> attribute. A payee can use this
+          information to, for example, calculate tax in certain jurisdictions
+          and update the displayed total. See below for privacy considerations
+          regarding <a href="#user-info">exposing user information</a>.
         </dd>
         <dt>
           <dfn>requestBillingAddressParts</dfn> member
         </dt>
         <dd>
-          A sequence of <a>AddressParts</a> that indicates fine-grained parts of
-          the billing address that the <a>user agent</a> SHOULD collect from
-          the user-selected payment handler. Additional pieces can be requested
-          incrementally using <a>PaymentMethodChangeEvent.requestBillingAddress
-          </a>.
+          A sequence of <a>AddressParts</a> that specifies which fine-grained
+          parts of the billing address that the payee wishes to receive when the
+          <a>requestBillingAddress</a> boolean is true. An empty list means no
+          restriction, i.e. the payee requests the full billing address. This
+          field has no effect if the <a>requestBillingAddress</a> boolean is
+          false.
           <aside class="note">
             The billing address is part of the payment-method specific response.
-            The <a>user agent</a> will pass on the merchant requested pieces to
-            the payment handler, but ultimately it is the responsibility of the
-            payment handler to ensure only the requested pieces are returned.
+            The <a>user agent</a> simply passes the payee-specified
+            <a>requestBillingAddressParts</a> to the payment handler. It is the
+            responsibility of the payment handler to ensure no more than the
+            requested pieces is returned. A payment handler may choose to not
+            return some requested pieces (e.g., as a result of applying a redact
+            list). The payee can request additional pieces incrementally using
+            <a>PaymentMethodChangeEvent.requestBillingAddress()</a>.
           </aside>
         </dd>
         <dt>
@@ -2236,19 +2259,22 @@
         </dt>
         <dd>
           A boolean that indicates whether the <a>user agent</a> SHOULD collect
-          and return a shipping address as part of the payment request. For
-          example, this would be set to true when physical goods need to be
-          shipped by the merchant to the user. This would be set to false for
-          the purchase of digital goods.
+          and return a shipping address as part of the payment request (e.g.,
+          when physical goods need to be shipped by the payee to the user). The
+          <a>user agent</a> returns the shipping address in the
+          {{PaymentRequest}}'s <a data-lt="PaymentRequest.shippingAddress">
+          shippingAddress</a> attribute and the {{PaymentResponse}}'s
+          <a data-lt="PaymentResponse.shippingAddress">shippingAddress</a>
+          attribute. The former is subject to a redact list per the <a>shipping
+          address changed algorithm</a>.
           <aside class="note">
             <p>
-              A developer may not need the full shipping address of a user, for
-              example, just having "country" may be sufficient to calculate
-              shipping cost. To be sensitive to user's privacy, developers should
-              prefer to use <a>requestShippingAddressParts</a> to specify an
-              initial restrictive set of address parts and then use
-              <a>PaymentRequestUpdateEvent.requestShippingAddress()
-              </a> to incrementally request only the address parts they need.
+              A payee may not need the full shipping address of a user until the
+              payment request is completed. For example, just having "country"
+              may be sufficient to calculate shipping cost. A payee sensitive to
+              the user's privacy can use <a>requestShippingAddressParts</a> to
+              restrict the initial set of address parts returned by the
+              <a>user agent</a>.
             </p>
           </aside>
         </dd>
@@ -2256,10 +2282,14 @@
           <dfn>requestShippingAddressParts</dfn> member
         </dt>
         <dd>
-          A sequence of <a>AddressParts</a> that indicates fine-grained parts of
-          the shipping address that the <a>user agent</a> SHOULD collect and
-          return. Additional pieces can be requested incrementally as needed
-          using <a>PaymentRequestUpdateEvent.requestShippingAddress()</a>.
+          A sequence of <a>AddressParts</a> that specifies which fine-grained
+          parts of the shipping address that the payee wishes to receive when
+          the <a>requestShipping</a> boolean is true. An empty list means no
+          restriction, i.e. the <a>user agent</a> will return the full shipping
+          address, subject to any applicable redact list. This field has no
+          effect if the <a>requestShipping</a> boolean is false. The payee can
+          request additional pieces incrementally using
+          <a>PaymentRequestUpdateEvent.requestShippingAddress()</a>.
         </dd>
         <dt>
           <dfn>shippingType</dfn> member
@@ -2403,6 +2433,7 @@
           [SecureContext, Exposed=(Window)]
           interface PaymentAddress {
             [Default] object toJSON();
+            readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
             readonly attribute DOMString city;
             readonly attribute DOMString country;
             readonly attribute DOMString dependentLocality;
@@ -2412,7 +2443,6 @@
             readonly attribute DOMString recipient;
             readonly attribute DOMString region;
             readonly attribute DOMString sortingCode;
-            readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
           };
         </pre>
         <p>
@@ -2532,16 +2562,6 @@
         </section>
         <section>
           <h2>
-            <dfn>country</dfn> attribute
-          </h2>
-          <p data-link-for="">
-            Represents the <a>country</a> of the address. When getting, returns
-            the value of the {{PaymentAddress}}'s <a>[[\country]]</a> internal
-            slot.
-          </p>
-        </section>
-        <section>
-          <h2>
             <dfn>addressLine</dfn> attribute
           </h2>
           <p data-link-for="">
@@ -2552,21 +2572,21 @@
         </section>
         <section>
           <h2>
-            <dfn>region</dfn> attribute
-          </h2>
-          <p data-link-for="">
-            Represents the <a>region</a> of the address. When getting, returns
-            the value of the {{PaymentAddress}}'s <a>[[\region]]</a> internal
-            slot.
-          </p>
-        </section>
-        <section>
-          <h2>
             <dfn>city</dfn> attribute
           </h2>
           <p data-link-for="">
             Represents the <a>city</a> of the address. When getting, returns
             the value of the {{PaymentAddress}}'s <a>[[\city]]</a> internal
+            slot.
+          </p>
+        </section>
+        <section>
+          <h2>
+            <dfn>country</dfn> attribute
+          </h2>
+          <p data-link-for="">
+            Represents the <a>country</a> of the address. When getting, returns
+            the value of the {{PaymentAddress}}'s <a>[[\country]]</a> internal
             slot.
           </p>
         </section>
@@ -2582,32 +2602,32 @@
         </section>
         <section>
           <h2>
-            <dfn>postalCode</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>postal code</a> of the address. When getting,
-            returns the value of the {{PaymentAddress}}'s
-            <a>[[\postalCode]]</a> internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>sortingCode</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>sorting code</a> of the address. When getting,
-            returns the value of the {{PaymentAddress}}'s
-            <a>[[\sortingCode]]</a> internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
             <dfn>organization</dfn> attribute
           </h2>
           <p data-link-for="">
             Represents the <a>organization</a> of the address. When getting,
             returns the value of the {{PaymentAddress}}'s
             <a>[[\organization]]</a> internal slot.
+          </p>
+        </section>
+        <section>
+          <h2>
+            <dfn>phone</dfn> attribute
+          </h2>
+          <p>
+            Represents the <a>phone number</a> of the address. When getting,
+            returns the value of the {{PaymentAddress}}'s <a>[[\phone]]</a>
+            internal slot.
+          </p>
+        </section>
+        <section>
+          <h2>
+            <dfn>postalCode</dfn> attribute
+          </h2>
+          <p>
+            Represents the <a>postal code</a> of the address. When getting,
+            returns the value of the {{PaymentAddress}}'s
+            <a>[[\postalCode]]</a> internal slot.
           </p>
         </section>
         <section>
@@ -2622,12 +2642,22 @@
         </section>
         <section>
           <h2>
-            <dfn>phone</dfn> attribute
+            <dfn>region</dfn> attribute
+          </h2>
+          <p data-link-for="">
+            Represents the <a>region</a> of the address. When getting, returns
+            the value of the {{PaymentAddress}}'s <a>[[\region]]</a> internal
+            slot.
+          </p>
+        </section>
+        <section>
+          <h2>
+            <dfn>sortingCode</dfn> attribute
           </h2>
           <p>
-            Represents the <a>phone number</a> of the address. When getting,
-            returns the value of the {{PaymentAddress}}'s <a>[[\phone]]</a>
-            internal slot.
+            Represents the <a>sorting code</a> of the address. When getting,
+            returns the value of the {{PaymentAddress}}'s
+            <a>[[\sortingCode]]</a> internal slot.
           </p>
         </section>
         <section data-link-for="">
@@ -2738,16 +2768,16 @@
         </h2>
         <pre class="idl">
           dictionary AddressInit {
-            DOMString country;
             sequence&lt;DOMString&gt; addressLine;
-            DOMString region;
             DOMString city;
+            DOMString country;
             DOMString dependentLocality;
-            DOMString postalCode;
-            DOMString sortingCode;
             DOMString organization;
-            DOMString recipient;
             DOMString phone;
+            DOMString postalCode;
+            DOMString recipient;
+            DOMString region;
+            DOMString sortingCode;
           };
         </pre>
         <p>
@@ -2953,7 +2983,8 @@
         <p>
           The steps to <dfn>create a `PaymentAddress` from user-provided
           input</dfn> are given by the following algorithm. The algorithm takes
-          a <a>list</a> |redactList|.
+          a <a>list</a> |redactList| and a
+          <a>sequence</a>&lt;<a>AddressParts</a>&gt; |requestedParts|.
         </p>
         <div class="note" title=
         "Privacy of recipient information (the redactList)">
@@ -2975,26 +3006,30 @@
           </p>
         </div>
         <ol data-link-for="AddressInit">
+          <li>If |requestedParts| is empty, set it to «
+          "addressLine", "city", "country", "dependentLocality", "organization",
+          "phone", "postalCode", "recipient", "region", "sortingCode"».
+          </li>
           <li>Let |details:AddressInit| be an <a>AddressInit</a> dictionary
           with no members present.
           </li>
-          <li>If "addressLine" is not in |redactList|, set
-          |details|["<a>addressLine</a>"] to the result of splitting the
-          user-provided address line into a <a>list</a>. If none was provided,
-          set it to the empty <a>list</a>.
+          <li>If "addressLine" is in |requestedParts| and is not in
+          |redactList|, set |details|["<a>addressLine</a>"] to the result of
+          splitting the user-provided address line into a <a>list</a>. If none
+          was provided, set it to the empty <a>list</a>.
             <aside class="note">
               How to split an address line is locale dependent and beyond the
               scope of this specification.
             </aside>
           </li>
-          <li>If "country" is not in |redactList|, set
-          |details|["<a>country</a>"] to the user-provided country as an upper
-          case [[ISO3166-1]] alpha-2 code, or to the empty string if none was
-          provided.
+          <li>If "country" is in |requestedParts| and is not in |redactList|,
+          set |details|["<a>country</a>"] to the user-provided country as an
+          upper case [[ISO3166-1]] alpha-2 code, or to the empty string if none
+          was provided.
           </li>
-          <li>If "phone" is not in |redactList|, set |details|["<a>phone</a>"]
-          to the user-provided phone number, or to the empty string if none was
-          provided.
+          <li>If "phone" is in |requestedParts| and is not in |redactList|, set
+          |details|["<a>phone</a>"] to the user-provided phone number, or to the
+          empty string if none was provided.
             <aside class="note" title="Privacy of phone number">
               <p>
                 To maintain users' privacy, implementers need to be mindful
@@ -3005,21 +3040,24 @@
               </p>
             </aside>
           </li>
-          <li>If "city" is not in |redactList|, set |details|["<a>city</a>"] to
-          the user-provided city, or to the empty string if none was provided.
+          <li>If "city" is in |requestedParts| and is not in |redactList|, set
+          |details|["<a>city</a>"] to the user-provided city, or to the empty
+          string if none was provided.
           </li>
-          <li>If "dependentLocality" is not in |redactList|, set
-          |details|["<a>dependentLocality</a>"] to the user-provided dependent
-          locality, or to the empty string if none was provided.
+          <li>If "dependentLocality" is in |requestedParts| and is not in
+          |redactList|, set |details|["<a>dependentLocality</a>"] to the
+          user-provided dependent locality, or to the empty string if none was
+          provided.
           </li>
-          <li>If "organization" is not in |redactList|, set
-          |details|["<a>organization</a>"] to the user-provided recipient
-          organization, or to the empty string if none was provided.
+          <li>If "organization" is in |requestedParts| and is not in
+          |redactList|, set |details|["<a>organization</a>"] to the
+          user-provided recipient organization, or to the empty string if none
+          was provided.
           </li>
-          <li>If "postalCode" is not in |redactList|, set
-          |details|["<a>postalCode</a>"] to the user-provided postal code, or
-          to the empty string if none was provided. Optionally, redact part of
-          |details|["<a>postalCode</a>"].
+          <li>If "postalCode" is in |requestedParts| and is not in |redactList|,
+          set |details|["<a>postalCode</a>"] to the user-provided postal code,
+          or to the empty string if none was provided. Optionally, redact part
+          of |details|["<a>postalCode</a>"].
             <div class="note" title="Privacy of Postal Codes">
               <p>
                 <a>Postal codes</a> in certain countries can be so specific as
@@ -3033,13 +3071,13 @@
               </p>
             </div>
           </li>
-          <li>If "recipient" is not in |redactList|, set
-          |details|["<a>recipient</a>"] to the user-provided recipient of the
-          transaction, or to the empty string if none was provided.
+          <li>If "recipient" is in |requsetedParts| and is not in |redactList|,
+          set |details|["<a>recipient</a>"] to the user-provided recipient of
+          the transaction, or to the empty string if none was provided.
           </li>
           <li>
             <p>
-              If "region" is not in |redactList|:
+              If "region" is in |requestedParts| and is not in |redactList|:
             </p>
             <p data-link-for="" class="note" title=
             "Countries where regions are not commonly used">
@@ -3060,9 +3098,9 @@
               </li>
             </ol>
           </li>
-          <li>If "sortingCode" is not in |redactList|, set
-          |details|["<a>sortingCode</a>"] to the user-provided sorting code, or
-          to the empty string if none was provided.
+          <li>If "sortingCode" is n |requestedParts| and is not in |redactList|,
+          set |details|["<a>sortingCode</a>"] to the user-provided sorting code,
+          or to the empty string if none was provided.
           </li>
           <li>
             <a data-lt="PaymentAddress.PaymentAddress()">Internally construct a
@@ -4045,15 +4083,15 @@
           </h2>
           <aside class="note">
             <p>
-              Similar to shipping address, detailed billing address contains
-              sensitive user information. {{requestBillingAddress()}} provides
-              a similar mechanism as <a>PaymentRequestUpdateEvent.requestShippingAddress()</a>
-              for developers to incrementally query pieces as needed.
+              <a>PaymentMethodChangeEvent.requestBillingAddress()</a> allows the
+              developer to incrementally request additional pieces of the
+              billing address that were not initially requested in
+              {{ PaymentOptions.requestBillingAddressParts }}.
             </p>
             <pre class="example js" title="how to use `requestBillingAddress()` correct.">
               request.onpaymentmethodchange = ev =&gt; {
                 const promiseForUpdatingTax =
-                  ev.requestBillingAddress(["country"])
+                  ev.requestBillingAddress(["country", "postalCode"])
                       .then(methodDetails =&gt; {
                         const promiseForUpdate = getNewTotal(methodDetails);
                         return promiseForUpdate;
@@ -4062,6 +4100,48 @@
               };
             </pre>
           </aside>
+          <p>
+            The <a>requestBillingAddress(|addressParts|)</a> method MUST act as
+            follows:
+          </p>
+          <ol class="algorithm">
+            <li>Let |event:PaymentMethodChangeEvent| be this
+            {{PaymentMethodChangeEvent}} instance.
+            </li>
+            <li>If |event|'s {{ Event.isTrusted }} attribute is false, then
+            return <a>a promise rejected with</a> an {{"InvalidStateError"}}
+            {{DOMException}}.
+            </li>
+            <li>Let |request:PaymentRequest| be the value of |event|'s
+            [=Event/target=].
+            </li>
+            <li>Assert: |request| is an instance of {{PaymentRequest}}.
+            </li>
+            <li>If |request|.<a>[[\state]]</a> is not "<a>interactive</a>",
+            then return <a>a promise rejected with</a> an {{"InvalidStateError"}}
+            {{DOMException}}.
+            </li>
+            <li>Let |methodDetailsPromise:Promise| be <a>a new promise</a>.</li>
+            <li>Return |methodDetailsPromise|, and perform the remaining steps
+            <a>in parallel</a>.
+            </li>
+            <li>Let |handler| be the <a>payment handler</a> that triggered this
+            |event|.
+            </li>
+            <li>Use a <a>payment handler</a> specific API to send |addressParts|
+            to |handler| and receive a new <a>object</a> |methodDetails|.
+              <p class="note">
+              It is the responsibility of the payment handler to keep track of
+              successive address parts it is called with and return an
+              appropriate version of the billing address associated with the
+              selected payment instrument, potentially with some redact list
+              applied.
+              </p>
+            </li>
+            <li>Resolve |methodDetailsPromise| with |methodDetails|.
+            </li>
+
+          </ol>
         </section>
         <section data-dfn-for="PaymentMethodChangeEventInit" data-link-for=
         "PaymentMethodChangeEventInit">
@@ -4137,10 +4217,10 @@
           <aside class="note">
             <p>
               Detailed shipping address contains sensitive user information.
-              Developers are encouraged to use {{requestShippingAddress()}}
-              to incrementally request pieces they require instead of asking for
-              all up front using the {{PaymentOptions.requestShipping}}
-              boolean. For example, if flat-rate shipping is available in
+              Developers are encouraged to specify a restrictive initial list
+              using {{PaymentOptions.requestShippingAddressParts}} and use
+              {{requestShippingAddress()}} to incrementally request pieces as
+              needed. For example, if flat-rate shipping is available in
               country A but only variable per-region shipping is available in
               country B, a developer should request only "country" first and
               decide if "region" is needed.
@@ -4148,85 +4228,78 @@
             <p>
               A developer can call {{requestShippingAddress()}} repeatedly.
               Each call returns a promise that resolves to a {{PaymentAddress}}
-              with all previously requested address fields populated.
-            </p>
-            <p>
-              If a requested address part is also in the redact list of shipping
-              address, then the returned {{PaymentAddress}} will not have the
-              corresponding field populated.
+              with all previously requested address fields populated, subject to
+              any applicable redact list.
             </p>
             <pre class="example js" title=
             "how to use `requestShippingAddress()` correctly.">
+              // ✅ Good - Request additional address parts to recompute
+              // shipping cost. The final response.shippingAddress will also
+              // only contain "country" and "postalCode".
               request.onshippingaddresschange = ev =&gt; {
                 const promiseForUpdatingShippingCost =
-                    ev.requestShippingAddress(["country", "postal_code"])
+                    ev.requestShippingAddress(["country", "postalCode"])
                         .then(address =&gt; {
                           const promiseForUpdate = getNewDetails(address);
                           return promiseForUpdate;
                         });
                 ev.updateWith(promiseForUpdatingShippingCost);
               };
+
+              // ✅ Good - Request additional addresss parts to be included in
+              // the final response.shippingAddress.
+              request.onshippingaddresschange = ev =&gt; {
+                // Compute shipping cost based on initial coarse address.
+                ev.updateWith(computeShippingCost(ev.target.shippingAddress));
+
+                // Discard the returned promise because the full address is not
+                // needed until the final PaymentResponse. Empty addressParts
+                // means all parts are requested.
+                ev.requestShippingAddress(/* addressParts= */[]);
+              }
             </pre>
           </aside>
           <p>
-            The <a><code>requestShippingAddress(|addressParts|)</code></a> method MUST act as
+            The <a>requestShippingAddress(|addressParts|)</a> method MUST act as
             follows:
           </p>
           <ol class="algorithm">
             <li>Let |event:PaymentRequestUpdateEvent| be this
             {{PaymentRequestUpdateEvent}} instance.
             </li>
+            <li>If |event|'s {{ Event.type }} attribute is not <a>
+            shippingaddresschange</a>, then return <a>a promise rejected with
+            </a> a {{TypeError}}.
+            <li>Let |request:PaymentRequest| be the value of |event|'s
+            [=Event/target=].
+            </li>
+            <li>Assert: |request| is an instance of {{PaymentRequest}}.
+            </li>
             <li>If |event|'s {{ Event.isTrusted }} attribute is false, then
             return <a>a promise rejected with</a> an {{"InvalidStateError"}}
             {{DOMException}}.
-            </li>
-            <li>If |event|'s [=Event/target=] is an instance of
-            <a>PaymentResponse</a>, let |request:PaymentRequest| be |event|'s
-            [=Event/target=].<a>[[\request]]</a>.
-            </li>
-            <li>Otherwise, let |request:PaymentRequest| be the value of
-            |event|'s [=Event/target=].
-            </li>
-            <li>Assert: |request| is an instance of {{PaymentRequest}}.
             </li>
             <li>If |request|.<a>[[\state]]</a> is not "<a>interactive</a>",
             then return <a> a promise rejected with</a> an {{"InvalidStateError"}}
             {{DOMException}}.
             </li>
-            <li>Let |shippingAddressPromise:Promise| be <a>a new promise</a>.</li>
-            <li>Return |shippingAddressPromise|, and perform the remaining steps <a>in
-            parallel</a>.
+            <li>Let |addressPromise:Promise| be <a>a new promise</a>.</li>
+            <li>Return |addressPromise|, and perform the remaining steps
+            <a>in parallel</a>.
             </li>
-            <li>Let |shippingAddress:PaymentAddress| be |request|'s
-            [=PaymentRequest/shippingAddress=].
-              <aside class="note">
-                This address should have already been redacted according to the
-                <a>shipping address changed algorithm</a>.
-              </aside>
+            <li>Update |request|.<a>[[\requestedShippingAddressParts]]</a> to be
+            the union of itself and |addressParts|.
             </li>
-            <li>Let |details:AddressInit| be an {{AddressInit}} dictionary with
-            no members present.
+            <li>Let |redactList:list| be the result of <a>get redact list for
+            shipping address changed algorithm</a>.
             </li>
-            <li>For each attribute |attributeName| in |shippingAddress:PaymentAddress|:
-              <ol>
-                <li>Set |details|[|attributeName|] to the value of
-                  |shippingAddress|.[[|attributeName|]] if it is not empty.
-                </li>
-              </ol>
+            <li>Let |address:PaymentAddress| be the result of <a>create
+            a `PaymentAddress` from user-provided input</a> with |redactList|
+            and |request|.<a>[[\requestedShippingAddressParts]]</a>.
             </li>
-            <li>Let |redactList| be the empty list. Set |redactList| to
-            « "organization", "phone", "recipient", "addressLine" ».
+            <li>Set |request|.[=PaymentRequest/shippingAddress=] to |address|.
             </li>
-            <li>For each |addressPart| in |addressParts|:
-              <ol>
-                <li>If |details|[|addresPart|] is already present, continue.</li>
-                <li>If |addressPart| is in |redactList|, continue. </li>
-                <li>Set |details|[|addressPart|] to the user provided value.</li>
-              </ol>
-            </li>
-            <li><a data-lt="PaymentAddress.PaymentAddress()">Internally construct
-            a new <a>PaymentAddress</a> with |details| and resolve
-            |shippingAddressPromise| with the result.
+            <li>Resolve |addressPromise| with |address|.
             </li>
           </ol>
           </p>
@@ -4538,6 +4611,41 @@
       </section>
       <section>
         <h2>
+          <dfn>Get redact list for shipping address changed algorithm</dfn>
+        </h2>
+        <p>This algorithm returns a redact list that should be used on a
+        shipping address returned to the payee during the
+        <a>shippingaddresschange</a> event.
+        </p>
+        <div class="note" title="Privacy of recipient information">
+          <p>
+            The |redactList| limits the amount of personal information
+            about the recipient that the API shares with the merchant before
+            the payment request is completed.
+          </p>
+          <p>
+            For merchants, the resulting {{PaymentAddress}} object
+            provides enough information to, for example, calculate
+            shipping costs, but, in most cases, not enough information
+            to physically locate and uniquely identify the recipient.
+          </p>
+          <p>
+            Unfortunately, even with the |redactList|, recipient
+            anonymity cannot be assured. This is because in some
+            countries postal codes are so fine-grained that they can
+            uniquely identify a recipient.
+          </p>
+        </div>
+        <ol class="algorithm">
+          <li>Let |redactList:list| be the empty list. Set |redactList| to
+          « "organization", "phone", "recipient", "addressLine" ».
+          </li>
+          <li>Return |redactList|.
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h2>
           Shipping address changed algorithm
         </h2>
         <p data-tests=
@@ -4553,32 +4661,13 @@
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
             <ol>
-              <li>
-                <div class="note" title="Privacy of recipient information">
-                  <p>
-                    The |redactList| limits the amount of personal information
-                    about the recipient that the API shares with the merchant.
-                  </p>
-                  <p>
-                    For merchants, the resulting {{PaymentAddress}} object
-                    provides enough information to, for example, calculate
-                    shipping costs, but, in most cases, not enough information
-                    to physically locate and uniquely identify the recipient.
-                  </p>
-                  <p>
-                    Unfortunately, even with the |redactList|, recipient
-                    anonymity cannot be assured. This is because in some
-                    countries postal codes are so fine-grained that they can
-                    uniquely identify a recipient.
-                  </p>
-                </div>
-              </li>
-              <li>Let |redactList:list| be the empty list. Set |redactList| to
-              « "organization", "phone", "recipient", "addressLine" ».
+              <li>Let |redactList:list| be the result of <a>get redact list for
+              shipping address changed algorithm</a>.
               </li>
               <li>Let |address:PaymentAddress| be the result of running the
               steps to <a>create a `PaymentAddress` from user-provided
-              input</a> with |redactList|.
+              input</a> with |redactList| and
+              |request|.<a>[[\requestedShippingAddressParts]]</a>.
               </li>
               <li>Set the <a data-lt=
               "PaymentRequest.shippingAddress">shippingAddress</a> attribute on
@@ -4847,7 +4936,8 @@
               </li>
               <li>Let |shippingAddress:PaymentAddress| be the result of
               <a>create a `PaymentAddress` from user-provided input</a> with
-              |redactList|.
+              |redactList| and
+              |request|.<a>[[\requestedShippingAddressParts]]</a>.
               </li>
               <li>Set the {{shippingAddress}} attribute value of |response| to
               |shippingAddress|.
