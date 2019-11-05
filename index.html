@@ -2220,9 +2220,10 @@
             <a>requestBillingAddressParts</a> to the payment handler. It is the
             responsibility of the payment handler to ensure no more than the
             requested pieces is returned. A payment handler may choose to not
-            return some requested pieces (e.g., as a result of applying a redact
-            list). The payee can request additional pieces incrementally using
-            {{PaymentMethodChangeEvent}}'s {{PaymentMethodChangeEvent/requestBillingAddres()}}.
+            return some requested pieces (e.g., as a result of applying a <a>
+            redact list</a>). The payee can request additional pieces
+            incrementally using {{PaymentMethodChangeEvent}}'s
+            {{PaymentMethodChangeEvent/requestBillingAddress()}}.
           </aside>
         </dd>
         <dt>
@@ -2263,8 +2264,9 @@
           {{PaymentRequest}}'s {{PaymentRequest/shippingAddress}}
           attribute and the {{PaymentResponse}}'s
           {{PaymentResponse/shippingAddress}}
-          attribute. The former is subject to a redact list per the <a>shipping
-          address changed algorithm</a>.
+          attribute. The former is subject to a
+          <a data-lt="shipping-redact-list">redact list</a> per the
+          <a>shipping address changed algorithm</a>.
           <aside class="note">
             <p>
               A payee may not need the full shipping address of a user until the
@@ -2284,10 +2286,12 @@
           parts of the shipping address that the payee wishes to receive when
           the <a>requestShipping</a> member is true. An empty list means no
           restriction, i.e. the <a>user agent</a> will return the full shipping
-          address, subject to any applicable redact list. This field has no
-          effect if the <a>requestShipping</a> member is false. The payee can
+          address, subject to any applicable
+          <a data-lt="shipping-redact-list">redact list</a>. This field has
+          no effect if the <a>requestShipping</a> member is false. The payee can
           request additional pieces incrementally using
-          {{PaymentRequestUpdateEvent}}'s {{PaymentRequestUpdateEvent/requestShippingAddress()}}.
+          {{PaymentRequestUpdateEvent}}'s
+          {{PaymentRequestUpdateEvent/requestShippingAddress()}}.
         </dd>
         <dt>
           <dfn>shippingType</dfn> member
@@ -4077,7 +4081,9 @@
         </section>
         <section>
           <h2>
-            <dfn data-lt="requestBillingAddress(addressParts)">requestBillingAddress()</dfn> method
+            <dfn data-lt="requestBillingAddress(addressParts)">
+              requestBillingAddress()
+            </dfn> method
           </h2>
           <aside class="note">
             <p>
@@ -4086,7 +4092,7 @@
               billing address that were not initially requested in
               {{ PaymentOptions.requestBillingAddressParts }}.
             </p>
-            <pre class="example js" title="how to use `requestBillingAddress()`.">
+            <pre class="example js" title="how to use `requestBillingAddress()` correctly.">
               request.onpaymentmethodchange = ev =&gt; {
                 const promiseForUpdatingTax =
                   ev.requestBillingAddress(["country", "postalCode"])
@@ -4128,13 +4134,13 @@
             </li>
             <li>Use a <a>payment handler</a> specific API to send |addressParts|
             to |handler| and receive a new <a>object</a> |methodDetails|.
-              <p class="note">
+            <p class="note">
               It is the responsibility of the payment handler to keep track of
               successive address parts it is called with and return an
               appropriate version of the billing address associated with the
-              selected payment instrument, potentially with some redact list
-              applied.
-              </p>
+              selected payment instrument, potentially with some
+              <a>redact list</a> applied.
+            </p>
             </li>
             <li>Resolve |methodDetailsPromise| with |methodDetails|.
             </li>
@@ -4210,7 +4216,9 @@
         </section>
         <section>
           <h2>
-            <dfn data-lt="requestShippingAddress(addressParts)">requestShippingAddress()</dfn> method
+            <dfn data-lt="requestShippingAddress(addressParts)">
+              requestShippingAddress()
+            </dfn> method
           </h2>
           <aside class="note">
             <p>
@@ -4227,7 +4235,7 @@
               A developer can call {{requestShippingAddress()}} repeatedly.
               Each call returns a promise that resolves to a {{PaymentAddress}}
               with all previously requested address fields populated, subject to
-              any applicable redact list.
+              any applicable <a data-lt="shipping-redact-list">redact list</a>.
             </p>
             <pre class="example js" title=
             "how to use `requestShippingAddress()` correctly.">
@@ -4609,7 +4617,9 @@
       </section>
       <section>
         <h2>
-          <dfn>Get redact list for shipping address changed algorithm</dfn>
+          <dfn data-lt="shipping-redact-list">
+            Get redact list for shipping address changed algorithm
+          </dfn>
         </h2>
         <p>This algorithm returns a redact list that should be used on a
         shipping address returned to the payee during the
@@ -5598,11 +5608,11 @@
           <a>payment method</a> and might include:
         </p>
         <ul>
-          <li>Use of a "|redactList|" for <a>physical addresses</a>. The
-          current specification makes use of a "|redactList|" to redact the <a>
-            address line</a>, <a>organization</a>, <a>phone number</a>, and
-            <a>recipient</a> from a <a data-link-for=
-            "PaymentRequest">shippingAddress</a>.
+          <li>Use of a "<dfn data-lt="redact list">redactList</dfn>" for
+          <a>physical addresses</a>. The current specification makes use of a
+          "|redactList|" to redact the <a>address line</a>, <a>organization</a>,
+          <a>phone number</a>, and <a>recipient</a> from a <a data-link-for=
+          "PaymentRequest">shippingAddress</a>.
           </li>
           <li>Support for instructions from the payee identifying specific
           elements to exclude or include from the <a>payment method</a>
