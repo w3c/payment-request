@@ -4094,13 +4094,13 @@
             </p>
             <pre class="example js" title="how to use `requestBillingAddress()` correctly.">
               request.onpaymentmethodchange = ev =&gt; {
-                const promiseForUpdatingTax =
+                // ✅ Good: request finer-grained address parts inside updateWith()
+                ev.updateWith(new Promise((resolver) =&gt; {
                   ev.requestBillingAddress(["country", "postalCode"])
-                      .then(methodDetails =&gt; {
-                        const promiseForUpdate = getNewTotal(methodDetails);
-                        return promiseForUpdate;
-                      });
-                  ev.updateWith(promiseForUpdatingTax);
+                    .then(methodDetails =&gt; {
+                      resolver(getNewTotal(methodDetails));
+                    });
+                }));
               };
             </pre>
           </aside>
@@ -4123,6 +4123,10 @@
             </li>
             <li>If |request|.<a>[[\state]]</a> is not "<a>interactive</a>",
             then return <a>a promise rejected with</a> an {{"InvalidStateError"}}
+            {{DOMException}}.
+            </li>
+            <li>If |event|.<a>[[\waitForUpdate]]</a> is false,
+            then return <a> a promise rejected with</a> an {{"InvalidStateError"}}
             {{DOMException}}.
             </li>
             <li>Let |methodDetailsPromise:Promise| be <a>a new promise</a>.</li>
@@ -4242,27 +4246,45 @@
               // ✅ Good - Request additional address parts to recompute
               // shipping cost. The final response.shippingAddress will also
               // only contain "country" and "postalCode".
-              request.onshippingaddresschange = ev =&gt; {
-                const promiseForUpdatingShippingCost =
-                    ev.requestShippingAddress(["country", "postalCode"])
-                        .then(address =&gt; {
-                          const promiseForUpdate = getNewDetails(address);
-                          return promiseForUpdate;
-                        });
-                ev.updateWith(promiseForUpdatingShippingCost);
+              request.onshippingaddresschange = (ev) =&gt; {
+                ev.updateWith(new Promise((resolver) =&gt; {
+                  ev.requestShippingAddress(["country", "postalCode"])
+                      .then(address =&gt; {
+                        resolver(getNewDetails(address));
+                      });
+                  }));
               };
 
               // ✅ Good - Request additional addresss parts to be included in
               // the final response.shippingAddress.
-              request.onshippingaddresschange = ev =&gt; {
+              request.onshippingaddresschange = (ev) =&gt; {
                 // Compute shipping cost based on initial coarse address.
-                ev.updateWith(computeShippingCost(ev.target.shippingAddress));
+                ev.updateWith(new Promise((resolver) =&gt; {
+                  // Discard the returned promise because the full address is not
+                  // needed until the final PaymentResponse. Empty addressParts
+                  // means all parts are requested.
+                  ev.requestShippingAddress(/* addressParts= */[]);
 
-                // Discard the returned promise because the full address is not
-                // needed until the final PaymentResponse. Empty addressParts
-                // means all parts are requested.
-                ev.requestShippingAddress(/* addressParts= */[]);
+                  // Compute shipping cost using initial partial address.
+                  resolver(computeShippingCost(ev.target.shippingAddress)));
+                });
               }
+
+              // ❌ Bad - this won't work!
+              request.onshippingaddresschange = (ev) =&gt; {
+                ev.updateWith(getPromiseForNewDetails(ev.target.shippingAddress));
+
+                // This will throw InvalidStateError since not inside updateWith().
+                ev.requestShippingAddress([]);
+              };
+
+              // ❌ Bad - this won't work!
+              request.onshippingaddresschange = (ev) =&gt; {
+                // This will throw InvalidStateError since not inside updateWith().
+                ev.requestShippingAddress([]);
+
+                ev.updateWith(getPromiseForNewDetails(ev.target.shippingAddress));
+              };
             </pre>
           </aside>
           <p>
@@ -4286,6 +4308,10 @@
             {{DOMException}}.
             </li>
             <li>If |request|.<a>[[\state]]</a> is not "<a>interactive</a>",
+            then return <a> a promise rejected with</a> an {{"InvalidStateError"}}
+            {{DOMException}}.
+            </li>
+            <li>If |event|.<a>[[\waitForUpdate]]</a> is false,
             then return <a> a promise rejected with</a> an {{"InvalidStateError"}}
             {{DOMException}}.
             </li>
