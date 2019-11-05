@@ -4087,7 +4087,7 @@
               billing address that were not initially requested in
               {{ PaymentOptions.requestBillingAddressParts }}.
             </p>
-            <pre class="example js" title="how to use `requestBillingAddress()` correct.">
+            <pre class="example js" title="how to use `requestBillingAddress()`.">
               request.onpaymentmethodchange = ev =&gt; {
                 const promiseForUpdatingTax =
                   ev.requestBillingAddress(["country", "postalCode"])
