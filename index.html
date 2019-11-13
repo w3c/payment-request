@@ -2263,10 +2263,9 @@
           <a>user agent</a> returns the shipping address in the
           {{PaymentRequest}}'s {{PaymentRequest/shippingAddress}}
           attribute and the {{PaymentResponse}}'s
-          {{PaymentResponse/shippingAddress}}
-          attribute. The former is subject to a
-          <a>shipping redact list</a> per the
-          <a>shipping address changed algorithm</a>.
+          {{PaymentResponse/shippingAddress}} attribute. The former is subject
+          to a <a>shipping redact list</a> per the <a>shipping address changed
+          algorithm</a>.
           <aside class="note">
             <p>
               A payee may not need the full shipping address of a user until the
@@ -2287,10 +2286,9 @@
           the <a>requestShipping</a> member is true. An empty list means no
           restriction, i.e. the <a>user agent</a> will return the full shipping
           address, subject to the
-          <a>shipping redact list</a>. This field has
-          no effect if the <a>requestShipping</a> member is false. The payee can
-          request additional pieces incrementally using
-          {{PaymentRequestUpdateEvent}}'s
+          <a>shipping redact list</a>. This field has no effect if the
+          <a>requestShipping</a> member is false. The payee can request
+          additional pieces incrementally using {{PaymentRequestUpdateEvent}}'s
           {{PaymentRequestUpdateEvent/requestShippingAddress()}}.
         </dd>
         <dt>
@@ -4087,20 +4085,62 @@
           </h2>
           <aside class="note">
             <p>
-              The {{PaymentMethodChangeEvent/requestBillingAddress()}} method allows the
-              developer to incrementally request additional pieces of the
-              billing address that were not initially requested in
+              The {{PaymentMethodChangeEvent/requestBillingAddress()}} method
+              allows the developer to incrementally request additional pieces of
+              the billing address that were not initially requested in
               {{ PaymentOptions.requestBillingAddressParts }}.
             </p>
-            <pre class="example js" title="how to use `requestBillingAddress()` correctly.">
-              request.onpaymentmethodchange = ev =&gt; {
-                // ✅ Good: request finer-grained address parts inside updateWith()
-                ev.updateWith(new Promise((resolver) =&gt; {
-                  ev.requestBillingAddress(["country", "postalCode"])
-                    .then(methodDetails =&gt; {
-                      resolver(getNewTotal(methodDetails));
-                    });
-                }));
+            <pre class="example js"
+              title="how to use `requestBillingAddress()` correctly.">
+              // ✅ Good: request more address parts to compute new total. The
+              // final response will only contain "country" and "postalCode".
+              request.onpaymentmethodchange = (ev) =&gt; {
+                ev.updateWith(
+                    getNewTotalFromAddress(ev, ["country", "postalCode"])
+                );
+
+                async function getNewTotalFromAddress(ev, parts) {
+                  const methodDetails = await ev.requestBillingAddress(parts);
+                  const newTotal = getNewTotal(methodDetails);
+                  return newTotal;
+                }
+              };
+
+              // ✅ Good: chaining is allowed.
+              request.onpaymentmethodchange = (ev) =&gt; {
+                ev.updateWith(getNewTotalFromAddress(ev));
+
+                async function getNewTotalFromAddress(ev) {
+                  let methodDetails = await ev.requestBillingAddress(
+                      ["country"]);
+                  // Assuming for US residents, no postalCode is needed.
+                  if (methodDetails.country != "US") {
+                    methodDetails = await ev.requestBillingAddress(
+                      ["postalCode"]);
+                  }
+                  const newTotal = getNewTotal(methodDetails);
+                  return newTotal;
+                }
+              };
+
+              // ✅ Good: request full billing address to be included in the
+              // final response but don't need it to compute new total.
+              request.onpaymentmethodchange = (ev) =&gt; {
+                ev.requestBillingAddress(/* addressParts= */[]);
+                ev.updateWith(getNewTotal(ev.methodDetails));
+              };
+
+              // ❌ Bad - Interleaving calls not allowed.
+              request.onshippingaddresschange = (ev) =&gt; {
+                ev.requestShippingAddress(["country"]);
+                ev.requestShippingAddress(["postalCode"]);  // Will reject!
+              };
+
+              // ❌ Bad - Calling `requestBillingAddress()` after
+              // `updateWith()` is not allowed.
+              request.onshippingaddresschange = (ev) =&gt; {
+                ev.updateWith(getNewTotal(ev.methodDetails));
+                ev.requestShippingAddress([]);  // Will reject!
               };
             </pre>
           </aside>
@@ -4112,23 +4152,21 @@
             <li>Let |event:PaymentMethodChangeEvent| be this
             {{PaymentMethodChangeEvent}} instance.
             </li>
-            <li>If |event|'s {{ Event/isTrusted }} attribute is false, then
-            return <a>a promise rejected with</a> an {{"InvalidStateError"}}
-            {{DOMException}}.
-            </li>
             <li>Let |request:PaymentRequest| be the value of |event|'s
             [=Event/target=].
             </li>
             <li>Assert: |request| is an instance of {{PaymentRequest}}.
             </li>
-            <li>If |request|.<a>[[\state]]</a> is not "<a>interactive</a>",
-            then return <a>a promise rejected with</a> an {{"InvalidStateError"}}
-            {{DOMException}}.
+            <li>If any of the following is true, then return <a>a promise
+            rejected with</a> an {{"InvalidStateError"}} {{DOMException}}:
+              <ul>
+                <li>|event|'s {{ Event/isTrusted }} attribute is false</li>
+                <li>|event|.<a>[[\waitForMethodDetails]]</a> is true</li>
+                <li>|event|.<a>[[\waitForUpdate]]</a> is true</li>
+                <li>|request|.<a>[[\state]]</a> is not "<a>interactive</a>"</li>
+              </ul>
             </li>
-            <li>If |event|.<a>[[\waitForUpdate]]</a> is false,
-            then return <a> a promise rejected with</a> an {{"InvalidStateError"}}
-            {{DOMException}}.
-            </li>
+            <li>Set |event|.<a>[[\waitForMethodDetails]]</a> to true.</li>
             <li>Let |methodDetailsPromise:Promise| be <a>a new promise</a>.</li>
             <li>Return |methodDetailsPromise|, and perform the remaining steps
             <a>in parallel</a>.
@@ -4146,6 +4184,7 @@
               <a>redact list</a> applied.
             </p>
             </li>
+            <li>Set |event|.<a>[[\waitForMethodDetails]]</a> to false.</li>
             <li>Resolve |methodDetailsPromise| with |methodDetails|.
             </li>
 
@@ -4177,6 +4216,35 @@
               null.
             </dd>
           </dl>
+        </section>
+        <section>
+          <h2>
+            Internal Slots
+          </h2>
+          <p>
+            Instances of {{PaymentMethodChangeEvent}} are created with the
+            internal slots in the following table:
+          </p>
+          <table>
+            <tr>
+              <th>
+                Internal Slot
+              </th>
+              <th>
+                Description (<em>non-normative</em>)
+              </th>
+            </tr>
+            <tr>
+              <td>
+                <dfn>[[\waitForMethodDetails]]</dfn>
+              </td>
+              <td>
+                A boolean indicating whether there is a pending request for
+                a method-specific details object initiated by
+                <a>requestBillingAddress()</a> that has not settled.
+              </td>
+            </tr>
+          </table>
         </section>
       </section>
       <section data-dfn-for="PaymentRequestUpdateEvent" data-link-for=
@@ -4226,66 +4294,16 @@
           </h2>
           <aside class="note">
             <p>
-              Detailed shipping address contains sensitive user information.
-              Developers are encouraged to specify a restrictive initial list
-              using {{PaymentOptions.requestShippingAddressParts}} and use
-              {{requestShippingAddress()}} to incrementally request pieces as
-              needed. For example, if flat-rate shipping is available in
-              country A but only variable per-region shipping is available in
-              country B, a developer should request only "country" first and
-              decide if "region" is needed.
+              The {{PaymentRequestUpdateEvent/requestShippingAddress()}} method
+              allows the developer to incrementally request additional pieces of
+              the shipping address that were not initially requested in
+              {{ PaymentOptions.requestShippingAddressParts }}.
             </p>
             <p>
-              A developer can call {{requestShippingAddress()}} repeatedly.
-              Each call returns a promise that resolves to a {{PaymentAddress}}
-              with all previously requested address fields populated, subject to
-              any applicable <a data-lt="shipping-redact-list">redact list</a>.
+              The same usage pattern is expected as
+              {{PaymentMethodChangeEvent/requestBillingAddress()}}. See code
+              example there.
             </p>
-            <pre class="example js" title=
-            "how to use `requestShippingAddress()` correctly.">
-              // ✅ Good - Request additional address parts to recompute
-              // shipping cost. The final response.shippingAddress will also
-              // only contain "country" and "postalCode".
-              request.onshippingaddresschange = (ev) =&gt; {
-                ev.updateWith(new Promise((resolver) =&gt; {
-                  ev.requestShippingAddress(["country", "postalCode"])
-                      .then(address =&gt; {
-                        resolver(getNewDetails(address));
-                      });
-                  }));
-              };
-
-              // ✅ Good - Request additional addresss parts to be included in
-              // the final response.shippingAddress.
-              request.onshippingaddresschange = (ev) =&gt; {
-                // Compute shipping cost based on initial coarse address.
-                ev.updateWith(new Promise((resolver) =&gt; {
-                  // Discard the returned promise because the full address is not
-                  // needed until the final PaymentResponse. Empty addressParts
-                  // means all parts are requested.
-                  ev.requestShippingAddress(/* addressParts= */[]);
-
-                  // Compute shipping cost using initial partial address.
-                  resolver(computeShippingCost(ev.target.shippingAddress)));
-                });
-              }
-
-              // ❌ Bad - this won't work!
-              request.onshippingaddresschange = (ev) =&gt; {
-                ev.updateWith(getPromiseForNewDetails(ev.target.shippingAddress));
-
-                // This will throw InvalidStateError since not inside updateWith().
-                ev.requestShippingAddress([]);
-              };
-
-              // ❌ Bad - this won't work!
-              request.onshippingaddresschange = (ev) =&gt; {
-                // This will throw InvalidStateError since not inside updateWith().
-                ev.requestShippingAddress([]);
-
-                ev.updateWith(getPromiseForNewDetails(ev.target.shippingAddress));
-              };
-            </pre>
           </aside>
           <p>
             The <a>requestShippingAddress(|addressParts|)</a> method MUST act as
@@ -4303,18 +4321,16 @@
             </li>
             <li>Assert: |request| is an instance of {{PaymentRequest}}.
             </li>
-            <li>If |event|'s {{ Event/isTrusted }} attribute is false, then
-            return <a>a promise rejected with</a> an {{"InvalidStateError"}}
-            {{DOMException}}.
+            <li>If any of the following is true, then return <a>a promise
+            rejected with</a> an {{"InvalidStateError"}} {{DOMException}}:
+              <ul>
+                <li>|event|'s {{ Event/isTrusted }} attribute is false</li>
+                <li>|event|.<a>[[\waitForShippingAddress]]</a> is true</li>
+                <li>|event|.<a>[[\waitForUpdate]]</a> is true</li>
+                <li>|request|.<a>[[\state]]</a> is not "<a>interactive</a>"</li>
+              </ul>
             </li>
-            <li>If |request|.<a>[[\state]]</a> is not "<a>interactive</a>",
-            then return <a> a promise rejected with</a> an {{"InvalidStateError"}}
-            {{DOMException}}.
-            </li>
-            <li>If |event|.<a>[[\waitForUpdate]]</a> is false,
-            then return <a> a promise rejected with</a> an {{"InvalidStateError"}}
-            {{DOMException}}.
-            </li>
+            <li>Set |event|.<a>[[\waitForShippingAddress]]</a> to true.</li>
             <li>Let |addressPromise:Promise| be <a>a new promise</a>.</li>
             <li>Return |addressPromise|, and perform the remaining steps
             <a>in parallel</a>.
@@ -4322,19 +4338,17 @@
             <li>Update |request|.<a>[[\requestedShippingAddressParts]]</a> to be
             the union of itself and |addressParts|.
             </li>
-            <li>Let |redactList:list| be the result of <a>get redact list for
-            shipping address changed algorithm</a>.
-            </li>
             <li>Let |address:PaymentAddress| be the result of <a>create
-            a `PaymentAddress` from user-provided input</a> with |redactList|
-            and |request|.<a>[[\requestedShippingAddressParts]]</a>.
+            a `PaymentAddress` from user-provided input</a> with <a>shipping
+            redact list</a> and |request|.<a>[[\requestedShippingAddressParts]]
+            </a>.
             </li>
             <li>Set |request|.[=PaymentRequest/shippingAddress=] to |address|.
             </li>
+            <li>Set |event|.<a>[[\waitForShippingAddress]]</a> to false.</li>
             <li>Resolve |addressPromise| with |address|.
             </li>
           </ol>
-          </p>
         </section>
         <section>
           <h2>
@@ -4431,7 +4445,7 @@
             </li>
             <li>Set |event|.<a>[[\waitForUpdate]]</a> to true.
             </li>
-            <li>Let |pmi:URL?| be null.
+            <li>Let |pmi:URL| be null.
             </li>
             <li>If |event| has a <a data-link-for=
             "PaymentMethodChangeEvent">methodName</a> attribute, set |pmi| to
@@ -4467,6 +4481,15 @@
               <td>
                 A boolean indicating whether an <a>updateWith()</a>-initiated
                 update is currently in progress.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <dfn>[[\waitForShippingAddress]]</dfn>
+              </td>
+              <td>
+                A boolean indicating whether there is a pending
+                <a>requestShippingAddress()</a> call that has not settled.
               </td>
             </tr>
           </table>
@@ -4642,41 +4665,10 @@
         </ol>
       </section>
       <section>
-        <h2>
-          <dfn data-lt="shipping-redact-list">
-            Get redact list for shipping address changed algorithm
-          </dfn>
-        </h2>
-        <p>This algorithm returns a redact list that should be used on a
-        shipping address returned to the payee during the
-        <a>shippingaddresschange</a> event.
+        <h2>Shipping redact list</h2>
+        <p>The <dfn>shipping redact list</dfn> is a <a>redact list</a> that
+        includes « "organization", "phone", "recipient", "addressLine" ».
         </p>
-        <div class="note" title="Privacy of recipient information">
-          <p>
-            The |redactList| limits the amount of personal information
-            about the recipient that the API shares with the merchant before
-            the payment request is completed.
-          </p>
-          <p>
-            For merchants, the resulting {{PaymentAddress}} object
-            provides enough information to, for example, calculate
-            shipping costs, but, in most cases, not enough information
-            to physically locate and uniquely identify the recipient.
-          </p>
-          <p>
-            Unfortunately, even with the |redactList|, recipient
-            anonymity cannot be assured. This is because in some
-            countries postal codes are so fine-grained that they can
-            uniquely identify a recipient.
-          </p>
-        </div>
-        <ol class="algorithm">
-          <li>Let |redactList:list| be the empty list. Set |redactList| to
-          « "organization", "phone", "recipient", "addressLine" ».
-          </li>
-          <li>Return |redactList|.
-          </li>
-        </ol>
       </section>
       <section>
         <h2>
@@ -4695,12 +4687,9 @@
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
             <ol>
-              <li>Let |redactList:list| be the result of <a>get redact list for
-              shipping address changed algorithm</a>.
-              </li>
               <li>Let |address:PaymentAddress| be the result of running the
               steps to <a>create a `PaymentAddress` from user-provided
-              input</a> with |redactList| and
+              input</a> with <a>shipping redact list</a> and
               |request|.<a>[[\requestedShippingAddressParts]]</a>.
               </li>
               <li>Set the <a data-lt=
@@ -5636,9 +5625,8 @@
         <ul>
           <li>Use of a "<dfn data-lt="redact list">redactList</dfn>" for
           <a>physical addresses</a>. The current specification makes use of a
-          "|redactList|" to redact the <a>address line</a>, <a>organization</a>,
-          <a>phone number</a>, and <a>recipient</a> from a <a data-link-for=
-          "PaymentRequest">shippingAddress</a>.
+          <a>shipping redact list</a> to redact detailed address parts from a
+          <a data-link-for="PaymentRequest">shippingAddress</a>.
           </li>
           <li>Support for instructions from the payee identifying specific
           elements to exclude or include from the <a>payment method</a>
