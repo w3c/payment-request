@@ -87,7 +87,7 @@
     li { margin-top: 0.5em; margin-bottom: 0.5em;}
     </style>
   </head>
-  <body>
+  <body data-cite="payment-method-id">
     <h1 id="title">
       Payment Request API
     </h1>
@@ -709,14 +709,12 @@
                 <ol>
                   <li data-tests=
                   "payment-request-ctor-pmi-handling.https.html">Run the steps
-                  to <a data-cite=
-                  "payment-method-id#dfn-validate-a-payment-method-identifier">
-                    validate a payment method identifier</a> with
-                    |paymentMethod|.<a data-lt=
-                    "PaymentMethodData.supportedMethods">supportedMethods</a>.
-                    If it returns false, then throw a {{RangeError}} exception.
-                    Optionally, inform the developer that the payment method
-                    identifier is invalid.
+                  to <a>validate a payment method identifier</a> with
+                  |paymentMethod|.<a data-lt=
+                  "PaymentMethodData.supportedMethods">supportedMethods</a>. If
+                  it returns false, then throw a {{RangeError}} exception.
+                  Optionally, inform the developer that the payment method
+                  identifier is invalid.
                   </li>
                   <li>If the <a data-lt="PaymentMethodData.data">data</a>
                   member of |paymentMethod| is missing, let |serializedData| be
@@ -3332,23 +3330,20 @@
         </p>
         <aside class="note">
           <p>
-            Each <a data-cite=
-            "payment-method-id#standardized-payment-method-identifiers">standardized
-            payment method identifier</a>, such as <a data-cite=
-            "?payment-method-basic-card"></a> ("basic-card"), defines its own
-            unique IDL <a>dictionary</a> for use with the <a>details</a>
-            attribute. The shape of this data (i.e., its members and their
-            corresponding types and formats) differs depending on which
-            standardized payment method identifier is selected by the end user.
+            Each <a>standardized payment method identifier</a>, such as
+            <a data-cite="?payment-method-basic-card"></a> ("basic-card"),
+            defines its own unique IDL <a>dictionary</a> for use with the
+            <a>details</a> attribute. The shape of this data (i.e., its members
+            and their corresponding types and formats) differs depending on
+            which standardized payment method identifier is selected by the end
+            user.
           </p>
           <p>
-            Similarly, a <a data-cite=
-            "payment-method-id#dfn-url-based-payment-method-identifier">URL-based
-            payment method identifier</a> defines the shape of <a>details</a>.
-            However, as URL-based payment method identifiers are not
-            standardized by the W3C, developers need to consult whoever
-            controls the URL for the expected shape of the <a>details</a>
-            object.
+            Similarly, a <a>URL-based payment method identifier</a> defines the
+            shape of <a>details</a>. However, as URL-based payment method
+            identifiers are not standardized by the W3C, developers need to
+            consult whoever controls the URL for the expected shape of the
+            <a>details</a> object.
           </p>
         </aside>
       </section>
@@ -3754,12 +3749,10 @@
             |validationURL|.
             </li>
             <li>If |eventInitDict|["<a>methodName</a>"] is not the empty
-            string, run the steps to <a data-cite=
-            "payment-method-id#dfn-validate-a-payment-method-identifier">validate
-            a payment method identifier</a> with
-            |eventInitDict|["<a>methodName</a>"]. If it returns false, then
-            throw a {{RangeError}} exception. Optionally, inform the developer
-            that the payment method identifier is invalid.
+            string, run the steps to <a>validate a payment method
+            identifier</a> with |eventInitDict|["<a>methodName</a>"]. If it
+            returns false, then throw a {{RangeError}} exception. Optionally,
+            inform the developer that the payment method identifier is invalid.
             </li>
             <li>Initialize |event|.<a>methodName</a> attribute to
             |eventInitDict|["<a>methodName</a>"].
@@ -4825,15 +4818,13 @@
                         <ol data-link-for="PaymentDetailsModifier">
                           <li data-tests=
                           "updateWith-method-pmi-handling-manual.https.html">
-                          Run the steps to <a data-cite=
-                          "payment-method-id#dfn-validate-a-payment-method-identifier">
-                            validate a payment method identifier</a> with
-                            |modifier|.<a data-lt=
-                            "PaymentDetailsModifier.supportedMethods">supportedMethods</a>.
-                            If it returns false, then <a>abort the update</a>
-                            with |request| and a {{RangeError}} exception.
-                            Optionally, inform the developer that the payment
-                            method identifier is invalid.
+                          Run the steps to <a>validate a payment method
+                          identifier</a> with |modifier|.<a data-lt=
+                          "PaymentDetailsModifier.supportedMethods">supportedMethods</a>.
+                          If it returns false, then <a>abort the update</a>
+                          with |request| and a {{RangeError}} exception.
+                          Optionally, inform the developer that the payment
+                          method identifier is invalid.
                           </li>
                           <li>If the <a>total</a> member of |modifier| is
                           present, then:
@@ -5359,14 +5350,6 @@
           <dfn data-lt="country subdivision names">Country subdivision
           name</dfn> and <dfn>country subdivision code element</dfn> are
           defined in [[ISO3166-2]].
-        </dd>
-        <dt>
-          Payment Method Identifiers
-        </dt>
-        <dd>
-          The term <dfn data-lt="PMI">payment method identifier</dfn>, or PMI
-          for short, is defined by [[payment-method-id]]. It's an unique
-          identifier for a <a>payment method</a>.
         </dd>
         <dt>
           ECMAScript
