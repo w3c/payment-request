@@ -705,7 +705,7 @@
                   to <a>validate a payment method identifier</a> with
                   |paymentMethod|.<a data-lt=
                   "PaymentMethodData.supportedMethods">supportedMethods</a>. If
-                  it returns false, then throw a <a>RangeError</a> exception.
+                  it returns false, then throw a {{"RangeError"}} exception.
                   Optionally, inform the developer that the payment method
                   identifier is invalid.
                   </li>
@@ -1307,7 +1307,7 @@
         <p class="note">
           The <a>canMakePayment()</a> method can be used by the developer to
           determine if the <a>PaymentRequest</a> object can be used to make a
-          payment, before they call <a>show()</a>. It returns a <a>Promise</a>
+          payment, before they call <a>show()</a>. It returns a {{Promise}}
           that will be fulfilled with true if the <a>user agent</a> supports
           any of the desired <a>payment methods</a> supplied to the
           <a>PaymentRequest</a> constructor, and false if none are supported.
@@ -1657,7 +1657,7 @@
               "ecma-402#sec-iswellformedcurrencycode">isWellFormedCurrencyCode</a>
               abstract operation, which is invoked as part of the <a>check and
               canonicalize amount</a> algorithm. When a code does not adhere to
-              the [[ISO4217]] defined format, a <a>RangeError</a> is thrown.
+              the [[ISO4217]] defined format, a {{"RangeError"}} is thrown.
             </p>
             <p>
               Current implementations will therefore allow the use of
@@ -1731,12 +1731,12 @@
         <ol data-link-for="PaymentCurrencyAmount">
           <li>If the result of <a data-cite=
           "ecma-402#sec-iswellformedcurrencycode">IsWellFormedCurrencyCode</a>(|amount|.<a>currency</a>)
-          is false, then throw a <a>RangeError</a> exception, optionally
+          is false, then throw a {{"RangeError"}} exception, optionally
           informing the developer that the currency is invalid.
           </li>
           <li>If |amount|.<a>value</a> is not a <a>valid decimal monetary
-          value</a>, throw a {{TypeError}}, optionally informing the
-          developer that the currency is invalid.
+          value</a>, throw a {{TypeError}}, optionally informing the developer
+          that the currency is invalid.
           </li>
           <li>Set |amount|.<a>currency</a> to the result of <a>ASCII
           uppercase</a> |amount|.<a>currency</a>.
@@ -2345,7 +2345,7 @@
                 performing <a>ASCII uppercase</a>.
                 </li>
                 <li>If |country| is not a valid [[ISO3166-1]] alpha-2 code,
-                throw a <a>RangeError</a> exception.
+                throw a {{"RangeError"}} exception.
                 </li>
                 <li>Set |address|.<a>[[\country]]</a> to |country|.
                 </li>
@@ -3559,9 +3559,9 @@
               <dfn>[[\retryPromise]]</dfn>
             </td>
             <td>
-              Null, or a {{Promise}} that resolves when a <a>user accepts
-              the payment request</a> or rejects if the <a>user aborts the
-              payment request</a>.
+              Null, or a {{Promise}} that resolves when a <a>user accepts the
+              payment request</a> or rejects if the <a>user aborts the payment
+              request</a>.
             </td>
           </tr>
         </table>
@@ -3763,9 +3763,8 @@
             <li>If |eventInitDict|["<a>methodName</a>"] is not the empty
             string, run the steps to <a>validate a payment method
             identifier</a> with |eventInitDict|["<a>methodName</a>"]. If it
-            returns false, then throw a <a>RangeError</a> exception.
-            Optionally, inform the developer that the payment method identifier
-            is invalid.
+            returns false, then throw a {{"RangeError"}} exception. Optionally,
+            inform the developer that the payment method identifier is invalid.
             </li>
             <li>Initialize |event|.<a>methodName</a> attribute to
             |eventInitDict|["<a>methodName</a>"].
@@ -4742,7 +4741,7 @@
                           identifier</a> with |modifier|.<a data-lt=
                           "PaymentDetailsModifier.supportedMethods">supportedMethods</a>.
                           If it returns false, then <a>abort the update</a>
-                          with |request| and a <a>RangeError</a> exception.
+                          with |request| and a {{"RangeError"}} exception.
                           Optionally, inform the developer that the payment
                           method identifier is invalid.
                           </li>
@@ -4990,16 +4989,16 @@
         </h2>
         <p>
           The <dfn>validate merchant's details algorithm</dfn> takes a
-          {{Promise}} |opaqueDataPromise| and a {{PaymentRequest}}
-          |request|. The steps are conditional on the |opaqueDataPromise|
-          settling. If |opaqueDataPromise| never settles then the payment
-          request is blocked. The user agent SHOULD provide the user with a
-          means to abort a payment request. Implementations MAY choose to
-          implement a timeout for pending updates if |opaqueDataPromise|
-          doesn't settle in a reasonable amount of time. If an implementation
-          chooses to implement a timeout, they MUST execute the steps listed
-          below in the "upon rejection" path. Such a timeout is a fatal error
-          for the payment request.
+          {{Promise}} |opaqueDataPromise| and a {{PaymentRequest}} |request|.
+          The steps are conditional on the |opaqueDataPromise| settling. If
+          |opaqueDataPromise| never settles then the payment request is
+          blocked. The user agent SHOULD provide the user with a means to abort
+          a payment request. Implementations MAY choose to implement a timeout
+          for pending updates if |opaqueDataPromise| doesn't settle in a
+          reasonable amount of time. If an implementation chooses to implement
+          a timeout, they MUST execute the steps listed below in the "upon
+          rejection" path. Such a timeout is a fatal error for the payment
+          request.
         </p>
         <ol class="algorithm">
           <li>Set |request|.<a>[[\updating]]</a> to true.
@@ -5274,8 +5273,7 @@
         <dd>
           The terms <dfn data-cite=
           "ECMASCRIPT#sec-object-internal-methods-and-internal-slots">internal
-          slot</dfn>,
-          and <code><dfn data-cite=
+          slot</dfn>, and <code><dfn data-cite=
           "ECMASCRIPT#sec-json.stringify">JSON.stringify</dfn></code> are
           defined by [[ECMASCRIPT]].
           <p>
@@ -5310,8 +5308,8 @@
         guard against running out of memory, or to work around
         platform-specific limitations. When an input exceeds
         implementation-specific limit, the user agent MUST throw, or, in the
-        context of a promise, reject with, a {{TypeError}} optionally
-        informing the developer of how a particular input exceeded an
+        context of a promise, reject with, a {{TypeError}} optionally informing
+        the developer of how a particular input exceeded an
         implementation-specific limit.
       </p>
     </section>
