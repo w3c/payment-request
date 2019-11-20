@@ -87,7 +87,7 @@
     li { margin-top: 0.5em; margin-bottom: 0.5em;}
     </style>
   </head>
-  <body data-cite="payment-method-id">
+  <body data-cite="payment-method-id payment-method-basic-card">
     <h1 id="title">
       Payment Request API
     </h1>
@@ -204,7 +204,7 @@
           potentially "make a payment" is also an implementation detail of a
           payment handler. For an example, see the <a data-cite=
           "?payment-method-basic-card#steps-to-check-if-a-payment-can-be-made">can
-          make payment</a> algorithm of [[?payment-method-basic-card]].
+          make payment</a> algorithm of [[[?payment-method-basic-card]]].
         </dd>
         <dt>
           <dfn>Steps to respond to a payment request</dfn>:
@@ -213,9 +213,8 @@
           Steps that return an object or <a>dictionary</a> that a merchant uses
           to process or validate the transaction. The structure of this object
           is specific to each <a>payment method</a>. For an example of such an
-          object, see the <code><a data-cite=
-          "?payment-method-basic-card#dom-basiccardresponse">BasicCardResponse</a></code>
-          dictionary of [[?payment-method-basic-card]].
+          object, see the {{BasicCardResponse}} dictionary of
+          [[[?payment-method-basic-card]]].
         </dd>
         <dt>
           <dfn>Steps for when a user changes payment method</dfn> (optional)
@@ -736,11 +735,10 @@
                           <a data-lt="converted to an IDL value">Convert</a>
                           |object| to an IDL value of the type specified by the
                           specification that defines the
-                          |paymentMethod|.<a>supportedMethods</a> (e.g., a
-                          <a data-cite=
-                          "?payment-method-basic-card#dom-basiccardrequest">BasicCardRequest</a>
-                          in the case of [[?payment-method-basic-card]]).
-                          Rethrow any exceptions.
+                          |paymentMethod|.<a>supportedMethods</a> (e.g.,
+                          {{BasicCardRequest}} in the case of
+                          [[[?payment-method-basic-card]]]). Rethrow any
+                          exceptions.
                         </p>
                         <p class="note">
                           This step assures that any IDL type conversion errors
@@ -1156,10 +1154,11 @@
             "Handling of multiple applicable modifiers">
               <p>
                 This example uses the "basic-card" payment method to from
-                [[?payment-method-basic-card]] demonstrate precedence order of
-                <a>[[\serializedModifierData]]</a>. The first modifier applies
-                equally to all cards, irrespective of network. The second
-                modifier applies specifically to cards on the "visa" network.
+                [[[?payment-method-basic-card]]] demonstrate precedence order
+                of <a>[[\serializedModifierData]]</a>. The first modifier
+                applies equally to all cards, irrespective of network. The
+                second modifier applies specifically to cards on the "visa"
+                network.
               </p>
               <pre class="js">
                 const details = {
@@ -1957,8 +1956,7 @@
           <dd>
             <p>
               <a>Payment method</a> specific errors. See, for example,
-              [[?payment-method-basic-card]]'s <a data-cite=
-              "?payment-method-basic-card#basiccarderrors-dictionary"><code>BasicCardErrors</code></a>.
+              [[[?payment-method-basic-card]]]'s {{BasicCardErrors}}.
             </p>
           </dd>
         </dl>
@@ -3238,8 +3236,7 @@
             </dt>
             <dd>
               A payment method specific errors. See, for example,
-              [[?payment-method-basic-card]]'s <a data-cite=
-              "?payment-method-basic-card#basiccarderrors-dictionary"><code>BasicCardErrors</code></a>.
+              [[[?payment-method-basic-card]]]'s {{BasicCardErrors}}.
             </dd>
           </dl>
         </section>
