@@ -961,9 +961,8 @@
           </li>
           <li data-tests=
           "payment-request-show-method.https.html, show-method-postmessage-manual.https.html">
-          If the method was not triggered by [=transient activation=], or the
-          |window|'s [=transient activation=] has expired, return [=a promise
-          rejected with=] with a {{"SecurityError"}} {{DOMException}}.
+          If |window| does not have [=transient activation=], return [=a
+          promise rejected with=] with a {{"SecurityError"}} {{DOMException}}.
           </li>
           <li>Let |request:PaymentRequest| be the <a>context object</a>.
           </li>
