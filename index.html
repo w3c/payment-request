@@ -5324,5 +5324,17 @@
         Community Group</a>.
       </p>
     </section>
+    <section>
+      <h2>Changelog</h2>
+      <script class="remove">
+        function removeCommits({ message }) {
+          return !/^editorial|^Editiorial|^edtiorial|^chore|^fix|^refactor|^tests?|^docs|^typo|^nit/i.test(message);
+        }
+      </script>
+      <p>Changes from between CR2 until now:</p>
+      <rs-changelog from="CR2" filter="removeCommits"></rs-changelog>
+      <p>Changes from between CR1 and CR2:</p>
+      <rs-changelog from="CR" to="CR2" filter="removeCommits"></rs-changelog>
+    </section>
   </body>
 </html>
