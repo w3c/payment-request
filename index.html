@@ -956,13 +956,11 @@
           follows:
         </p>
         <ol class="algorithm">
-          <li>Let |window:Window| be the [=relevant global object=] of the
-          [=environment settings object/responsible document=].
-          </li>
           <li data-tests=
           "payment-request-show-method.https.html, show-method-postmessage-manual.https.html">
-          If |window| does not have [=transient activation=], return [=a
-          promise rejected with=] with a {{"SecurityError"}} {{DOMException}}.
+          If the [=relevant global object=] does not have [=transient
+          activation=], return [=a promise rejected with=] with a
+          {{"SecurityError"}} {{DOMException}}.
           </li>
           <li>Let |request:PaymentRequest| be the <a>context object</a>.
           </li>
@@ -5131,8 +5129,8 @@
         <p>
           To help ensure that users do not inadvertently share sensitive
           credentials with an origin, this API requires that PaymentRequest's
-          <a>show()</a> method be triggered by [=transient activation=] (e.g.,
-          via a click or press).
+          <a>show()</a> method be invoked while the relevant {{Window}} has
+          [=transient activation=] (e.g., via a click or press).
         </p>
         <p>
           To avoid a confusing user experience, this specification limits the
