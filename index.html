@@ -958,9 +958,9 @@
         <ol class="algorithm">
           <li data-tests=
           "payment-request-show-method.https.html, show-method-postmessage-manual.https.html">
-          If the method was not <a>triggered by user activation</a>, return <a>
-            a promise rejected with</a> with a {{"SecurityError"}}
-            {{DOMException}}.
+          If the [=relevant global object=] of [=this=] does not have
+          [=transient activation=], return [=a promise rejected with=] with a
+          {{"SecurityError"}} {{DOMException}}.
           </li>
           <li>Let |request:PaymentRequest| be the <a>context object</a>.
           </li>
@@ -5129,8 +5129,8 @@
         <p>
           To help ensure that users do not inadvertently share sensitive
           credentials with an origin, this API requires that PaymentRequest's
-          <a>show()</a> method be <a>triggered by user activation</a> (e.g.,
-          via a click or press).
+          <a>show()</a> method be invoked while the relevant {{Window}} has
+          [=transient activation=] (e.g., via a click or press).
         </p>
         <p>
           To avoid a confusing user experience, this specification limits the
