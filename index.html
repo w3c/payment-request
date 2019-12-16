@@ -892,6 +892,7 @@
           </li>
           <li>Set |request|.<a>[[\requestedShippingAddressParts]]</a> to
           |options|.{{PaymentOptions/requestShippingAddressParts}}.
+          </li>
           <li>Set |request|.<a>[[\state]]</a> to "<a>created</a>".
           </li>
           <li>Set |request|.<a>[[\updating]]</a> to false.
@@ -1140,7 +1141,8 @@
             <p>
               Pass the <a data-lt="converted to an IDL value">converted</a>
               second element in the |paymentMethod| tuple, |modifiers|,
-              |request|.<a>[[\options]]</a>.{{PaymentOptions/requestBillingAddress}} and
+              |request|.<a>[[\options]]</a>.{{PaymentOptions/requestBillingAddress}}
+              and
               |request|.<a>[[\options]]</a>.{{PaymentOptions/requestBillingAddressParts}}.
               Optionally, the user agent SHOULD send the appropriate data from
               |request| to the user-selected <a>payment handler</a> in order to
@@ -1502,7 +1504,8 @@
               The current <a>sequence</a>&lt;{{AddressParts}}&gt; specifying
               the payee-requested shipping address parts, initially supplied to
               the constructor via {{PaymentOptions}}'s
-              {{PaymentOptions/requestShippingAddressParts}} and then updated with calls to
+              {{PaymentOptions/requestShippingAddressParts}} and then updated
+              with calls to
               {{PaymentRequestUpdateEvent/requestShippingAddress()}}.
             </td>
           </tr>
@@ -1744,8 +1747,8 @@
           the developer that the currency is invalid.
           </li>
           <li>If |amount|.<a>value</a> is not a <a>valid decimal monetary
-          value</a>, throw a {{TypeError}}, optionally informing the
-          developer that the currency is invalid.
+          value</a>, throw a {{TypeError}}, optionally informing the developer
+          that the currency is invalid.
           </li>
           <li>Set |amount|.<a>currency</a> to the result of <a>ASCII
           uppercase</a> |amount|.<a>currency</a>.
@@ -2198,30 +2201,31 @@
           and return the billing address associated with a <a>payment
           method</a> (e.g., the billing address associated with a credit card).
           The <a>user agent</a> returns the billing address as part of the
-          {{PaymentMethodChangeEvent}}'s {{PaymentMethodChangeEvent/methodDetails}} attribute and the
-          {{PaymentResponse}}'s {{PaymentResponse/details}} attribute. A payee can use this
-          information to, for example, calculate tax in certain jurisdictions
-          and update the displayed total. See below for privacy considerations
-          regarding [[[#user-info]]].
+          {{PaymentMethodChangeEvent}}'s
+          {{PaymentMethodChangeEvent/methodDetails}} attribute and the
+          {{PaymentResponse}}'s {{PaymentResponse/details}} attribute. A payee
+          can use this information to, for example, calculate tax in certain
+          jurisdictions and update the displayed total. See below for privacy
+          considerations regarding [[[#user-info]]].
         </dd>
         <dt>
           <dfn>requestBillingAddressParts</dfn> member
         </dt>
         <dd>
           A sequence of {{AddressParts}} that specifies which fine-grained
-          parts of the billing address that the payee wishes to receive when the
-          <a>requestBillingAddress</a> member is true. An empty list means no
-          restriction, i.e. the payee requests the full billing address. The <a>requestBillingAddressParts</a>
-          member has no effect if the <a>requestBillingAddress</a> member is
-          false.
+          parts of the billing address that the payee wishes to receive when
+          the <a>requestBillingAddress</a> member is true. An empty list means
+          no restriction, i.e. the payee requests the full billing address. The
+          <a>requestBillingAddressParts</a> member has no effect if the
+          <a>requestBillingAddress</a> member is false.
           <aside class="note">
-            The billing address is part of the payment-method specific response.
-            The <a>user agent</a> simply passes the payee-specified
+            The billing address is part of the payment-method specific
+            response. The <a>user agent</a> simply passes the payee-specified
             <a>requestBillingAddressParts</a> to the payment handler. It is the
             responsibility of the payment handler to ensure no more than the
             requested pieces is returned. A payment handler may choose to not
-            return some requested pieces (e.g., as a result of applying a <a>
-            redact list</a>). The payee can request additional pieces
+            return some requested pieces (e.g., as a result of applying a
+            <a>redact list</a>). The payee can request additional pieces
             incrementally using {{PaymentMethodChangeEvent}}'s
             {{PaymentMethodChangeEvent/requestBillingAddress()}}.
           </aside>
@@ -2261,19 +2265,18 @@
           and return a shipping address as part of the payment request (e.g.,
           when physical goods need to be shipped by the payee to the user). The
           <a>user agent</a> returns the shipping address in the
-          {{PaymentRequest}}'s {{PaymentRequest/shippingAddress}}
-          attribute and the {{PaymentResponse}}'s
-          {{PaymentResponse/shippingAddress}} attribute. The former is subject
-          to a <a>shipping redact list</a> per the <a>shipping address changed
-          algorithm</a>.
+          {{PaymentRequest}}'s {{PaymentRequest/shippingAddress}} attribute and
+          the {{PaymentResponse}}'s {{PaymentResponse/shippingAddress}}
+          attribute. The former is subject to a <a>shipping redact list</a> per
+          the <a>shipping address changed algorithm</a>.
           <aside class="note">
             <p>
-              A payee may not need the full shipping address of a user until the
-              payment request is completed. For example, just having "country"
-              may be sufficient to calculate shipping cost. A payee sensitive to
-              the user's privacy can use <a>requestShippingAddressParts</a> to
-              restrict the initial set of address parts returned by the
-              <a>user agent</a>.
+              A payee may not need the full shipping address of a user until
+              the payment request is completed. For example, just having
+              "country" may be sufficient to calculate shipping cost. A payee
+              sensitive to the user's privacy can use
+              <a>requestShippingAddressParts</a> to restrict the initial set of
+              address parts returned by the <a>user agent</a>.
             </p>
           </aside>
         </dd>
@@ -2285,10 +2288,11 @@
           parts of the shipping address that the payee wishes to receive when
           the <a>requestShipping</a> member is true. An empty list means no
           restriction, i.e. the <a>user agent</a> will return the full shipping
-          address, subject to the
-          <a>shipping redact list</a>. The {{PaymentOptions/requestShippingAddressParts}} member has no effect if the
-          {{PaymentOptions/requestShipping}} member is false. The payee can request
-          additional pieces incrementally using {{PaymentRequestUpdateEvent}}'s
+          address, subject to the <a>shipping redact list</a>. The
+          {{PaymentOptions/requestShippingAddressParts}} member has no effect
+          if the {{PaymentOptions/requestShipping}} member is false. The payee
+          can request additional pieces incrementally using
+          {{PaymentRequestUpdateEvent}}'s
           {{PaymentRequestUpdateEvent/requestShippingAddress()}}.
         </dd>
         <dt>
@@ -3006,9 +3010,9 @@
           </p>
         </div>
         <ol data-link-for="AddressInit">
-          <li>If |requestedParts| is empty, set it to «
-          "addressLine", "city", "country", "dependentLocality", "organization",
-          "phone", "postalCode", "recipient", "region", "sortingCode"».
+          <li>If |requestedParts| is empty, set it to « "addressLine", "city",
+          "country", "dependentLocality", "organization", "phone",
+          "postalCode", "recipient", "region", "sortingCode"».
           </li>
           <li>Let |details:AddressInit| be an <a>AddressInit</a> dictionary
           with no members present.
@@ -3028,8 +3032,8 @@
           was provided.
           </li>
           <li>If "phone" is in |requestedParts| and is not in |redactList|, set
-          |details|["<a>phone</a>"] to the user-provided phone number, or to the
-          empty string if none was provided.
+          |details|["<a>phone</a>"] to the user-provided phone number, or to
+          the empty string if none was provided.
             <aside class="note" title="Privacy of phone number">
               <p>
                 To maintain users' privacy, implementers need to be mindful
@@ -3054,10 +3058,10 @@
           user-provided recipient organization, or to the empty string if none
           was provided.
           </li>
-          <li>If "postalCode" is in |requestedParts| and is not in |redactList|,
-          set |details|["<a>postalCode</a>"] to the user-provided postal code,
-          or to the empty string if none was provided. Optionally, redact part
-          of |details|["<a>postalCode</a>"].
+          <li>If "postalCode" is in |requestedParts| and is not in
+          |redactList|, set |details|["<a>postalCode</a>"] to the user-provided
+          postal code, or to the empty string if none was provided. Optionally,
+          redact part of |details|["<a>postalCode</a>"].
             <div class="note" title="Privacy of Postal Codes">
               <p>
                 <a>Postal codes</a> in certain countries can be so specific as
@@ -3098,9 +3102,10 @@
               </li>
             </ol>
           </li>
-          <li>If "sortingCode" is in |requestedParts| and is not in |redactList|,
-          set |details|["<a>sortingCode</a>"] to the user-provided sorting code,
-          or to the empty string if none was provided.
+          <li>If "sortingCode" is in |requestedParts| and is not in
+          |redactList|, set |details|["<a>sortingCode</a>"] to the
+          user-provided sorting code, or to the empty string if none was
+          provided.
           </li>
           <li>
             <a data-lt="PaymentAddress.PaymentAddress()">Internally construct a
@@ -3714,9 +3719,9 @@
               <dfn>[[\retryPromise]]</dfn>
             </td>
             <td>
-              Null, or a {{Promise}} that resolves when a <a>user accepts
-              the payment request</a> or rejects if the <a>user aborts the
-              payment request</a>.
+              Null, or a {{Promise}} that resolves when a <a>user accepts the
+              payment request</a> or rejects if the <a>user aborts the payment
+              request</a>.
             </td>
           </tr>
         </table>
@@ -4059,9 +4064,8 @@
         </pre>
         <section>
           <h3>
-             <dfn data-lt="PaymentMethodChangeEvent.PaymentMethodChangeEvent()">
-               Constructor
-             </dfn>
+            <dfn data-lt=
+            "PaymentMethodChangeEvent.PaymentMethodChangeEvent()">Constructor</dfn>
           </h3>
           <p>
             The <a data-lt=
@@ -4074,6 +4078,7 @@
             |type| and |eventInitDict|.
             </li>
             <li>Set |event|.<a>[[\waitForMethodDetails]]</a> to false.
+            </li>
             <li>Return |event|.
             </li>
           </ol>
@@ -4100,19 +4105,19 @@
         </section>
         <section>
           <h2>
-            <dfn data-lt="requestBillingAddress(addressParts)">
-              requestBillingAddress()
-            </dfn> method
+            <dfn data-lt=
+            "requestBillingAddress(addressParts)">requestBillingAddress()</dfn>
+            method
           </h2>
           <aside class="note">
             <p>
               The {{PaymentMethodChangeEvent/requestBillingAddress()}} method
-              allows the developer to incrementally request additional pieces of
-              the billing address that were not initially requested in
-              {{ PaymentOptions/requestBillingAddressParts }}.
+              allows the developer to incrementally request additional pieces
+              of the billing address that were not initially requested in {{
+              PaymentOptions/requestBillingAddressParts }}.
             </p>
-            <pre class="example js"
-              title="how to use `requestBillingAddress()` correctly.">
+            <pre class="example js" title=
+            "how to use `requestBillingAddress()` correctly.">
               // ✅ Good: request more address parts to compute new total. The
               // final response will only contain "country" and "postalCode".
               request.onpaymentmethodchange = (ev) =&gt; {
@@ -4181,34 +4186,41 @@
             <li>If any of the following is true, then return <a>a promise
             rejected with</a> an {{"InvalidStateError"}} {{DOMException}}:
               <ul>
-                <li>|event|'s {{ Event/isTrusted }} attribute is false</li>
-                <li>|event|.<a>[[\waitForMethodDetails]]</a> is true</li>
-                <li>|event|.<a>[[\waitForUpdate]]</a> is true</li>
-                <li>|request|.<a>[[\state]]</a> is not "<a>interactive</a>"</li>
+                <li>|event|'s {{ Event/isTrusted }} attribute is false
+                </li>
+                <li>|event|.<a>[[\waitForMethodDetails]]</a> is true
+                </li>
+                <li>|event|.<a>[[\waitForUpdate]]</a> is true
+                </li>
+                <li>|request|.<a>[[\state]]</a> is not "<a>interactive</a>"
+                </li>
               </ul>
             </li>
-            <li>Set |event|.<a>[[\waitForMethodDetails]]</a> to true.</li>
-            <li>Let |methodDetailsPromise:Promise| be <a>a new promise</a>.</li>
+            <li>Set |event|.<a>[[\waitForMethodDetails]]</a> to true.
+            </li>
+            <li>Let |methodDetailsPromise:Promise| be <a>a new promise</a>.
+            </li>
             <li>Return |methodDetailsPromise|, and perform the remaining steps
             <a>in parallel</a>.
             </li>
             <li>Let |handler| be the <a>payment handler</a> that triggered this
             |event|.
             </li>
-            <li>Use a <a>payment handler</a> specific API to send |addressParts|
-            to |handler| and receive a new <a>object</a> |methodDetails|.
-            <p class="note">
-              It is the responsibility of the payment handler to keep track of
-              successive address parts it is called with and return an
-              appropriate version of the billing address associated with the
-              selected payment instrument, potentially with some
-              <a>redact list</a> applied.
-            </p>
+            <li>Use a <a>payment handler</a> specific API to send
+            |addressParts| to |handler| and receive a new <a>object</a>
+            |methodDetails|.
+              <p class="note">
+                It is the responsibility of the payment handler to keep track
+                of successive address parts it is called with and return an
+                appropriate version of the billing address associated with the
+                selected payment instrument, potentially with some <a>redact
+                list</a> applied.
+              </p>
             </li>
-            <li>Set |event|.<a>[[\waitForMethodDetails]]</a> to false.</li>
+            <li>Set |event|.<a>[[\waitForMethodDetails]]</a> to false.
+            </li>
             <li>Resolve |methodDetailsPromise| with |methodDetails|.
             </li>
-
           </ol>
         </section>
         <section data-dfn-for="PaymentMethodChangeEventInit" data-link-for=
@@ -4260,8 +4272,8 @@
                 <dfn>[[\waitForMethodDetails]]</dfn>
               </td>
               <td>
-                A boolean indicating whether there is a pending request for
-                a method-specific details object initiated by
+                A boolean indicating whether there is a pending request for a
+                method-specific details object initiated by
                 <a>requestBillingAddress()</a> that has not settled.
               </td>
             </tr>
@@ -4288,8 +4300,7 @@
         <section>
           <h3>
             <dfn data-lt=
-            "PaymentRequestUpdateEvent.PaymentRequestUpdateEvent()">Constructor
-            </dfn>
+            "PaymentRequestUpdateEvent.PaymentRequestUpdateEvent()">Constructor</dfn>
           </h3>
           <p data-tests=
           "PaymentRequestUpdateEvent/constructor.https.html, PaymentRequestUpdateEvent/constructor.http.html">
@@ -4305,22 +4316,23 @@
             <li>Set |event|.<a>[[\waitForUpdate]]</a> to false.
             </li>
             <li>Set |event|.<a>[[\waitForShippingAddress]]</a> to false.
+            </li>
             <li>Return |event|.
             </li>
           </ol>
         </section>
         <section>
           <h2>
-            <dfn data-lt="requestShippingAddress(addressParts)">
-              requestShippingAddress()
-            </dfn> method
+            <dfn data-lt=
+            "requestShippingAddress(addressParts)">requestShippingAddress()</dfn>
+            method
           </h2>
           <aside class="note">
             <p>
               The {{PaymentRequestUpdateEvent/requestShippingAddress()}} method
-              allows the developer to incrementally request additional pieces of
-              the shipping address that were not initially requested in
-              {{ PaymentOptions.requestShippingAddressParts }}.
+              allows the developer to incrementally request additional pieces
+              of the shipping address that were not initially requested in {{
+              PaymentOptions.requestShippingAddressParts }}.
             </p>
             <p>
               The same usage pattern is expected as
@@ -4329,16 +4341,17 @@
             </p>
           </aside>
           <p>
-            The <a>requestShippingAddress(|addressParts|)</a> method MUST act as
-            follows:
+            The <a>requestShippingAddress(|addressParts|)</a> method MUST act
+            as follows:
           </p>
           <ol class="algorithm">
             <li>Let |event:PaymentRequestUpdateEvent| be this
             {{PaymentRequestUpdateEvent}} instance.
             </li>
-            <li>If |event|'s {{ Event/type }} attribute is not <a>
-            shippingaddresschange</a>, then return <a>a promise rejected with
-            </a> a {{TypeError}}.
+            <li>If |event|'s {{ Event/type }} attribute is not
+            <a>shippingaddresschange</a>, then return <a>a promise rejected
+            with</a> a {{TypeError}}.
+            </li>
             <li>Let |request:PaymentRequest| be the value of |event|'s
             [=Event/target=].
             </li>
@@ -4347,28 +4360,35 @@
             <li>If any of the following is true, then return <a>a promise
             rejected with</a> an {{"InvalidStateError"}} {{DOMException}}:
               <ul>
-                <li>|event|'s {{ Event/isTrusted }} attribute is false</li>
-                <li>|event|.<a>[[\waitForShippingAddress]]</a> is true</li>
-                <li>|event|.<a>[[\waitForUpdate]]</a> is true</li>
-                <li>|request|.<a>[[\state]]</a> is not "<a>interactive</a>"</li>
+                <li>|event|'s {{ Event/isTrusted }} attribute is false
+                </li>
+                <li>|event|.<a>[[\waitForShippingAddress]]</a> is true
+                </li>
+                <li>|event|.<a>[[\waitForUpdate]]</a> is true
+                </li>
+                <li>|request|.<a>[[\state]]</a> is not "<a>interactive</a>"
+                </li>
               </ul>
             </li>
-            <li>Set |event|.<a>[[\waitForShippingAddress]]</a> to true.</li>
-            <li>Let |addressPromise:Promise| be <a>a new promise</a>.</li>
-            <li>Return |addressPromise|, and perform the remaining steps
-            <a>in parallel</a>.
+            <li>Set |event|.<a>[[\waitForShippingAddress]]</a> to true.
             </li>
-            <li>Update |request|.<a>[[\requestedShippingAddressParts]]</a> to be
-            the union of itself and |addressParts|.
+            <li>Let |addressPromise:Promise| be <a>a new promise</a>.
             </li>
-            <li>Let |address:PaymentAddress| be the result of <a>create
-            a `PaymentAddress` from user-provided input</a> with <a>shipping
-            redact list</a> and |request|.<a>[[\requestedShippingAddressParts]]
-            </a>.
+            <li>Return |addressPromise|, and perform the remaining steps <a>in
+            parallel</a>.
+            </li>
+            <li>Update |request|.<a>[[\requestedShippingAddressParts]]</a> to
+            be the union of itself and |addressParts|.
+            </li>
+            <li>Let |address:PaymentAddress| be the result of <a>create a
+            `PaymentAddress` from user-provided input</a> with <a>shipping
+            redact list</a> and
+            |request|.<a>[[\requestedShippingAddressParts]]</a>.
             </li>
             <li>Set |request|.[=PaymentRequest/shippingAddress=] to |address|.
             </li>
-            <li>Set |event|.<a>[[\waitForShippingAddress]]</a> to false.</li>
+            <li>Set |event|.<a>[[\waitForShippingAddress]]</a> to false.
+            </li>
             <li>Resolve |addressPromise| with |address|.
             </li>
           </ol>
@@ -4688,9 +4708,12 @@
         </ol>
       </section>
       <section>
-        <h2>Shipping redact list</h2>
-        <p>The <dfn>shipping redact list</dfn> is a <a>redact list</a> that
-        includes « "organization", "phone", "recipient", "addressLine" ».
+        <h2>
+          Shipping redact list
+        </h2>
+        <p>
+          The <dfn>shipping redact list</dfn> is a <a>redact list</a> that
+          includes « "organization", "phone", "recipient", "addressLine" ».
         </p>
       </section>
       <section>
@@ -5466,16 +5489,16 @@
         </h2>
         <p>
           The <dfn>validate merchant's details algorithm</dfn> takes a
-          {{Promise}} |opaqueDataPromise| and a {{PaymentRequest}}
-          |request|. The steps are conditional on the |opaqueDataPromise|
-          settling. If |opaqueDataPromise| never settles then the payment
-          request is blocked. The user agent SHOULD provide the user with a
-          means to abort a payment request. Implementations MAY choose to
-          implement a timeout for pending updates if |opaqueDataPromise|
-          doesn't settle in a reasonable amount of time. If an implementation
-          chooses to implement a timeout, they MUST execute the steps listed
-          below in the "upon rejection" path. Such a timeout is a fatal error
-          for the payment request.
+          {{Promise}} |opaqueDataPromise| and a {{PaymentRequest}} |request|.
+          The steps are conditional on the |opaqueDataPromise| settling. If
+          |opaqueDataPromise| never settles then the payment request is
+          blocked. The user agent SHOULD provide the user with a means to abort
+          a payment request. Implementations MAY choose to implement a timeout
+          for pending updates if |opaqueDataPromise| doesn't settle in a
+          reasonable amount of time. If an implementation chooses to implement
+          a timeout, they MUST execute the steps listed below in the "upon
+          rejection" path. Such a timeout is a fatal error for the payment
+          request.
         </p>
         <ol class="algorithm">
           <li>Set |request|.<a>[[\updating]]</a> to true.
@@ -5759,8 +5782,7 @@
         <dd>
           The terms <dfn data-cite=
           "ECMASCRIPT#sec-object-internal-methods-and-internal-slots">internal
-          slot</dfn>,
-          and <code><dfn data-cite=
+          slot</dfn>, and <code><dfn data-cite=
           "ECMASCRIPT#sec-json.stringify">JSON.stringify</dfn></code> are
           defined by [[ECMASCRIPT]].
           <p>
@@ -5795,8 +5817,8 @@
         guard against running out of memory, or to work around
         platform-specific limitations. When an input exceeds
         implementation-specific limit, the user agent MUST throw, or, in the
-        context of a promise, reject with, a {{TypeError}} optionally
-        informing the developer of how a particular input exceeded an
+        context of a promise, reject with, a {{TypeError}} optionally informing
+        the developer of how a particular input exceeded an
         implementation-specific limit.
       </p>
     </section>
