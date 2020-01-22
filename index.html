@@ -1092,9 +1092,9 @@
           <li>Present a user interface that will allow the user to interact
           with the |handlers|. The user agent SHOULD prioritize the preference
           of the user when presenting payment methods. It is RECOMMENDED that
-          the language of the user interface match the <a data-cite=
-          "HTML#language">language</a> of <a data-cite=
-          "HTML/dom.html#the-body-element-2">the body element</a>.
+          the language of the user interface match the [=node/language=] of the
+          <a data-cite="HTML/dom.html#the-body-element-2">the body element</a>
+          element.
           </li>
           <li data-tests=
           "show-method-optional-promise-rejects-manual.https.html, show-method-optional-promise-resolves-manual.https.html">
@@ -3326,12 +3326,11 @@
         <aside class="note">
           <p>
             Each <a>standardized payment method identifier</a>, such as
-            <a data-cite="?payment-method-basic-card"></a> ("basic-card"),
-            defines its own unique IDL <a>dictionary</a> for use with the
-            <a>details</a> attribute. The shape of this data (i.e., its members
-            and their corresponding types and formats) differs depending on
-            which standardized payment method identifier is selected by the end
-            user.
+            [[[?payment-method-basic-card]]], defines its own unique IDL
+            <a>dictionary</a> for use with the <a>details</a> attribute. The
+            shape of this data (i.e., its members and their corresponding types
+            and formats) differs depending on which standardized payment method
+            identifier is selected by the end user.
           </p>
           <p>
             Similarly, a <a>URL-based payment method identifier</a> defines the
@@ -3586,11 +3585,9 @@
           The {{ HTMLIFrameElement.allowPaymentRequest }} attribute of the HTML
           <a>iframe</a> element affects the <a>container policy</a> for any
           document nested in that iframe. Unless overridden by the
-          <code><a data-cite=
-          "html/iframe-embed-object.html#attr-iframe-allow">allow</a></code>
-          attribute, setting {{ HTMLIFrameElement.allowPaymentRequest }} on an
-          iframe is equivalent to <code>&lt;iframe allow="fullscreen
-          *"&gt;</code>, as described in <a data-cite=
+          [^iframe/allow^] attribute, setting [^iframe/allowpaymentrequest^] on
+          an iframe is equivalent to `&lt;iframe allow="fullscreen *"&gt;`, as
+          described in <a data-cite=
           "feature-policy#iframe-allowpaymentrequest-attribute">Feature Policy
           §allowpaymentrequest</a>.
         </p>
@@ -4423,8 +4420,7 @@
           <a>creating an event</a> using the {{PaymentRequestUpdateEvent}}
           interface.
           </li>
-          <li>Initialize |event|'s <code><a data-cite=
-          "DOM#dom-event-type">type</a></code> attribute to |name|.
+          <li>Initialize |event|'s {{Event/type}} attribute to |name|.
           </li>
           <li>
             <a>Dispatch</a> |event| at |request|.
@@ -4492,8 +4488,8 @@
               <li>Let |event:PaymentRequestUpdateEvent| be the result of
               <a>creating an event</a> using {{PaymentRequestUpdateEvent}}.
               </li>
-              <li>Initialize |event|'s <code><a data-cite="DOM#dom-event-type">
-                type</a></code> attribute to "<a>payerdetailchange</a>".
+              <li>Initialize |event|'s {{Event/type}} attribute to
+              "<a>payerdetailchange</a>".
               </li>
               <li>
                 <a>Dispatch</a> |event| at |response|.
