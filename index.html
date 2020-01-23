@@ -890,7 +890,7 @@
           </li>
           <li>Set |request|.<a>[[\updating]]</a> to false.
           </li>
-          <li>Set |request|.<a>[[\details]]</a> to |details|.
+          <li>Set |request|.[=PaymentRequest/[[details]]=] to |details|.
           </li>
           <li>Set |request|.<a>[[\serializedModifierData]]</a> to
           |serializedModifierData|.
@@ -925,7 +925,7 @@
         </h2>
         <p data-tests="payment-request-id-attribute.https.html">
           When getting, the <a>id</a> attribute returns this
-          {{PaymentRequest}}'s <a>[[\details]]</a>.<a data-lt=
+          {{PaymentRequest}}'s [=PaymentRequest/[[details]]=].<a data-lt=
           "PaymentDetailsInit.id">id</a>.
         </p>
       </section>
@@ -1459,7 +1459,7 @@
               A list containing the serialized string form of each <a data-lt=
               "PaymentDetailsModifier.data">data</a> member for each
               corresponding item in the sequence
-              <a>[[\details]]</a>.<a data-lt="PaymentDetailsBase">modifier</a>,
+              [=PaymentRequest/[[details]]=].<a data-lt="PaymentDetailsBase">modifier</a>,
               or null if no such member was present.
             </td>
           </tr>
@@ -4553,7 +4553,7 @@
               </li>
               <li>Set the <a data-lt="PaymentResponse.requestId">requestId</a>
               attribute value of |response| to the value of
-              |request|.<a>[[\details]]</a>.<a data-lt=
+              |request|.[=PaymentRequest/[[details]]=].<a data-lt=
               "PaymentDetailsInit.id">id</a>.
               </li>
               <li>Set |request|.<a>[[\response]]</a> to |response|.
@@ -4886,7 +4886,7 @@
                   <li data-link-for="PaymentDetailsUpdate">If the <a>total</a>
                   member of |details| is present, then:
                     <ol>
-                      <li>Set |request|.<a>[[\details]]</a>.<a data-link-for=
+                      <li>Set |request|.[=PaymentRequest/[[details]]=].<a data-link-for=
                       "PaymentDetailsInit">total</a> to |details|.<a>total</a>.
                       </li>
                     </ol>
@@ -4894,7 +4894,7 @@
                   <li>If the <a>displayItems</a> member of |details| is
                   present, then:
                     <ol>
-                      <li>Set |request|.<a>[[\details]]</a>.<a>displayItems</a>
+                      <li>Set |request|.[=PaymentRequest/[[details]]=].<a>displayItems</a>
                       to |details|.<a>displayItems</a>.
                       </li>
                     </ol>
@@ -4905,7 +4905,7 @@
                   then:
                     <ol>
                       <li>Set
-                      |request|.<a>[[\details]]</a>.<a>shippingOptions</a> to
+                      |request|.[=PaymentRequest/[[details]]=].<a>shippingOptions</a> to
                       |shippingOptions|.
                       </li>
                       <li>Set the value of |request|'s <a data-lt=
@@ -4917,7 +4917,7 @@
                   <li>If the <a>modifiers</a> member of |details| is present,
                   then:
                     <ol>
-                      <li>Set |request|.<a>[[\details]]</a>.<a>modifiers</a> to
+                      <li>Set |request|.[=PaymentRequest/[[details]]=].<a>modifiers</a> to
                       |details|.<a>modifiers</a>.
                       </li>
                       <li>Set |request|.<a>[[\serializedModifierData]]</a> to
@@ -4930,7 +4930,7 @@
                       If |request|.[=PaymentRequest/[[options]]=].<a data-lt=
                       "PaymentOptions.requestShipping">requestShipping</a> is
                       true, and
-                      |request|.<a>[[\details]]</a>.<a>shippingOptions</a> is
+                      |request|.[=PaymentRequest/[[details]]=].<a>shippingOptions</a> is
                       empty, then the developer has signified that there are no
                       valid shipping options for the currently-chosen shipping
                       address (given by |request|'s <a data-lt=
