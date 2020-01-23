@@ -895,7 +895,7 @@
           <li>Set |request|.<a>[[\serializedModifierData]]</a> to
           |serializedModifierData|.
           </li>
-          <li>Set |request|.<a>[[\serializedMethodData]]</a> to
+          <li>Set |request|.[=PaymentRequest/[[serializedMethodData]]=] to
           |serializedMethodData|.
           </li>
           <li>Set |request|.<a>[[\response]]</a> to null.
@@ -1031,7 +1031,7 @@
           <li>Let |handlers:list| be an empty <a>list</a>.
           </li>
           <li>For each |paymentMethod| tuple in
-          |request|.<a>[[\serializedMethodData]]</a>:
+          |request|.[=PaymentRequest/[[serializedMethodData]]=]:
             <ol>
               <li>Let |identifier| be the first element in the |paymentMethod|
               tuple.
@@ -4225,7 +4225,7 @@
           parallel</a>.
           </li>
           <li>For each |paymentMethod| tuple in |request|.
-          <a>[[\serializedMethodData]]</a>:
+          [=PaymentRequest/[[serializedMethodData]]=]:
             <ol>
               <li>Let |identifier| be the first element in the |paymentMethod|
               tuple.
