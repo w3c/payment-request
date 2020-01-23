@@ -1121,7 +1121,8 @@
           </li>
           <li>Let |modifiers:list| be an empty list.
           </li>
-          <li>For each |tuple| in [=PaymentRequest/[[serializedModifierData]]=]:
+          <li>For each |tuple| in
+          [=PaymentRequest/[[serializedModifierData]]=]:
             <ol>
               <li>If the first element of |tuple| (a <a>PMI</a>) matches the
               <a>payment method identifier</a> of |handler|, then append the
@@ -1142,22 +1143,22 @@
             </p>
             <p>
               Handling of multiple applicable modifiers in the
-              [=PaymentRequest/[[serializedModifierData]]=] internal slot is <a>payment
-              handler</a> specific and beyond the scope of this specification.
-              Nevertheless, it is RECOMMENDED that <a>payment handlers</a> use
-              a "last one wins" approach with items in the
-              [=PaymentRequest/[[serializedModifierData]]=] list: that is to say, an item
-              at the end of the list always takes precedence over any item at
-              the beginning of the list (see example below).
+              [=PaymentRequest/[[serializedModifierData]]=] internal slot is
+              <a>payment handler</a> specific and beyond the scope of this
+              specification. Nevertheless, it is RECOMMENDED that <a>payment
+              handlers</a> use a "last one wins" approach with items in the
+              [=PaymentRequest/[[serializedModifierData]]=] list: that is to
+              say, an item at the end of the list always takes precedence over
+              any item at the beginning of the list (see example below).
             </p>
             <aside class="example" title=
             "Handling of multiple applicable modifiers">
               <p>
                 This example uses the "basic-card" payment method to from
                 [[[?payment-method-basic-card]]] demonstrate precedence order
-                of [=PaymentRequest/[[serializedModifierData]]=]. The first modifier
-                applies equally to all cards, irrespective of network. The
-                second modifier applies specifically to cards on the "visa"
+                of [=PaymentRequest/[[serializedModifierData]]=]. The first
+                modifier applies equally to all cards, irrespective of network.
+                The second modifier applies specifically to cards on the "visa"
                 network.
               </p>
               <pre class="js">
@@ -1443,7 +1444,8 @@
           </tr>
           <tr>
             <td>
-              <dfn data-export="" data-dfn-for="PaymentRequest">[[\serializedMethodData]]</dfn>
+              <dfn data-export="" data-dfn-for=
+              "PaymentRequest">[[\serializedMethodData]]</dfn>
             </td>
             <td>
               The <code>methodData</code> supplied to the constructor, but
@@ -1453,19 +1455,22 @@
           </tr>
           <tr>
             <td>
-              <dfn data-export="" data-dfn-for="PaymentRequest">[[\serializedModifierData]]</dfn>
+              <dfn data-export="" data-dfn-for=
+              "PaymentRequest">[[\serializedModifierData]]</dfn>
             </td>
             <td>
               A list containing the serialized string form of each <a data-lt=
               "PaymentDetailsModifier.data">data</a> member for each
               corresponding item in the sequence
-              [=PaymentRequest/[[details]]=].<a data-lt="PaymentDetailsBase">modifier</a>,
-              or null if no such member was present.
+              [=PaymentRequest/[[details]]=].<a data-lt=
+              "PaymentDetailsBase">modifier</a>, or null if no such member was
+              present.
             </td>
           </tr>
           <tr>
             <td>
-              <dfn data-export="" data-dfn-for="PaymentRequest">[[\details]]</dfn>
+              <dfn data-export="" data-dfn-for=
+              "PaymentRequest">[[\details]]</dfn>
             </td>
             <td>
               The current <a>PaymentDetailsBase</a> for the payment request
@@ -1476,12 +1481,14 @@
               members of <a>PaymentDetailsModifier</a> instances contained in
               the <a data-lt="PaymentDetailsBase.modifiers">modifiers</a>
               member will be removed, as they are instead stored in serialized
-              form in the [=PaymentRequest/[[serializedModifierData]]=] internal slot.
+              form in the [=PaymentRequest/[[serializedModifierData]]=]
+              internal slot.
             </td>
           </tr>
           <tr>
             <td>
-              <dfn data-export="" data-dfn-for="PaymentRequest">[[\options]]</dfn>
+              <dfn data-export="" data-dfn-for=
+              "PaymentRequest">[[\options]]</dfn>
             </td>
             <td>
               The <a>PaymentOptions</a> supplied to the constructor.
@@ -2822,9 +2829,9 @@
           Creating a `PaymentAddress` from user-provided input
         </h2>
         <p>
-          The steps to <dfn data-export="">create a `PaymentAddress` from user-provided
-          input</dfn> are given by the following algorithm. The algorithm takes
-          a <a>list</a> |redactList|.
+          The steps to <dfn data-export="">create a `PaymentAddress` from
+          user-provided input</dfn> are given by the following algorithm. The
+          algorithm takes a <a>list</a> |redactList|.
         </p>
         <div class="note" title=
         "Privacy of recipient information (the redactList)">
@@ -3098,25 +3105,29 @@
               <li>Optionally, show a warning in the developer console if any of
               the following are true:
                 <ol>
-                  <li>|request|.[=PaymentRequest/[[options]]=]["<a data-link-for=
+                  <li>
+                  |request|.[=PaymentRequest/[[options]]=]["<a data-link-for=
                   "PaymentOptions">requestPayerName</a>"] is false, and
                   |errorFields|["<a data-link-for=
                   "PaymentValidationErrors">payer</a>"]["<a data-link-for=
                   "PayerErrors">name</a>"] is present.
                   </li>
-                  <li>|request|.[=PaymentRequest/[[options]]=]["<a data-link-for=
+                  <li>
+                  |request|.[=PaymentRequest/[[options]]=]["<a data-link-for=
                   "PaymentOptions">requestPayerEmail</a>"] is false, and
                   |errorFields|["<a data-link-for=
                   "PaymentValidationErrors">payer</a>"]["<a data-link-for=
                   "PayerErrors">email</a>"] is present.
                   </li>
-                  <li>|request|.[=PaymentRequest/[[options]]=]["<a data-link-for=
+                  <li>
+                  |request|.[=PaymentRequest/[[options]]=]["<a data-link-for=
                   "PaymentOptions">requestPayerPhone</a>"] is false, and
                   |errorFields|["<a data-link-for=
                   "PaymentValidationErrors">payer</a>"]["<a data-link-for=
                   "PayerErrors">phone</a>"] is present.
                   </li>
-                  <li>|request|.[=PaymentRequest/[[options]]=]["<a data-link-for=
+                  <li>
+                  |request|.[=PaymentRequest/[[options]]=]["<a data-link-for=
                   "PaymentOptions">requestShipping</a>"] is false, and
                   |errorFields|["<a data-link-for=
                   "PaymentValidationErrors">shippingAddress</a>"] is present.
@@ -4360,12 +4371,13 @@
           Payment method changed algorithm
         </h2>
         <p data-cite="WEBIDL">
-          A <a>payment handler</a> MAY run the <dfn data-export="" data-dfn-for="payment handler">payment method changed
-          algorithm</dfn> when the user changes <a>payment method</a> with
-          |methodDetails|, which is a <a>dictionary</a> or an {{object}} or
-          null, and a |methodName|, which is a DOMString that represents the
-          <a>payment method identifier</a> of the <a>payment handler</a> the
-          user is interacting with.
+          A <a>payment handler</a> MAY run the <dfn data-export=""
+          data-dfn-for="payment handler">payment method changed algorithm</dfn>
+          when the user changes <a>payment method</a> with |methodDetails|,
+          which is a <a>dictionary</a> or an {{object}} or null, and a
+          |methodName|, which is a DOMString that represents the <a>payment
+          method identifier</a> of the <a>payment handler</a> the user is
+          interacting with.
         </p>
         <p class="note" title=
         "Privacy of information shared by paymentmethodchange event">
@@ -4530,9 +4542,9 @@
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> value of
-          |request|.[=PaymentRequest/[[options]]=] is true, then if the <a data-lt=
-          "PaymentRequest.shippingAddress">shippingAddress</a> attribute of
-          |request| is null or if the <a data-lt=
+          |request|.[=PaymentRequest/[[options]]=] is true, then if the
+          <a data-lt="PaymentRequest.shippingAddress">shippingAddress</a>
+          attribute of |request| is null or if the <a data-lt=
           "PaymentRequest.shippingOption">shippingOption</a> attribute of
           |request| is null, then terminate this algorithm and take no further
           action. The <a>user agent</a> SHOULD ensure that this never occurs.
@@ -4573,9 +4585,9 @@
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> value of
-          |request|.[=PaymentRequest/[[options]]=] is false, then set the <a data-lt=
-          "PaymentResponse.shippingAddress">shippingAddress</a> attribute value
-          of |response| to null. Otherwise:
+          |request|.[=PaymentRequest/[[options]]=] is false, then set the
+          <a data-lt="PaymentResponse.shippingAddress">shippingAddress</a>
+          attribute value of |response| to null. Otherwise:
             <ol data-link-for="PaymentResponse">
               <li>Let |redactList:list| be the empty <a>list</a>.
               </li>
@@ -4593,32 +4605,32 @@
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> value of
-          |request|.[=PaymentRequest/[[options]]=] is true, then set the <a data-lt=
-          "PaymentResponse.shippingOption">shippingOption</a> attribute of
-          |response| to the value of the <a data-lt=
+          |request|.[=PaymentRequest/[[options]]=] is true, then set the
+          <a data-lt="PaymentResponse.shippingOption">shippingOption</a>
+          attribute of |response| to the value of the <a data-lt=
           "PaymentRequest.shippingOption">shippingOption</a> attribute of
           |request|. Otherwise, set it to null.
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestPayerName">requestPayerName</a> value of
-          |request|.[=PaymentRequest/[[options]]=] is true, then set the <a data-lt=
-          "PaymentResponse.payerName">payerName</a> attribute of |response| to
-          the payer's name provided by the user, or to null if none was
-          provided. Otherwise, set it to null.
+          |request|.[=PaymentRequest/[[options]]=] is true, then set the
+          <a data-lt="PaymentResponse.payerName">payerName</a> attribute of
+          |response| to the payer's name provided by the user, or to null if
+          none was provided. Otherwise, set it to null.
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestPayerEmail">requestPayerEmail</a> value of
-          |request|.[=PaymentRequest/[[options]]=] is true, then set the <a data-lt=
-          "PaymentResponse.payerEmail">payerEmail</a> attribute of |response|
-          to the payer's email address provided by the user, or to null if none
-          was provided. Otherwise, set it to null.
+          |request|.[=PaymentRequest/[[options]]=] is true, then set the
+          <a data-lt="PaymentResponse.payerEmail">payerEmail</a> attribute of
+          |response| to the payer's email address provided by the user, or to
+          null if none was provided. Otherwise, set it to null.
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestPayerPhone">requestPayerPhone</a> value of
-          |request|.[=PaymentRequest/[[options]]=] is true, then set the <a data-lt=
-          "PaymentResponse.payerPhone">payerPhone</a> attribute of |response|
-          to the payer's phone number provided by the user, or to null if none
-          was provided. When setting the <a data-lt=
+          |request|.[=PaymentRequest/[[options]]=] is true, then set the
+          <a data-lt="PaymentResponse.payerPhone">payerPhone</a> attribute of
+          |response| to the payer's phone number provided by the user, or to
+          null if none was provided. When setting the <a data-lt=
           "PaymentResponse.payerPhone">payerPhone</a> value, the user agent
           SHOULD format the phone number to adhere to [[E.164]].
           </li>
@@ -4758,7 +4770,8 @@
                     </ol>
                   </li>
                   <li>If the <a>shippingOptions</a> member of |details| is
-                  present, and |request|.[=PaymentRequest/[[options]]=].<a data-lt=
+                  present, and
+                  |request|.[=PaymentRequest/[[options]]=].<a data-lt=
                   "PaymentOptions.requestShipping">requestShipping</a> is true,
                   then:
                     <ol>
@@ -4886,27 +4899,30 @@
                   <li data-link-for="PaymentDetailsUpdate">If the <a>total</a>
                   member of |details| is present, then:
                     <ol>
-                      <li>Set |request|.[=PaymentRequest/[[details]]=].<a data-link-for=
-                      "PaymentDetailsInit">total</a> to |details|.<a>total</a>.
+                      <li>Set
+                      |request|.[=PaymentRequest/[[details]]=].<a data-link-for="PaymentDetailsInit">total</a>
+                        to |details|.<a>total</a>.
                       </li>
                     </ol>
                   </li>
                   <li>If the <a>displayItems</a> member of |details| is
                   present, then:
                     <ol>
-                      <li>Set |request|.[=PaymentRequest/[[details]]=].<a>displayItems</a>
+                      <li>Set
+                      |request|.[=PaymentRequest/[[details]]=].<a>displayItems</a>
                       to |details|.<a>displayItems</a>.
                       </li>
                     </ol>
                   </li>
                   <li>If the <a>shippingOptions</a> member of |details| is
-                  present, and |request|.[=PaymentRequest/[[options]]=].<a data-lt=
+                  present, and
+                  |request|.[=PaymentRequest/[[options]]=].<a data-lt=
                   "PaymentOptions.requestShipping">requestShipping</a> is true,
                   then:
                     <ol>
                       <li>Set
-                      |request|.[=PaymentRequest/[[details]]=].<a>shippingOptions</a> to
-                      |shippingOptions|.
+                      |request|.[=PaymentRequest/[[details]]=].<a>shippingOptions</a>
+                      to |shippingOptions|.
                       </li>
                       <li>Set the value of |request|'s <a data-lt=
                       "PaymentRequest.shippingOption">shippingOption</a>
@@ -4917,11 +4933,13 @@
                   <li>If the <a>modifiers</a> member of |details| is present,
                   then:
                     <ol>
-                      <li>Set |request|.[=PaymentRequest/[[details]]=].<a>modifiers</a> to
-                      |details|.<a>modifiers</a>.
+                      <li>Set
+                      |request|.[=PaymentRequest/[[details]]=].<a>modifiers</a>
+                      to |details|.<a>modifiers</a>.
                       </li>
-                      <li>Set |request|.[=PaymentRequest/[[serializedModifierData]]=] to
-                      |serializedModifierData|.
+                      <li>Set
+                      |request|.[=PaymentRequest/[[serializedModifierData]]=]
+                      to |serializedModifierData|.
                       </li>
                     </ol>
                   </li>
@@ -4930,10 +4948,10 @@
                       If |request|.[=PaymentRequest/[[options]]=].<a data-lt=
                       "PaymentOptions.requestShipping">requestShipping</a> is
                       true, and
-                      |request|.[=PaymentRequest/[[details]]=].<a>shippingOptions</a> is
-                      empty, then the developer has signified that there are no
-                      valid shipping options for the currently-chosen shipping
-                      address (given by |request|'s <a data-lt=
+                      |request|.[=PaymentRequest/[[details]]=].<a>shippingOptions</a>
+                      is empty, then the developer has signified that there are
+                      no valid shipping options for the currently-chosen
+                      shipping address (given by |request|'s <a data-lt=
                       "PaymentRequest.shippingAddress">shippingAddress</a>).
                     </p>
                     <p>
@@ -4957,7 +4975,8 @@
                     </p>
                     <p data-link-for="PaymentDetailsUpdate">
                       Similarly, if |details|["<a>payerErrors</a>"] member is
-                      present and |request|.[=PaymentRequest/[[options]]=]'s <a data-lt=
+                      present and |request|.[=PaymentRequest/[[options]]=]'s
+                      <a data-lt=
                       "PaymentOptions.requestPayerName">requestPayerName</a>,
                       <a data-lt=
                       "PaymentOptions.requestPayerEmail">requestPayerEmail</a>,
@@ -5258,9 +5277,10 @@
         </ul>
         <p>
           Where sharing of privacy-sensitive information might not be obvious
-          to users (e.g., when [=payment handler/payment method changed algorithm | changing payment methods =]), it
-          is RECOMMENDED that user agents inform the user of exactly what
-          information is being shared with a merchant.
+          to users (e.g., when [=payment handler/payment method changed
+          algorithm | changing payment methods =]), it is RECOMMENDED that user
+          agents inform the user of exactly what information is being shared
+          with a merchant.
         </p>
       </section>
       <section class="informative">
