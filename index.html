@@ -884,7 +884,7 @@
           </li>
           <li>Let |request:PaymentRequest| be a new {{PaymentRequest}}.
           </li>
-          <li>Set |request|.<a>[[\options]]</a> to |options|.
+          <li>Set |request|.[=PaymentRequest/[[options]]=] to |options|.
           </li>
           <li>Set |request|.<a>[[\state]]</a> to "<a>created</a>".
           </li>
@@ -3098,25 +3098,25 @@
               <li>Optionally, show a warning in the developer console if any of
               the following are true:
                 <ol>
-                  <li>|request|.<a>[[\options]]</a>["<a data-link-for=
+                  <li>|request|.[=PaymentRequest/[[options]]=]["<a data-link-for=
                   "PaymentOptions">requestPayerName</a>"] is false, and
                   |errorFields|["<a data-link-for=
                   "PaymentValidationErrors">payer</a>"]["<a data-link-for=
                   "PayerErrors">name</a>"] is present.
                   </li>
-                  <li>|request|.<a>[[\options]]</a>["<a data-link-for=
+                  <li>|request|.[=PaymentRequest/[[options]]=]["<a data-link-for=
                   "PaymentOptions">requestPayerEmail</a>"] is false, and
                   |errorFields|["<a data-link-for=
                   "PaymentValidationErrors">payer</a>"]["<a data-link-for=
                   "PayerErrors">email</a>"] is present.
                   </li>
-                  <li>|request|.<a>[[\options]]</a>["<a data-link-for=
+                  <li>|request|.[=PaymentRequest/[[options]]=]["<a data-link-for=
                   "PaymentOptions">requestPayerPhone</a>"] is false, and
                   |errorFields|["<a data-link-for=
                   "PaymentValidationErrors">payer</a>"]["<a data-link-for=
                   "PayerErrors">phone</a>"] is present.
                   </li>
-                  <li>|request|.<a>[[\options]]</a>["<a data-link-for=
+                  <li>|request|.[=PaymentRequest/[[options]]=]["<a data-link-for=
                   "PaymentOptions">requestShipping</a>"] is false, and
                   |errorFields|["<a data-link-for=
                   "PaymentValidationErrors">shippingAddress</a>"] is present.
@@ -4459,7 +4459,7 @@
               <li>Assert: |request|.<a>[[\state]]</a> is "<a>interactive</a>".
               </li>
               <li>Let |options:PaymentOptions| be
-              |request|.<a>[[\options]]</a>.
+              |request|.[=PaymentRequest/[[options]]=].
               </li>
               <li>If |payer name| changed and |options|.<a data-link-for=
               "PaymentOptions">requestPayerName</a> is true:
@@ -4530,7 +4530,7 @@
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> value of
-          |request|.<a>[[\options]]</a> is true, then if the <a data-lt=
+          |request|.[=PaymentRequest/[[options]]=] is true, then if the <a data-lt=
           "PaymentRequest.shippingAddress">shippingAddress</a> attribute of
           |request| is null or if the <a data-lt=
           "PaymentRequest.shippingOption">shippingOption</a> attribute of
@@ -4573,7 +4573,7 @@
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> value of
-          |request|.<a>[[\options]]</a> is false, then set the <a data-lt=
+          |request|.[=PaymentRequest/[[options]]=] is false, then set the <a data-lt=
           "PaymentResponse.shippingAddress">shippingAddress</a> attribute value
           of |response| to null. Otherwise:
             <ol data-link-for="PaymentResponse">
@@ -4593,7 +4593,7 @@
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestShipping">requestShipping</a> value of
-          |request|.<a>[[\options]]</a> is true, then set the <a data-lt=
+          |request|.[=PaymentRequest/[[options]]=] is true, then set the <a data-lt=
           "PaymentResponse.shippingOption">shippingOption</a> attribute of
           |response| to the value of the <a data-lt=
           "PaymentRequest.shippingOption">shippingOption</a> attribute of
@@ -4601,21 +4601,21 @@
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestPayerName">requestPayerName</a> value of
-          |request|.<a>[[\options]]</a> is true, then set the <a data-lt=
+          |request|.[=PaymentRequest/[[options]]=] is true, then set the <a data-lt=
           "PaymentResponse.payerName">payerName</a> attribute of |response| to
           the payer's name provided by the user, or to null if none was
           provided. Otherwise, set it to null.
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestPayerEmail">requestPayerEmail</a> value of
-          |request|.<a>[[\options]]</a> is true, then set the <a data-lt=
+          |request|.[=PaymentRequest/[[options]]=] is true, then set the <a data-lt=
           "PaymentResponse.payerEmail">payerEmail</a> attribute of |response|
           to the payer's email address provided by the user, or to null if none
           was provided. Otherwise, set it to null.
           </li>
           <li>If the <a data-lt=
           "PaymentOptions.requestPayerPhone">requestPayerPhone</a> value of
-          |request|.<a>[[\options]]</a> is true, then set the <a data-lt=
+          |request|.[=PaymentRequest/[[options]]=] is true, then set the <a data-lt=
           "PaymentResponse.payerPhone">payerPhone</a> attribute of |response|
           to the payer's phone number provided by the user, or to null if none
           was provided. When setting the <a data-lt=
@@ -4758,7 +4758,7 @@
                     </ol>
                   </li>
                   <li>If the <a>shippingOptions</a> member of |details| is
-                  present, and |request|.<a>[[\options]]</a>.<a data-lt=
+                  present, and |request|.[=PaymentRequest/[[options]]=].<a data-lt=
                   "PaymentOptions.requestShipping">requestShipping</a> is true,
                   then:
                     <ol>
@@ -4900,7 +4900,7 @@
                     </ol>
                   </li>
                   <li>If the <a>shippingOptions</a> member of |details| is
-                  present, and |request|.<a>[[\options]]</a>.<a data-lt=
+                  present, and |request|.[=PaymentRequest/[[options]]=].<a data-lt=
                   "PaymentOptions.requestShipping">requestShipping</a> is true,
                   then:
                     <ol>
@@ -4927,7 +4927,7 @@
                   </li>
                   <li>
                     <p>
-                      If |request|.<a>[[\options]]</a>.<a data-lt=
+                      If |request|.[=PaymentRequest/[[options]]=].<a data-lt=
                       "PaymentOptions.requestShipping">requestShipping</a> is
                       true, and
                       |request|.<a>[[\details]]</a>.<a>shippingOptions</a> is
@@ -4957,7 +4957,7 @@
                     </p>
                     <p data-link-for="PaymentDetailsUpdate">
                       Similarly, if |details|["<a>payerErrors</a>"] member is
-                      present and |request|.<a>[[\options]]</a>'s <a data-lt=
+                      present and |request|.[=PaymentRequest/[[options]]=]'s <a data-lt=
                       "PaymentOptions.requestPayerName">requestPayerName</a>,
                       <a data-lt=
                       "PaymentOptions.requestPayerEmail">requestPayerEmail</a>,
