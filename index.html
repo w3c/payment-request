@@ -892,7 +892,7 @@
           </li>
           <li>Set |request|.[=PaymentRequest/[[details]]=] to |details|.
           </li>
-          <li>Set |request|.<a>[[\serializedModifierData]]</a> to
+          <li>Set |request|.[=PaymentRequest/[[serializedModifierData]]=] to
           |serializedModifierData|.
           </li>
           <li>Set |request|.[=PaymentRequest/[[serializedMethodData]]=] to
@@ -1121,7 +1121,7 @@
           </li>
           <li>Let |modifiers:list| be an empty list.
           </li>
-          <li>For each |tuple| in <a>[[\serializedModifierData]]</a>:
+          <li>For each |tuple| in [=PaymentRequest/[[serializedModifierData]]=]:
             <ol>
               <li>If the first element of |tuple| (a <a>PMI</a>) matches the
               <a>payment method identifier</a> of |handler|, then append the
@@ -1142,11 +1142,11 @@
             </p>
             <p>
               Handling of multiple applicable modifiers in the
-              <a>[[\serializedModifierData]]</a> internal slot is <a>payment
+              [=PaymentRequest/[[serializedModifierData]]=] internal slot is <a>payment
               handler</a> specific and beyond the scope of this specification.
               Nevertheless, it is RECOMMENDED that <a>payment handlers</a> use
               a "last one wins" approach with items in the
-              <a>[[\serializedModifierData]]</a> list: that is to say, an item
+              [=PaymentRequest/[[serializedModifierData]]=] list: that is to say, an item
               at the end of the list always takes precedence over any item at
               the beginning of the list (see example below).
             </p>
@@ -1155,7 +1155,7 @@
               <p>
                 This example uses the "basic-card" payment method to from
                 [[[?payment-method-basic-card]]] demonstrate precedence order
-                of <a>[[\serializedModifierData]]</a>. The first modifier
+                of [=PaymentRequest/[[serializedModifierData]]=]. The first modifier
                 applies equally to all cards, irrespective of network. The
                 second modifier applies specifically to cards on the "visa"
                 network.
@@ -1476,7 +1476,7 @@
               members of <a>PaymentDetailsModifier</a> instances contained in
               the <a data-lt="PaymentDetailsBase.modifiers">modifiers</a>
               member will be removed, as they are instead stored in serialized
-              form in the <a>[[\serializedModifierData]]</a> internal slot.
+              form in the [=PaymentRequest/[[serializedModifierData]]=] internal slot.
             </td>
           </tr>
           <tr>
@@ -4920,7 +4920,7 @@
                       <li>Set |request|.[=PaymentRequest/[[details]]=].<a>modifiers</a> to
                       |details|.<a>modifiers</a>.
                       </li>
-                      <li>Set |request|.<a>[[\serializedModifierData]]</a> to
+                      <li>Set |request|.[=PaymentRequest/[[serializedModifierData]]=] to
                       |serializedModifierData|.
                       </li>
                     </ol>
