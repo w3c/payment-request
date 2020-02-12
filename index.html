@@ -1089,12 +1089,23 @@
               </li>
             </ol>
           </li>
-          <li>Present a user interface that will allow the user to interact
-          with the |handlers|. The user agent SHOULD prioritize the preference
-          of the user when presenting payment methods. It is RECOMMENDED that
-          the language of the user interface match the [=node/language=] of the
-          <a data-cite="HTML/dom.html#the-body-element-2">the body element</a>
-          element.
+          <li>
+            <p>
+              Present a user interface that will allow the user to interact
+              with the |handlers|. The user agent SHOULD prioritize the
+              user's preference when presenting payment methods.
+            </p>
+            <aside class="note" title="Localization of the payment sheet">
+              <p>
+                The API does not provide a way for developers to specify the
+                language in which the payment sheet is presented to end
+                users. As such, user agents will generally present the payment
+                sheet using the user agent's default language. The working
+                group is contemplating adding the ability for developers to
+                specify the language of the payment sheet, and of specific
+                {{PaymentItems}}, in a future version of this API.
+              </p>
+            </aside>
           </li>
           <li data-tests=
           "show-method-optional-promise-rejects-manual.https.html, show-method-optional-promise-resolves-manual.https.html">
