@@ -1796,14 +1796,12 @@
             </p>
             <p data-tests=
             "change-shipping-option-select-last-manual.https.html">
-              If an item in the sequence has the <a data-lt=
-              "PaymentShippingOption.selected">selected</a> member set to true,
-              then this is the shipping option that will be used by default and
-              <a data-lt="PaymentRequest.shippingOption">shippingOption</a>
-              will be set to the <a data-lt="PaymentShippingOption.id">id</a>
+              If an item in the sequence has the {{PaymentShippingOption/selected}} member set to true,
+              then this is the shipping option that will be used by default and <a data-lt="PaymentRequest.shippingOption">shippingOption</a>
+              will be set to the {{PaymentShippingOption/id}}
               of this option without running the <a>shipping option changed
               algorithm</a>. If more than one item in the sequence has
-              <a data-lt="PaymentShippingOption.selected">selected</a> set to
+              {{PaymentShippingOption/selected}} set to
               true, then the <a>user agent</a> selects the last one in the
               sequence.
             </p>
@@ -1814,8 +1812,7 @@
               set to true.
             </p>
             <aside class="note">
-              If the sequence has an item with the <a data-lt=
-              "PaymentShippingOption.selected">selected</a> member set to true,
+              If the sequence has an item with the {{PaymentShippingOption/selected}} member set to true,
               then authors are responsible for ensuring that the <a data-lt=
               "PaymentDetailsInit.total">total</a> member includes the cost of
               the shipping option. This is because no
@@ -3366,7 +3363,7 @@
           to true in the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
           constructor, then <a data-lt=
           "PaymentRequest.shippingOption">shippingOption</a> will be the
-          <a data-lt="PaymentShippingOption.id">id</a> attribute of the
+          {{PaymentShippingOption/id}} attribute of the
           selected shipping option.
         </p>
       </section>
@@ -4769,28 +4766,23 @@
                         <ol>
                           <li>
                             <a>Check and canonicalize amount</a>
-                            |option|.<a data-lt=
-                            "PaymentShippingOption.amount">amount</a>. If an
+                            |option|.{{PaymentShippingOption/amount}}. If an
                             exception is thrown, then <a>abort the update</a>
                             with |request| and that exception.
                           </li>
                           <li data-tests=
                           "PaymentRequestUpdateEvent/updateWith-duplicate-shipping-options-manual.https.html">
-                          If |seenIDs|[|option|.<a data-lt=
-                          "PaymentShippingOption.id">id</a>] exists, then
+                          If |seenIDs|[|option|.{{PaymentShippingOption/id}] exists, then
                           <a>abort the update</a> with |request| and a
                           {{TypeError}}.
                           </li>
-                          <li>Append |option|.<a data-lt=
-                          "PaymentShippingOption.id">id</a> to |seenIDs|.
+                          <li>Append |option|.{{PaymentShippingOption/id}} to |seenIDs|.
                           </li>
                           <li>Append |option| to |shippingOptions|.
                           </li>
-                          <li>If |option|.<a data-lt=
-                          "PaymentShippingOption.selected">selected</a> is
+                          <li>If |option|.{{PaymentShippingOption/selected}} is
                           true, then set |selectedShippingOption| to
-                          |option|.<a data-lt=
-                          "PaymentShippingOption.id">id</a>.
+                          |option|.{{PaymentShippingOption/id}}.
                           </li>
                         </ol>
                       </li>
