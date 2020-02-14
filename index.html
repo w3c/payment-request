@@ -811,8 +811,7 @@
                   </li>
                 </ol>
               </li>
-              <li>Set |details|.<a data-lt=
-              "PaymentDetailsBase.shippingOptions">shippingOptions</a> to
+              <li>Set |details|.{{PaymentDetailsBase/shippingOptions}} to
               |options|.
               </li>
             </ol>
@@ -877,8 +876,7 @@
                   </li>
                 </ol>
               </li>
-              <li>Set |details|.<a data-lt=
-              "PaymentDetailsBase.modifiers">modifiers</a> to |modifiers|.
+              <li>Set |details|.{{PaymentDetailsBase/modifiers}} to |modifiers|.
               </li>
             </ol>
           </li>
@@ -1490,7 +1488,7 @@
               "PaymentRequestUpdateEvent.updateWith">updateWith()</a>. Note
               that all <a data-lt="PaymentDetailsModifier.data">data</a>
               members of <a>PaymentDetailsModifier</a> instances contained in
-              the <a data-lt="PaymentDetailsBase.modifiers">modifiers</a>
+              the {{PaymentDetailsBase/modifiers}}
               member will be removed, as they are instead stored in serialized
               form in the [=PaymentRequest/[[serializedModifierData]]=]
               internal slot.
@@ -1933,8 +1931,7 @@
             <a data-lt="PaymentRequestUpdateEvent.updateWith">updateWith()</a>,
             the <a>PaymentDetailsUpdate</a> can contain a message in the
             <a>error</a> member that will be displayed to the user if the
-            <a>PaymentDetailsUpdate</a> indicates that there are no valid
-            <a data-lt="PaymentDetailsBase.shippingOptions">shippingOptions</a>
+            <a>PaymentDetailsUpdate</a> indicates that there are no valid {{PaymentDetailsBase/shippingOptions}}
             (and the {{PaymentRequest}} was constructed with the <a data-lt=
             "PaymentOptions.requestShipping">requestShipping</a> option set to
             true).
@@ -2019,8 +2016,7 @@
         </dt>
         <dd>
           A sequence of <a>PaymentItem</a> dictionaries provides additional
-          display items that are appended to the <a data-lt=
-          "PaymentDetailsBase.displayItems">displayItems</a> member in the
+          display items that are appended to the {{PaymentDetailsBase/displayItems}} member in the
           <a>PaymentDetailsBase</a> dictionary for the <a>payment method
           identifiers</a> in the <a>supportedMethods</a> member. This member is
           commonly used to add a discount or surcharge line item indicating the
@@ -2028,8 +2024,7 @@
           <a>payment method</a> that the user agent MAY display.
           <p class="note">
             It is the developer's responsibility to verify that the
-            <a>total</a> amount is the sum of the <a data-lt=
-            "PaymentDetailsBase.displayItems">displayItems</a> and the
+            <a>total</a> amount is the sum of the {{PaymentDetailsBase/displayItems}} and the
             <a>additionalDisplayItems</a>.
           </p>
         </dd>
@@ -5248,8 +5243,7 @@
           a developer (e.g., the shipping address) without user consent.
         </p>
         <p>
-          The <a>user agent</a> MUST NOT share the values of the <a data-lt=
-          "PaymentDetailsBase.displayItems">displayItems</a> member or
+          The <a>user agent</a> MUST NOT share the values of the {{PaymentDetailsBase/displayItems}} member or
           <a data-lt=
           "PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>
           member with a third-party <a>payment handler</a> without user
