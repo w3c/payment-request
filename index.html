@@ -827,24 +827,21 @@
                   </li>
                   <li>For each |modifier| of |modifiers|:
                     <ol>
-                      <li>If the <a data-lt=
-                      "PaymentDetailsModifier.total">total</a> member of
+                      <li>If the {{PaymentDetailsModifier/total}}
+                      member of
                       |modifier| is present, then:
                         <ol>
                           <li data-tests=
                           "payment-request-ctor-currency-code-checks.https.html">
                             <a>Check and canonicalize total amount</a>
-                            |modifier|.<a data-lt=
-                            "PaymentDetailsModifier.total">total</a>.<a data-lt="PaymentItem.amount">amount</a>.
+                            |modifier|.{{PaymentDetailsModifier/total}}.<a data-lt="PaymentItem.amount">amount</a>.
                             Rethrow any exceptions.
                           </li>
                         </ol>
                       </li>
-                      <li>If the <a data-lt=
-                      "PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>
+                      <li>If the {{PaymentDetailsModifier/additionalDisplayItems}}
                       member of |modifier| is present, then for each |item| of
-                      |modifier|.<a data-lt=
-                      "PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>:
+                      |modifier|.{{PaymentDetailsModifier/additionalDisplayItems}}:
                         <ol>
                           <li data-tests=
                           "payment-request-ctor-currency-code-checks.https.html">
@@ -854,20 +851,16 @@
                           </li>
                         </ol>
                       </li>
-                      <li>If the <a data-lt=
-                      "PaymentDetailsModifier.data">data</a> member of
+                      <li>If the {{PaymentDetailsModifier/data}} member of
                       |modifier| is missing, let |serializedData| be null.
                       Otherwise, let |serializedData| be the result of
-                      <a>JSON-serializing</a> |modifier|.<a data-lt=
-                      "PaymentDetailsModifier.data">data</a> into a string.
+                      <a>JSON-serializing</a> |modifier|.{{PaymentDetailsModifier/data}} into a string.
                       Rethrow any exceptions.
                       </li>
-                      <li>Add the tuple (|modifier|.<a data-lt=
-                      "PaymentDetailsModifier.supportedMethods">supportedMethods</a>,
+                      <li>Add the tuple (|modifier|.{{PaymentDetailsModifier/supportedMethods}},
                       |serializedData|) to |serializedModifierData|.
                       </li>
-                      <li>Remove the <a data-lt="PaymentDetailsModifier.data">
-                        data</a> member of |modifier|, if it is present.
+                      <li>Remove the {{PaymentDetailsModifier/data}} member of |modifier|, if it is present.
                       </li>
                     </ol>
                   </li>
@@ -1465,8 +1458,7 @@
               "PaymentRequest">[[\serializedModifierData]]</dfn>
             </td>
             <td>
-              A list containing the serialized string form of each <a data-lt=
-              "PaymentDetailsModifier.data">data</a> member for each
+              A list containing the serialized string form of each {{PaymentDetailsModifier/data}} member for each
               corresponding item in the sequence
               [=PaymentRequest/[[details]]=].<a data-lt=
               "PaymentDetailsBase">modifier</a>, or null if no such member was
@@ -1483,7 +1475,7 @@
               initially supplied to the constructor and then updated with calls
               to <a data-lt=
               "PaymentRequestUpdateEvent.updateWith">updateWith()</a>. Note
-              that all <a data-lt="PaymentDetailsModifier.data">data</a>
+              that all {{PaymentDetailsModifier/data}}
               members of <a>PaymentDetailsModifier</a> instances contained in
               the {{PaymentDetailsBase/modifiers}}
               member will be removed, as they are instead stored in serialized
@@ -4826,8 +4818,7 @@
                           <li data-tests=
                           "updateWith-method-pmi-handling-manual.https.html">
                           Run the steps to <a>validate a payment method
-                          identifier</a> with |modifier|.<a data-lt=
-                          "PaymentDetailsModifier.supportedMethods">supportedMethods</a>.
+                          identifier</a> with |modifier|.{{PaymentDetailsModifier/supportedMethods}}.
                           If it returns false, then <a>abort the update</a>
                           with |request| and a {{RangeError}} exception.
                           Optionally, inform the developer that the payment
@@ -4859,20 +4850,17 @@
                               </li>
                             </ol>
                           </li>
-                          <li>If the <a data-lt="PaymentDetailsModifier.data">
-                            data</a> member of |modifier| is missing, let
+                          <li>If the {{PaymentDetailsModifier/data}} member of |modifier| is missing, let
                             |serializedData| be null. Otherwise, let
                             |serializedData| be the result of
-                            <a>JSON-serializing</a> |modifier|.<a data-lt=
-                            "PaymentDetailsModifier.data">data</a> into a
+                            <a>JSON-serializing</a> |modifier|.{{PaymentDetailsModifier/data}} into a
                             string. If <a>JSON-serializing</a> throws an
                             exception, then <a>abort the update</a> with
                             |request| and that exception.
                           </li>
                           <li>Add |serializedData| to |serializedModifierData|.
                           </li>
-                          <li>Remove the <a data-lt=
-                          "PaymentDetailsModifier.data">data</a> member of
+                          <li>Remove the {{PaymentDetailsModifier/data}} member of
                           |modifier|, if it is present.
                           </li>
                         </ol>
@@ -5241,8 +5229,7 @@
         </p>
         <p>
           The <a>user agent</a> MUST NOT share the values of the {{PaymentDetailsBase/displayItems}} member or
-          <a data-lt=
-          "PaymentDetailsModifier.additionalDisplayItems">additionalDisplayItems</a>
+          {{PaymentDetailsModifier/additionalDisplayItems}}
           member with a third-party <a>payment handler</a> without user
           consent.
         </p>
