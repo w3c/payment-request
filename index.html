@@ -757,8 +757,7 @@
               <li data-tests=
               "payment-request-ctor-currency-code-checks.https.html">
                 <a>Check and canonicalize total amount</a>
-                |details|.<a>total</a>.<a data-lt=
-                "PaymentItem.amount">amount</a>. Rethrow any exceptions.
+                |details|.<a>total</a>.{{PaymentItem/amount}}. Rethrow any exceptions.
               </li>
             </ol>
           </li>
@@ -767,8 +766,7 @@
             <ol>
               <li data-tests=
               "payment-request-ctor-currency-code-checks.https.html">
-                <a>Check and canonicalize amount</a> |item|.<a data-lt=
-                "PaymentItem.amount">amount</a>. Rethrow any exceptions.
+                <a>Check and canonicalize amount</a> |item|.{{PaymentItem/amount}}. Rethrow any exceptions.
               </li>
             </ol>
           </li>
@@ -791,8 +789,7 @@
                     <ol>
                       <li data-tests=
                       "payment-request-ctor-currency-code-checks.https.html">
-                        <a>Check and canonicalize amount</a> |item|.<a data-lt=
-                        "PaymentItem.amount">amount</a>. Rethrow any
+                        <a>Check and canonicalize amount</a> |item|.{{PaymentItem/amount}}. Rethrow any
                         exceptions.
                       </li>
                       <li>If |seenIDs| contains |option|.<a>id</a>, then throw
@@ -834,7 +831,7 @@
                           <li data-tests=
                           "payment-request-ctor-currency-code-checks.https.html">
                             <a>Check and canonicalize total amount</a>
-                            |modifier|.{{PaymentDetailsModifier/total}}.<a data-lt="PaymentItem.amount">amount</a>.
+                            |modifier|.{{PaymentDetailsModifier/total}}.{{PaymentItem/amount}}.
                             Rethrow any exceptions.
                           </li>
                         </ol>
@@ -846,7 +843,7 @@
                           <li data-tests=
                           "payment-request-ctor-currency-code-checks.https.html">
                             <a>Check and canonicalize amount</a>
-                            |item|.<a data-lt="PaymentItem.amount">amount</a>.
+                            |item|.{{PaymentItem/amount}}.
                             Rethrow any exceptions.
                           </li>
                         </ol>
@@ -1878,8 +1875,7 @@
             <aside class="note">
               Algorithms in this specification that accept a
               <a>PaymentDetailsInit</a> dictionary will throw if the
-              <a>total</a>.<a data-lt=
-              "PaymentItem.amount">amount</a>.<a data-lt=
+              <a>total</a>.{{PaymentItem/amount}}.<a data-lt=
               "PaymentCurrencyAmount.value">value</a> is a negative number.
             </aside>
           </dd>
@@ -1929,13 +1925,11 @@
             <dfn>total</dfn> member
           </dt>
           <dd>
-            A <a>PaymentItem</a> containing a non-negative <a data-lt=
-            "PaymentItem.amount">amount</a>.
+            A <a>PaymentItem</a> containing a non-negative {{PaymentItem/amount}}.
             <p class="note">
               Algorithms in this specification that accept a
               <a>PaymentDetailsUpdate</a> dictionary will throw if the
-              <a>total</a>.<a data-lt=
-              "PaymentItem.amount">amount</a>.<a data-lt=
+              <a>total</a>.{{PaymentItem/amount}}.<a data-lt=
               "PaymentCurrencyAmount.value">value</a> is a negative number.
             </p>
           </dd>
@@ -4745,8 +4739,7 @@
                     <ol>
                       <li>
                         <a>Check and canonicalize total amount</a>
-                        |details|.<a>total</a>.<a data-lt=
-                        "PaymentItem.amount">amount</a>. If an exception is
+                        |details|.<a>total</a>.{{PaymentItem/amount}}. If an exception is
                         thrown, then <a>abort the update</a> with |request| and
                         that exception.
                       </li>
@@ -4757,8 +4750,7 @@
                   |details|.<a>displayItems</a>:
                     <ol>
                       <li>
-                        <a>Check and canonicalize amount</a> |item|.<a data-lt=
-                        "PaymentItem.amount">amount</a>. If an exception is
+                        <a>Check and canonicalize amount</a> |item|.{{PaymentItem/amount}}. If an exception is
                         thrown, then <a>abort the update</a> with |request| and
                         that exception.
                       </li>
@@ -4829,8 +4821,7 @@
                             <ol>
                               <li>
                                 <a>Check and canonicalize total amount</a>
-                                |modifier|.<a>total</a>.<a data-lt=
-                                "PaymentItem.amount">amount</a>. If an
+                                |modifier|.<a>total</a>.{{PaymentItem/amount}}. If an
                                 exception is thrown, then <a>abort the
                                 update</a> with |request| and that exception.
                               </li>
@@ -4843,8 +4834,7 @@
                             <ol>
                               <li>
                                 <a>Check and canonicalize amount</a>
-                                |item|.<a data-lt=
-                                "PaymentItem.amount">amount</a>. If an
+                                |item|.{{PaymentItem/amount}}. If an
                                 exception is thrown, then <a>abort the
                                 update</a> with |request| and that exception.
                               </li>
