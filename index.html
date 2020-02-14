@@ -670,7 +670,7 @@
         <p>
           The {{PaymentRequest}} is constructed using the supplied sequence of
           <a>PaymentMethodData</a> |methodData| including any <a>payment
-          method</a> specific <a data-lt="PaymentMethodData.data">data</a>, the
+          method</a> specific {{PaymentMethodData/data}}, the
           <a>PaymentDetailsInit</a> |details|, and the <a>PaymentOptions</a>
           |options|.
         </p>
@@ -709,17 +709,15 @@
                   <li data-tests=
                   "payment-request-ctor-pmi-handling.https.html">Run the steps
                   to <a>validate a payment method identifier</a> with
-                  |paymentMethod|.<a data-lt=
-                  "PaymentMethodData.supportedMethods">supportedMethods</a>. If
+                  |paymentMethod|.{{PaymentMethodData/supportedMethods}. If
                   it returns false, then throw a {{RangeError}} exception.
                   Optionally, inform the developer that the payment method
                   identifier is invalid.
                   </li>
-                  <li>If the <a data-lt="PaymentMethodData.data">data</a>
+                  <li>If the {{PaymentMethodData/data}}
                   member of |paymentMethod| is missing, let |serializedData| be
                   null. Otherwise, let |serializedData| be the result of
-                  <a>JSON-serializing</a> |paymentMethod|.<a data-lt=
-                  "PaymentMethodData.data">data</a> into a string. Rethrow any
+                  <a>JSON-serializing</a> |paymentMethod|.{{PaymentMethodData/data}} into a string. Rethrow any
                   exceptions.
                   </li>
                   <li>If |serializedData| is not null, and if required by the
@@ -747,8 +745,7 @@
                       </li>
                     </ol>
                   </li>
-                  <li>Add the tuple (|paymentMethod|.<a data-lt=
-                  "PaymentMethodData.supportedMethods">supportedMethods</a>,
+                  <li>Add the tuple (|paymentMethod|.{{PaymentMethodData/supportedMethods}},
                   |serializedData|) to |serializedMethodData|.
                   </li>
                 </ol>
