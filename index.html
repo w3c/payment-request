@@ -689,8 +689,8 @@
           <li>Establish the request's id:
             <ol>
               <li data-tests="payment-request-id-attribute.https.html">If
-              |details|.<a data-lt="PaymentDetailsInit.id">id</a> is missing,
-              add an <a data-lt="PaymentDetailsInit.id">id</a> member to
+              |details|.{{PaymentDetailsInit/id}} is missing,
+              add an {{PaymentDetailsInit/id}} member to
               |details| and set its value to a <abbr title=
               "Universally Unique Identifier">UUID</abbr> [[RFC4122]].
               </li>
@@ -910,8 +910,7 @@
         </h2>
         <p data-tests="payment-request-id-attribute.https.html">
           When getting, the <a>id</a> attribute returns this
-          {{PaymentRequest}}'s [=PaymentRequest/[[details]]=].<a data-lt=
-          "PaymentDetailsInit.id">id</a>.
+          {{PaymentRequest}}'s [=PaymentRequest/[[details]]=].{{PaymentDetailsInit/id}}.
         </p>
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
@@ -1781,8 +1780,7 @@
             for the payment request that the <a>user agent</a> MAY display.
             <aside class="note">
               It is the developer's responsibility, when generating or updating
-              a {{PaymentRequest}}, to verify that the <a data-lt=
-              "PaymentDetailsInit.total">total</a> amount is the sum of these
+              a {{PaymentRequest}}, to verify that the {{PaymentDetailsInit/total}} amount is the sum of these
               items.
             </aside>
           </dd>
@@ -1813,8 +1811,7 @@
             </p>
             <aside class="note">
               If the sequence has an item with the {{PaymentShippingOption/selected}} member set to true,
-              then authors are responsible for ensuring that the <a data-lt=
-              "PaymentDetailsInit.total">total</a> member includes the cost of
+              then authors are responsible for ensuring that the {{PaymentDetailsInit/total}} member includes the cost of
               the shipping option. This is because no
               <a>shippingoptionchange</a> event will be fired for this option
               unless the user selects an alternative option first.
@@ -1986,8 +1983,7 @@
           <dfn>total</dfn> member
         </dt>
         <dd>
-          A <a>PaymentItem</a> value that overrides the <a data-lt=
-          "PaymentDetailsInit.total">total</a> member in the
+          A <a>PaymentItem</a> value that overrides the {{PaymentDetailsInit/total}} member in the
           <a>PaymentDetailsInit</a> dictionary for the <a>payment method
           identifiers</a> of the <a>supportedMethods</a> member.
         </dd>
@@ -4551,8 +4547,7 @@
               </li>
               <li>Set the <a data-lt="PaymentResponse.requestId">requestId</a>
               attribute value of |response| to the value of
-              |request|.[=PaymentRequest/[[details]]=].<a data-lt=
-              "PaymentDetailsInit.id">id</a>.
+              |request|.[=PaymentRequest/[[details]]=].{{PaymentDetailsInit/id}}.
               </li>
               <li>Set |request|.<a>[[\response]]</a> to |response|.
               </li>
