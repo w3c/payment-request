@@ -884,16 +884,13 @@
           </li>
           <li>Set |request|.<a>[[\response]]</a> to null.
           </li>
-          <li>Set the value of |request|'s <a data-lt=
-          "PaymentRequest.shippingOption">shippingOption</a> attribute to
+          <li>Set the value of |request|'s {{PaymentRequest/shippingOption}} attribute to
           |selectedShippingOption|.
           </li>
-          <li>Set the value of the <a data-lt="PaymentRequest.shippingAddress">
-            shippingAddress</a> attribute on |request| to null.
+          <li>Set the value of the {{PaymentRequest/shippingAddress}} attribute on |request| to null.
           </li>
           <li>If |options|.{{PaymentOptions/requestShipping}} is set to true,
-          then set the value of the <a data-lt=
-          "PaymentRequest.shippingType">shippingType</a> attribute on |request|
+          then set the value of the {{PaymentRequest/shippingType}} attribute on |request|
           to |options|.{{PaymentOptions/shippingType}}. Otherwise, set it to
           null.
           </li>
@@ -1791,7 +1788,7 @@
             <p data-tests=
             "change-shipping-option-select-last-manual.https.html">
               If an item in the sequence has the {{PaymentShippingOption/selected}} member set to true,
-              then this is the shipping option that will be used by default and <a data-lt="PaymentRequest.shippingOption">shippingOption</a>
+              then this is the shipping option that will be used by default and {{PaymentRequest/shippingOption}}
               will be set to the {{PaymentShippingOption/id}}
               of this option without running the <a>shipping option changed
               algorithm</a>. If more than one item in the sequence has
@@ -3335,8 +3332,7 @@
         "payment-response/shippingAddress-attribute-manual.https.html">
           If the {{PaymentOptions/requestShipping}} member was set
           to true in the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
-          constructor, then <a data-lt=
-          "PaymentRequest.shippingAddress">shippingAddress</a> will be the full
+          constructor, then {{PaymentRequest/shippingAddress}} will be the full
           and final shipping address chosen by the user.
         </p>
       </section>
@@ -3348,8 +3344,7 @@
         "payment-response/shippingOption-attribute-manual.https.html">
           If the {{PaymentOptions/requestShipping}} member was set
           to true in the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
-          constructor, then <a data-lt=
-          "PaymentRequest.shippingOption">shippingOption</a> will be the
+          constructor, then {{PaymentRequest/shippingOption}} will be the
           {{PaymentShippingOption/id}} attribute of the
           selected shipping option.
         </p>
@@ -3394,8 +3389,7 @@
           <dfn>requestId</dfn> attribute
         </h2>
         <p data-tests="payment-response/requestId-attribute-manual.https.html">
-          The corresponding payment request <a data-lt=
-          "PaymentRequest.id">id</a> that spawned this payment response.
+          The corresponding payment request {{PaymentRequest/id}} that spawned this payment response.
         </p>
       </section>
       <section data-dfn-for="PaymentResponse" data-link-for="PaymentResponse">
@@ -4293,8 +4287,7 @@
               steps to <a>create a `PaymentAddress` from user-provided
               input</a> with |redactList|.
               </li>
-              <li>Set the <a data-lt=
-              "PaymentRequest.shippingAddress">shippingAddress</a> attribute on
+              <li>Set the {{PaymentRequest/shippingAddress}} attribute on
               |request| to |address|.
               </li>
               <li>Run the <a>PaymentRequest updated algorithm</a> with
@@ -4321,8 +4314,7 @@
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             run the following steps:
             <ol>
-              <li>Set the <a data-lt=
-              "PaymentRequest.shippingOption">shippingOption</a> attribute on
+              <li>Set the {{PaymentRequest/shippingOption}} attribute on
               |request| to the <code>id</code> string of the
               <a>PaymentShippingOption</a> provided by the user.
               </li>
@@ -4507,9 +4499,8 @@
           agent</a> user interface SHOULD ensure that this never occurs.
           </li>
           <li>If the {{PaymentOptions/requestShipping}} value of
-          <a data-lt="PaymentRequest.shippingAddress">shippingAddress</a>
-          attribute of |request| is null or if the <a data-lt=
-          "PaymentRequest.shippingOption">shippingOption</a> attribute of
+          {{PaymentRequest/shippingAddress}}
+          attribute of |request| is null or if the {{PaymentRequest/shippingOption}} attribute of
           |request| is null, then terminate this algorithm and take no further
           action. The <a>user agent</a> SHOULD ensure that this never occurs.
           </li>
@@ -4866,8 +4857,7 @@
                       |request|.[=PaymentRequest/[[details]]=].<a>shippingOptions</a>
                       to |shippingOptions|.
                       </li>
-                      <li>Set the value of |request|'s <a data-lt=
-                      "PaymentRequest.shippingOption">shippingOption</a>
+                      <li>Set the value of |request|'s {{PaymentRequest/shippingOption}}
                       attribute to |selectedShippingOption|.
                       </li>
                     </ol>
@@ -4892,8 +4882,7 @@
                       |request|.[=PaymentRequest/[[details]]=].<a>shippingOptions</a>
                       is empty, then the developer has signified that there are
                       no valid shipping options for the currently-chosen
-                      shipping address (given by |request|'s <a data-lt=
-                      "PaymentRequest.shippingAddress">shippingAddress</a>).
+                      shipping address (given by |request|'s {{PaymentRequest/shippingAddress}}).
                     </p>
                     <p>
                       In this case, the user agent SHOULD display an error
