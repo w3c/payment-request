@@ -3361,8 +3361,7 @@
         <p data-tests="payment-response/payerName-attribute-manual.https.html">
           If the {{PaymentOptions/requestPayerName}} member was set
           to true in the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
-          constructor, then <a data-lt=
-          "PaymentResponse.payerName">payerName</a> will be the name provided
+          constructor, then {{PaymentResponse/payerName}} will be the name provided
           by the user.
         </p>
       </section>
@@ -3374,8 +3373,7 @@
         "payment-response/payerEmail-attribute-manual.https.html">
           If the {{PaymentOptions/requestPayerEmail}} member was
           set to true in the <a>PaymentOptions</a> passed to the
-          {{PaymentRequest}} constructor, then <a data-lt=
-          "PaymentResponse.payerEmail">payerEmail</a> will be the email address
+          {{PaymentRequest}} constructor, then {{PaymentResponse/payerEmail}} will be the email address
           chosen by the user.
         </p>
       </section>
@@ -3387,8 +3385,7 @@
         "payment-response/payerPhone-attribute-manual.https.html">
           If the {{PaymentOptions/requestPayerPhone}} member was
           set to true in the <a>PaymentOptions</a> passed to the
-          {{PaymentRequest}} constructor, then <a data-lt=
-          "PaymentResponse.payerPhone">payerPhone</a> will be the phone number
+          {{PaymentRequest}} constructor, then {{PaymentResponse/payerPhone}} will be the phone number
           chosen by the user.
         </p>
       </section>
@@ -4530,7 +4527,7 @@
               </li>
               <li>Set |response|.<a>[[\complete]]</a> to false.
               </li>
-              <li>Set the <a data-lt="PaymentResponse.requestId">requestId</a>
+              <li>Set the {{PaymentResponse/requestId}}
               attribute value of |response| to the value of
               |request|.[=PaymentRequest/[[details]]=].{{PaymentDetailsInit/id}}.
               </li>
@@ -4541,17 +4538,17 @@
           <li>Let |handler:payment handler| be the <a>payment handler</a>
           selected by the user.
           </li>
-          <li>Set the <a data-lt="PaymentResponse.methodName">methodName</a>
+          <li>Set the {{PaymentResponse/methodName}}
           attribute value of |response| to the <a>payment method identifier</a>
           of |handler|.
           </li>
-          <li>Set the <a data-lt="PaymentResponse.details">details</a>
+          <li>Set the {{PaymentResponse/details}}
           attribute value of |response| to an object resulting from running the
           |handler|'s <a>steps to respond to a payment request</a>.
           </li>
           <li>If the {{PaymentOptions/requestShipping}} value of
           |request|.[=PaymentRequest/[[options]]=] is false, then set the
-          <a data-lt="PaymentResponse.shippingAddress">shippingAddress</a>
+          {{PaymentResponse/shippingAddress}}
           attribute value of |response| to null. Otherwise:
             <ol data-link-for="PaymentResponse">
               <li>Let |redactList:list| be the empty <a>list</a>.
@@ -4570,26 +4567,25 @@
           </li>
           <li>If the {{PaymentOptions/requestShipping}} value of
           |request|.[=PaymentRequest/[[options]]=] is true, then set the
-          <a data-lt="PaymentResponse.shippingOption">shippingOption</a>
-          attribute of |response| to the value of the <a data-lt=
-          "PaymentRequest.shippingOption">shippingOption</a> attribute of
+          {{PaymentResponse/shippingOption}}
+          attribute of |response| to the value of the {{PaymentResponse/shippingOption}} attribute of
           |request|. Otherwise, set it to null.
           </li>
           <li>If the {{PaymentOptions/requestPayerName}} value of
           |request|.[=PaymentRequest/[[options]]=] is true, then set the
-          <a data-lt="PaymentResponse.payerName">payerName</a> attribute of
+          {{PaymentResponse/payerName}} attribute of
           |response| to the payer's name provided by the user, or to null if
           none was provided. Otherwise, set it to null.
           </li>
           <li>If the {{PaymentOptions/requestPayerEmail}} value of
           |request|.[=PaymentRequest/[[options]]=] is true, then set the
-          <a data-lt="PaymentResponse.payerEmail">payerEmail</a> attribute of
+          {{PaymentResponse/payerEmail}} attribute of
           |response| to the payer's email address provided by the user, or to
           null if none was provided. Otherwise, set it to null.
           </li>
           <li>If the {{PaymentOptions/requestPayerPhone}} value of
           |request|.[=PaymentRequest/[[options]]=] is true, then set the
-          <a data-lt="PaymentResponse.payerPhone">payerPhone</a> attribute of
+          {{PaymentResponse/payerPhone}} attribute of
           |response| to the payer's phone number provided by the user, or to
           null if none was provided. When setting the <a data-lt=
           "PaymentResponse.payerPhone">payerPhone</a> value, the user agent
