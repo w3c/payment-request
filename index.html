@@ -1542,8 +1542,7 @@
               <dfn>[[\acceptPromise]]</dfn>
             </td>
             <td>
-              The pending {{Promise}} created during <a data-lt=
-              "PaymentRequest.show">show</a> that will be resolved if the user
+              The pending {{Promise}} created during {{PaymentRequest/show}} that will be resolved if the user
               accepts the payment request.
             </td>
           </tr>
@@ -4979,7 +4978,7 @@
             Consequently, the {{PaymentRequest}} moves to a "<a>closed</a>"
             state. The error is signaled to the developer through the rejection
             of the <a>[[\acceptPromise]]</a>, i.e., the promise returned by
-            <a data-lt="PaymentRequest.show">show()</a>.
+            {{PaymentRequest/show()}}.
           </p>
           <p data-link-for="PaymentResponse">
             Similarly, <a>abort the update</a> occurring during <a>retry()</a>
