@@ -1363,7 +1363,7 @@
           shipping used to fulfill the transaction. Its value is either a
           <a>PaymentShippingType</a> enum value, or null if none is provided by
           the developer during [=PaymentRequest.PaymentRequest()|construction=]
-          (see <a>PaymentOptions</a>'s {{PaymentOptions/shippingType}} member).
+          (see {{PaymentOptions}}'s {{PaymentOptions/shippingType}} member).
         </p>
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
@@ -1471,7 +1471,7 @@
               initially supplied to the constructor and then updated with calls
               to {{PaymentRequestUpdateEvent/updateWith()}}. Note that all
               {{PaymentDetailsModifier/data}} members of
-              <a>PaymentDetailsModifier</a> instances contained in the
+              {{PaymentDetailsModifier}} instances contained in the
               {{PaymentDetailsBase/modifiers}} member will be removed, as they
               are instead stored in serialized form in the
               [=PaymentRequest/[[serializedModifierData]]=] internal slot.
@@ -1803,7 +1803,7 @@
             </p>
             <p>
               The <a>shippingOptions</a> member is only used if the
-              {{PaymentRequest}} was constructed with <a>PaymentOptions</a> and
+              {{PaymentRequest}} was constructed with {{PaymentOptions}} and
               {{PaymentOptions/requestShipping}} set to true.
             </p>
             <aside class="note">
@@ -1867,7 +1867,7 @@
             payment request.
             <aside class="note">
               Algorithms in this specification that accept a
-              <a>PaymentDetailsInit</a> dictionary will throw if the
+              {{PaymentDetailsInit}} dictionary will throw if the
               <a>total</a>.{{PaymentItem/amount}}.{{PaymentCurrencyAmount/value}}
               is a negative number.
             </aside>
@@ -1906,7 +1906,7 @@
             to the chosen shipping address, or any other reason why no shipping
             options are available. When the payment request is updated using
             {{PaymentRequestUpdateEvent/updateWith()}}, the
-            <a>PaymentDetailsUpdate</a> can contain a message in the
+            {{PaymentDetailsUpdate}} can contain a message in the
             <a>error</a> member that will be displayed to the user if the
             <a>PaymentDetailsUpdate</a> indicates that there are no valid
             {{PaymentDetailsBase/shippingOptions}} (and the {{PaymentRequest}}
