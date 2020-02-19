@@ -730,7 +730,7 @@
                       </li>
                       <li>
                         <p>
-                          <a data-lt="converted to an IDL value">Convert</a>
+                          [=converted to an IDL value|Convert=]
                           |object| to an IDL value of the type specified by the
                           specification that defines the
                           |paymentMethod|.<a>supportedMethods</a> (e.g.,
@@ -1019,10 +1019,8 @@
               in the |paymentMethod| tuple.
               </li>
               <li data-cite="WebIDL infra">If required by the specification
-              that defines the |identifier|, then <a data-lt=
-              "converted to an IDL value">convert</a> |data| to an IDL value of
-              the type specified there. Otherwise, <a data-lt=
-              "converted to an IDL value">convert</a> to {{object}}.
+              that defines the |identifier|, then [=converted to an IDL value|convert=] |data| to an IDL value of
+              the type specified there. Otherwise, [=converted to an IDL value|convert=] to {{object}}.
               </li>
               <li>If conversion results in an <a>exception</a> |error|:
                 <ol>
@@ -1122,7 +1120,7 @@
           </li>
           <li>
             <p>
-              Pass the <a data-lt="converted to an IDL value">converted</a>
+              Pass the [=converted to an IDL value|converted=]
               second element in the |paymentMethod| tuple and |modifiers|.
               Optionally, the user agent SHOULD send the appropriate data from
               |request| to the user-selected <a>payment handler</a> in order to
@@ -3107,11 +3105,9 @@
               "PaymentValidationErrors/retry-shows-error-member-manual.https.html">
               If |errorFields|["<a>paymentMethod</a>] member was passed, and if
               required by the specification that defines |response|'s
-              <a>payment method</a>, then <a data-lt=
-              "converted to an IDL value">convert</a> |errorFields|'s
+              <a>payment method</a>, then [=converted to an IDL value|convert=] |errorFields|'s
               <a>paymentMethod</a> member to an IDL value of the type specified
-              there. Otherwise, <a data-lt=
-              "converted to an IDL value">convert</a> to {{object}}.
+              there. Otherwise, [=converted to an IDL value|convert=] to {{object}}.
               </li>
               <li>Set |request|'s <a>payment-relevant browsing context</a>'s
               <a>payment request is showing</a> boolean to false.
@@ -4211,10 +4207,8 @@
                   element in the |paymentMethod| tuple.
                   </li>
                   <li>If required by the specification that defines the
-                  |identifier|, then <a data-lt=
-                  "converted to an IDL value">convert</a> |data| to an IDL
-                  value. Otherwise, <a data-lt=
-                  "converted to an IDL value">convert</a> to {{object}}.
+                  |identifier|, then [=converted to an IDL value|convert=] |data| to an IDL
+                  value. Otherwise, [=converted to an IDL value|convert=] to {{object}}.
                   </li>
                   <li>Let |handlers| be a <a>list</a> of registered <a>payment
                   handlers</a> that are authorized and can handle payment
@@ -4675,8 +4669,7 @@
           <li>
             <a>Upon fulfillment</a> of |detailsPromise| with value |value|:
             <ol data-link-for="PaymentDetailsBase">
-              <li>Let |details| be the result of <a data-lt=
-              "converted to an IDL value">converting</a> |value| to a
+              <li>Let |details| be the result of [=converted to an IDL value|converting=] |value| to a
               <a>PaymentDetailsUpdate</a> dictionary. If this
               [=exception/throw=] an exception, <a>abort the update</a> with
               |request| and with the thrown exception.
@@ -4814,7 +4807,7 @@
               not null:
                 <ol>
                   <li>If required by the specification that defines the |pmi|,
-                  then <a data-lt="converted to an IDL value">convert</a>
+                  then [=converted to an IDL value|convert=]
                   <a>paymentMethodErrors</a> to an IDL value.
                   </li>
                   <li>If conversion results in a <a>exception</a> |error|, <a>
