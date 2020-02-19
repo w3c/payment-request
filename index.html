@@ -3706,8 +3706,7 @@
             <li>Initialize |event|.<a>methodName</a> attribute to
             |eventInitDict|["<a>methodName</a>"].
             </li>
-            <li>Initialize |event|.<a data-lt=
-            "mechvalidation.waitForUpdate">[[\waitForUpdate]]</a> to false.
+            <li>Initialize |event|.{{[[waitForUpdate]]}} to false.
             </li>
           </ol>
         </section>
@@ -3742,8 +3741,7 @@
             <li>If |event|'s {{ Event.isTrusted }} attribute is false, then
             [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
             </li>
-            <li>If |event|.<a data-lt=
-            "mechvalidation.waitForUpdate">[[\waitForUpdate]]</a> is true, then
+            <li>If |event|.{{[[waitForUpdate]]}} is true, then
             [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
             </li>
             <li>Let |request:PaymentRequest| be |event|'s [=Event/target=].
@@ -3758,8 +3756,7 @@
             <li>Set |event|'s [=Event/stop propagation flag=] and [=Event/stop
             immediate propagation flag=].
             </li>
-            <li>Set |event|.<a data-lt=
-            "mechvalidation.waitForUpdate">[[\waitForUpdate]]</a> to true.
+            <li>Set |event|.{{[[waitForUpdate]]}} to true.
             </li>
             <li>Run the <a>validate merchant's details algorithm</a> with
             |merchantSessionPromise| and |request|.
@@ -3915,7 +3912,7 @@
             the [=Event/constructor=] of {{PaymentRequestUpdateEvent}} with
             |type| and |eventInitDict|.
             </li>
-            <li>Set |event|.<a>[[\waitForUpdate]]</a> to false.
+            <li>Set |event|.{{[[waitForUpdate]]}} to false.
             </li>
             <li>Return |event|.
             </li>
