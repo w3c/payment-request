@@ -994,7 +994,7 @@
             </ol>
             <p class="note">
               This allows the <a>user agent</a> to act as if the user had
-              immediately [=user aborts the payment request|aborted payment request=], at its discretion. For example, in
+              immediately [=user aborts the payment request|aborted the payment request=], at its discretion. For example, in
               "private browsing" modes or similar, user agents might take
               advantage of this step.
             </p>
@@ -4477,6 +4477,7 @@
           agent</a> user interface SHOULD ensure that this never occurs.
           </li>
           <li>If the {{PaymentOptions/requestShipping}} value of
+          |request|.[=PaymentRequest/[[options]]=] is true, then if the
           {{PaymentRequest/shippingAddress}}
           attribute of |request| is null or if the {{PaymentRequest/shippingOption}} attribute of
           |request| is null, then terminate this algorithm and take no further
