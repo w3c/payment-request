@@ -683,7 +683,7 @@
         <ol data-link-for="PaymentDetailsBase" class="algorithm">
           <li>If the <a>current settings object</a>'s [=environment settings
           object / responsible document=] is not <a>allowed to use</a> the
-          "<a data-lt="payment-feature">payment</a>" feature, then
+          "[=payment-feature|payment=]" feature, then
           [=exception/throw=] a {{"SecurityError"}} {{DOMException}}.
           </li>
           <li>Establish the request's id:
@@ -1351,8 +1351,7 @@
           A {{PaymentRequest}}'s <a>shippingType</a> attribute is the type of
           shipping used to fulfill the transaction. Its value is either a
           <a>PaymentShippingType</a> enum value, or null if none is provided by
-          the developer during <a data-lt=
-          "PaymentRequest.PaymentRequest()">construction</a> (see
+          the developer during [=PaymentRequest.PaymentRequest()|construction=] (see
           <a>PaymentOptions</a>'s {{PaymentOptions/shippingType}} member).
         </p>
       </section>
@@ -1446,8 +1445,7 @@
             <td>
               A list containing the serialized string form of each {{PaymentDetailsModifier/data}} member for each
               corresponding item in the sequence
-              [=PaymentRequest/[[details]]=].<a data-lt=
-              "PaymentDetailsBase">modifier</a>, or null if no such member was
+              [=PaymentRequest/[[details]]=].[=PaymentDetailsBase|modifier=], or null if no such member was
               present.
             </td>
           </tr>
@@ -1845,7 +1843,7 @@
             <aside class="note">
               If an <a>id</a> member is not present, then the <a>user agent</a>
               will generate a unique identifier for the payment request during
-              <a data-lt="PaymentRequest.PaymentRequest()">construction</a>.
+              [=PaymentRequest.PaymentRequest()|construction=]
             </aside>
           </dd>
           <dt>
@@ -2292,8 +2290,7 @@
             {{PaymentAddress}}.
             </li>
             <li>Set |address|.<a>[[\addressLine]]</a> to the empty frozen
-            array, and all other <a data-lt="PaymentAddress slots">internal
-            slots</a> to the empty string.
+            array, and all other [=PaymentAddress slots|internal slots=] to the empty string.
             </li>
             <li>If |details| was not passed, return |address|.
             </li>
@@ -2595,8 +2592,7 @@
           };
         </pre>
         <p>
-          An <a>AddressInit</a> is passed when <a data-lt=
-          "PaymentAddress.PaymentAddress()">constructing</a> a
+          An <a>AddressInit</a> is passed when [=PaymentAddress.PaymentAddress()|constructing=] a
           {{PaymentAddress}}. Its members are as follows.
         </p>
         <dl data-dfn-for="AddressInit" data-link-for="" data-sort="ascending">
@@ -2909,8 +2905,7 @@
           to the empty string if none was provided.
           </li>
           <li>
-            <a data-lt="PaymentAddress.PaymentAddress()">Internally construct a
-            new `PaymentAddress`</a> with |details| and return the result.
+            [=PaymentAddress.PaymentAddress()|Internally construct a new `PaymentAddress`=] with |details| and return the result.
           </li>
         </ol>
       </section>
@@ -3690,7 +3685,7 @@
             {{MerchantValidationEvent}} |event|, are as follows:
           </p>
           <ol class="algorithm">
-            <li>Let |base:URL| be the <a data-lt="context object">event</a>’s
+            <li>Let |base:URL| be the [=context object|event=]’s
             <a>relevant settings object</a>’s [=environment settings object/api
             base URL=].
             </li>
