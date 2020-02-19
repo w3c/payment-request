@@ -644,8 +644,7 @@
         <p data-link-for="PaymentRequest">
           The <a>shippingAddress</a>, <a>shippingOption</a>, and
           <a>shippingType</a> attributes are populated during processing if the
-          {{PaymentOptions/requestShipping}}
-          member is set.
+          {{PaymentOptions/requestShipping}} member is set.
         </p>
       </div>
       <p>
@@ -683,16 +682,16 @@
         <ol data-link-for="PaymentDetailsBase" class="algorithm">
           <li>If the <a>current settings object</a>'s [=environment settings
           object / responsible document=] is not <a>allowed to use</a> the
-          "[=payment-feature|payment=]" feature, then
-          [=exception/throw=] a {{"SecurityError"}} {{DOMException}}.
+          "[=payment-feature|payment=]" feature, then [=exception/throw=] a
+          {{"SecurityError"}} {{DOMException}}.
           </li>
           <li>Establish the request's id:
             <ol>
               <li data-tests="payment-request-id-attribute.https.html">If
-              |details|.{{PaymentDetailsInit/id}} is missing,
-              add an {{PaymentDetailsInit/id}} member to
-              |details| and set its value to a <abbr title=
-              "Universally Unique Identifier">UUID</abbr> [[RFC4122]].
+              |details|.{{PaymentDetailsInit/id}} is missing, add an
+              {{PaymentDetailsInit/id}} member to |details| and set its value
+              to a <abbr title="Universally Unique Identifier">UUID</abbr>
+              [[RFC4122]].
               </li>
             </ol>
           </li>
@@ -709,16 +708,17 @@
                   <li data-tests=
                   "payment-request-ctor-pmi-handling.https.html">Run the steps
                   to <a>validate a payment method identifier</a> with
-                  |paymentMethod|.{{PaymentMethodData/supportedMethods}. If
-                  it returns false, then throw a {{RangeError}} exception.
+                  |paymentMethod|.{{PaymentMethodData/supportedMethods}. If it
+                  returns false, then throw a {{RangeError}} exception.
                   Optionally, inform the developer that the payment method
                   identifier is invalid.
                   </li>
-                  <li>If the {{PaymentMethodData/data}}
-                  member of |paymentMethod| is missing, let |serializedData| be
-                  null. Otherwise, let |serializedData| be the result of
-                  <a>JSON-serializing</a> |paymentMethod|.{{PaymentMethodData/data}} into a string. Rethrow any
-                  exceptions.
+                  <li>If the {{PaymentMethodData/data}} member of
+                  |paymentMethod| is missing, let |serializedData| be null.
+                  Otherwise, let |serializedData| be the result of
+                  <a>JSON-serializing</a>
+                  |paymentMethod|.{{PaymentMethodData/data}} into a string.
+                  Rethrow any exceptions.
                   </li>
                   <li>If |serializedData| is not null, and if required by the
                   specification that defines the
@@ -730,9 +730,9 @@
                       </li>
                       <li>
                         <p>
-                          [=converted to an IDL value|Convert=]
-                          |object| to an IDL value of the type specified by the
-                          specification that defines the
+                          [=converted to an IDL value|Convert=] |object| to an
+                          IDL value of the type specified by the specification
+                          that defines the
                           |paymentMethod|.<a>supportedMethods</a> (e.g.,
                           {{BasicCardRequest}} in the case of
                           [[[?payment-method-basic-card]]]). Rethrow any
@@ -745,7 +745,8 @@
                       </li>
                     </ol>
                   </li>
-                  <li>Add the tuple (|paymentMethod|.{{PaymentMethodData/supportedMethods}},
+                  <li>Add the tuple
+                  (|paymentMethod|.{{PaymentMethodData/supportedMethods}},
                   |serializedData|) to |serializedMethodData|.
                   </li>
                 </ol>
@@ -757,7 +758,8 @@
               <li data-tests=
               "payment-request-ctor-currency-code-checks.https.html">
                 <a>Check and canonicalize total amount</a>
-                |details|.<a>total</a>.{{PaymentItem/amount}}. Rethrow any exceptions.
+                |details|.<a>total</a>.{{PaymentItem/amount}}. Rethrow any
+                exceptions.
               </li>
             </ol>
           </li>
@@ -766,14 +768,15 @@
             <ol>
               <li data-tests=
               "payment-request-ctor-currency-code-checks.https.html">
-                <a>Check and canonicalize amount</a> |item|.{{PaymentItem/amount}}. Rethrow any exceptions.
+                <a>Check and canonicalize amount</a>
+                |item|.{{PaymentItem/amount}}. Rethrow any exceptions.
               </li>
             </ol>
           </li>
           <li>Let |selectedShippingOption| be null.
           </li>
-          <li>If the {{PaymentOptions/requestShipping}} member of
-          |options| is present and set to true, process shipping options:
+          <li>If the {{PaymentOptions/requestShipping}} member of |options| is
+          present and set to true, process shipping options:
             <ol>
               <li>Let |options:PaymentShippingOption| be an empty
               <code><a>sequence</a></code>&lt;<a>PaymentShippingOption</a>&gt;.
@@ -788,8 +791,8 @@
                     <ol>
                       <li data-tests=
                       "payment-request-ctor-currency-code-checks.https.html">
-                        <a>Check and canonicalize amount</a> |item|.{{PaymentItem/amount}}. Rethrow any
-                        exceptions.
+                        <a>Check and canonicalize amount</a>
+                        |item|.{{PaymentItem/amount}}. Rethrow any exceptions.
                       </li>
                       <li>If |seenIDs| contains |option|.<a>id</a>, then throw
                       a {{TypeError}}. Optionally, inform the developer that
@@ -823,8 +826,7 @@
                   </li>
                   <li>For each |modifier| of |modifiers|:
                     <ol>
-                      <li>If the {{PaymentDetailsModifier/total}}
-                      member of
+                      <li>If the {{PaymentDetailsModifier/total}} member of
                       |modifier| is present, then:
                         <ol>
                           <li data-tests=
@@ -835,34 +837,39 @@
                           </li>
                         </ol>
                       </li>
-                      <li>If the {{PaymentDetailsModifier/additionalDisplayItems}}
-                      member of |modifier| is present, then for each |item| of
+                      <li>If the
+                      {{PaymentDetailsModifier/additionalDisplayItems}} member
+                      of |modifier| is present, then for each |item| of
                       |modifier|.{{PaymentDetailsModifier/additionalDisplayItems}}:
                         <ol>
                           <li data-tests=
                           "payment-request-ctor-currency-code-checks.https.html">
                             <a>Check and canonicalize amount</a>
-                            |item|.{{PaymentItem/amount}}.
-                            Rethrow any exceptions.
+                            |item|.{{PaymentItem/amount}}. Rethrow any
+                            exceptions.
                           </li>
                         </ol>
                       </li>
                       <li>If the {{PaymentDetailsModifier/data}} member of
                       |modifier| is missing, let |serializedData| be null.
                       Otherwise, let |serializedData| be the result of
-                      <a>JSON-serializing</a> |modifier|.{{PaymentDetailsModifier/data}} into a string.
+                      <a>JSON-serializing</a>
+                      |modifier|.{{PaymentDetailsModifier/data}} into a string.
                       Rethrow any exceptions.
                       </li>
-                      <li>Add the tuple (|modifier|.{{PaymentDetailsModifier/supportedMethods}},
+                      <li>Add the tuple
+                      (|modifier|.{{PaymentDetailsModifier/supportedMethods}},
                       |serializedData|) to |serializedModifierData|.
                       </li>
-                      <li>Remove the {{PaymentDetailsModifier/data}} member of |modifier|, if it is present.
+                      <li>Remove the {{PaymentDetailsModifier/data}} member of
+                      |modifier|, if it is present.
                       </li>
                     </ol>
                   </li>
                 </ol>
               </li>
-              <li>Set |details|.{{PaymentDetailsBase/modifiers}} to |modifiers|.
+              <li>Set |details|.{{PaymentDetailsBase/modifiers}} to
+              |modifiers|.
               </li>
             </ol>
           </li>
@@ -884,15 +891,16 @@
           </li>
           <li>Set |request|.<a>[[\response]]</a> to null.
           </li>
-          <li>Set the value of |request|'s {{PaymentRequest/shippingOption}} attribute to
-          |selectedShippingOption|.
+          <li>Set the value of |request|'s {{PaymentRequest/shippingOption}}
+          attribute to |selectedShippingOption|.
           </li>
-          <li>Set the value of the {{PaymentRequest/shippingAddress}} attribute on |request| to null.
+          <li>Set the value of the {{PaymentRequest/shippingAddress}} attribute
+          on |request| to null.
           </li>
           <li>If |options|.{{PaymentOptions/requestShipping}} is set to true,
-          then set the value of the {{PaymentRequest/shippingType}} attribute on |request|
-          to |options|.{{PaymentOptions/shippingType}}. Otherwise, set it to
-          null.
+          then set the value of the {{PaymentRequest/shippingType}} attribute
+          on |request| to |options|.{{PaymentOptions/shippingType}}. Otherwise,
+          set it to null.
           </li>
           <li>Return |request|.
           </li>
@@ -904,7 +912,8 @@
         </h2>
         <p data-tests="payment-request-id-attribute.https.html">
           When getting, the <a>id</a> attribute returns this
-          {{PaymentRequest}}'s [=PaymentRequest/[[details]]=].{{PaymentDetailsInit/id}}.
+          {{PaymentRequest}}'s
+          [=PaymentRequest/[[details]]=].{{PaymentDetailsInit/id}}.
         </p>
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
@@ -994,9 +1003,9 @@
             </ol>
             <p class="note">
               This allows the <a>user agent</a> to act as if the user had
-              immediately [=user aborts the payment request|aborted the payment request=], at its discretion. For example, in
-              "private browsing" modes or similar, user agents might take
-              advantage of this step.
+              immediately [=user aborts the payment request|aborted the payment
+              request=], at its discretion. For example, in "private browsing"
+              modes or similar, user agents might take advantage of this step.
             </p>
           </li>
           <li>Set |request|'s <a>payment-relevant browsing context</a>'s
@@ -1018,8 +1027,10 @@
               in the |paymentMethod| tuple.
               </li>
               <li data-cite="WebIDL infra">If required by the specification
-              that defines the |identifier|, then [=converted to an IDL value|convert=] |data| to an IDL value of
-              the type specified there. Otherwise, [=converted to an IDL value|convert=] to {{object}}.
+              that defines the |identifier|, then [=converted to an IDL
+              value|convert=] |data| to an IDL value of the type specified
+              there. Otherwise, [=converted to an IDL value|convert=] to
+              {{object}}.
               </li>
               <li>If conversion results in an <a>exception</a> |error|:
                 <ol>
@@ -1067,17 +1078,17 @@
           <li>
             <p>
               Present a user interface that will allow the user to interact
-              with the |handlers|. The user agent SHOULD prioritize the
-              user's preference when presenting payment methods.
+              with the |handlers|. The user agent SHOULD prioritize the user's
+              preference when presenting payment methods.
             </p>
             <aside class="note" title="Localization of the payment sheet">
               <p>
                 The API does not provide a way for developers to specify the
-                language in which the payment sheet is presented to end
-                users. As such, user agents will generally present the payment
-                sheet using the user agent's default language. The working
-                group is contemplating adding the ability for developers to
-                specify the language of the payment sheet, and of specific
+                language in which the payment sheet is presented to end users.
+                As such, user agents will generally present the payment sheet
+                using the user agent's default language. The working group is
+                contemplating adding the ability for developers to specify the
+                language of the payment sheet, and of specific
                 {{PaymentItems}}, in a future version of this API.
               </p>
             </aside>
@@ -1119,13 +1130,13 @@
           </li>
           <li>
             <p>
-              Pass the [=converted to an IDL value|converted=]
-              second element in the |paymentMethod| tuple and |modifiers|.
-              Optionally, the user agent SHOULD send the appropriate data from
-              |request| to the user-selected <a>payment handler</a> in order to
-              guide the user through the payment process. This includes the
-              various attributes and other internal slots of |request| (some
-              MAY be excluded for privacy reasons where appropriate).
+              Pass the [=converted to an IDL value|converted=] second element
+              in the |paymentMethod| tuple and |modifiers|. Optionally, the
+              user agent SHOULD send the appropriate data from |request| to the
+              user-selected <a>payment handler</a> in order to guide the user
+              through the payment process. This includes the various attributes
+              and other internal slots of |request| (some MAY be excluded for
+              privacy reasons where appropriate).
             </p>
             <p>
               Handling of multiple applicable modifiers in the
@@ -1351,8 +1362,8 @@
           A {{PaymentRequest}}'s <a>shippingType</a> attribute is the type of
           shipping used to fulfill the transaction. Its value is either a
           <a>PaymentShippingType</a> enum value, or null if none is provided by
-          the developer during [=PaymentRequest.PaymentRequest()|construction=] (see
-          <a>PaymentOptions</a>'s {{PaymentOptions/shippingType}} member).
+          the developer during [=PaymentRequest.PaymentRequest()|construction=]
+          (see <a>PaymentOptions</a>'s {{PaymentOptions/shippingType}} member).
         </p>
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
@@ -1443,10 +1454,11 @@
               "PaymentRequest">[[\serializedModifierData]]</dfn>
             </td>
             <td>
-              A list containing the serialized string form of each {{PaymentDetailsModifier/data}} member for each
-              corresponding item in the sequence
-              [=PaymentRequest/[[details]]=].[=PaymentDetailsBase|modifier=], or null if no such member was
-              present.
+              A list containing the serialized string form of each
+              {{PaymentDetailsModifier/data}} member for each corresponding
+              item in the sequence
+              [=PaymentRequest/[[details]]=].[=PaymentDetailsBase|modifier=],
+              or null if no such member was present.
             </td>
           </tr>
           <tr>
@@ -1457,13 +1469,12 @@
             <td>
               The current <a>PaymentDetailsBase</a> for the payment request
               initially supplied to the constructor and then updated with calls
-              to {{PaymentRequestUpdateEvent/updateWith()}}. Note
-              that all {{PaymentDetailsModifier/data}}
-              members of <a>PaymentDetailsModifier</a> instances contained in
-              the {{PaymentDetailsBase/modifiers}}
-              member will be removed, as they are instead stored in serialized
-              form in the [=PaymentRequest/[[serializedModifierData]]=]
-              internal slot.
+              to {{PaymentRequestUpdateEvent/updateWith()}}. Note that all
+              {{PaymentDetailsModifier/data}} members of
+              <a>PaymentDetailsModifier</a> instances contained in the
+              {{PaymentDetailsBase/modifiers}} member will be removed, as they
+              are instead stored in serialized form in the
+              [=PaymentRequest/[[serializedModifierData]]=] internal slot.
             </td>
           </tr>
           <tr>
@@ -1531,8 +1542,8 @@
             </td>
             <td>
               True if there is a pending
-              {{PaymentRequestUpdateEvent/updateWith()}} call to
-              update the payment request and false otherwise.
+              {{PaymentRequestUpdateEvent/updateWith()}} call to update the
+              payment request and false otherwise.
             </td>
           </tr>
           <tr>
@@ -1540,8 +1551,8 @@
               <dfn>[[\acceptPromise]]</dfn>
             </td>
             <td>
-              The pending {{Promise}} created during {{PaymentRequest/show}} that will be resolved if the user
-              accepts the payment request.
+              The pending {{Promise}} created during {{PaymentRequest/show}}
+              that will be resolved if the user accepts the payment request.
             </td>
           </tr>
           <tr>
@@ -1766,8 +1777,8 @@
             for the payment request that the <a>user agent</a> MAY display.
             <aside class="note">
               It is the developer's responsibility, when generating or updating
-              a {{PaymentRequest}}, to verify that the {{PaymentDetailsInit/total}} amount is the sum of these
-              items.
+              a {{PaymentRequest}}, to verify that the
+              {{PaymentDetailsInit/total}} amount is the sum of these items.
             </aside>
           </dd>
           <dt>
@@ -1780,27 +1791,29 @@
             </p>
             <p data-tests=
             "change-shipping-option-select-last-manual.https.html">
-              If an item in the sequence has the {{PaymentShippingOption/selected}} member set to true,
-              then this is the shipping option that will be used by default and {{PaymentRequest/shippingOption}}
-              will be set to the {{PaymentShippingOption/id}}
-              of this option without running the <a>shipping option changed
-              algorithm</a>. If more than one item in the sequence has
-              {{PaymentShippingOption/selected}} set to
+              If an item in the sequence has the
+              {{PaymentShippingOption/selected}} member set to true, then this
+              is the shipping option that will be used by default and
+              {{PaymentRequest/shippingOption}} will be set to the
+              {{PaymentShippingOption/id}} of this option without running the
+              <a>shipping option changed algorithm</a>. If more than one item
+              in the sequence has {{PaymentShippingOption/selected}} set to
               true, then the <a>user agent</a> selects the last one in the
               sequence.
             </p>
             <p>
               The <a>shippingOptions</a> member is only used if the
               {{PaymentRequest}} was constructed with <a>PaymentOptions</a> and
-              {{PaymentOptions/requestShipping}}
-              set to true.
+              {{PaymentOptions/requestShipping}} set to true.
             </p>
             <aside class="note">
-              If the sequence has an item with the {{PaymentShippingOption/selected}} member set to true,
-              then authors are responsible for ensuring that the {{PaymentDetailsInit/total}} member includes the cost of
-              the shipping option. This is because no
-              <a>shippingoptionchange</a> event will be fired for this option
-              unless the user selects an alternative option first.
+              If the sequence has an item with the
+              {{PaymentShippingOption/selected}} member set to true, then
+              authors are responsible for ensuring that the
+              {{PaymentDetailsInit/total}} member includes the cost of the
+              shipping option. This is because no <a>shippingoptionchange</a>
+              event will be fired for this option unless the user selects an
+              alternative option first.
             </aside>
           </dd>
           <dt>
@@ -1855,7 +1868,8 @@
             <aside class="note">
               Algorithms in this specification that accept a
               <a>PaymentDetailsInit</a> dictionary will throw if the
-              <a>total</a>.{{PaymentItem/amount}}.{{PaymentCurrencyAmount/value}} is a negative number.
+              <a>total</a>.{{PaymentItem/amount}}.{{PaymentCurrencyAmount/value}}
+              is a negative number.
             </aside>
           </dd>
         </dl>
@@ -1891,22 +1905,25 @@
             A human-readable string that explains why goods cannot be shipped
             to the chosen shipping address, or any other reason why no shipping
             options are available. When the payment request is updated using
-            {{PaymentRequestUpdateEvent/updateWith()}},
-            the <a>PaymentDetailsUpdate</a> can contain a message in the
+            {{PaymentRequestUpdateEvent/updateWith()}}, the
+            <a>PaymentDetailsUpdate</a> can contain a message in the
             <a>error</a> member that will be displayed to the user if the
-            <a>PaymentDetailsUpdate</a> indicates that there are no valid {{PaymentDetailsBase/shippingOptions}}
-            (and the {{PaymentRequest}} was constructed with the {{PaymentOptions/requestShipping}} option set to
-            true).
+            <a>PaymentDetailsUpdate</a> indicates that there are no valid
+            {{PaymentDetailsBase/shippingOptions}} (and the {{PaymentRequest}}
+            was constructed with the {{PaymentOptions/requestShipping}} option
+            set to true).
           </dd>
           <dt>
             <dfn>total</dfn> member
           </dt>
           <dd>
-            A <a>PaymentItem</a> containing a non-negative {{PaymentItem/amount}}.
+            A <a>PaymentItem</a> containing a non-negative
+            {{PaymentItem/amount}}.
             <p class="note">
               Algorithms in this specification that accept a
               <a>PaymentDetailsUpdate</a> dictionary will throw if the
-              <a>total</a>.{{PaymentItem/amount}}.{{PaymentCurrencyAmount/value}} is a negative number.
+              <a>total</a>.{{PaymentItem/amount}}.{{PaymentCurrencyAmount/value}}
+              is a negative number.
             </p>
           </dd>
           <dt>
@@ -1965,16 +1982,18 @@
           <dfn>total</dfn> member
         </dt>
         <dd>
-          A <a>PaymentItem</a> value that overrides the {{PaymentDetailsInit/total}} member in the
-          <a>PaymentDetailsInit</a> dictionary for the <a>payment method
-          identifiers</a> of the <a>supportedMethods</a> member.
+          A <a>PaymentItem</a> value that overrides the
+          {{PaymentDetailsInit/total}} member in the <a>PaymentDetailsInit</a>
+          dictionary for the <a>payment method identifiers</a> of the
+          <a>supportedMethods</a> member.
         </dd>
         <dt>
           <dfn>additionalDisplayItems</dfn> member
         </dt>
         <dd>
           A sequence of <a>PaymentItem</a> dictionaries provides additional
-          display items that are appended to the {{PaymentDetailsBase/displayItems}} member in the
+          display items that are appended to the
+          {{PaymentDetailsBase/displayItems}} member in the
           <a>PaymentDetailsBase</a> dictionary for the <a>payment method
           identifiers</a> in the <a>supportedMethods</a> member. This member is
           commonly used to add a discount or surcharge line item indicating the
@@ -1982,7 +2001,8 @@
           <a>payment method</a> that the user agent MAY display.
           <p class="note">
             It is the developer's responsibility to verify that the
-            <a>total</a> amount is the sum of the {{PaymentDetailsBase/displayItems}} and the
+            <a>total</a> amount is the sum of the
+            {{PaymentDetailsBase/displayItems}} and the
             <a>additionalDisplayItems</a>.
           </p>
         </dd>
@@ -2290,7 +2310,8 @@
             {{PaymentAddress}}.
             </li>
             <li>Set |address|.<a>[[\addressLine]]</a> to the empty frozen
-            array, and all other [=PaymentAddress slots|internal slots=] to the empty string.
+            array, and all other [=PaymentAddress slots|internal slots=] to the
+            empty string.
             </li>
             <li>If |details| was not passed, return |address|.
             </li>
@@ -2592,7 +2613,8 @@
           };
         </pre>
         <p>
-          An <a>AddressInit</a> is passed when [=PaymentAddress.PaymentAddress()|constructing=] a
+          An <a>AddressInit</a> is passed when
+          [=PaymentAddress.PaymentAddress()|constructing=] a
           {{PaymentAddress}}. Its members are as follows.
         </p>
         <dl data-dfn-for="AddressInit" data-link-for="" data-sort="ascending">
@@ -2904,8 +2926,8 @@
           |details|["<a>sortingCode</a>"] to the user-provided sorting code, or
           to the empty string if none was provided.
           </li>
-          <li>
-            [=PaymentAddress.PaymentAddress()|Internally construct a new `PaymentAddress`=] with |details| and return the result.
+          <li>[=PaymentAddress.PaymentAddress()|Internally construct a new
+          `PaymentAddress`=] with |details| and return the result.
           </li>
         </ol>
       </section>
@@ -2925,8 +2947,9 @@
       <p>
         The <a>PaymentShippingOption</a> dictionary has members describing a
         shipping option. Developers can provide the user with one or more
-        shipping options by calling the {{PaymentRequestUpdateEvent/updateWith()}} method in
-        response to a change event.
+        shipping options by calling the
+        {{PaymentRequestUpdateEvent/updateWith()}} method in response to a
+        change event.
       </p>
       <dl>
         <dt>
@@ -3098,9 +3121,10 @@
               "PaymentValidationErrors/retry-shows-error-member-manual.https.html">
               If |errorFields|["<a>paymentMethod</a>] member was passed, and if
               required by the specification that defines |response|'s
-              <a>payment method</a>, then [=converted to an IDL value|convert=] |errorFields|'s
-              <a>paymentMethod</a> member to an IDL value of the type specified
-              there. Otherwise, [=converted to an IDL value|convert=] to {{object}}.
+              <a>payment method</a>, then [=converted to an IDL value|convert=]
+              |errorFields|'s <a>paymentMethod</a> member to an IDL value of
+              the type specified there. Otherwise, [=converted to an IDL
+              value|convert=] to {{object}}.
               </li>
               <li>Set |request|'s <a>payment-relevant browsing context</a>'s
               <a>payment request is showing</a> boolean to false.
@@ -3316,8 +3340,8 @@
         </h2>
         <p data-tests=
         "payment-response/shippingAddress-attribute-manual.https.html">
-          If the {{PaymentOptions/requestShipping}} member was set
-          to true in the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
+          If the {{PaymentOptions/requestShipping}} member was set to true in
+          the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
           constructor, then {{PaymentRequest/shippingAddress}} will be the full
           and final shipping address chosen by the user.
         </p>
@@ -3328,11 +3352,11 @@
         </h2>
         <p data-tests=
         "payment-response/shippingOption-attribute-manual.https.html">
-          If the {{PaymentOptions/requestShipping}} member was set
-          to true in the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
+          If the {{PaymentOptions/requestShipping}} member was set to true in
+          the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
           constructor, then {{PaymentRequest/shippingOption}} will be the
-          {{PaymentShippingOption/id}} attribute of the
-          selected shipping option.
+          {{PaymentShippingOption/id}} attribute of the selected shipping
+          option.
         </p>
       </section>
       <section>
@@ -3340,10 +3364,10 @@
           <dfn>payerName</dfn> attribute
         </h2>
         <p data-tests="payment-response/payerName-attribute-manual.https.html">
-          If the {{PaymentOptions/requestPayerName}} member was set
-          to true in the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
-          constructor, then {{PaymentResponse/payerName}} will be the name provided
-          by the user.
+          If the {{PaymentOptions/requestPayerName}} member was set to true in
+          the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
+          constructor, then {{PaymentResponse/payerName}} will be the name
+          provided by the user.
         </p>
       </section>
       <section>
@@ -3352,10 +3376,10 @@
         </h2>
         <p data-tests=
         "payment-response/payerEmail-attribute-manual.https.html">
-          If the {{PaymentOptions/requestPayerEmail}} member was
-          set to true in the <a>PaymentOptions</a> passed to the
-          {{PaymentRequest}} constructor, then {{PaymentResponse/payerEmail}} will be the email address
-          chosen by the user.
+          If the {{PaymentOptions/requestPayerEmail}} member was set to true in
+          the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
+          constructor, then {{PaymentResponse/payerEmail}} will be the email
+          address chosen by the user.
         </p>
       </section>
       <section>
@@ -3364,10 +3388,10 @@
         </h2>
         <p data-tests=
         "payment-response/payerPhone-attribute-manual.https.html">
-          If the {{PaymentOptions/requestPayerPhone}} member was
-          set to true in the <a>PaymentOptions</a> passed to the
-          {{PaymentRequest}} constructor, then {{PaymentResponse/payerPhone}} will be the phone number
-          chosen by the user.
+          If the {{PaymentOptions/requestPayerPhone}} member was set to true in
+          the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
+          constructor, then {{PaymentResponse/payerPhone}} will be the phone
+          number chosen by the user.
         </p>
       </section>
       <section>
@@ -3375,7 +3399,8 @@
           <dfn>requestId</dfn> attribute
         </h2>
         <p data-tests="payment-response/requestId-attribute-manual.https.html">
-          The corresponding payment request {{PaymentRequest/id}} that spawned this payment response.
+          The corresponding payment request {{PaymentRequest/id}} that spawned
+          this payment response.
         </p>
       </section>
       <section data-dfn-for="PaymentResponse" data-link-for="PaymentResponse">
@@ -3685,12 +3710,12 @@
             {{MerchantValidationEvent}} |event|, are as follows:
           </p>
           <ol class="algorithm">
-            <li>Let |base:URL| be the [=context object|event=]’s
-            <a>relevant settings object</a>’s [=environment settings object/api
-            base URL=].
+            <li>Let |base:URL| be the [=context object|event=]’s <a>relevant
+            settings object</a>’s [=environment settings object/api base URL=].
             </li>
             <li data-link-for="MerchantValidationEventInit">Let
-            |validationURL:URL| be the result of [=URL parser|URL parsing=] |eventInitDict|["<a>validationURL</a>"] and |base|.
+            |validationURL:URL| be the result of [=URL parser|URL parsing=]
+            |eventInitDict|["<a>validationURL</a>"] and |base|.
             </li>
             <li>If |validationURL| is failure, throw a {{TypeError}}.
             </li>
@@ -3905,7 +3930,9 @@
           </h3>
           <p data-tests=
           "PaymentRequestUpdateEvent/constructor.https.html, PaymentRequestUpdateEvent/constructor.http.html">
-            The {{PaymentRequestUpdateEvent}}'s {{PaymentRequestUpdateEvent/constructor(type, eventInitDict)}} MUST act as follows:
+            The {{PaymentRequestUpdateEvent}}'s
+            {{PaymentRequestUpdateEvent/constructor(type, eventInitDict)}} MUST
+            act as follows:
           </p>
           <ol class="algorithm">
             <li>Let |event:PaymentRequestUpdateEvent| be the result of calling
@@ -4194,8 +4221,9 @@
                   element in the |paymentMethod| tuple.
                   </li>
                   <li>If required by the specification that defines the
-                  |identifier|, then [=converted to an IDL value|convert=] |data| to an IDL
-                  value. Otherwise, [=converted to an IDL value|convert=] to {{object}}.
+                  |identifier|, then [=converted to an IDL value|convert=]
+                  |data| to an IDL value. Otherwise, [=converted to an IDL
+                  value|convert=] to {{object}}.
                   </li>
                   <li>Let |handlers| be a <a>list</a> of registered <a>payment
                   handlers</a> that are authorized and can handle payment
@@ -4418,7 +4446,8 @@
                   </li>
                 </ol>
               </li>
-              <li>If |payer email| changed and |options|.{{PaymentOptions/requestPayerEmail}} is true:
+              <li>If |payer email| changed and
+              |options|.{{PaymentOptions/requestPayerEmail}} is true:
                 <ol>
                   <li>Set |response|'s <a>payerEmail</a> attribute to |payer
                   email|.
@@ -4478,10 +4507,10 @@
           </li>
           <li>If the {{PaymentOptions/requestShipping}} value of
           |request|.[=PaymentRequest/[[options]]=] is true, then if the
-          {{PaymentRequest/shippingAddress}}
-          attribute of |request| is null or if the {{PaymentRequest/shippingOption}} attribute of
-          |request| is null, then terminate this algorithm and take no further
-          action. The <a>user agent</a> SHOULD ensure that this never occurs.
+          {{PaymentRequest/shippingAddress}} attribute of |request| is null or
+          if the {{PaymentRequest/shippingOption}} attribute of |request| is
+          null, then terminate this algorithm and take no further action. The
+          <a>user agent</a> SHOULD ensure that this never occurs.
           </li>
           <li>Let |isRetry:boolean| be true if |request|.<a>[[\response]]</a>
           is not null, false otherwise.
@@ -4497,8 +4526,8 @@
               </li>
               <li>Set |response|.<a>[[\complete]]</a> to false.
               </li>
-              <li>Set the {{PaymentResponse/requestId}}
-              attribute value of |response| to the value of
+              <li>Set the {{PaymentResponse/requestId}} attribute value of
+              |response| to the value of
               |request|.[=PaymentRequest/[[details]]=].{{PaymentDetailsInit/id}}.
               </li>
               <li>Set |request|.<a>[[\response]]</a> to |response|.
@@ -4508,18 +4537,17 @@
           <li>Let |handler:payment handler| be the <a>payment handler</a>
           selected by the user.
           </li>
-          <li>Set the {{PaymentResponse/methodName}}
-          attribute value of |response| to the <a>payment method identifier</a>
-          of |handler|.
+          <li>Set the {{PaymentResponse/methodName}} attribute value of
+          |response| to the <a>payment method identifier</a> of |handler|.
           </li>
-          <li>Set the {{PaymentResponse/details}}
-          attribute value of |response| to an object resulting from running the
-          |handler|'s <a>steps to respond to a payment request</a>.
+          <li>Set the {{PaymentResponse/details}} attribute value of |response|
+          to an object resulting from running the |handler|'s <a>steps to
+          respond to a payment request</a>.
           </li>
           <li>If the {{PaymentOptions/requestShipping}} value of
           |request|.[=PaymentRequest/[[options]]=] is false, then set the
-          {{PaymentResponse/shippingAddress}}
-          attribute value of |response| to null. Otherwise:
+          {{PaymentResponse/shippingAddress}} attribute value of |response| to
+          null. Otherwise:
             <ol data-link-for="PaymentResponse">
               <li>Let |redactList:list| be the empty <a>list</a>.
               </li>
@@ -4537,27 +4565,27 @@
           </li>
           <li>If the {{PaymentOptions/requestShipping}} value of
           |request|.[=PaymentRequest/[[options]]=] is true, then set the
-          {{PaymentResponse/shippingOption}}
-          attribute of |response| to the value of the {{PaymentResponse/shippingOption}} attribute of
+          {{PaymentResponse/shippingOption}} attribute of |response| to the
+          value of the {{PaymentResponse/shippingOption}} attribute of
           |request|. Otherwise, set it to null.
           </li>
           <li>If the {{PaymentOptions/requestPayerName}} value of
           |request|.[=PaymentRequest/[[options]]=] is true, then set the
-          {{PaymentResponse/payerName}} attribute of
-          |response| to the payer's name provided by the user, or to null if
-          none was provided. Otherwise, set it to null.
+          {{PaymentResponse/payerName}} attribute of |response| to the payer's
+          name provided by the user, or to null if none was provided.
+          Otherwise, set it to null.
           </li>
           <li>If the {{PaymentOptions/requestPayerEmail}} value of
           |request|.[=PaymentRequest/[[options]]=] is true, then set the
-          {{PaymentResponse/payerEmail}} attribute of
-          |response| to the payer's email address provided by the user, or to
-          null if none was provided. Otherwise, set it to null.
+          {{PaymentResponse/payerEmail}} attribute of |response| to the payer's
+          email address provided by the user, or to null if none was provided.
+          Otherwise, set it to null.
           </li>
           <li>If the {{PaymentOptions/requestPayerPhone}} value of
           |request|.[=PaymentRequest/[[options]]=] is true, then set the
-          {{PaymentResponse/payerPhone}} attribute of
-          |response| to the payer's phone number provided by the user, or to
-          null if none was provided. When setting the {{PaymentResponse/payerPhone}} value, the user agent
+          {{PaymentResponse/payerPhone}} attribute of |response| to the payer's
+          phone number provided by the user, or to null if none was provided.
+          When setting the {{PaymentResponse/payerPhone}} value, the user agent
           SHOULD format the phone number to adhere to [[E.164]].
           </li>
           <li>Set |request|.<a>[[\state]]</a> to "<a>closed</a>".
@@ -4656,10 +4684,10 @@
           <li>
             <a>Upon fulfillment</a> of |detailsPromise| with value |value|:
             <ol data-link-for="PaymentDetailsBase">
-              <li>Let |details| be the result of [=converted to an IDL value|converting=] |value| to a
-              <a>PaymentDetailsUpdate</a> dictionary. If this
-              [=exception/throw=] an exception, <a>abort the update</a> with
-              |request| and with the thrown exception.
+              <li>Let |details| be the result of [=converted to an IDL
+              value|converting=] |value| to a <a>PaymentDetailsUpdate</a>
+              dictionary. If this [=exception/throw=] an exception, <a>abort
+              the update</a> with |request| and with the thrown exception.
               </li>
               <li>Let |serializedModifierData| be an empty list.
               </li>
@@ -4675,9 +4703,9 @@
                     <ol>
                       <li>
                         <a>Check and canonicalize total amount</a>
-                        |details|.<a>total</a>.{{PaymentItem/amount}}. If an exception is
-                        thrown, then <a>abort the update</a> with |request| and
-                        that exception.
+                        |details|.<a>total</a>.{{PaymentItem/amount}}. If an
+                        exception is thrown, then <a>abort the update</a> with
+                        |request| and that exception.
                       </li>
                     </ol>
                   </li>
@@ -4686,7 +4714,8 @@
                   |details|.<a>displayItems</a>:
                     <ol>
                       <li>
-                        <a>Check and canonicalize amount</a> |item|.{{PaymentItem/amount}}. If an exception is
+                        <a>Check and canonicalize amount</a>
+                        |item|.{{PaymentItem/amount}}. If an exception is
                         thrown, then <a>abort the update</a> with |request| and
                         that exception.
                       </li>
@@ -4694,8 +4723,8 @@
                   </li>
                   <li>If the <a>shippingOptions</a> member of |details| is
                   present, and
-                  |request|.[=PaymentRequest/[[options]]=].{{PaymentOptions/requestShipping}} is true,
-                  then:
+                  |request|.[=PaymentRequest/[[options]]=].{{PaymentOptions/requestShipping}}
+                  is true, then:
                     <ol>
                       <li>Let |seenIDs| be an empty set.
                       </li>
@@ -4710,11 +4739,12 @@
                           </li>
                           <li data-tests=
                           "PaymentRequestUpdateEvent/updateWith-duplicate-shipping-options-manual.https.html">
-                          If |seenIDs|[|option|.{{PaymentShippingOption/id}] exists, then
-                          <a>abort the update</a> with |request| and a
-                          {{TypeError}}.
+                          If |seenIDs|[|option|.{{PaymentShippingOption/id}]
+                          exists, then <a>abort the update</a> with |request|
+                          and a {{TypeError}}.
                           </li>
-                          <li>Append |option|.{{PaymentShippingOption/id}} to |seenIDs|.
+                          <li>Append |option|.{{PaymentShippingOption/id}} to
+                          |seenIDs|.
                           </li>
                           <li>Append |option| to |shippingOptions|.
                           </li>
@@ -4740,7 +4770,8 @@
                           <li data-tests=
                           "updateWith-method-pmi-handling-manual.https.html">
                           Run the steps to <a>validate a payment method
-                          identifier</a> with |modifier|.{{PaymentDetailsModifier/supportedMethods}}.
+                          identifier</a> with
+                          |modifier|.{{PaymentDetailsModifier/supportedMethods}}.
                           If it returns false, then <a>abort the update</a>
                           with |request| and a {{RangeError}} exception.
                           Optionally, inform the developer that the payment
@@ -4751,8 +4782,8 @@
                             <ol>
                               <li>
                                 <a>Check and canonicalize total amount</a>
-                                |modifier|.<a>total</a>.{{PaymentItem/amount}}. If an
-                                exception is thrown, then <a>abort the
+                                |modifier|.<a>total</a>.{{PaymentItem/amount}}.
+                                If an exception is thrown, then <a>abort the
                                 update</a> with |request| and that exception.
                               </li>
                             </ol>
@@ -4764,24 +4795,25 @@
                             <ol>
                               <li>
                                 <a>Check and canonicalize amount</a>
-                                |item|.{{PaymentItem/amount}}. If an
-                                exception is thrown, then <a>abort the
-                                update</a> with |request| and that exception.
+                                |item|.{{PaymentItem/amount}}. If an exception
+                                is thrown, then <a>abort the update</a> with
+                                |request| and that exception.
                               </li>
                             </ol>
                           </li>
-                          <li>If the {{PaymentDetailsModifier/data}} member of |modifier| is missing, let
-                            |serializedData| be null. Otherwise, let
-                            |serializedData| be the result of
-                            <a>JSON-serializing</a> |modifier|.{{PaymentDetailsModifier/data}} into a
+                          <li>If the {{PaymentDetailsModifier/data}} member of
+                          |modifier| is missing, let |serializedData| be null.
+                          Otherwise, let |serializedData| be the result of <a>
+                            JSON-serializing</a>
+                            |modifier|.{{PaymentDetailsModifier/data}} into a
                             string. If <a>JSON-serializing</a> throws an
                             exception, then <a>abort the update</a> with
                             |request| and that exception.
                           </li>
                           <li>Add |serializedData| to |serializedModifierData|.
                           </li>
-                          <li>Remove the {{PaymentDetailsModifier/data}} member of
-                          |modifier|, if it is present.
+                          <li>Remove the {{PaymentDetailsModifier/data}} member
+                          of |modifier|, if it is present.
                           </li>
                         </ol>
                       </li>
@@ -4827,15 +4859,16 @@
                   </li>
                   <li>If the <a>shippingOptions</a> member of |details| is
                   present, and
-                  |request|.[=PaymentRequest/[[options]]=].{{PaymentOptions/requestShipping}} is true,
-                  then:
+                  |request|.[=PaymentRequest/[[options]]=].{{PaymentOptions/requestShipping}}
+                  is true, then:
                     <ol>
                       <li>Set
                       |request|.[=PaymentRequest/[[details]]=].<a>shippingOptions</a>
                       to |shippingOptions|.
                       </li>
-                      <li>Set the value of |request|'s {{PaymentRequest/shippingOption}}
-                      attribute to |selectedShippingOption|.
+                      <li>Set the value of |request|'s
+                      {{PaymentRequest/shippingOption}} attribute to
+                      |selectedShippingOption|.
                       </li>
                     </ol>
                   </li>
@@ -4854,24 +4887,27 @@
                   </li>
                   <li>
                     <p>
-                      If |request|.[=PaymentRequest/[[options]]=].{{PaymentOptions/requestShipping}} is
-                      true, and
+                      If
+                      |request|.[=PaymentRequest/[[options]]=].{{PaymentOptions/requestShipping}}
+                      is true, and
                       |request|.[=PaymentRequest/[[details]]=].<a>shippingOptions</a>
                       is empty, then the developer has signified that there are
                       no valid shipping options for the currently-chosen
-                      shipping address (given by |request|'s {{PaymentRequest/shippingAddress}}).
+                      shipping address (given by |request|'s
+                      {{PaymentRequest/shippingAddress}}).
                     </p>
                     <p>
                       In this case, the user agent SHOULD display an error
                       indicating this, and MAY indicate that the
                       currently-chosen shipping address is invalid in some way.
-                      The user agent SHOULD use the {{PaymentDetailsUpdate/error}} member of
-                      |details|, if it is present, to give more information
-                      about why there are no valid shipping options for that
-                      address.
+                      The user agent SHOULD use the
+                      {{PaymentDetailsUpdate/error}} member of |details|, if it
+                      is present, to give more information about why there are
+                      no valid shipping options for that address.
                     </p>
                     <p>
-                      Further, if |details|["{{PaymentDetailsUpdate/shippingAddressErrors}}"]
+                      Further, if
+                      |details|["{{PaymentDetailsUpdate/shippingAddressErrors}}"]
                       member is present, the user agent SHOULD display an error
                       specifically for each erroneous field of the shipping
                       address. This is done by matching each present member of
@@ -4882,10 +4918,9 @@
                       Similarly, if |details|["<a>payerErrors</a>"] member is
                       present and |request|.[=PaymentRequest/[[options]]=]'s
                       {{PaymentOptions/requestPayerName}},
-                      {{PaymentOptions/requestPayerEmail}},
-                      or {{PaymentOptions/requestPayerPhone}}
-                      is true, then display an error specifically for each
-                      erroneous field.
+                      {{PaymentOptions/requestPayerEmail}}, or
+                      {{PaymentOptions/requestPayerPhone}} is true, then
+                      display an error specifically for each erroneous field.
                     </p>
                     <p data-link-for="PaymentDetailsUpdate">
                       Likewise, if |details|["<a>paymentMethodErrors</a>"] is
@@ -5139,10 +5174,10 @@
           a developer (e.g., the shipping address) without user consent.
         </p>
         <p>
-          The <a>user agent</a> MUST NOT share the values of the {{PaymentDetailsBase/displayItems}} member or
-          {{PaymentDetailsModifier/additionalDisplayItems}}
-          member with a third-party <a>payment handler</a> without user
-          consent.
+          The <a>user agent</a> MUST NOT share the values of the
+          {{PaymentDetailsBase/displayItems}} member or
+          {{PaymentDetailsModifier/additionalDisplayItems}} member with a
+          third-party <a>payment handler</a> without user consent.
         </p>
         <p>
           The {{PaymentMethodChangeEvent}} enables the payee to update the
