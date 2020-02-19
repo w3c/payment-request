@@ -1462,8 +1462,7 @@
             <td>
               The current <a>PaymentDetailsBase</a> for the payment request
               initially supplied to the constructor and then updated with calls
-              to <a data-lt=
-              "PaymentRequestUpdateEvent.updateWith">updateWith()</a>. Note
+              to {{PaymentRequestUpdateEvent/updateWith()}}. Note
               that all {{PaymentDetailsModifier/data}}
               members of <a>PaymentDetailsModifier</a> instances contained in
               the {{PaymentDetailsBase/modifiers}}
@@ -1536,8 +1535,8 @@
               <dfn>[[\updating]]</dfn>
             </td>
             <td>
-              True if there is a pending <a data-lt=
-              "PaymentRequestUpdateEvent.updateWith">updateWith()</a> call to
+              True if there is a pending
+              {{PaymentRequestUpdateEvent/updateWith()}} call to
               update the payment request and false otherwise.
             </td>
           </tr>
@@ -1883,8 +1882,7 @@
         </pre>
         <p>
           The <a>PaymentDetailsUpdate</a> dictionary is used to update the
-          payment request using <a data-lt=
-          "PaymentRequestUpdateEvent.updateWith">updateWith()</a>.
+          payment request using {{PaymentRequestUpdateEvent/updateWith()}}.
         </p>
         <p>
           In addition to the members inherited from the
@@ -1899,7 +1897,7 @@
             A human-readable string that explains why goods cannot be shipped
             to the chosen shipping address, or any other reason why no shipping
             options are available. When the payment request is updated using
-            <a data-lt="PaymentRequestUpdateEvent.updateWith">updateWith()</a>,
+            {{PaymentRequestUpdateEvent/updateWith()}},
             the <a>PaymentDetailsUpdate</a> can contain a message in the
             <a>error</a> member that will be displayed to the user if the
             <a>PaymentDetailsUpdate</a> indicates that there are no valid {{PaymentDetailsBase/shippingOptions}}
@@ -2936,8 +2934,7 @@
       <p>
         The <a>PaymentShippingOption</a> dictionary has members describing a
         shipping option. Developers can provide the user with one or more
-        shipping options by calling the <a data-lt=
-        "PaymentRequestUpdateEvent.updateWith">updateWith()</a> method in
+        shipping options by calling the {{PaymentRequestUpdateEvent/updateWith()}} method in
         response to a change event.
       </p>
       <dl>
