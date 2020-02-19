@@ -4566,8 +4566,7 @@
           |request|.[=PaymentRequest/[[options]]=] is true, then set the
           {{PaymentResponse/payerPhone}} attribute of
           |response| to the payer's phone number provided by the user, or to
-          null if none was provided. When setting the <a data-lt=
-          "PaymentResponse.payerPhone">payerPhone</a> value, the user agent
+          null if none was provided. When setting the {{PaymentResponse/payerPhone}} value, the user agent
           SHOULD format the phone number to adhere to [[E.164]].
           </li>
           <li>Set |request|.<a>[[\state]]</a> to "<a>closed</a>".
@@ -4875,8 +4874,7 @@
                       In this case, the user agent SHOULD display an error
                       indicating this, and MAY indicate that the
                       currently-chosen shipping address is invalid in some way.
-                      The user agent SHOULD use the <a data-lt=
-                      "PaymentDetailsUpdate.error">error</a> member of
+                      The user agent SHOULD use the {{PaymentDetailsUpdate/error}} member of
                       |details|, if it is present, to give more information
                       about why there are no valid shipping options for that
                       address.
