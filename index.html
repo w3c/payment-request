@@ -753,12 +753,12 @@
               </li>
             </ol>
           </li>
-          <li data-link-for="PaymentDetailsInit">Process the total:
+          <li>Process the total:
             <ol>
               <li data-tests=
               "payment-request-ctor-currency-code-checks.https.html">
                 <a>Check and canonicalize total amount</a>
-                |details|.<a>total</a>.{{PaymentItem/amount}}. Rethrow any
+                |details|.{{PaymentDetailsInit/total}}.{{PaymentItem/amount}}. Rethrow any
                 exceptions.
               </li>
             </ol>
