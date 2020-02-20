@@ -758,8 +758,8 @@
               <li data-tests=
               "payment-request-ctor-currency-code-checks.https.html">
                 <a>Check and canonicalize total amount</a>
-                |details|.{{PaymentDetailsInit/total}}.{{PaymentItem/amount}}. Rethrow any
-                exceptions.
+                |details|.{{PaymentDetailsInit/total}}.{{PaymentItem/amount}}.
+                Rethrow any exceptions.
               </li>
             </ol>
           </li>
@@ -1906,8 +1906,8 @@
             to the chosen shipping address, or any other reason why no shipping
             options are available. When the payment request is updated using
             {{PaymentRequestUpdateEvent/updateWith()}}, the
-            {{PaymentDetailsUpdate}} can contain a message in the
-            <a>error</a> member that will be displayed to the user if the
+            {{PaymentDetailsUpdate}} can contain a message in the <a>error</a>
+            member that will be displayed to the user if the
             <a>PaymentDetailsUpdate</a> indicates that there are no valid
             {{PaymentDetailsBase/shippingOptions}} (and the {{PaymentRequest}}
             was constructed with the {{PaymentOptions/requestShipping}} option
