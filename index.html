@@ -1802,9 +1802,9 @@
               sequence.
             </p>
             <p>
-              The {{PaymentDetailsBase/shippingOptions}} member is only used if the
-              {{PaymentRequest}} was constructed with {{PaymentOptions}} and
-              {{PaymentOptions/requestShipping}} set to true.
+              The {{PaymentDetailsBase/shippingOptions}} member is only used if
+              the {{PaymentRequest}} was constructed with {{PaymentOptions}}
+              and {{PaymentOptions/requestShipping}} set to true.
             </p>
             <aside class="note">
               If the sequence has an item with the
@@ -1906,12 +1906,12 @@
             to the chosen shipping address, or any other reason why no shipping
             options are available. When the payment request is updated using
             {{PaymentRequestUpdateEvent/updateWith()}}, the
-            {{PaymentDetailsUpdate}} can contain a message in the {{PaymentDetailsUpdate/error}}
-            member that will be displayed to the user if the
-            <a>PaymentDetailsUpdate</a> indicates that there are no valid
-            {{PaymentDetailsBase/shippingOptions}} (and the {{PaymentRequest}}
-            was constructed with the {{PaymentOptions/requestShipping}} option
-            set to true).
+            {{PaymentDetailsUpdate}} can contain a message in the
+            {{PaymentDetailsUpdate/error}} member that will be displayed to the
+            user if the <a>PaymentDetailsUpdate</a> indicates that there are no
+            valid {{PaymentDetailsBase/shippingOptions}} (and the
+            {{PaymentRequest}} was constructed with the
+            {{PaymentOptions/requestShipping}} option set to true).
           </dd>
           <dt>
             <dfn>total</dfn> member
