@@ -1802,7 +1802,7 @@
               sequence.
             </p>
             <p>
-              The <a>shippingOptions</a> member is only used if the
+              The {{PaymentOptions/shippingOptions}} member is only used if the
               {{PaymentRequest}} was constructed with {{PaymentOptions}} and
               {{PaymentOptions/requestShipping}} set to true.
             </p>
@@ -1868,7 +1868,7 @@
             <aside class="note">
               Algorithms in this specification that accept a
               {{PaymentDetailsInit}} dictionary will throw if the
-              <a>total</a>.{{PaymentItem/amount}}.{{PaymentCurrencyAmount/value}}
+              {{PaymentDetailsInit/total}}.{{PaymentItem/amount}}.{{PaymentCurrencyAmount/value}}
               is a negative number.
             </aside>
           </dd>
