@@ -488,6 +488,8 @@
               await response.complete("fail");
             }
           }
+          // Must be called as a result of a click
+          // or some explicit use action.
           doPaymentRequest();
         </pre>
       </section>
