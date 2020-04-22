@@ -479,7 +479,7 @@
             try {
               const errors = await checkAllValuesAreGood(response);
               if (errors.length) {
-                await request.retry(errors);
+                await response.retry(errors);
                 return validateResponse(response);
               }
               await response.complete("success");
