@@ -2955,6 +2955,7 @@
         dictionary PaymentShippingOption {
           required DOMString id;
           required DOMString label;
+          DOMString description;
           required PaymentCurrencyAmount amount;
           boolean selected = false;
         };
@@ -2979,9 +2980,16 @@
           <dfn>label</dfn> member
         </dt>
         <dd>
-          A human-readable string description of the item. The <a>user
-          agent</a> SHOULD use this string to display the shipping option to
-          the user.
+          A human-readable label of the shipping option. The <a>user agent</a>
+          SHOULD use this string to display the shipping option to the user.
+        </dd>
+        <dt>
+          <dfn>description</dfn> member
+        </dt>
+        <dd>
+          A detailed description of the shipping option. If present, the
+          <a>user agent</a> MAY use this to present additional details relating
+          to the shipping option to the user.
         </dd>
         <dt>
           <dfn>amount</dfn> member
