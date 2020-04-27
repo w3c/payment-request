@@ -877,6 +877,8 @@
           </li>
           <li>Let |request:PaymentRequest| be a new {{PaymentRequest}}.
           </li>
+          <li>Set |request|.[=PaymentRequest/[[handler]]=] to `null`.
+          </li>
           <li>Set |request|.[=PaymentRequest/[[options]]=] to |options|.
           </li>
           <li>Set |request|.<a>[[\state]]</a> to "<a>created</a>".
@@ -1115,8 +1117,8 @@
               </li>
             </ol>
           </li>
-          <li>Let |handler| be the <a>payment handler</a> selected by the
-          end-user.
+          <li>Set |request|.[=PaymentRequest/[[handler]]=] be the <a>payment
+          handler</a> selected by the end-user.
           </li>
           <li>Let |modifiers:list| be an empty list.
           </li>
@@ -1124,9 +1126,9 @@
           [=PaymentRequest/[[serializedModifierData]]=]:
             <ol>
               <li>If the first element of |tuple| (a <a>PMI</a>) matches the
-              <a>payment method identifier</a> of |handler|, then append the
-              second element of |tuple| (the serialized method data) to
-              |modifiers|.
+              <a>payment method identifier</a> of
+              |request|.[=PaymentRequest/[[handler]]=], then append the second
+              element of |tuple| (the serialized method data) to |modifiers|.
               </li>
             </ol>
           </li>
@@ -1564,6 +1566,15 @@
             <td>
               Null, or the <a>PaymentResponse</a> instantiated by this
               {{PaymentRequest}}.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn data-dfn-for="PaymentRequest">[[\handler]]</dfn>
+            </td>
+            <td>
+              The <a>Payment Handler</a> associated with this
+              {{PaymentRequest}}. Initialized to `null`.
             </td>
           </tr>
         </table>
@@ -3114,8 +3125,8 @@
               </li>
               <li data-link-for="PaymentValidationErrors" data-tests=
               "PaymentValidationErrors/retry-shows-error-member-manual.https.html">
-              If |errorFields|["<a>paymentMethod</a>] member was passed, and if
-              required by the specification that defines |response|'s
+              If |errorFields|["<a>paymentMethod</a>"] member was passed, and
+              if required by the specification that defines |response|'s
               <a>payment method</a>, then [=converted to an IDL value|convert=]
               |errorFields|'s <a>paymentMethod</a> member to an IDL value of
               the type specified there. Otherwise, [=converted to an IDL
@@ -4529,8 +4540,8 @@
               </li>
             </ol>
           </li>
-          <li>Let |handler:payment handler| be the <a>payment handler</a>
-          selected by the user.
+          <li>Let |handler:payment handler| be
+          |request|.[=PaymentRequest/[[handler]]=].
           </li>
           <li>Set the {{PaymentResponse/methodName}} attribute value of
           |response| to the <a>payment method identifier</a> of |handler|.
