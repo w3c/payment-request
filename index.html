@@ -705,6 +705,8 @@
               [=exception/throw=] a {{TypeError}}, optionally informing the
               developer that at least one <a>payment method</a> is required.
               </li>
+              <li>Let |seenPMIs:Set| be the empty [=set=].
+              </li>
               <li>For each |paymentMethod| of |methodData|:
                 <ol>
                   <li data-tests=
@@ -714,6 +716,21 @@
                   returns false, then throw a {{RangeError}} exception.
                   Optionally, inform the developer that the payment method
                   identifier is invalid.
+                  </li>
+                  <li>Let |pmi| be the result of parsing
+                  |paymentMethod|.{{PaymentMethodData/supportedMethods}} with
+                  [=basic URL parser=]:
+                    <ol>
+                      <li>If failure, set |pmi| to
+                      |paymentMethod|.{{PaymentMethodData/supportedMethods}}.
+                      </li>
+                    </ol>
+                  </li>
+                  <li>If |seenPMIs| [=set/contain|contains=] |pmi| throw a
+                  {{RangeError}} {{DOMException}} optionally letting the
+                  developer this [=payment method identifier=] is a duplicate.
+                  </li>
+                  <li>[=set/Append=] |pmi| to |seenPMIs|.
                   </li>
                   <li>If the {{PaymentMethodData/data}} member of
                   |paymentMethod| is missing, let |serializedData| be null.
