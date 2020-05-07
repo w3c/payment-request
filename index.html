@@ -917,6 +917,14 @@
           {{PaymentRequest}}'s
           [=PaymentRequest/[[details]]=].{{PaymentDetailsInit/id}}.
         </p>
+        <div class="note">
+          <p>
+            For auditing and reconciliation purposes, a merchant can assign a
+            unique identifier for each transaction with the <a>id</a>
+            attribute. If the merchant does not provide a value, the user agent
+            generates one automatically.
+          </p>
+        </div>
       </section>
       <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
         <h2>
