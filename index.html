@@ -574,9 +574,10 @@
         <p>
           It's expected that data in a <a>PaymentResponse</a> will be POSTed
           back to a server for processing. To make this as easy as possible,
-          <a>PaymentResponse</a> provides a <a>toJSON()</a> method that
-          serializes the object directly into JSON. This makes it trivial to
-          POST the resulting JSON back to a server using the [[[fetch]]]:
+          <a>PaymentResponse</a> can use the [=default toJSON steps=] (i.e.,
+          `.toJSON()`) to serializes the object directly into JSON. This makes
+          it trivial to POST the resulting JSON back to a server using the
+          [[[fetch]]]:
         </p>
         <pre class="example js" title="POSTing with `fetch()`">
           async function doPaymentRequest() {
@@ -2406,14 +2407,6 @@
         </section>
         <section>
           <h2>
-            <dfn>toJSON()</dfn> method
-          </h2>
-          <p>
-            When called, runs [[WEBIDL]]'s <a>default toJSON operation</a>.
-          </p>
-        </section>
-        <section>
-          <h2>
             <dfn>country</dfn> attribute
           </h2>
           <p data-link-for="">
@@ -3301,14 +3294,6 @@
             await response.retry({ payer });
           </pre>
         </section>
-      </section>
-      <section>
-        <h2>
-          <dfn>toJSON()</dfn> method
-        </h2>
-        <p>
-          When called, runs [[WEBIDL]]'s <a>default toJSON operation</a>.
-        </p>
       </section>
       <section>
         <h2>
