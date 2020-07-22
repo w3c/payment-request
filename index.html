@@ -159,7 +159,7 @@
           allows multiple browser tabs to show a payment UI at the same time
           (for those payment handlers able to support it).
           </li>
-          <li>Integrated with [[[feature-policy]]].
+          <li>Integrated with [[[permissions-policy]]].
           </li>
           <li>Defined handling of multiple applicable modifiers.
           </li>
@@ -683,8 +683,8 @@
         <ol data-link-for="PaymentDetailsBase" class="algorithm">
           <li>If the <a>current settings object</a>'s [=environment settings
           object / responsible document=] is not <a>allowed to use</a> the
-          "[=payment-feature|payment=]" feature, then [=exception/throw=] a
-          {{"SecurityError"}} {{DOMException}}.
+          "[=payment-permission|payment=]" permission, then [=exception/throw=]
+          a {{"SecurityError"}} {{DOMException}}.
           </li>
           <li>Establish the request's id:
             <ol>
@@ -3563,26 +3563,26 @@
       <p>
         To indicate that a cross-origin <a>iframe</a> is allowed to invoke the
         payment request API, the {{ HTMLIFrameElement.allowPaymentRequest }}
-        attribute can be specified on the <a>iframe</a> element. See <a href=
-        "#feature-policy"></a> for details of how {{
-        HTMLIFrameElement.allowPaymentRequest }} and [[[feature-policy]]]
+        attribute can be specified on the <a>iframe</a> element. See
+        [[[#permissions-policy]]] for details of how {{
+        HTMLIFrameElement.allowPaymentRequest }} and [[[permissions-policy]]]
         interact.
       </p>
     </section>
-    <section id="feature-policy" data-cite="feature-policy">
+    <section id="permissions-policy" data-cite="permissions-policy">
       <h2>
-        Feature Policy integration
+        Permissions Policy integration
       </h2>
       <p>
-        This specification defines a policy-controlled feature identified by
-        the string "<code><dfn data-lt="payment-feature" data-nodefault=
+        This specification defines a policy-controlled permission identified by
+        the string "<code><dfn data-lt="payment-permission" data-nodefault=
         "">payment</dfn></code>". Its <a>default allowlist</a> is
         '<code>self</code>'.
       </p>
       <div class="note">
         <p>
-          A <a>document</a>’s [=Document/feature policy=] determines whether
-          any content in that document is allowed to construct
+          A <a>document</a>’s [=Document/permissions policy=] determines
+          whether any content in that document is allowed to construct
           {{PaymentRequest}} instances. If disabled in any document, no content
           in the document will be <a>allowed to use</a> the {{PaymentRequest}}
           constructor (trying to create an instance will throw).
@@ -3594,8 +3594,8 @@
           [^iframe/allow^] attribute, setting [^iframe/allowpaymentrequest^] on
           an iframe is equivalent to `&lt;iframe allow="fullscreen *"&gt;`, as
           described in <a data-cite=
-          "feature-policy#iframe-allowpaymentrequest-attribute">Feature Policy
-          §allowpaymentrequest</a>.
+          "permissions-policy#iframe-allowpaymentrequest-attribute">Permissions
+          Policy §allowpaymentrequest</a>.
         </p>
       </div>
     </section>
