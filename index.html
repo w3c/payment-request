@@ -893,21 +893,21 @@
           </li>
           <li>Let |request:PaymentRequest| be a new {{PaymentRequest}}.
           </li>
-          <li>Set |request|.[=PaymentRequest/[[handler]]=] to `null`.
+          <li>Set |request|.{{PaymentRequest/[[handler]]}} to `null`.
           </li>
-          <li>Set |request|.[=PaymentRequest/[[options]]=] to |options|.
+          <li>Set |request|.{{PaymentRequest/[[options]]}} to |options|.
           </li>
           <li>Set |request|.{{PaymentRequest/[[state]]}} to
           "[=state/created=]".
           </li>
           <li>Set |request|.{{PaymentRequest/[[updating]]}} to false.
           </li>
-          <li>Set |request|.[=PaymentRequest/[[details]]=] to |details|.
+          <li>Set |request|.{{PaymentRequest/[[details]]}} to |details|.
           </li>
-          <li>Set |request|.[=PaymentRequest/[[serializedModifierData]]=] to
+          <li>Set |request|.{{PaymentRequest/[[serializedModifierData]]}} to
           |serializedModifierData|.
           </li>
-          <li>Set |request|.[=PaymentRequest/[[serializedMethodData]]=] to
+          <li>Set |request|.{{PaymentRequest/[[serializedMethodData]]}} to
           |serializedMethodData|.
           </li>
           <li>Set |request|.{{PaymentRequest/[[response]]}} to null.
@@ -934,7 +934,7 @@
         <p data-tests="payment-request-id-attribute.https.html">
           When getting, the <a>id</a> attribute returns this
           {{PaymentRequest}}'s
-          [=PaymentRequest/[[details]]=].{{PaymentDetailsInit/id}}.
+          {{PaymentRequest/[[details]]}}.{{PaymentDetailsInit/id}}.
         </p>
         <div class="note">
           <p>
@@ -1049,7 +1049,7 @@
           <li>Let |handlers:list| be an empty <a>list</a>.
           </li>
           <li>For each |paymentMethod| tuple in
-          |request|.[=PaymentRequest/[[serializedMethodData]]=]:
+          |request|.{{PaymentRequest/[[serializedMethodData]]}}:
             <ol>
               <li>Let |identifier| be the first element in the |paymentMethod|
               tuple.
@@ -1147,17 +1147,17 @@
               </li>
             </ol>
           </li>
-          <li>Set |request|.[=PaymentRequest/[[handler]]=] be the <a>payment
+          <li>Set |request|.{{PaymentRequest/[[handler]]}} be the <a>payment
           handler</a> selected by the end-user.
           </li>
           <li>Let |modifiers:list| be an empty list.
           </li>
           <li>For each |tuple| in
-          [=PaymentRequest/[[serializedModifierData]]=]:
+          {{PaymentRequest/[[serializedModifierData]]}}:
             <ol>
               <li>If the first element of |tuple| (a <a>PMI</a>) matches the
               <a>payment method identifier</a> of
-              |request|.[=PaymentRequest/[[handler]]=], then append the second
+              |request|.{{PaymentRequest/[[handler]]}}, then append the second
               element of |tuple| (the serialized method data) to |modifiers|.
               </li>
             </ol>
@@ -1174,11 +1174,11 @@
             </p>
             <p>
               Handling of multiple applicable modifiers in the
-              [=PaymentRequest/[[serializedModifierData]]=] internal slot is
+              {{PaymentRequest/[[serializedModifierData]]}} internal slot is
               <a>payment handler</a> specific and beyond the scope of this
               specification. Nevertheless, it is RECOMMENDED that <a>payment
               handlers</a> use a "last one wins" approach with items in the
-              [=PaymentRequest/[[serializedModifierData]]=] list: that is to
+              {{PaymentRequest/[[serializedModifierData]]}} list: that is to
               say, an item at the end of the list always takes precedence over
               any item at the beginning of the list (see example below).
             </p>
@@ -1187,7 +1187,7 @@
               <p>
                 This example uses the "basic-card" payment method to from
                 [[[?payment-method-basic-card]]] demonstrate precedence order
-                of [=PaymentRequest/[[serializedModifierData]]=]. The first
+                of {{PaymentRequest/[[serializedModifierData]]}}. The first
                 modifier applies equally to all cards, irrespective of network.
                 The second modifier applies specifically to cards on the "visa"
                 network.
@@ -1493,7 +1493,7 @@
               A list containing the serialized string form of each
               {{PaymentDetailsModifier/data}} member for each corresponding
               item in the sequence
-              [=PaymentRequest/[[details]]=].{{PaymentDetailsBase/modifier}},
+              {{PaymentRequest/[[details]]}}.{{PaymentDetailsBase/modifier}},
               or null if no such member was present.
             </td>
           </tr>
@@ -1510,7 +1510,7 @@
               {{PaymentDetailsModifier}} instances contained in the
               {{PaymentDetailsBase/modifiers}} member will be removed, as they
               are instead stored in serialized form in the
-              [=PaymentRequest/[[serializedModifierData]]=] internal slot.
+              {{PaymentRequest/[[serializedModifierData]]}} internal slot.
             </td>
           </tr>
           <tr>
@@ -3120,28 +3120,28 @@
               the following are true:
                 <ol>
                   <li>
-                  |request|.[=PaymentRequest/[[options]]=]["<a data-link-for=
+                  |request|.{{PaymentRequest/[[options]]}}["<a data-link-for=
                   "PaymentOptions">requestPayerName</a>"] is false, and
                   |errorFields|["<a data-link-for=
                   "PaymentValidationErrors">payer</a>"]["<a data-link-for=
                   "PayerErrors">name</a>"] is present.
                   </li>
                   <li>
-                  |request|.[=PaymentRequest/[[options]]=]["<a data-link-for=
+                  |request|.{{PaymentRequest/[[options]]}}["<a data-link-for=
                   "PaymentOptions">requestPayerEmail</a>"] is false, and
                   |errorFields|["<a data-link-for=
                   "PaymentValidationErrors">payer</a>"]["<a data-link-for=
                   "PayerErrors">email</a>"] is present.
                   </li>
                   <li>
-                  |request|.[=PaymentRequest/[[options]]=]["<a data-link-for=
+                  |request|.{{PaymentRequest/[[options]]}}["<a data-link-for=
                   "PaymentOptions">requestPayerPhone</a>"] is false, and
                   |errorFields|["<a data-link-for=
                   "PaymentValidationErrors">payer</a>"]["<a data-link-for=
                   "PayerErrors">phone</a>"] is present.
                   </li>
                   <li>
-                  |request|.[=PaymentRequest/[[options]]=]["<a data-link-for=
+                  |request|.{{PaymentRequest/[[options]]}}["<a data-link-for=
                   "PaymentOptions">requestShipping</a>"] is false, and
                   |errorFields|["<a data-link-for=
                   "PaymentValidationErrors">shippingAddress</a>"] is present.
@@ -3736,9 +3736,10 @@
             <li>Let |base:URL| be the [=context object|event=]’s <a>relevant
             settings object</a>’s [=environment settings object/api base URL=].
             </li>
-            <li>Let
-            |validationURL:URL| be the result of [=URL parser|URL parsing=]
-            |eventInitDict|.{{MerchantValidationEventInit/validationURL}} and |base|.
+            <li>Let |validationURL:URL| be the result of [=URL parser|URL
+            parsing=]
+            |eventInitDict|.{{MerchantValidationEventInit/validationURL}} and
+            |base|.
             </li>
             <li>If |validationURL| is failure, throw a {{TypeError}}.
             </li>
@@ -3754,7 +3755,8 @@
             <li>Initialize |event|.<a>methodName</a> attribute to
             |eventInitDict|["<a>methodName</a>"].
             </li>
-            <li>Initialize |event|.{{MerchantValidationEvent/[[waitForUpdate]]}} to false.
+            <li>Initialize
+            |event|.{{MerchantValidationEvent/[[waitForUpdate]]}} to false.
             </li>
           </ol>
         </section>
@@ -3788,8 +3790,9 @@
             <li>If |event|'s {{ Event/isTrusted }} attribute is false, then
             [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
             </li>
-            <li>If |event|.{{MerchantValidationEvent/[[waitForUpdate]]}} is true, then
-            [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
+            <li>If |event|.{{MerchantValidationEvent/[[waitForUpdate]]}} is
+            true, then [=exception/throw=] an {{"InvalidStateError"}}
+            {{DOMException}}.
             </li>
             <li>Let |request:PaymentRequest| be |event|'s [=Event/target=].
             </li>
@@ -3803,7 +3806,8 @@
             <li>Set |event|'s [=Event/stop propagation flag=] and [=Event/stop
             immediate propagation flag=].
             </li>
-            <li>Set |event|.{{MerchantValidationEvent/[[waitForUpdate]]}} to true.
+            <li>Set |event|.{{MerchantValidationEvent/[[waitForUpdate]]}} to
+            true.
             </li>
             <li>Run the <a>validate merchant's details algorithm</a> with
             |merchantSessionPromise| and |request|.
@@ -3829,7 +3833,8 @@
             </tr>
             <tr>
               <td>
-                <dfn data-dfn-for="MerchantValidationEvent">[[\waitForUpdate]]</dfn>
+                <dfn data-dfn-for=
+                "MerchantValidationEvent">[[\waitForUpdate]]</dfn>
               </td>
               <td>
                 A boolean indicating whether a <a>complete()</a>-initiated
@@ -3960,7 +3965,8 @@
             the [=Event/constructor=] of {{PaymentRequestUpdateEvent}} with
             |type| and |eventInitDict|.
             </li>
-            <li>Set |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} to false.
+            <li>Set |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} to
+            false.
             </li>
             <li>Return |event|.
             </li>
@@ -4003,8 +4009,8 @@
               };
             </pre>
             <p>
-              Additionally, {{PaymentRequestUpdateEvent/[[waitForUpdate]]}} prevents reuse of
-              {{PaymentRequestUpdateEvent}}.
+              Additionally, {{PaymentRequestUpdateEvent/[[waitForUpdate]]}}
+              prevents reuse of {{PaymentRequestUpdateEvent}}.
             </p>
             <pre class="example js" title="can only call `updateWith()` once">
               // ❌ Bad - calling updateWith() twice doesn't work!
@@ -4036,8 +4042,9 @@
             <li>If |event|'s {{ Event/isTrusted }} attribute is false, then
             [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
             </li>
-            <li>If |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} is true, then
-            [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
+            <li>If |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} is
+            true, then [=exception/throw=] an {{"InvalidStateError"}}
+            {{DOMException}}.
             </li>
             <li>If |event|'s [=Event/target=] is an instance of
             <a>PaymentResponse</a>, let |request:PaymentRequest| be |event|'s
@@ -4058,7 +4065,8 @@
             <li>Set |event|'s [=Event/stop propagation flag=] and [=Event/stop
             immediate propagation flag=].
             </li>
-            <li>Set |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} to true.
+            <li>Set |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} to
+            true.
             </li>
             <li>Let |pmi:URL?| be null.
             </li>
@@ -4091,7 +4099,8 @@
             </tr>
             <tr>
               <td>
-                <dfn data-dfn-for="PaymentRequestUpdateEvent">[[\waitForUpdate]]</dfn>
+                <dfn data-dfn-for=
+                "PaymentRequestUpdateEvent">[[\waitForUpdate]]</dfn>
               </td>
               <td>
                 A boolean indicating whether an <a>updateWith()</a>-initiated
@@ -4225,7 +4234,7 @@
           parallel</a>.
           </li>
           <li>For each |paymentMethod| tuple in |request|.
-          [=PaymentRequest/[[serializedMethodData]]=]:
+          {{PaymentRequest/[[serializedMethodData]]}}:
             <ol>
               <li>Let |identifier| be the first element in the |paymentMethod|
               tuple.
@@ -4425,11 +4434,12 @@
           <li>
             <a>Dispatch</a> |event| at |request|.
           </li>
-          <li>If
-          |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} is true, disable any part of the
-          user interface that could cause another update event to be fired.
+          <li>If |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} is
+          true, disable any part of the user interface that could cause another
+          update event to be fired.
           </li>
-          <li>Otherwise, set |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} to true.
+          <li>Otherwise, set
+          |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} to true.
           </li>
         </ol>
       </section>
@@ -4461,7 +4471,7 @@
               "[=state/interactive=]".
               </li>
               <li>Let |options:PaymentOptions| be
-              |request|.[=PaymentRequest/[[options]]=].
+              |request|.{{PaymentRequest/[[options]]}}.
               </li>
               <li>If |payer name| changed and |options|.<a data-link-for=
               "PaymentOptions">requestPayerName</a> is true:
@@ -4496,12 +4506,12 @@
               <li>
                 <a>Dispatch</a> |event| at |response|.
               </li>
-              <li>If
-              |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} is true, disable any part of
-              the user interface that could cause another change to the payer
-              details to be fired.
+              <li>If |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} is
+              true, disable any part of the user interface that could cause
+              another change to the payer details to be fired.
               </li>
-              <li>Otherwise, set |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} to true.
+              <li>Otherwise, set
+              |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} to true.
               </li>
             </ol>
           </li>
@@ -4532,7 +4542,7 @@
           that this never occurs.
           </li>
           <li>If the {{PaymentOptions/requestShipping}} value of
-          |request|.[=PaymentRequest/[[options]]=] is true, then if the
+          |request|.{{PaymentRequest/[[options]]}} is true, then if the
           {{PaymentRequest/shippingAddress}} attribute of |request| is null or
           if the {{PaymentRequest/shippingOption}} attribute of |request| is
           null, then terminate this algorithm and take no further action. The
@@ -4556,14 +4566,14 @@
               </li>
               <li>Set the {{PaymentResponse/requestId}} attribute value of
               |response| to the value of
-              |request|.[=PaymentRequest/[[details]]=].{{PaymentDetailsInit/id}}.
+              |request|.{{PaymentRequest/[[details]]}}.{{PaymentDetailsInit/id}}.
               </li>
               <li>Set |request|.{{PaymentRequest/[[response]]}} to |response|.
               </li>
             </ol>
           </li>
           <li>Let |handler:payment handler| be
-          |request|.[=PaymentRequest/[[handler]]=].
+          |request|.{{PaymentRequest/[[handler]]}}.
           </li>
           <li>Set the {{PaymentResponse/methodName}} attribute value of
           |response| to the <a>payment method identifier</a> of |handler|.
@@ -4573,7 +4583,7 @@
           respond to a payment request</a>.
           </li>
           <li>If the {{PaymentOptions/requestShipping}} value of
-          |request|.[=PaymentRequest/[[options]]=] is false, then set the
+          |request|.{{PaymentRequest/[[options]]}} is false, then set the
           {{PaymentResponse/shippingAddress}} attribute value of |response| to
           null. Otherwise:
             <ol data-link-for="PaymentResponse">
@@ -4592,25 +4602,25 @@
             </ol>
           </li>
           <li>If the {{PaymentOptions/requestShipping}} value of
-          |request|.[=PaymentRequest/[[options]]=] is true, then set the
+          |request|.{{PaymentRequest/[[options]]}} is true, then set the
           {{PaymentResponse/shippingOption}} attribute of |response| to the
           value of the {{PaymentResponse/shippingOption}} attribute of
           |request|. Otherwise, set it to null.
           </li>
           <li>If the {{PaymentOptions/requestPayerName}} value of
-          |request|.[=PaymentRequest/[[options]]=] is true, then set the
+          |request|.{{PaymentRequest/[[options]]}} is true, then set the
           {{PaymentResponse/payerName}} attribute of |response| to the payer's
           name provided by the user, or to null if none was provided.
           Otherwise, set it to null.
           </li>
           <li>If the {{PaymentOptions/requestPayerEmail}} value of
-          |request|.[=PaymentRequest/[[options]]=] is true, then set the
+          |request|.{{PaymentRequest/[[options]]}} is true, then set the
           {{PaymentResponse/payerEmail}} attribute of |response| to the payer's
           email address provided by the user, or to null if none was provided.
           Otherwise, set it to null.
           </li>
           <li>If the {{PaymentOptions/requestPayerPhone}} value of
-          |request|.[=PaymentRequest/[[options]]=] is true, then set the
+          |request|.{{PaymentRequest/[[options]]}} is true, then set the
           {{PaymentResponse/payerPhone}} attribute of |response| to the payer's
           phone number provided by the user, or to null if none was provided.
           When setting the {{PaymentResponse/payerPhone}} value, the user agent
@@ -4753,7 +4763,7 @@
                   </li>
                   <li>If the <a>shippingOptions</a> member of |details| is
                   present, and
-                  |request|.[=PaymentRequest/[[options]]=].{{PaymentOptions/requestShipping}}
+                  |request|.{{PaymentRequest/[[options]]}}.{{PaymentOptions/requestShipping}}
                   is true, then:
                     <ol>
                       <li>Let |seenIDs| be an empty set.
@@ -4873,7 +4883,7 @@
                   member of |details| is present, then:
                     <ol>
                       <li>Set
-                      |request|.[=PaymentRequest/[[details]]=].<a data-link-for="PaymentDetailsInit">total</a>
+                      |request|.{{PaymentRequest/[[details]]}}.<a data-link-for="PaymentDetailsInit">total</a>
                         to |details|.<a>total</a>.
                       </li>
                     </ol>
@@ -4882,18 +4892,18 @@
                   present, then:
                     <ol>
                       <li>Set
-                      |request|.[=PaymentRequest/[[details]]=].<a>displayItems</a>
+                      |request|.{{PaymentRequest/[[details]]}}.<a>displayItems</a>
                       to |details|.<a>displayItems</a>.
                       </li>
                     </ol>
                   </li>
                   <li>If the <a>shippingOptions</a> member of |details| is
                   present, and
-                  |request|.[=PaymentRequest/[[options]]=].{{PaymentOptions/requestShipping}}
+                  |request|.{{PaymentRequest/[[options]]}}.{{PaymentOptions/requestShipping}}
                   is true, then:
                     <ol>
                       <li>Set
-                      |request|.[=PaymentRequest/[[details]]=].<a>shippingOptions</a>
+                      |request|.{{PaymentRequest/[[details]]}}.<a>shippingOptions</a>
                       to |shippingOptions|.
                       </li>
                       <li>Set the value of |request|'s
@@ -4906,11 +4916,11 @@
                   then:
                     <ol>
                       <li>Set
-                      |request|.[=PaymentRequest/[[details]]=].<a>modifiers</a>
+                      |request|.{{PaymentRequest/[[details]]}}.<a>modifiers</a>
                       to |details|.<a>modifiers</a>.
                       </li>
                       <li>Set
-                      |request|.[=PaymentRequest/[[serializedModifierData]]=]
+                      |request|.{{PaymentRequest/[[serializedModifierData]]}}
                       to |serializedModifierData|.
                       </li>
                     </ol>
@@ -4918,9 +4928,9 @@
                   <li>
                     <p>
                       If
-                      |request|.[=PaymentRequest/[[options]]=].{{PaymentOptions/requestShipping}}
+                      |request|.{{PaymentRequest/[[options]]}}.{{PaymentOptions/requestShipping}}
                       is true, and
-                      |request|.[=PaymentRequest/[[details]]=].<a>shippingOptions</a>
+                      |request|.{{PaymentRequest/[[details]]}}.<a>shippingOptions</a>
                       is empty, then the developer has signified that there are
                       no valid shipping options for the currently-chosen
                       shipping address (given by |request|'s
@@ -4946,7 +4956,7 @@
                     </p>
                     <p data-link-for="PaymentDetailsUpdate">
                       Similarly, if |details|["<a>payerErrors</a>"] member is
-                      present and |request|.[=PaymentRequest/[[options]]=]'s
+                      present and |request|.{{PaymentRequest/[[options]]}}'s
                       {{PaymentOptions/requestPayerName}},
                       {{PaymentOptions/requestPayerEmail}}, or
                       {{PaymentOptions/requestPayerPhone}} is true, then
