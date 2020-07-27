@@ -3736,9 +3736,9 @@
             <li>Let |base:URL| be the [=context object|event=]’s <a>relevant
             settings object</a>’s [=environment settings object/api base URL=].
             </li>
-            <li data-link-for="MerchantValidationEventInit">Let
+            <li>Let
             |validationURL:URL| be the result of [=URL parser|URL parsing=]
-            |eventInitDict|["<a>validationURL</a>"] and |base|.
+            |eventInitDict|.{{MerchantValidationEventInit/validationURL}} and |base|.
             </li>
             <li>If |validationURL| is failure, throw a {{TypeError}}.
             </li>
@@ -3754,7 +3754,7 @@
             <li>Initialize |event|.<a>methodName</a> attribute to
             |eventInitDict|["<a>methodName</a>"].
             </li>
-            <li>Initialize |event|.{{[[waitForUpdate]]}} to false.
+            <li>Initialize |event|.{{MerchantValidationEvent/[[waitForUpdate]]}} to false.
             </li>
           </ol>
         </section>
@@ -3783,13 +3783,12 @@
             follows:
           </p>
           <ol class="algorithm">
-            <li>Let |event:MerchantValidationEvent| be the <a>context
-            object</a>.
+            <li>Let |event:MerchantValidationEvent| be [=this=]
             </li>
-            <li>If |event|'s {{ Event.isTrusted }} attribute is false, then
+            <li>If |event|'s {{ Event/isTrusted }} attribute is false, then
             [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
             </li>
-            <li>If |event|.{{[[waitForUpdate]]}} is true, then
+            <li>If |event|.{{MerchantValidationEvent/[[waitForUpdate]]}} is true, then
             [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
             </li>
             <li>Let |request:PaymentRequest| be |event|'s [=Event/target=].
@@ -3804,7 +3803,7 @@
             <li>Set |event|'s [=Event/stop propagation flag=] and [=Event/stop
             immediate propagation flag=].
             </li>
-            <li>Set |event|.{{[[waitForUpdate]]}} to true.
+            <li>Set |event|.{{MerchantValidationEvent/[[waitForUpdate]]}} to true.
             </li>
             <li>Run the <a>validate merchant's details algorithm</a> with
             |merchantSessionPromise| and |request|.
@@ -3830,8 +3829,7 @@
             </tr>
             <tr>
               <td>
-                <dfn data-lt-nodefault="" data-lt=
-                "mechvalidation.waitForUpdate">[[\waitForUpdate]]</dfn>
+                <dfn data-dfn-for="MerchantValidationEvent">[[\waitForUpdate]]</dfn>
               </td>
               <td>
                 A boolean indicating whether a <a>complete()</a>-initiated
@@ -3962,7 +3960,7 @@
             the [=Event/constructor=] of {{PaymentRequestUpdateEvent}} with
             |type| and |eventInitDict|.
             </li>
-            <li>Set |event|.{{[[waitForUpdate]]}} to false.
+            <li>Set |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} to false.
             </li>
             <li>Return |event|.
             </li>
@@ -4005,7 +4003,7 @@
               };
             </pre>
             <p>
-              Additionally, <a>[[\waitForUpdate]]</a> prevents reuse of
+              Additionally, {{PaymentRequestUpdateEvent/[[waitForUpdate]]}} prevents reuse of
               {{PaymentRequestUpdateEvent}}.
             </p>
             <pre class="example js" title="can only call `updateWith()` once">
@@ -4033,13 +4031,12 @@
             act as follows:
           </p>
           <ol class="algorithm">
-            <li>Let |event:PaymentRequestUpdateEvent| be this
-            {{PaymentRequestUpdateEvent}} instance.
+            <li>Let |event:PaymentRequestUpdateEvent| be [=this=].
             </li>
-            <li>If |event|'s {{ Event.isTrusted }} attribute is false, then
+            <li>If |event|'s {{ Event/isTrusted }} attribute is false, then
             [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
             </li>
-            <li>If |event|.<a>[[\waitForUpdate]]</a> is true, then
+            <li>If |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} is true, then
             [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
             </li>
             <li>If |event|'s [=Event/target=] is an instance of
@@ -4061,7 +4058,7 @@
             <li>Set |event|'s [=Event/stop propagation flag=] and [=Event/stop
             immediate propagation flag=].
             </li>
-            <li>Set |event|.<a>[[\waitForUpdate]]</a> to true.
+            <li>Set |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} to true.
             </li>
             <li>Let |pmi:URL?| be null.
             </li>
@@ -4094,7 +4091,7 @@
             </tr>
             <tr>
               <td>
-                <dfn>[[\waitForUpdate]]</dfn>
+                <dfn data-dfn-for="PaymentRequestUpdateEvent">[[\waitForUpdate]]</dfn>
               </td>
               <td>
                 A boolean indicating whether an <a>updateWith()</a>-initiated
@@ -4177,7 +4174,7 @@
               the [=Event/constructor=] of {{MerchantValidationEvent}} with
               "<a>merchantvalidation</a>" and |eventInitDict|.
               </li>
-              <li>Initialize |event|’s {{ Event.isTrusted }} attribute to true.
+              <li>Initialize |event|’s {{ Event/isTrusted }} attribute to true.
               </li>
               <li>
                 <a>Dispatch</a> |event| to |request|.
@@ -4428,11 +4425,11 @@
           <li>
             <a>Dispatch</a> |event| at |request|.
           </li>
-          <li data-link-for="PaymentRequestUpdateEvent">If
-          |event|.<a>[[\waitForUpdate]]</a> is true, disable any part of the
+          <li>If
+          |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} is true, disable any part of the
           user interface that could cause another update event to be fired.
           </li>
-          <li>Otherwise, set |event|.<a>[[\waitForUpdate]]</a> to true.
+          <li>Otherwise, set |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} to true.
           </li>
         </ol>
       </section>
@@ -4499,12 +4496,12 @@
               <li>
                 <a>Dispatch</a> |event| at |response|.
               </li>
-              <li data-link-for="PaymentRequestUpdateEvent">If
-              |event|.<a>[[\waitForUpdate]]</a> is true, disable any part of
+              <li>If
+              |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} is true, disable any part of
               the user interface that could cause another change to the payer
               details to be fired.
               </li>
-              <li>Otherwise, set |event|.<a>[[\waitForUpdate]]</a> to true.
+              <li>Otherwise, set |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} to true.
               </li>
             </ol>
           </li>
