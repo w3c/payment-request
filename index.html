@@ -977,7 +977,7 @@
           [=transient activation=], return [=a promise rejected with=] with a
           {{"SecurityError"}} {{DOMException}}.
           </li>
-          <li>Let |request:PaymentRequest| be the <a>context object</a>.
+          <li>Let |request:PaymentRequest| be [=this=].
           </li>
           <li>Let |document| be |request|'s <a>relevant global object</a>'s <a>
             associated <code>Document</code></a>.
@@ -1300,7 +1300,7 @@
           The <a>abort()</a> method MUST act as follows:
         </p>
         <ol class="algorithm">
-          <li>Let |request:PaymentRequest| be the <a>context object</a>.
+          <li>Let |request:PaymentRequest| be [=this=].
           </li>
           <li>If |request|.{{PaymentRequest/[[response]]}} is not null, and
           |request|.{{PaymentRequest/[[response]]}}.<a>[[\retryPromise]]</a> is
@@ -3088,7 +3088,7 @@
           The <code>retry(|errorFields|)</code> method MUST act as follows:
         </p>
         <ol class="algorithm">
-          <li>Let |response:PaymentResponse| be the <a>context object</a>.
+          <li>Let |response:PaymentResponse| be [=this=].
           </li>
           <li>Let |request:PaymentRequest| be |response|.<a>[[\request]]</a>.
           </li>
@@ -3457,7 +3457,7 @@
           follows:
         </p>
         <ol class="algorithm">
-          <li>Let |response:PaymentResponse| be the <a>context object</a>.
+          <li>Let |response:PaymentResponse| be [=this=].
           </li>
           <li>If |response|.<a>[[\complete]]</a> is true, return <a>a promise
           rejected with</a> an {{"InvalidStateError"}} {{DOMException}}.
