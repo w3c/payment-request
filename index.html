@@ -286,11 +286,10 @@
         "modifiers" to how payments are made. For example, "if you pay with a
         card belonging to network X, it incurs a US$3.00 processing fee".
         </li>
-        <li>The |options|: Optionally, a list of things as
-        <a>PaymentOptions</a> that the site needs to deliver the good or
-        service (e.g., for physical goods, the merchant will typically need a
-        physical address to ship to. For digital goods, an email will usually
-        suffice).
+        <li>The |options|: Optionally, a list of things as {{PaymentOptions}}
+        that the site needs to deliver the good or service (e.g., for physical
+        goods, the merchant will typically need a physical address to ship to.
+        For digital goods, an email will usually suffice).
         </li>
       </ul>
       <p>
@@ -670,7 +669,7 @@
           The {{PaymentRequest}} is constructed using the supplied sequence of
           <a>PaymentMethodData</a> |methodData| including any <a>payment
           method</a> specific {{PaymentMethodData/data}}, the
-          <a>PaymentDetailsInit</a> |details|, and the <a>PaymentOptions</a>
+          <a>PaymentDetailsInit</a> |details|, and the {{PaymentOptions}}
           |options|.
         </p>
         <p data-tests=
@@ -679,7 +678,7 @@
           "PaymentRequest.PaymentRequest()">PaymentRequest(|methodData|,
           |details|, |options|)</dfn></code> constructor MUST act as follows:
         </p>
-        <ol data-link-for="PaymentDetailsBase" class="algorithm">
+        <ol class="algorithm">
           <li>If the <a>current settings object</a>'s [=environment settings
           object / responsible document=] is not <a>allowed to use</a> the
           "[=payment-permission|payment=]" permission, then [=exception/throw=]
@@ -698,7 +697,7 @@
           <li>Let |serializedMethodData| be an empty list.
           </li>
           <li>Process payment methods:
-            <ol data-link-for="PaymentMethodData">
+            <ol>
               <li>If the length of the |methodData| sequence is zero, then
               [=exception/throw=] a {{TypeError}}, optionally informing the
               developer that at least one <a>payment method</a> is required.
@@ -739,7 +738,7 @@
                   </li>
                   <li>If |serializedData| is not null, and if required by the
                   specification that defines the
-                  |paymentMethod|.<a>supportedMethods</a>:
+                  |paymentMethod|.{{PaymentMethodData/supportedMethods}}:
                     <ol>
                       <li>Let |object| be the result of <a data-cite=
                       "ECMASCRIPT#sec-json.parse">JSON-parsing</a>
@@ -750,8 +749,8 @@
                           [=converted to an IDL value|Convert=] |object| to an
                           IDL value of the type specified by the specification
                           that defines the
-                          |paymentMethod|.<a>supportedMethods</a> (e.g.,
-                          {{BasicCardRequest}} in the case of
+                          |paymentMethod|.{{PaymentMethodData/supportedMethods}}
+                          (e.g., {{BasicCardRequest}} in the case of
                           [[[?payment-method-basic-card]]]). Rethrow any
                           exceptions.
                         </p>
@@ -780,8 +779,9 @@
               </li>
             </ol>
           </li>
-          <li>If the <a>displayItems</a> member of |details| is present, then
-          for each |item| in |details|.<a>displayItems</a>:
+          <li>If the {{PaymentDetailsBase/displayItems}} member of |details| is
+          present, then for each |item| in
+          |details|.{{PaymentDetailsBase/displayItems}}:
             <ol>
               <li data-tests=
               "payment-request-ctor-currency-code-checks.https.html">
@@ -798,8 +798,8 @@
               <li>Let |options:PaymentShippingOption| be an empty
               <code><a>sequence</a></code>&lt;{{PaymentShippingOption}}&gt;.
               </li>
-              <li>If the <a>shippingOptions</a> member of |details| is present,
-              then:
+              <li>If the {{PaymentDetailsBase/shippingOptions}} member of
+              |details| is present, then:
                 <ol>
                   <li>Let |seenIDs| be an empty set.
                   </li>
@@ -834,15 +834,16 @@
           </li>
           <li>Let |serializedModifierData| be an empty list.
           </li>
-          <li data-link-for="PaymentDetailsBase">Process payment details
-          modifiers:
+          <li>Process payment details modifiers:
             <ol>
               <li>Let |modifiers| be an empty
-              <code><a>sequence</a></code>&lt;<a>PaymentDetailsModifier</a>&gt;.
+              <code><a>sequence</a></code>&lt;{{PaymentDetailsModifier}}&gt;.
               </li>
-              <li>If the <a>modifiers</a> member of |details| is present, then:
+              <li>If the {{PaymentDetailsBase/modifiers}} member of |details|
+              is present, then:
                 <ol>
-                  <li>Set |modifiers| to |details|.<a>modifiers</a>.
+                  <li>Set |modifiers| to
+                  |details|.{{PaymentDetailsBase/modifiers}}.
                   </li>
                   <li>For each |modifier| of |modifiers|:
                     <ol>
@@ -1403,7 +1404,7 @@
         <p data-tests="payment-request-shippingType-attribute.https.html">
           A {{PaymentRequest}}'s {{PaymentRequest/shippingType}} attribute is
           the type of shipping used to fulfill the transaction. Its value is
-          either a <a>PaymentShippingType</a> enum value, or null if none is
+          either a {{PaymentShippingType}} enum value, or null if none is
           provided by the developer during
           [=PaymentRequest.PaymentRequest()|construction=] (see
           {{PaymentOptions}}'s {{PaymentOptions/shippingType}} member).
@@ -1526,7 +1527,7 @@
               "PaymentRequest">[[\options]]</dfn>
             </td>
             <td>
-              The <a>PaymentOptions</a> supplied to the constructor.
+              The {{PaymentOptions}} supplied to the constructor.
             </td>
           </tr>
           <tr>
@@ -1566,7 +1567,7 @@
               <figure>
                 <img alt="" src="images/state-transitions.svg" width="518"
                 height="125">
-                <figcaption data-link-for="PaymentRequest">
+                <figcaption>
                   The constructor sets the initial <a>state</a> to
                   "[=state/created=]". The {{PaymentRequest/show()}} method
                   changes the <a>state</a> to "[=state/interactive=]". From
@@ -1873,10 +1874,9 @@
             <dfn>modifiers</dfn> member
           </dt>
           <dd>
-            A sequence of <a>PaymentDetailsModifier</a> dictionaries that
-            contains modifiers for particular payment method identifiers. For
-            example, it allows you to adjust the total amount based on payment
-            method.
+            A sequence of {{PaymentDetailsModifier}} dictionaries that contains
+            modifiers for particular payment method identifiers. For example,
+            it allows you to adjust the total amount based on payment method.
           </dd>
         </dl>
       </section>
@@ -2002,8 +2002,7 @@
         </dl>
       </section>
     </section>
-    <section data-dfn-for="PaymentDetailsModifier" data-link-for=
-    "PaymentDetailsModifier">
+    <section data-dfn-for="PaymentDetailsModifier">
       <h2>
         <dfn>PaymentDetailsModifier</dfn> dictionary
       </h2>
@@ -2016,9 +2015,9 @@
         };
       </pre>
       <p>
-        The <a>PaymentDetailsModifier</a> dictionary provides details that
-        modify the {{PaymentDetailsBase}} based on a <a>payment method
-        identifier</a>. It contains the following members:
+        The {{PaymentDetailsModifier}} dictionary provides details that modify
+        the {{PaymentDetailsBase}} based on a <a>payment method identifier</a>.
+        It contains the following members:
       </p>
       <dl>
         <dt>
@@ -2026,7 +2025,7 @@
         </dt>
         <dd>
           A <a>payment method identifier</a>. The members of the
-          <a>PaymentDetailsModifier</a> only apply if the user selects this
+          {{PaymentDetailsModifier}} only apply if the user selects this
           <a>payment method</a>.
         </dd>
         <dt>
@@ -2036,7 +2035,7 @@
           A {{PaymentItem}} value that overrides the
           {{PaymentDetailsInit/total}} member in the <a>PaymentDetailsInit</a>
           dictionary for the <a>payment method identifiers</a> of the
-          <a>supportedMethods</a> member.
+          {{PaymentDetailsModifier/supportedMethods}} member.
         </dd>
         <dt>
           <dfn>additionalDisplayItems</dfn> member
@@ -2046,15 +2045,16 @@
           display items that are appended to the
           {{PaymentDetailsBase/displayItems}} member in the
           {{PaymentDetailsBase}} dictionary for the <a>payment method
-          identifiers</a> in the <a>supportedMethods</a> member. This member is
-          commonly used to add a discount or surcharge line item indicating the
-          reason for the different <a>total</a> amount for the selected
-          <a>payment method</a> that the user agent MAY display.
+          identifiers</a> in the {{PaymentDetailsModifier/supportedMethods}}
+          member. This member is commonly used to add a discount or surcharge
+          line item indicating the reason for the different
+          {{PaymentDetailsModifier/total}} amount for the selected <a>payment
+          method</a> that the user agent MAY display.
           <p class="note">
             It is the developer's responsibility to verify that the
-            <a>total</a> amount is the sum of the
+            {{PaymentDetailsModifier/total}} amount is the sum of the
             {{PaymentDetailsBase/displayItems}} and the
-            <a>additionalDisplayItems</a>.
+            {{PaymentDetailsModifier/additionalDisplayItems}}.
           </p>
         </dd>
         <dt>
@@ -2103,7 +2103,7 @@
         </dd>
       </dl>
     </section>
-    <section data-dfn-for="PaymentOptions" data-link-for="PaymentOptions">
+    <section data-dfn-for="PaymentOptions">
       <h2>
         <dfn>PaymentOptions</dfn> dictionary
       </h2>
@@ -2118,24 +2118,24 @@
         };
       </pre>
       <p class="note">
-        The <a>PaymentOptions</a> dictionary is passed to the
-        {{PaymentRequest}} constructor and provides information about the
-        options desired for the payment request.
+        The {{PaymentOptions}} dictionary is passed to the {{PaymentRequest}}
+        constructor and provides information about the options desired for the
+        payment request.
       </p>
       <dl>
         <dt>
           <dfn>requestBillingAddress</dfn> member
         </dt>
-        <dd data-link-for="PaymentMethodChangeEvent">
+        <dd>
           A boolean that indicates whether the <a>user agent</a> SHOULD collect
           and return the billing address associated with a <a>payment
           method</a> (e.g., the billing address associated with a credit card).
           Typically, the user agent will return the billing address as part of
-          the {{PaymentMethodChangeEvent}}'s <a>methodDetails</a>. A merchant
-          can use this information to, for example, calculate tax in certain
-          jurisdictions and update the displayed total. See below for privacy
-          considerations regarding <a href="#user-info">exposing user
-          information</a>.
+          the {{PaymentMethodChangeEvent}}'s
+          {{PaymentMethodChangeEvent/methodDetails}}. A merchant can use this
+          information to, for example, calculate tax in certain jurisdictions
+          and update the displayed total. See below for privacy considerations
+          regarding <a href="#user-info">exposing user information</a>.
         </dd>
         <dt>
           <dfn>requestPayerName</dfn> member
@@ -2178,21 +2178,21 @@
           <dfn>shippingType</dfn> member
         </dt>
         <dd>
-          A <a>PaymentShippingType</a> enum value. Some transactions require an
+          A {{PaymentShippingType}} enum value. Some transactions require an
           address for delivery but the term "shipping" isn't appropriate. For
           example, "pizza delivery" not "pizza shipping" and "laundry pickup"
-          not "laundry shipping". If <a>requestShipping</a> is set to true,
-          then the <a>shippingType</a> member can influence the way the <a>user
-          agent</a> presents the user interface for gathering the shipping
-          address.
+          not "laundry shipping". If {{PaymentOptions/requestShipping}} is set
+          to true, then the {{PaymentOptions/shippingType}} member can
+          influence the way the <a>user agent</a> presents the user interface
+          for gathering the shipping address.
           <p>
-            The <a>shippingType</a> member only affects the user interface for
-            the payment request.
+            The {{PaymentOptions/shippingType}} member only affects the user
+            interface for the payment request.
           </p>
         </dd>
       </dl>
     </section>
-    <section data-dfn-for="PaymentItem" data-link-for="PaymentItem">
+    <section data-dfn-for="PaymentItem">
       <h2>
         <dfn>PaymentItem</dfn> dictionary
       </h2>
@@ -2227,11 +2227,11 @@
           <dfn>pending</dfn> member
         </dt>
         <dd>
-          A boolean. When set to true it means that the <a>amount</a> member is
-          not final. This is commonly used to show items such as shipping or
-          tax amounts that depend upon selection of shipping address or
-          shipping option. <a>User agents</a> MAY indicate pending fields in
-          the user interface for the payment request.
+          A boolean. When set to true it means that the {{PaymentItem/amount}}
+          member is not final. This is commonly used to show items such as
+          shipping or tax amounts that depend upon selection of shipping
+          address or shipping option. <a>User agents</a> MAY indicate pending
+          fields in the user interface for the payment request.
         </dd>
       </dl>
     </section>
@@ -2308,7 +2308,7 @@
           The phone number of the recipient or contact person at the address.
         </dd>
       </dl>
-      <section data-dfn-for="PaymentAddress" data-link-for="PaymentAddress">
+      <section data-dfn-for="PaymentAddress">
         <h2>
           <dfn>PaymentAddress</dfn> interface
         </h2>
@@ -2356,7 +2356,7 @@
             `PaymentAddress`</dfn> with an optional {{AddressInit}}
             |details:AddressInit| are given by the following algorithm:
           </p>
-          <ol data-link-for="AddressInit">
+          <ol>
             <li>Let |address:PaymentAddress| be a new instance of
             {{PaymentAddress}}.
             </li>
@@ -2640,7 +2640,7 @@
           </table>
         </section>
       </section>
-      <section data-dfn-for="AddressInit" data-link-for="AddressInit">
+      <section data-dfn-for="AddressInit">
         <h2>
           <dfn>AddressInit</dfn> dictionary
         </h2>
@@ -2729,7 +2729,7 @@
           </dd>
         </dl>
       </section>
-      <section data-dfn-for="AddressErrors" data-link-for="AddressErrors">
+      <section data-dfn-for="AddressErrors">
         <h2>
           <dfn>AddressErrors</dfn> dictionary
         </h2>
@@ -2947,7 +2947,7 @@
             <p>
               If "region" is not in |redactList|:
             </p>
-            <p data-link-for="" class="note" title=
+            <p class="note" title=
             "Countries where regions are not commonly used">
               In some countries (e.g., Belgium) it is uncommon for users to
               include a <a>region</a> as part of a <a>physical address</a>
@@ -3296,15 +3296,15 @@
             <dfn>Payer details</dfn> are any of the payer's name, payer's phone
             number, and payer's email.
           </p>
-          <dl data-link-for="PaymentResponse">
+          <dl>
             <dt>
               <dfn>email</dfn> member
             </dt>
             <dd>
               Denotes that the payer's email suffers from a validation error.
               In the user agent's UI, this member corresponds to the input
-              field that provided the {{PaymentResponse}}'s <a>payerEmail</a>
-              attribute's value.
+              field that provided the {{PaymentResponse}}'s
+              {{PaymentResponse/payerEmail}} attribute's value.
             </dd>
             <dt>
               <dfn>name</dfn> member
@@ -3312,8 +3312,8 @@
             <dd>
               Denotes that the payer's name suffers from a validation error. In
               the user agent's UI, this member corresponds to the input field
-              that provided the {{PaymentResponse}}'s <a>payerName</a>
-              attribute's value.
+              that provided the {{PaymentResponse}}'s
+              {{PaymentResponse/payerName}} attribute's value.
             </dd>
             <dt>
               <dfn>phone</dfn> member
@@ -3322,7 +3322,7 @@
               Denotes that the payer's phone number suffers from a validation
               error. In the user agent's UI, this member corresponds to the
               input field that provided the {{PaymentResponse}}'s
-              <a>payerPhone</a> attribute's value.
+              {{PaymentResponse/payerPhone}} attribute's value.
             </dd>
           </dl>
           <pre class="example js" title="Payer-related validation errors">
@@ -3379,9 +3379,9 @@
         <p data-tests=
         "payment-response/shippingAddress-attribute-manual.https.html">
           If the {{PaymentOptions/requestShipping}} member was set to true in
-          the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
-          constructor, then {{PaymentRequest/shippingAddress}} will be the full
-          and final shipping address chosen by the user.
+          the {{PaymentOptions}} passed to the {{PaymentRequest}} constructor,
+          then {{PaymentRequest/shippingAddress}} will be the full and final
+          shipping address chosen by the user.
         </p>
       </section>
       <section>
@@ -3391,8 +3391,8 @@
         <p data-tests=
         "payment-response/shippingOption-attribute-manual.https.html">
           If the {{PaymentOptions/requestShipping}} member was set to true in
-          the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
-          constructor, then {{PaymentRequest/shippingOption}} will be the
+          the {{PaymentOptions}} passed to the {{PaymentRequest}} constructor,
+          then {{PaymentRequest/shippingOption}} will be the
           {{PaymentShippingOption/id}} attribute of the selected shipping
           option.
         </p>
@@ -3403,9 +3403,9 @@
         </h2>
         <p data-tests="payment-response/payerName-attribute-manual.https.html">
           If the {{PaymentOptions/requestPayerName}} member was set to true in
-          the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
-          constructor, then {{PaymentResponse/payerName}} will be the name
-          provided by the user.
+          the {{PaymentOptions}} passed to the {{PaymentRequest}} constructor,
+          then {{PaymentResponse/payerName}} will be the name provided by the
+          user.
         </p>
       </section>
       <section>
@@ -3415,9 +3415,9 @@
         <p data-tests=
         "payment-response/payerEmail-attribute-manual.https.html">
           If the {{PaymentOptions/requestPayerEmail}} member was set to true in
-          the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
-          constructor, then {{PaymentResponse/payerEmail}} will be the email
-          address chosen by the user.
+          the {{PaymentOptions}} passed to the {{PaymentRequest}} constructor,
+          then {{PaymentResponse/payerEmail}} will be the email address chosen
+          by the user.
         </p>
       </section>
       <section>
@@ -3427,9 +3427,9 @@
         <p data-tests=
         "payment-response/payerPhone-attribute-manual.https.html">
           If the {{PaymentOptions/requestPayerPhone}} member was set to true in
-          the <a>PaymentOptions</a> passed to the {{PaymentRequest}}
-          constructor, then {{PaymentResponse/payerPhone}} will be the phone
-          number chosen by the user.
+          the {{PaymentOptions}} passed to the {{PaymentRequest}} constructor,
+          then {{PaymentResponse/payerPhone}} will be the phone number chosen
+          by the user.
         </p>
       </section>
       <section>
@@ -4747,7 +4747,7 @@
           </li>
           <li>
             <a>Upon fulfillment</a> of |detailsPromise| with value |value|:
-            <ol data-link-for="PaymentDetailsBase">
+            <ol>
               <li>Let |details:PaymentDetailsUpdate| be the result of
               [=converted to an IDL value|converting=] |value| to a
               {{PaymentDetailsUpdate}} dictionary. If this [=exception/throw=]
@@ -4774,9 +4774,9 @@
                       </li>
                     </ol>
                   </li>
-                  <li>If the <a>displayItems</a> member of |details| is
-                  present, then for each |item| in
-                  |details|.<a>displayItems</a>:
+                  <li>If the {{PaymentDetailsBase/displayItems}} member of
+                  |details| is present, then for each |item| in
+                  |details|.{{PaymentDetailsBase/displayItems}}:
                     <ol>
                       <li>
                         <a>Check and canonicalize amount</a>
@@ -4786,15 +4786,15 @@
                       </li>
                     </ol>
                   </li>
-                  <li>If the <a>shippingOptions</a> member of |details| is
-                  present, and
+                  <li>If the {{PaymentDetailsBase/shippingOptions}} member of
+                  |details| is present, and
                   |request|.{{PaymentRequest/[[options]]}}.{{PaymentOptions/requestShipping}}
                   is true, then:
                     <ol>
                       <li>Let |seenIDs| be an empty set.
                       </li>
                       <li>For each |option| in
-                      |details|.<a>shippingOptions</a>:
+                      |details|.{{PaymentDetailsBase/shippingOptions}}:
                         <ol>
                           <li>
                             <a>Check and canonicalize amount</a>
@@ -4821,15 +4821,15 @@
                       </li>
                     </ol>
                   </li>
-                  <li>If the <a>modifiers</a> member of |details| is present,
-                  then:
+                  <li>If the {{PaymentDetailsBase/modifiers}} member of
+                  |details| is present, then:
                     <ol>
                       <li>Let |modifiers| be the sequence
-                      |details|.<a>modifiers</a>.
+                      |details|.{{PaymentDetailsBase/modifiers}}.
                       </li>
                       <li>Let |serializedModifierData| be an empty list.
                       </li>
-                      <li>For each <a>PaymentDetailsModifier</a> |modifier| in
+                      <li>For each {{PaymentDetailsModifier}} |modifier| in
                       |modifiers|:
                         <ol>
                           <li data-tests=
@@ -4887,49 +4887,49 @@
                   </li>
                 </ol>
               </li>
-              <li data-link-for="PaymentDetailsUpdate">If the
-              <a>paymentMethodErrors</a> member is present and |identifier| is
-              not null:
+              <li>If the {{PaymentDetailsUpdate/paymentMethodErrors}} member is
+              present and |identifier| is not null:
                 <ol>
                   <li>If required by the specification that defines the |pmi|,
                   then [=converted to an IDL value|convert=]
-                  <a>paymentMethodErrors</a> to an IDL value.
+                  {{PaymentDetailsUpdate/paymentMethodErrors}} to an IDL value.
                   </li>
                   <li>If conversion results in a <a>exception</a> |error|, <a>
                     abort the update</a> with |error|.
                   </li>
                   <li>The <a>payment handler</a> SHOULD display an error for
-                  each relevant erroneous field of <a>paymentMethodErrors</a>.
+                  each relevant erroneous field of
+                  {{PaymentDetailsUpdate/paymentMethodErrors}}.
                   </li>
                 </ol>
               </li>
               <li>Update the {{PaymentRequest}} using the new details:
                 <ol>
-                  <li data-link-for="PaymentDetailsUpdate">If the <a>total</a>
-                  member of |details| is present, then:
+                  <li>If the {{PaymentDetailsUpdate/total}} member of |details|
+                  is present, then:
                     <ol>
                       <li>Set
-                      |request|.{{PaymentRequest/[[details]]}}.<a data-link-for="PaymentDetailsInit">total</a>
-                        to |details|.<a>total</a>.
+                      |request|.{{PaymentRequest/[[details]]}}.{{PaymentDetailsInit/total}}
+                      to |details|.{{PaymentDetailsUpdate/total}}.
                       </li>
                     </ol>
                   </li>
-                  <li>If the <a>displayItems</a> member of |details| is
-                  present, then:
+                  <li>If the {{PaymentDetailsBase/displayItems}} member of
+                  |details| is present, then:
                     <ol>
                       <li>Set
-                      |request|.{{PaymentRequest/[[details]]}}.<a>displayItems</a>
-                      to |details|.<a>displayItems</a>.
+                      |request|.{{PaymentRequest/[[details]]}}.{{PaymentDetailsBase/displayItems}}
+                      to |details|.{{PaymentDetailsBase/displayItems}}.
                       </li>
                     </ol>
                   </li>
-                  <li>If the <a>shippingOptions</a> member of |details| is
-                  present, and
+                  <li>If the {{PaymentDetailsBase/shippingOptions}} member of
+                  |details| is present, and
                   |request|.{{PaymentRequest/[[options]]}}.{{PaymentOptions/requestShipping}}
                   is true, then:
                     <ol>
                       <li>Set
-                      |request|.{{PaymentRequest/[[details]]}}.<a>shippingOptions</a>
+                      |request|.{{PaymentRequest/[[details]]}}.{{PaymentDetailsBase/shippingOptions}}
                       to |shippingOptions|.
                       </li>
                       <li>Set the value of |request|'s
@@ -4938,12 +4938,12 @@
                       </li>
                     </ol>
                   </li>
-                  <li>If the <a>modifiers</a> member of |details| is present,
-                  then:
+                  <li>If the {{PaymentDetailsBase/modifiers}} member of
+                  |details| is present, then:
                     <ol>
                       <li>Set
-                      |request|.{{PaymentRequest/[[details]]}}.<a>modifiers</a>
-                      to |details|.<a>modifiers</a>.
+                      |request|.{{PaymentRequest/[[details]]}}.{{PaymentDetailsBase/modifiers}}
+                      to |details|.{{PaymentDetailsBase/modifiers}}.
                       </li>
                       <li>Set
                       |request|.{{PaymentRequest/[[serializedModifierData]]}}
@@ -4956,7 +4956,7 @@
                       If
                       |request|.{{PaymentRequest/[[options]]}}.{{PaymentOptions/requestShipping}}
                       is true, and
-                      |request|.{{PaymentRequest/[[details]]}}.<a>shippingOptions</a>
+                      |request|.{{PaymentRequest/[[details]]}}.{{PaymentDetailsBase/shippingOptions}}
                       is empty, then the developer has signified that there are
                       no valid shipping options for the currently-chosen
                       shipping address (given by |request|'s
@@ -5074,9 +5074,10 @@
             of the <a>[[\acceptPromise]]</a>, i.e., the promise returned by
             {{PaymentRequest/show()}}.
           </p>
-          <p data-link-for="PaymentResponse">
-            Similarly, <a>abort the update</a> occurring during <a>retry()</a>
-            causes the {{PaymentResponse/[[retryPromise]]}} to reject, and the
+          <p>
+            Similarly, <a>abort the update</a> occurring during
+            {{PaymentResponse/retry()}} causes the
+            {{PaymentResponse/[[retryPromise]]}} to reject, and the
             corresponding {{PaymentRequest}}'s {{PaymentRequest/[[complete]]}}
             internal slot will be set to true (i.e., it can no longer be used).
           </p>
@@ -5143,7 +5144,7 @@
       <h2>
         Privacy and Security Considerations
       </h2>
-      <section class="informative" data-link-for="PaymentRequest">
+      <section class="informative">
         <h2>
           User protections with <code>show()</code> method
         </h2>
@@ -5202,7 +5203,7 @@
         <h2>
           How user agents match payment handlers
         </h2>
-        <p data-link-for="PaymentRequest">
+        <p>
           As part of {{PaymentRequest/show()}}, the user agent typically
           displays a list of matching <a>payment handlers</a> that satisfy the
           <a>payment methods</a> accepted by the merchant and other conditions.
@@ -5211,7 +5212,7 @@
           method</a> owner, the <a>payment handlers</a> registered by the user,
           user preferences, and other considerations.
         </p>
-        <p data-link-for="PaymentRequest">
+        <p>
           For security reasons, a user agent can limit matching (in
           {{PaymentRequest/show()}} and {{PaymentRequest/canMakePayment()}}) to
           <a>payment handlers</a> from the same <a data-cite=
