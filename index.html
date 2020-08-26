@@ -611,7 +611,7 @@
           [NewObject]
           Promise&lt;PaymentResponse&gt; show(optional Promise&lt;PaymentDetailsUpdate&gt; detailsPromise);
           [NewObject]
-          Promise&lt;void&gt; abort();
+          Promise&lt;undefined&gt; abort();
           [NewObject]
           Promise&lt;boolean&gt; canMakePayment();
           [NewObject]
@@ -3082,9 +3082,9 @@
           readonly attribute DOMString? payerPhone;
 
           [NewObject]
-          Promise&lt;void&gt; complete(optional PaymentComplete result = "unknown");
+          Promise&lt;undefined&gt; complete(optional PaymentComplete result = "unknown");
           [NewObject]
-          Promise&lt;void&gt; retry(optional PaymentValidationErrors errorFields = {});
+          Promise&lt;undefined&gt; retry(optional PaymentValidationErrors errorFields = {});
 
           attribute EventHandler onpayerdetailchange;
         };
@@ -3725,7 +3725,7 @@
             constructor(DOMString type, optional MerchantValidationEventInit eventInitDict = {});
             readonly attribute DOMString methodName;
             readonly attribute USVString validationURL;
-            void complete(Promise&lt;any&gt; merchantSessionPromise);
+            undefined complete(Promise&lt;any&gt; merchantSessionPromise);
           };
         </pre>
         <section>
@@ -3959,7 +3959,7 @@
           [SecureContext, Exposed=Window]
           interface PaymentRequestUpdateEvent : Event {
             constructor(DOMString type, optional PaymentRequestUpdateEventInit eventInitDict = {});
-            void updateWith(Promise&lt;PaymentDetailsUpdate&gt; detailsPromise);
+            undefined updateWith(Promise&lt;PaymentDetailsUpdate&gt; detailsPromise);
           };
         </pre>
         <p>
