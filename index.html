@@ -608,11 +608,17 @@
         </p>
         <pre class="example html" title=
         "Using Payment Request API with cross-origin iframes">
-            &lt;iframe
-              src="https://cross-origing.example"
-              allow="payment"&gt;
-            &lt;/iframe&gt;
-          </pre>
+          &lt;iframe
+            src="https://cross-origing.example"
+            allow="payment"&gt;
+          &lt;/iframe&gt;
+        </pre>
+        <p>
+          If the [^iframe^] will be navigated across multiple origins that
+          support the Payment Request API, then one can set [^iframe/allow^] to
+          `"payment *"`. The [[[permissions-policy]]] specification provides
+          further details and examples.
+        </p>
       </section>
     </section>
     <section data-dfn-for="PaymentRequest">
