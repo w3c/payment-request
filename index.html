@@ -126,7 +126,8 @@
           version are as follows. The complete list of changes, including all
           editorial changes, is viewable in the <a href=
           "https://github.com/w3c/payment-request/commits/gh-pages">commit
-          history</a>.
+          history</a>. Key set of changes are viewable in the <a href=
+          "#changelog">Changelog</a>.
         </p>
         <ul>
           <li>Added support for notification when the user selects a payment
@@ -161,6 +162,8 @@
           </li>
           <li>Removed support for merchant validation because of lack of
           multi-implementer support.
+          </li>
+          <li>Deprecated `allowpaymentrequest` attribute.
           </li>
         </ul>
       </section>
@@ -594,6 +597,29 @@
           }
           doPaymentRequest();
         </pre>
+      </section>
+      <section>
+        <h2>
+          Using with cross-origin iframes
+        </h2>
+        <p>
+          To indicate that a cross-origin [^iframe^] is allowed to invoke the
+          payment request API, the [^iframe/allow^] attribute along with the
+          "payment" keyword can be specified on the [^iframe^] element.
+        </p>
+        <pre class="example html" title=
+        "Using Payment Request API with cross-origin iframes">
+          &lt;iframe
+            src="https://cross-origing.example"
+            allow="payment"&gt;
+          &lt;/iframe&gt;
+        </pre>
+        <p>
+          If the [^iframe^] will be navigated across multiple origins that
+          support the Payment Request API, then one can set [^iframe/allow^] to
+          `"payment *"`. The [[[permissions-policy]]] specification provides
+          further details and examples.
+        </p>
       </section>
     </section>
     <section data-dfn-for="PaymentRequest">
@@ -3564,18 +3590,6 @@
         </table>
       </section>
     </section>
-    <section class="informative">
-      <h2>
-        <code>PaymentRequest</code> and <code>iframe</code> elements
-      </h2>
-      <p>
-        To indicate that a cross-origin [^iframe^] is allowed to invoke the
-        payment request API, the [^iframe/allowpaymentrequest^] attribute can
-        be specified on the [^iframe^] element. See [[[#permissions-policy]]]
-        for details of how [^iframe/allowoaymentrequest=] and
-        [[[permissions-policy]]] interact.
-      </p>
-    </section>
     <section id="permissions-policy" data-cite="permissions-policy">
       <h2>
         Permissions Policy integration
@@ -3586,7 +3600,7 @@
         "">payment</dfn></code>". Its <a>default allowlist</a> is
         '<code>self</code>'.
       </p>
-      <div class="note">
+      <aside class="note">
         <p>
           A <a>document</a>’s [=Document/permissions policy=] determines
           whether any content in that document is allowed to construct
@@ -3594,17 +3608,7 @@
           in the document will be <a>allowed to use</a> the {{PaymentRequest}}
           constructor (trying to create an instance will throw).
         </p>
-        <p>
-          The [^iframe/allowpaymentrequest^] attribute of the HTML
-          <a>iframe</a> element affects the <a>container policy</a> for any
-          document nested in that iframe. Unless overridden by the
-          [^iframe/allow^] attribute, setting [^iframe/allowpaymentrequest^] on
-          an iframe is equivalent to `&lt;iframe allow="fullscreen *"&gt;`, as
-          described in <a data-cite=
-          "permissions-policy#iframe-allowpaymentrequest-attribute">Permissions
-          Policy §allowpaymentrequest</a>.
-        </p>
-      </div>
+      </aside>
     </section>
     <section>
       <h2>
@@ -4854,7 +4858,7 @@
           It is common for merchants and other payees to delegate checkout and
           other e-commerce activities to payment service providers through an
           <a>iframe</a>. This API supports payee-authorized cross-origin
-          iframes through [[HTML]]'s [^iframe/allowpaymentrequest^] attribute.
+          iframes through [[HTML]]'s [^iframe/allow^] attribute.
         </p>
         <p class="Note">
           <a>Payment handlers</a> have access to both the origin that hosts the
