@@ -134,8 +134,6 @@
           <li>Added support for {{PaymentResponse/retry()}} and fine-grain
           error reporting to the user.
           </li>
-          <li>Added support for merchant validation by the payment handler.
-          </li>
           <li>Clearer definition of {{PaymentRequest/canMakePayment()}} and
           worked to align implementations. {{PaymentRequest/canMakePayment()}}
           does not reveal whether payment handler is primed to pay.
@@ -153,6 +151,9 @@
           <li>Integrated with [[[permissions-policy]]].
           </li>
           <li>Defined handling of multiple applicable modifiers.
+          </li>
+          <li>Removed support for merchant validation because of lack of
+          multi-implementer support.
           </li>
           <li>Deprecated `allowpaymentrequest` attribute.
           </li>
@@ -639,7 +640,6 @@
           readonly attribute DOMString? shippingOption;
           readonly attribute PaymentShippingType? shippingType;
 
-          attribute EventHandler onmerchantvalidation;
           attribute EventHandler onshippingaddresschange;
           attribute EventHandler onshippingoptionchange;
           attribute EventHandler onpaymentmethodchange;
@@ -1425,16 +1425,6 @@
           provided by the developer during
           [=PaymentRequest.PaymentRequest()|construction=] (see
           {{PaymentOptions}}'s {{PaymentOptions/shippingType}} member).
-        </p>
-      </section>
-      <section data-dfn-for="PaymentRequest">
-        <h2>
-          <dfn>onmerchantvalidation</dfn> attribute
-        </h2>
-        <p data-tests="onmerchantvalidation-attribute.https.html">
-          A {{PaymentRequest}}'s {{PaymentRequest/onmerchantvalidation}}
-          attribute is an {{EventHandler}} for a {{MerchantValidationEvent}}
-          named "<a>merchantvalidation</a>".
         </p>
       </section>
       <section data-dfn-for="PaymentRequest">
@@ -3637,21 +3627,6 @@
           </tr>
           <tr>
             <td>
-              <code><dfn>merchantvalidation</dfn></code>
-            </td>
-            <td>
-              {{MerchantValidationEvent}}
-            </td>
-            <td>
-              The user agent requires the merchant to perform merchant
-              validation.
-            </td>
-            <td>
-              {{PaymentRequest}}
-            </td>
-          </tr>
-          <tr>
-            <td>
               <code><dfn>shippingaddresschange</dfn></code>
             </td>
             <td>
@@ -3709,183 +3684,6 @@
             </td>
           </tr>
         </table>
-      </section>
-      <section data-dfn-for="MerchantValidationEvent">
-        <h2>
-          <dfn>MerchantValidationEvent</dfn> interface
-        </h2>
-        <pre class="idl">
-          [SecureContext, Exposed=Window]
-          interface MerchantValidationEvent : Event {
-            constructor(DOMString type, optional MerchantValidationEventInit eventInitDict = {});
-            readonly attribute DOMString methodName;
-            readonly attribute USVString validationURL;
-            undefined complete(Promise&lt;any&gt; merchantSessionPromise);
-          };
-        </pre>
-        <section>
-          <h2>
-            <dfn>methodName</dfn> attribute
-          </h2>
-          <p>
-            When getting, returns the value it was initialized with. See
-            {{MerchantValidationEvent/methodName}} member of
-            {{MerchantValidationEventInit}} for more information.
-          </p>
-        </section>
-        <section>
-          <h3>
-            <dfn data-lt=
-            "MerchantValidationEvent.MerchantValidationEvent()"><code>MerchantValidationEvent</code>
-            constructor</dfn>
-          </h3>
-          <p data-tests=
-          "MerchantValidationEvent/constructor.https.html, MerchantValidationEvent/constructor.http.html">
-            The <a>event constructing steps</a>, which take a
-            {{MerchantValidationEvent}} |event:MerchantValidationEvent|, are as
-            follows:
-          </p>
-          <ol class="algorithm">
-            <li>Let |base:URL| be the [=context object|event=]’s <a>relevant
-            settings object</a>’s [=environment settings object/api base URL=].
-            </li>
-            <li>Let |validationURL:URL| be the result of [=URL parser|URL
-            parsing=]
-            |eventInitDict:MerchantValidationEventInit|.{{MerchantValidationEventInit/validationURL}}
-            and |base|.
-            </li>
-            <li>If |validationURL| is failure, throw a {{TypeError}}.
-            </li>
-            <li>Initialize |event|.{{MerchantValidationEvent/validationURL}}
-            attribute to |validationURL|.
-            </li>
-            <li>If |eventInitDict|.{{MerchantValidationEventInit/methodName}}
-            is not the empty string, run the steps to <a>validate a payment
-            method identifier</a> with
-            |eventInitDict|.{{MerchantValidationEventInit/methodName}}. If it
-            returns false, then throw a {{RangeError}} exception. Optionally,
-            inform the developer that the payment method identifier is invalid.
-            </li>
-            <li>Initialize |event|.{{MerchantValidationEvent/methodName}}
-            attribute to
-            |eventInitDict|.{{MerchantValidationEventInit/methodName}}.
-            </li>
-            <li>Initialize
-            |event|.{{MerchantValidationEvent/[[waitForUpdate]]}} to false.
-            </li>
-          </ol>
-        </section>
-        <section>
-          <h3>
-            <dfn>validationURL</dfn> attribute
-          </h3>
-          <p>
-            A <a>URL</a> from which a developer can fetch <a>payment
-            handler</a>-specific verification data. By then passing that data
-            (or a promise that resolves with that data) to
-            {{PaymentResponse/complete()}}, the user agent can verify that the
-            payment request is from an authorized merchant.
-          </p>
-          <p>
-            When getting, returns the value it was initialized with.
-          </p>
-        </section>
-        <section>
-          <h3>
-            <dfn>complete()</dfn> method
-          </h3>
-          <p data-tests="MerchantValidationEvent/complete-method.https.html">
-            The {{MerchantValidationEvent}}'s
-            <code>complete(|merchantSessionPromise|)</code> method MUST act as
-            follows:
-          </p>
-          <ol class="algorithm">
-            <li>Let |event:MerchantValidationEvent| be [=this=]
-            </li>
-            <li>If |event|'s {{Event/isTrusted}} attribute is false, then
-            [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
-            </li>
-            <li>If |event|.{{MerchantValidationEvent/[[waitForUpdate]]}} is
-            true, then [=exception/throw=] an {{"InvalidStateError"}}
-            {{DOMException}}.
-            </li>
-            <li>Let |request:PaymentRequest| be |event|'s [=Event/target=].
-            </li>
-            <li>If |request|.{{PaymentRequest/[[state]]}} is not
-            "[=state/interactive=]", then [=exception/throw=] an
-            {{"InvalidStateError"}} {{DOMException}}.
-            </li>
-            <li>If |request|.{{PaymentRequest/[[updating]]}} is true, then
-            [=exception/throw=] an {{"InvalidStateError"}} {{DOMException}}.
-            </li>
-            <li>Set |event|'s [=Event/stop propagation flag=] and [=Event/stop
-            immediate propagation flag=].
-            </li>
-            <li>Set |event|.{{MerchantValidationEvent/[[waitForUpdate]]}} to
-            true.
-            </li>
-            <li>Run the <a>validate merchant's details algorithm</a> with
-            |merchantSessionPromise| and |request|.
-            </li>
-          </ol>
-        </section>
-        <section>
-          <h2>
-            Internal Slots
-          </h2>
-          <p>
-            Instances of {{MerchantValidationEvent}} are created with the
-            internal slots in the following table:
-          </p>
-          <table class="data">
-            <tr>
-              <th>
-                Internal Slot
-              </th>
-              <th>
-                Description (<em>non-normative</em>)
-              </th>
-            </tr>
-            <tr>
-              <td>
-                <dfn data-dfn-for=
-                "MerchantValidationEvent">[[\waitForUpdate]]</dfn>
-              </td>
-              <td>
-                A boolean indicating whether a
-                {{PaymentResponse/complete()}}-initiated update is currently in
-                progress.
-              </td>
-            </tr>
-          </table>
-        </section>
-        <section data-dfn-for="MerchantValidationEventInit">
-          <h3>
-            <dfn>MerchantValidationEventInit</dfn> dictionary
-          </h3>
-          <pre class="idl">
-            dictionary MerchantValidationEventInit : EventInit {
-              DOMString methodName = "";
-              USVString validationURL = "";
-            };
-          </pre>
-          <dl>
-            <dt>
-              <dfn>methodName</dfn> member
-            </dt>
-            <dd>
-              A <a>payment method identifier</a> representing the <a>payment
-              handler</a> that is requiring <a>merchant validation</a>.
-            </dd>
-            <dt>
-              <dfn>validationURL</dfn> member
-            </dt>
-            <dd>
-              A URL from which a developer would fetch <a>payment
-              handler</a>-specific verification data.
-            </dd>
-          </dl>
-        </section>
       </section>
       <section data-dfn-for="PaymentMethodChangeEvent">
         <h2>
@@ -4140,73 +3938,6 @@
         is set to "[=state/interactive=]", the <a>user agent</a> will trigger
         the following algorithms based on user interaction.
       </p>
-      <section>
-        <h2>
-          Merchant validation
-        </h2>
-        <p>
-          <dfn data-lt="Validate the merchant">Merchant validation</dfn> is the
-          process by which a <a>payment handler</a> validates the identity of a
-          merchant against some |value| (usually some cryptographic challenge
-          response). Validated merchants are allowed to interface with a
-          <a>payment handler</a>. Details of how actual validation is performed
-          is outside the scope of this specification.
-        </p>
-        <p>
-          It is OPTIONAL for a <a>payment handler</a> to support <a>merchant
-          validation</a>.
-        </p>
-        <p>
-          For <a>payment methods</a> that support <a>merchant validation</a>,
-          the user agent runs the <dfn>request merchant validation
-          algorithm</dfn>. The algorithm takes a {{USVString}}
-          |merchantSpecificURL|, provided by the <a>payment handler</a>:
-        </p>
-        <ol class="algorithm">
-          <li>Let |request:PaymentRequest| be the {{PaymentRequest}} object
-          that the user is interacting with.
-          </li>
-          <li>Let |validationURL:URL| be a <a>absolute-URL string</a> from
-          which a developer can fetch <a>payment handler</a>-specific
-          verification data.
-          </li>
-          <li>Let |methodName:URL or String| be the <a>payment method
-          identifier</a> for the <a>payment handler</a> that is requiring
-          <a>merchant validation</a>.
-          </li>
-          <li>
-            <a>Queue a task</a> on the <a>user interaction task source</a> to
-            run the following steps:
-            <ol>
-              <li>Assert: |request|.{{PaymentRequest/[[updating]]}} is false.
-              </li>
-              <li>Assert: |request|.{{PaymentRequest/[[state]]}} is
-              "[=state/interactive=]".
-              </li>
-              <li>Let |eventInitDict:MerchantValidationEventInit| be an new
-              {{MerchantValidationEventInit}} dictionary.
-              </li>
-              <li>Set
-              |eventInitDict|.{{MerchantValidationEventInit/validationURL}}] to
-              |validationURL|.
-              </li>
-              <li>Set
-              |eventInitDict|.{{MerchantValidationEventInit/methodName}} to
-              |methodName|.
-              </li>
-              <li>Let |event:MerchantValidationEvent| be the result of calling
-              the [=Event/constructor=] of {{MerchantValidationEvent}} with
-              "<a>merchantvalidation</a>" and |eventInitDict|.
-              </li>
-              <li>Initialize |event|’s {{Event/isTrusted}} attribute to true.
-              </li>
-              <li>
-                <a>Dispatch</a> |event| to |request|.
-              </li>
-            </ol>
-          </li>
-        </ol>
-      </section>
       <section>
         <h2>
           Can make payment algorithm
@@ -5078,62 +4809,6 @@
           </p>
         </div>
       </section>
-      <section>
-        <h2>
-          Validate merchant's details algorithm
-        </h2>
-        <p>
-          The <dfn>validate merchant's details algorithm</dfn> takes a
-          {{Promise}} |opaqueDataPromise| and a {{PaymentRequest}} |request|.
-          The steps are conditional on the |opaqueDataPromise| settling. If
-          |opaqueDataPromise| never settles then the payment request is
-          blocked. The user agent SHOULD provide the user with a means to abort
-          a payment request. Implementations MAY choose to implement a timeout
-          for pending updates if |opaqueDataPromise| doesn't settle in a
-          reasonable amount of time. If an implementation chooses to implement
-          a timeout, they MUST execute the steps listed below in the "upon
-          rejection" path. Such a timeout is a fatal error for the payment
-          request.
-        </p>
-        <ol class="algorithm">
-          <li>Set |request|.{{PaymentRequest/[[updating]]}} to true.
-          </li>
-          <li>
-            <a>In parallel</a>, disable the user interface that allows the user
-            to accept the payment request. This is to ensure that the payment
-            is not accepted until the user interface is updated with any new
-            details.
-          </li>
-          <li>
-            <a>Upon rejection</a> of |opaqueDataPromise|:
-            <ol>
-              <li>
-                <a>Abort the update</a> with |request| and an {{"AbortError"}}
-                {{DOMException}}.
-              </li>
-            </ol>
-          </li>
-          <li>
-            <a>Upon fulfillment</a> of |opaqueDataPromise| with value
-            |opaqueData|:
-            <ol>
-              <li>
-                <a>Validate the merchant</a> using |opaqueData|.
-              </li>
-              <li>If |opaqueData| is invalid, as per the validation rules of
-              the <a>payment handler</a>, <a>abort the update</a> with
-              |request| and an appropriate <a>exception</a> and return.
-              </li>
-              <li>Otherwise, set |request|.{{PaymentRequest/[[updating]]}} to
-              false.
-              </li>
-              <li>Enable the user interface, allowing the request for payment
-              to proceed.
-              </li>
-            </ol>
-          </li>
-        </ol>
-      </section>
     </section>
     <section id="privacy">
       <h2>
@@ -5281,16 +4956,6 @@
           algorithm | changing payment methods =]), it is RECOMMENDED that user
           agents inform the user of exactly what information is being shared
           with a merchant.
-        </p>
-      </section>
-      <section class="informative">
-        <h2>
-          Merchant Validation
-        </h2>
-        <p>
-          It is important that the {{MerchantValidationEvent/validationURL}} in
-          a {{MerchantValidationEvent}} does not expose personally identifying
-          information to unauthorized parties.
         </p>
       </section>
       <section>
