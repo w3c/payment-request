@@ -632,8 +632,6 @@
           Promise&lt;undefined&gt; abort();
           [NewObject]
           Promise&lt;boolean&gt; canMakePayment();
-          [NewObject]
-          Promise&lt;boolean&gt; hasEnrolledInstrument();
 
           readonly attribute DOMString id;
           readonly attribute PaymentAddress? shippingAddress;
@@ -1367,7 +1365,7 @@
         <h2>
           <dfn>canMakePayment()</dfn> method
         </h2>
-        <div class="note" title="canMakePayment() vs hasEnrolledInstrument()">
+        <div class="note" title="canMakePayment()">
           <p>
             The {{PaymentRequest/canMakePayment()}} method can be used by the
             developer to determine if the <a>user agent</a> has support for one
@@ -1377,30 +1375,11 @@
           <p>
             A true result from {{PaymentRequest/canMakePayment()}} does not
             imply that the user has a provisioned instrument ready for payment.
-            For that, use {{PaymentRequest/hasEnrolledInstrument()}} instead.
           </p>
         </div>
         <p data-tests="payment-request-canmakepayment-method.https.html">
           The {{PaymentRequest/canMakePayment()}} method MUST run the <a>can
-          make payment algorithm</a> with |checkForInstruments| set to false.
-        </p>
-      </section>
-      <section data-dfn-for="PaymentRequest">
-        <h2>
-          <dfn>hasEnrolledInstrument()</dfn> method
-        </h2>
-        <p class="note">
-          The {{PaymentRequest/hasEnrolledInstrument()}} method can be used by
-          the developer to determine if the <a>user agent</a> has support for
-          one of the desired <a>payment methods</a> and if a <a>payment
-          handler</a> has an instrument ready for payment. See
-          [[[#canmakepayment-protections]]].
-        </p>
-        <p data-tests=
-        "payment-request-hasenrolledinstrument-method.https.html">
-          The {{PaymentRequest/hasEnrolledInstrument()}} method MUST run the
-          <a>can make payment algorithm</a> with |checkForInstruments| set to
-          true.
+          make payment algorithm</a>.
         </p>
       </section>
       <section data-dfn-for="PaymentRequest">
@@ -3945,10 +3924,7 @@
         <p>
           The <dfn>can make payment algorithm</dfn> checks if the <a>user
           agent</a> supports making payment with the <a>payment methods</a>
-          with which the {{PaymentRequest}} was constructed. It takes a boolean
-          argument, |checkForInstruments|, that specifies whether the algorithm
-          checks for existence of enrolled instruments in addition to
-          supporting a <a>payment method</a>.
+          with which the {{PaymentRequest}} was constructed.
         </p>
         <ol class="algorithm">
           <li>Let |request:PaymentRequest| be the {{PaymentRequest}} object on
@@ -3958,11 +3934,9 @@
           "[=state/created=]", then return <a>a promise rejected with</a> an
           {{"InvalidStateError"}} {{DOMException}}.
           </li>
-          <li data-tests=
-          "payment-request-hasenrolledinstrument-method-protection.https.html, payment-request-canmakepayment-method-protection.https.html">
-          Optionally, at the <a>top-level browsing context</a>'s discretion,
-          return <a>a promise rejected with</a> a {{"NotAllowedError"}}
-          {{DOMException}}.
+          <li data-tests="">Optionally, at the <a>top-level browsing
+          context</a>'s discretion, return <a>a promise rejected with</a> a
+          {{"NotAllowedError"}} {{DOMException}}.
             <p class="note">
               This allows user agents to apply heuristics to detect and prevent
               abuse of the calling method for fingerprinting purposes, such as
@@ -3985,39 +3959,9 @@
               <li>Let |identifier| be the first element in the |paymentMethod|
               tuple.
               </li>
-              <li>If |checkForInstruments| is false, and the user agent has a
-              <a>payment handler</a> that supports handling payment requests
-              for |identifier|, resolve |hasHandlerPromise| with true and
-              terminate this algorithm.
-              </li>
-              <li>If |checkForInstruments| is true:
-                <ol>
-                  <li>Let |data| be the result of <a data-cite=
-                  "ECMASCRIPT#sec-json.parse">JSON-parsing</a> the second
-                  element in the |paymentMethod| tuple.
-                  </li>
-                  <li>If required by the specification that defines the
-                  |identifier|, then [=converted to an IDL value|convert=]
-                  |data| to an IDL value. Otherwise, [=converted to an IDL
-                  value|convert=] to {{object}}.
-                  </li>
-                  <li>Let |handlers| be a <a>list</a> of registered <a>payment
-                  handlers</a> that are authorized and can handle payment
-                  request for |identifier|.
-                  </li>
-                  <li>For each |handler| in |handlers|:
-                    <ol>
-                      <li>Let |hasEnrolledInstrument| be the result of running
-                      |handler|'s <a>steps to check if a payment can be
-                      made</a> with |data|.
-                      </li>
-                      <li>If |hasEnrolledInstrument| is true, resolve
-                      |hasHandlerPromise| with true and terminate this
-                      algorithm.
-                      </li>
-                    </ol>
-                  </li>
-                </ol>
+              <li>If the user agent has a <a>payment handler</a> that supports
+              handling payment requests for |identifier|, resolve
+              |hasHandlerPromise| with true and terminate this algorithm.
               </li>
             </ol>
           </li>
@@ -4963,19 +4907,14 @@
           <code>canMakePayment()</code> protections
         </h2>
         <p>
-          The {{PaymentRequest/canMakePayment()}} and
-          {{PaymentRequest/hasEnrolledInstrument()}} methods have the potential
-          to expose user information that could be abused for fingerprinting
-          purposes. User agents are expected to protect the user from abuse of
-          the method. For example, user agents can reduce user fingerprinting
-          by:
+          The {{PaymentRequest/canMakePayment()}} method provides feature
+          detection for different payment methods. It may become a
+          fingerprinting vector if in the future, a large number of payment
+          methods are available. purposes. User agents are expected to protect
+          the user from abuse of the method. For example, user agents can
+          reduce user fingerprinting by:
         </p>
         <ul>
-          <li>Allowing the user to configure the user agent to turn off
-          {{PaymentRequest/canMakePayment()}} and
-          {{PaymentRequest/hasEnrolledInstrument()}}, which would return <a>a
-          promise rejected with</a> a {{"NotAllowedError"}} {{DOMException}}.
-          </li>
           <li>Rate-limiting the frequency of calls with different parameters.
           </li>
         </ul>
