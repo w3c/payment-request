@@ -990,18 +990,18 @@
           follows:
         </p>
         <ol class="algorithm">
+          <li>Let |request:PaymentRequest| be [=this=].
+          </li>
           <li data-tests=
           "payment-request-show-method.https.html, show-method-postmessage-manual.https.html">
-          If the [=relevant global object=] of [=this=] does not have
+          If the [=relevant global object=] of [=request=] does not have
           [=transient activation=], return [=a promise rejected with=] with a
           {{"NotAllowedError"}} {{DOMException}}.
           </li>
-          <li>Let |request:PaymentRequest| be [=this=].
-          <li>
-            [=Consume user activation=] of |window|.
+          <li>[=Consume user activation=] of the [=relevant global object=].
           </li>
-          <li>Let |document| be |request|'s [=relevant global object=]'s [=
-          associated `Document`=].
+          <li>Let |document| be |request|'s [=relevant global object=]'s
+          [=associated `Document`=].
           </li>
           <li data-tests="rejects_if_not_active.https.html">If |document| is
           not [=Document/fully active=], then return <a>a promise rejected
