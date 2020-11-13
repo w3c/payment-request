@@ -3089,8 +3089,32 @@
         <h2>
           <dfn>retry()</dfn> method
         </h2>
+        <aside class="note">
+          <p>
+            If a {{PaymentResponse}} is found to be erroneous (e.g., a payment
+            instrument has expired or shipping information is invalid), the
+            {{PaymentResponse/retry()}} method affords the end user the ability
+            to fix input errors and try to get the merchant to processed the
+            payment again. The passed {{PaymentValidationErrors}} serve as
+            hints as to where input errors have occurred in the
+            {{PaymentResponse}}, which the end user needs to correct.
+          </p>
+          <p>
+            However, an end user may decided, upon inspection of the
+            {{PaymentValidationErrors}}, to provide an entirely new set of
+            value for the {{PaymentResponse}}. For example, the user might
+            switch to a an entirely different payment instrument and/or provide
+            an entirely different shipping address.
+          </p>
+          <p>
+            As such, merchants need to be prepared to completely revalidate a
+            {{PaymentResponse}} once the {{PaymentResponse/[[retryPromise]]}}
+            settles.
+          </p>
+        </aside>
         <p data-tests="payment-response/retry-method-manual.https.html">
-          The <code>retry(|errorFields|)</code> method MUST act as follows:
+          The <code>retry(|errorFields:PaymentValidationErrors|)</code> method
+          MUST act as follows:
         </p>
         <ol class="algorithm">
           <li>Let |response:PaymentResponse| be [=this=].
