@@ -3100,11 +3100,17 @@
             {{PaymentResponse}}, which the end user needs to correct.
           </p>
           <p>
-            However, an end user may decides, upon inspection of the
+            However, an end user may decide, upon inspection of the
             {{PaymentValidationErrors}}, to provide an entirely new set of
             values for the {{PaymentResponse}}. For example, the user might
             switch to a an entirely different payment instrument and/or provide
             an entirely different shipping address.
+          </p>
+          <p>
+            As a {{PaymentResponse}} is inherently tied to a particular
+            [=payment handler=] via a {{PaymentRequest}}, it is not possible
+            for the end user to switch to a different [=payment handler=]
+            during {{PaymentResponse/retry()}}.
           </p>
           <p>
             As such, merchants need to be prepared to completely revalidate a
