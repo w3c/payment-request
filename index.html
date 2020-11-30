@@ -920,7 +920,7 @@
           <li>Set |request|.{{PaymentRequest/[[options]]}} to |options|.
           </li>
           <li>Set |request|.{{PaymentRequest/[[state]]}} to
-          "[=state/created=]".
+          "[=PaymentRequest/created=]".
           </li>
           <li>Set |request|.{{PaymentRequest/[[updating]]}} to false.
           </li>
@@ -1023,14 +1023,14 @@
             </p>
           </li>
           <li>If |request|.{{PaymentRequest/[[state]]}} is not
-          "[=state/created=]" then return <a>a promise rejected with</a> an
-          {{"InvalidStateError"}} {{DOMException}}.
+          "[=PaymentRequest/created=]" then return <a>a promise rejected
+          with</a> an {{"InvalidStateError"}} {{DOMException}}.
           </li>
           <li>If the <a>user agent</a>'s <a>payment request is showing</a>
           boolean is true, then:
             <ol>
               <li>Set |request|.{{PaymentRequest/[[state]]}} to
-              "[=state/closed=]".
+              "[=PaymentRequest/closed=]".
               </li>
               <li>Return <a>a promise rejected with</a> an {{"AbortError"}}
               {{DOMException}}.
@@ -1038,7 +1038,7 @@
             </ol>
           </li>
           <li>Set |request|.{{PaymentRequest/[[state]]}} to
-          "[=state/interactive=]".
+          "[=PaymentRequest/interactive=]".
           </li>
           <li>Let |acceptPromise:Promise| be <a>a new promise</a>.
           </li>
@@ -1054,7 +1054,7 @@
               {{DOMException}}.
               </li>
               <li>Set |request|.{{PaymentRequest/[[state]]}} to
-              "[=state/closed=]".
+              "[=PaymentRequest/closed=]".
               </li>
               <li>Return |acceptPromise|.
               </li>
@@ -1092,7 +1092,7 @@
               <li>If conversion results in an <a>exception</a> |error|:
                 <ol>
                   <li>Set |request|.{{PaymentRequest/[[state]]}} to
-                  "[=state/closed=]".
+                  "[=PaymentRequest/closed=]".
                   </li>
                   <li>Reject |acceptPromise| with |error|.
                   </li>
@@ -1122,7 +1122,7 @@
           <li>If |handlers| is empty, then:
             <ol>
               <li>Set |request|.{{PaymentRequest/[[state]]}} to
-              "[=state/closed=]".
+              "[=PaymentRequest/closed=]".
               </li>
               <li>Reject |acceptPromise| with {{"NotSupportedError"}}
               {{DOMException}}.
@@ -1305,7 +1305,7 @@
             and to tear down any user interface that might be shown. The
             {{PaymentRequest/abort()}} can only be called after the
             {{PaymentRequest/show()}} method has been called (see
-            <a>states</a>) and before this instance's
+            [=PaymentRequest/states=]) and before this instance's
             {{PaymentRequest/[[acceptPromise]]}} has been resolved. For
             example, developers might choose to do this if the goods they are
             selling are only available for a limited amount of time. If the
@@ -1335,8 +1335,8 @@
           {{"InvalidStateError"}} {{DOMException}}.
           </li>
           <li>If the value of |request|.{{PaymentRequest/[[state]]}} is not
-          "[=state/interactive=]" then return <a>a promise rejected with</a> an
-          {{"InvalidStateError"}} {{DOMException}}.
+          "[=PaymentRequest/interactive=]" then return <a>a promise rejected
+          with</a> an {{"InvalidStateError"}} {{DOMException}}.
           </li>
           <li>Let |promise:Promise| be <a>a new promise</a>.
           </li>
@@ -1355,7 +1355,7 @@
               {{DOMException}} and abort these steps.
               </li>
               <li>Set |request|.{{PaymentRequest/[[state]]}} to
-              "[=state/closed=]".
+              "[=PaymentRequest/closed=]".
               </li>
               <li>Reject the promise
               |request|.{{PaymentRequest/[[acceptPromise]]}} with an
@@ -1528,47 +1528,48 @@
             </td>
             <td>
               <p>
-                The current <dfn>state</dfn> of the payment request, which
-                transitions from:
+                The current <dfn data-dfn-for="PaymentRequest" data-export=
+                "">state</dfn> of the payment request, which transitions from:
               </p>
               <dl>
                 <dt>
-                  "<dfn data-dfn-for="state">created</dfn>"
+                  "<dfn data-dfn-for="PaymentRequest">created</dfn>"
                 </dt>
                 <dd>
                   The payment request is constructed and has not been presented
                   to the user.
                 </dd>
                 <dt>
-                  "<dfn data-dfn-for="state">interactive</dfn>"
+                  "<dfn data-dfn-for="PaymentRequest">interactive</dfn>"
                 </dt>
                 <dd>
                   The payment request is being presented to the user.
                 </dd>
                 <dt>
-                  "<dfn data-dfn-for="state">closed</dfn>"
+                  "<dfn data-dfn-for="PaymentRequest">closed</dfn>"
                 </dt>
                 <dd>
                   The payment request completed.
                 </dd>
               </dl>
               <p>
-                The <a>state</a> transitions are illustrated in the figure
-                below:
+                The [=PaymentRequest/state=] transitions are illustrated in the
+                figure below:
               </p>
               <figure>
                 <img alt="" src="images/state-transitions.svg" width="518"
                 height="125">
                 <figcaption>
-                  The constructor sets the initial <a>state</a> to
-                  "[=state/created=]". The {{PaymentRequest/show()}} method
-                  changes the <a>state</a> to "[=state/interactive=]". From
-                  there, the {{PaymentRequest/abort()}} method or any other
-                  error can send the <a>state</a> to "[=state/closed=]";
+                  The constructor sets the initial [=PaymentRequest/state=] to
+                  "[=PaymentRequest/created=]". The {{PaymentRequest/show()}}
+                  method changes the [=PaymentRequest/state=] to
+                  "[=PaymentRequest/interactive=]". From there, the
+                  {{PaymentRequest/abort()}} method or any other error can send
+                  the [=PaymentRequest/state=] to "[=PaymentRequest/closed=]";
                   similarly, the <a>user accepts the payment request
                   algorithm</a> and <a>user aborts the payment request
-                  algorithm</a> will change the <a>state</a> to
-                  "[=state/closed=]".
+                  algorithm</a> will change the [=PaymentRequest/state=] to
+                  "[=PaymentRequest/closed=]".
                 </figcaption>
               </figure>
             </td>
@@ -3146,7 +3147,7 @@
           {{DOMException}}.
           </li>
           <li>Set |request|.{{PaymentRequest/[[state]]}} to
-          "[=state/interactive=]".
+          "[=PaymentRequest/interactive=]".
           </li>
           <li>Let |retryPromise:Promise| be <a>a new promise</a>.
           </li>
@@ -3883,7 +3884,7 @@
             <li>Assert: |request| is an instance of {{PaymentRequest}}.
             </li>
             <li>If |request|.{{PaymentRequest/[[state]]}} is not
-            "[=state/interactive=]", then [=exception/throw=] an
+            "[=PaymentRequest/interactive=]", then [=exception/throw=] an
             {{"InvalidStateError"}} {{DOMException}}.
             </li>
             <li>If |request|.{{PaymentRequest/[[updating]]}} is true, then
@@ -3952,8 +3953,8 @@
       </h2>
       <p>
         When the internal slot <a>[[\state]]</a> of a {{PaymentRequest}} object
-        is set to "[=state/interactive=]", the <a>user agent</a> will trigger
-        the following algorithms based on user interaction.
+        is set to "[=PaymentRequest/interactive=]", the <a>user agent</a> will
+        trigger the following algorithms based on user interaction.
       </p>
       <section>
         <h2>
@@ -3969,8 +3970,8 @@
           which the method was called.
           </li>
           <li>If |request|.{{PaymentRequest/[[state]]}} is not
-          "[=state/created=]", then return <a>a promise rejected with</a> an
-          {{"InvalidStateError"}} {{DOMException}}.
+          "[=PaymentRequest/created=]", then return <a>a promise rejected
+          with</a> an {{"InvalidStateError"}} {{DOMException}}.
           </li>
           <li data-tests="">Optionally, at the <a>top-level browsing
           context</a>'s discretion, return <a>a promise rejected with</a> a
@@ -4123,7 +4124,7 @@
               Only one update can take place at a time.
               </li>
               <li>Assert: |request|.{{PaymentRequest/[[state]]}} is
-              "[=state/interactive=]".
+              "[=PaymentRequest/interactive=]".
               </li>
               <li>
                 <a>Fire an event</a> named "<a>paymentmethodchange</a>" at
@@ -4152,7 +4153,7 @@
           one update can take place at a time.
           </li>
           <li>Assert: |request|.{{PaymentRequest/[[state]]}} is
-          "[=state/interactive=]".
+          "[=PaymentRequest/interactive=]".
           </li>
           <li>Let |event:PaymentRequestUpdateEvent| be the result of
           <a>creating an event</a> using the {{PaymentRequestUpdateEvent}}
@@ -4197,7 +4198,7 @@
               <li>Assert: |request|.{{PaymentRequest/[[updating]]}} is false.
               </li>
               <li>Assert: |request|.{{PaymentRequest/[[state]]}} is
-              "[=state/interactive=]".
+              "[=PaymentRequest/interactive=]".
               </li>
               <li>Let |options:PaymentOptions| be
               |request|.{{PaymentRequest/[[options]]}}.
@@ -4266,9 +4267,9 @@
           agent</a> user interface SHOULD ensure that this never occurs.
           </li>
           <li>If |request|.{{PaymentRequest/[[state]]}} is not
-          "[=state/interactive=]", then terminate this algorithm and take no
-          further action. The <a>user agent</a> user interface SHOULD ensure
-          that this never occurs.
+          "[=PaymentRequest/interactive=]", then terminate this algorithm and
+          take no further action. The <a>user agent</a> user interface SHOULD
+          ensure that this never occurs.
           </li>
           <li>If the {{PaymentOptions/requestShipping}} value of
           |request|.{{PaymentRequest/[[options]]}} is true, then if the
@@ -4355,7 +4356,8 @@
           When setting the {{PaymentResponse/payerPhone}} value, the user agent
           SHOULD format the phone number to adhere to [[E.164]].
           </li>
-          <li>Set |request|.{{PaymentRequest/[[state]]}} to "[=state/closed=]".
+          <li>Set |request|.{{PaymentRequest/[[state]]}} to
+          "[=PaymentRequest/closed=]".
           </li>
           <li>If |isRetry| is true, resolve
           |response|.{{PaymentResponse/[[retryPromise]]}} with undefined.
@@ -4380,11 +4382,12 @@
           that the user is interacting with.
           </li>
           <li>If |request|.{{PaymentRequest/[[state]]}} is not
-          "[=state/interactive=]", then terminate this algorithm and take no
-          further action. The <a>user agent</a> user interface SHOULD ensure
-          that this never occurs.
+          "[=PaymentRequest/interactive=]", then terminate this algorithm and
+          take no further action. The <a>user agent</a> user interface SHOULD
+          ensure that this never occurs.
           </li>
-          <li>Set |request|.{{PaymentRequest/[[state]]}} to "[=state/closed=]".
+          <li>Set |request|.{{PaymentRequest/[[state]]}} to
+          "[=PaymentRequest/closed=]".
           </li>
           <li>Set |request|'s <a>payment-relevant browsing context</a>'s
           <a>payment request is showing</a> boolean to false.
@@ -4737,7 +4740,7 @@
                 <a>payment request is showing</a> boolean to false.
                 </li>
                 <li>Set |request|.{{PaymentRequest/[[state]]}} to
-                "[=state/closed=]".
+                "[=PaymentRequest/closed=]".
                 </li>
                 <li>Let |response:PaymentResponse| be
                 |request|.{{PaymentRequest/[[response]]}}.
@@ -4777,10 +4780,10 @@
             event.
           </p>
           <p>
-            Consequently, the {{PaymentRequest}} moves to a "[=state/closed=]"
-            state. The error is signaled to the developer through the rejection
-            of the <a>[[\acceptPromise]]</a>, i.e., the promise returned by
-            {{PaymentRequest/show()}}.
+            Consequently, the {{PaymentRequest}} moves to a
+            "[=PaymentRequest/closed=]" state. The error is signaled to the
+            developer through the rejection of the <a>[[\acceptPromise]]</a>,
+            i.e., the promise returned by {{PaymentRequest/show()}}.
           </p>
           <p>
             Similarly, <a>abort the update</a> occurring during
