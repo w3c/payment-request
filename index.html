@@ -4901,6 +4901,19 @@
           a developer (e.g., the shipping address) without user consent.
         </p>
         <p>
+          In particular, the {{PaymentMethodData}}'s {{PaymentMethodData/data}}
+          and {{PaymentResponse}}'s {{PaymentResponse/details}} members allow
+          for the arbitrary exchange of data. In light of the wide range of
+          data models used by existing payment methods, prescribing data
+          specifics in this API would limit its usefulness. The
+          {{PaymentResponse/details}} member carries data from the payment
+          handler, whether Web-based (as defined by the [[[payment-handler]]])
+          or proprietary. The [=user agent=] MUST NOT support payment handlers
+          unless they include adequate user consent mechanisms (such as
+          awareness of parties to the transaction and mechanisms for
+          demonstrating the intention to share data).
+        </p>
+        <p>
           The <a>user agent</a> MUST NOT share the values of the
           {{PaymentDetailsBase/displayItems}} member or
           {{PaymentDetailsModifier/additionalDisplayItems}} member with a
