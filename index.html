@@ -1699,10 +1699,12 @@
               [[ISO4217]] list (e.g., XBT, XRP, etc.). If the provided code is
               a currency that the browser knows how to display, then an
               implementation will generally display the appropriate currency
-              symbol in the user interface (e.g., "USD" is shown as "$", "GBP"
-              is "£", and the non-standard "XBT" could be shown as "Ƀ"). When a
-              code cannot be matched, the specification recommends browsers
-              show a scarab "¤".
+              symbol in the user interface (e.g., "USD" is shown as U+0024
+              Dollar Sign ($), "GBP" is U+00A3 Pound Sign (£), and the
+              non-standard "XBT" could be shown as U+0243 Latin Capital Letter
+              B with Stroke (Ƀ)). When a code cannot be matched, the
+              specification recommends browsers show a U+0024 Currency Sign
+              (¤).
             </p>
             <p>
               Efforts are underway at ISO to account for digital currencies,
