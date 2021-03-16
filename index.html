@@ -1677,9 +1677,19 @@
             alphabetic code (i.e., the numeric codes are not supported). Their
             canonical form is upper case. However, the set of combinations of
             currency code for which localized currency symbols are available is
-            implementation dependent. Where a localized currency symbol is not
-            available, a user agent SHOULD use U+00A4 (¤) for formatting. User
-            agents MAY format the display of the
+            implementation dependent.
+          </p>
+          <p>
+            Currency symbols can be ambiguous due to use across a number of
+            different currencies (e.g., "$" could mean any of USD, AUD, NZD,
+            CAD, and so on.). When displaying a monetary value, it is
+            RECOMMENDED that user agents display the currency code.
+          </p>
+          <p>
+            Further, when displaying a monetary value, it is OPTIONAL for user
+            agents to display currency symbols. User agent that display
+            currency symbols MAY use U+00A4 (¤) when a currency symbol is not
+            available. User agents MAY format the display of the
             {{PaymentCurrencyAmount/currency}} member to adhere to OS
             conventions (e.g., for localization purposes).
           </p>
