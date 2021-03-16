@@ -345,20 +345,19 @@
             displayItems: [
               {
                 label: "Sub-total",
-                amount: { currency: "USD", value: "55.00" },
+                amount: { currency: "GBP", value: "55.00" },
               },
               {
-                label: "Sales Tax",
-                amount: { currency: "USD", value: "5.00" },
-                type: "tax"
+                label: "Value-Added Tax (VAT)",
+                amount: { currency: "GBP", value: "5.00" },
               },
             ],
             total: {
               label: "Total due",
-              // The total is USD$65.00 here because we need to
+              // The total is GBP£65.00 here because we need to
               // add shipping (below). The selected shipping
-              // costs USD$5.00.
-              amount: { currency: "USD", value: "65.00" },
+              // costs GBP$5.00.
+              amount: { currency: "GBP", value: "65.00" },
             },
           };
         </pre>
@@ -375,14 +374,16 @@
           const shippingOptions = [
             {
               id: "standard",
-              label: "🚛 Ground Shipping (2 days)",
-              amount: { currency: "USD", value: "5.00" },
+              // Shipping by truck, 2 days
+              label: "🚛  Envío por camión (2 dias)",
+              amount: { currency: "EUR", value: "5.00" },
               selected: true,
             },
             {
               id: "drone",
-              label: "🚀 Drone Express (2 hours)",
-              amount: { currency: "USD", value: "25.00" }
+              // Drone shipping, 2 hours
+              label: "🚀 Drone Express (2 horas)",
+              amount: { currency: "EUR", value: "25.00" }
             },
           ];
           Object.assign(details, { shippingOptions });
@@ -401,7 +402,7 @@
           // Certain cards incur a $3.00 processing fee.
           const cardFee = {
             label: "Card processing fee",
-            amount: { currency: "USD", value: "3.00" },
+            amount: { currency: "AUD", value: "3.00" },
           };
 
           // Modifiers apply when the user chooses to pay with
@@ -412,7 +413,7 @@
               supportedMethods: "basic-card",
               total: {
                 label: "Total due",
-                amount: { currency: "USD", value: "68.00" },
+                amount: { currency: "AUD", value: "68.00" },
               },
               data: {
                 supportedNetworks: networks,
@@ -1726,10 +1727,10 @@
           A <a>valid decimal monetary value</a> containing a monetary amount.
         </dd>
       </dl>
-      <pre class="example js" title="How to represent US$55.00">
+      <pre class="example js" title="How to represent 5000 Japanese Yen">
         {
-          "currency": "USD",
-          "value": "55.00"
+          "currency": "YEN",
+          "value": "5000.00"
         }
       </pre>
       <section>
