@@ -1680,18 +1680,18 @@
             implementation dependent.
           </p>
           <p>
-            Currency symbols can be ambiguous due to use across a number of
-            different currencies (e.g., "$" could mean any of USD, AUD, NZD,
-            CAD, and so on.). When displaying a monetary value, it is
-            RECOMMENDED that user agents display the currency code.
+            When displaying a monetary value, it is RECOMMENDED that user
+            agents display the currency code, but it's OPTIONAL for user agents
+            to display a currency symbol. Note that currency symbols can be
+            ambiguous due to use across a number of different currencies (e.g.,
+            "$" could mean any of USD, AUD, NZD, CAD, and so on.). User agent
+            that display currency symbols MAY use U+00A4 (¤) when a currency
+            symbol is not available.
           </p>
           <p>
-            Further, when displaying a monetary value, it is OPTIONAL for user
-            agents to display currency symbols. User agent that display
-            currency symbols MAY use U+00A4 (¤) when a currency symbol is not
-            available. User agents MAY format the display of the
+            User agents MAY format the display of the
             {{PaymentCurrencyAmount/currency}} member to adhere to OS
-            conventions (e.g., for localization purposes).
+            conventions (e.g., for localization purposes)
           </p>
           <div class="note" title=
           "Digital currencies and ISO 4217 currency codes">
