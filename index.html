@@ -1134,10 +1134,14 @@
             </ol>
           </li>
           <li>
-            <p>
+            <p data-cite="html">
               Present a user interface that will allow the user to interact
               with the |handlers|. The user agent SHOULD prioritize the user's
-              preference when presenting payment methods.
+              preference when presenting payment methods. The user interface
+              SHOULD be presented using the language and locale-based
+              formatting that matches the |document|'s [=document
+              element|document element's=] [=Node/language=], if any, or an
+              appropriate fallback locale if that is not available.
             </p>
             <aside class="note" title="Localization of the payment sheet">
               <p>
