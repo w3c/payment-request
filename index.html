@@ -545,8 +545,8 @@
               <li>For each |paymentMethod| of |methodData|:
                 <ol>
                   <li data-tests=
-                  "payment-request-ctor-pmi-handling.https.html">Run the steps
-                  to <a>validate a payment method identifier</a> with
+                  "payment-request-ctor-pmi-handling.https.sub.html">Run the
+                  steps to <a>validate a payment method identifier</a> with
                   |paymentMethod|.{{PaymentMethodData/supportedMethods}}. If it
                   returns false, then throw a {{RangeError}} exception.
                   Optionally, inform the developer that the payment method
@@ -611,7 +611,7 @@
           <li>Process the total:
             <ol>
               <li data-tests=
-              "payment-request-ctor-currency-code-checks.https.html">
+              "payment-request-ctor-currency-code-checks.https.sub.html">
                 <a>Check and canonicalize total amount</a>
                 |details|.{{PaymentDetailsInit/total}}.{{PaymentItem/amount}}.
                 Rethrow any exceptions.
@@ -623,7 +623,7 @@
           |details|.{{PaymentDetailsBase/displayItems}}:
             <ol>
               <li data-tests=
-              "payment-request-ctor-currency-code-checks.https.html">
+              "payment-request-ctor-currency-code-checks.https.sub.html">
                 <a>Check and canonicalize amount</a>
                 |item|.{{PaymentItem/amount}}. Rethrow any exceptions.
               </li>
@@ -648,7 +648,7 @@
                       |modifier| is present, then:
                         <ol>
                           <li data-tests=
-                          "payment-request-ctor-currency-code-checks.https.html">
+                          "payment-request-ctor-currency-code-checks.https.sub.html">
                             <a>Check and canonicalize total amount</a>
                             |modifier|.{{PaymentDetailsModifier/total}}.{{PaymentItem/amount}}.
                             Rethrow any exceptions.
@@ -661,7 +661,7 @@
                       |modifier|.{{PaymentDetailsModifier/additionalDisplayItems}}:
                         <ol>
                           <li data-tests=
-                          "payment-request-ctor-currency-code-checks.https.html">
+                          "payment-request-ctor-currency-code-checks.https.sub.html">
                             <a>Check and canonicalize amount</a>
                             |item|.{{PaymentItem/amount}}. Rethrow any
                             exceptions.
@@ -921,8 +921,7 @@
               </p>
             </aside>
           </li>
-          <li data-tests=
-          "show-method-optional-promise-rejects-manual.https.html">If
+          <li data-tests="show-method-optional-promise-rejects.https.html">If
           |detailsPromise| was passed, then:
             <ol>
               <li>Run the <a>update a <code>PaymentRequest</code>'s details
@@ -1161,7 +1160,7 @@
         <h2>
           <dfn>onpaymentmethodchange</dfn> attribute
         </h2>
-        <p data-tests="onpaymentmenthodchange-attribute.https.html">
+        <p>
           A {{PaymentRequest}}'s {{PaymentRequest/onpaymentmethodchange}}
           attribute is an {{EventHandler}} for a {{PaymentMethodChangeEvent}}
           named "<a>paymentmethodchange</a>".
@@ -3192,7 +3191,7 @@
         way desired, so long as the end result is indistinguishable from the
         result that would be obtained by the specification's algorithms.
       </p>
-      <p data-tests="payment-request-constructor-crash.https.html">
+      <p>
         User agents MAY impose implementation-specific limits on otherwise
         unconstrained inputs, e.g., to prevent denial of service attacks, to
         guard against running out of memory, or to work around
