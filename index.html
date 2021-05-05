@@ -68,6 +68,7 @@
       caniuse: "payment-request",
       lint: {
         "check-punctuation": true,
+        "wpt-tests-exist": true,
       },
       doJsonLd: true,
       xref: "web-platform",
@@ -510,7 +511,7 @@
           <a>PaymentDetailsInit</a> |details|.
         </p>
         <p data-tests=
-        "payment-request-constructor.https.html, payment-request-insecure.http.html">
+        "payment-request-constructor.https.sub.html, payment-request-insecure.http.html">
           The <code><dfn data-lt=
           "PaymentRequest.PaymentRequest()">PaymentRequest(|methodData|,
           |details|)</dfn></code> constructor MUST act as follows:
@@ -921,7 +922,7 @@
             </aside>
           </li>
           <li data-tests=
-          "show-method-optional-promise-rejects-manual.https.html, show-method-optional-promise-resolves-manual.https.html">
+          "show-method-optional-promise-rejects-manual.https.html">
           If |detailsPromise| was passed, then:
             <ol>
               <li>Run the <a>update a <code>PaymentRequest</code>'s details
@@ -1837,7 +1838,7 @@
             during {{PaymentResponse/retry()}}.
           </p>
         </aside>
-        <p data-tests="payment-response/retry-method-manual.https.html">
+        <p>
           The <code>retry(|errorFields:PaymentValidationErrors|)</code> method
           MUST act as follows:
         </p>
@@ -2328,7 +2329,7 @@
             </p>
           </aside>
           <p data-tests=
-          "PaymentRequestUpdateEvent/updatewith-method.https.html, PaymentRequestUpdateEvent/updateWith-incremental-update-manual.https.html">
+          "PaymentRequestUpdateEvent/updatewith-method.https.html">
             The {{PaymentRequestUpdateEvent/updateWith()}} with
             |detailsPromise:Promise| method MUST act as follows:
           </p>
@@ -2519,7 +2520,7 @@
         <h2>
           PaymentRequest updated algorithm
         </h2>
-        <p data-tests="algorithms-manual.https.html">
+        <p>
           The <dfn>PaymentRequest updated algorithm</dfn> is run by other
           algorithms above to <a>fire an event</a> to indicate that a user has
           made a change to a {{PaymentRequest}} called |request| with an event
@@ -2554,7 +2555,7 @@
         <h2>
           User accepts the payment request algorithm
         </h2>
-        <p data-tests="user-accepts-payment-request-algo-manual.https.html">
+        <p>
           The <dfn data-lt="user accepts the payment request">user accepts the
           payment request algorithm</dfn> runs when the user accepts the
           payment request and confirms that they want to pay. It MUST <a>queue
@@ -2755,8 +2756,7 @@
                       <li>For each {{PaymentDetailsModifier}} |modifier| in
                       |modifiers|:
                         <ol>
-                          <li data-tests=
-                          "updateWith-method-pmi-handling-manual.https.html">
+                          <li>
                           Run the steps to <a>validate a payment method
                           identifier</a> with
                           |modifier|.{{PaymentDetailsModifier/supportedMethods}}.
