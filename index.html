@@ -1139,20 +1139,21 @@
               Present a user interface that will allow the user to interact
               with the |handlers|. The user agent SHOULD prioritize the user's
               preference when presenting payment methods. The user interface
-              SHOULD be presented using the language and locale-based
-              formatting that matches the |document|'s [=document
-              element|document element's=] [=Node/language=], if any, or an
-              appropriate fallback locale if that is not available.
+              SHOULD be presented using the language, base direction, and
+              locale-based formatting that matches the |document|'s [=document
+              element|document element's=] [=Node/language=] and
+              {{Document/dir}} attribute, if any, or an appropriate fallback
+              locale if that is not available.
             </p>
             <aside class="note" title="Localization of the payment sheet">
               <p>
-                The API does not provide a way for developers to specify the
-                language in which the payment sheet is presented to end users.
-                As such, user agents will generally present the payment sheet
-                using the user agent's default language. The working group is
-                contemplating adding the ability for developers to specify the
-                language of the payment sheet, and of specific
-                {{PaymentItems}}, in a future version of this API.
+                The API does not currently provide a way for developers to
+                specify the language and base direction in which the payment
+                sheet is presented to end users. As such, user agents will
+                generally present the payment sheet using the user agent's
+                default language. Future versions of this specification may add
+                support for language and direction metadata via mechanism
+                specified in [[STRING-META]] and [[INTERNATIONAL-SPECS]].
               </p>
             </aside>
           </li>
