@@ -240,10 +240,7 @@
         </li>
         <li>The |details|: The details of the transaction, as a
         <a>PaymentDetailsInit</a> dictionary. This includes total cost, and
-        optionally a list of goods or services being purchased. Additionally,
-        it can optionally include "modifiers" to how payments are made. For
-        example, "if you pay with a card belonging to network X, it incurs a
-        US$3.00 processing fee".
+        optionally a list of goods or services being purchased.
         </li>
       </ul>
       <p>
@@ -319,40 +316,6 @@
               amount: { currency: "GBP", value: "65.00" },
             },
           };
-        </pre>
-      </section>
-      <section>
-        <h3>
-          Conditional modifications to payment request
-        </h3>
-        <p>
-          Here we see how to add a processing fee for using a card on a
-          particular network. Notice that it requires recalculating the total.
-        </p>
-        <pre class="example js" title=
-        "Modifying payment request based on card type">
-          // Certain cards incur a $3.00 processing fee.
-          const cardFee = {
-            label: "Card processing fee",
-            amount: { currency: "AUD", value: "3.00" },
-          };
-
-          // Modifiers apply when the user chooses to pay with
-          // a card.
-          const modifiers = [
-            {
-              additionalDisplayItems: [cardFee],
-              supportedMethods: "basic-card",
-              total: {
-                label: "Total due",
-                amount: { currency: "AUD", value: "68.00" },
-              },
-              data: {
-                supportedNetworks: networks,
-              },
-            },
-          ];
-          Object.assign(details, { modifiers });
         </pre>
       </section>
       <section>
@@ -629,68 +592,6 @@
               </li>
             </ol>
           </li>
-          <li>Let |serializedModifierData| be an empty list.
-          </li>
-          <li>Process payment details modifiers:
-            <ol>
-              <li>Let |modifiers| be an empty
-              <code><a>sequence</a></code>&lt;{{PaymentDetailsModifier}}&gt;.
-              </li>
-              <li>If the {{PaymentDetailsBase/modifiers}} member of |details|
-              is present, then:
-                <ol>
-                  <li>Set |modifiers| to
-                  |details|.{{PaymentDetailsBase/modifiers}}.
-                  </li>
-                  <li>For each |modifier| of |modifiers|:
-                    <ol>
-                      <li>If the {{PaymentDetailsModifier/total}} member of
-                      |modifier| is present, then:
-                        <ol>
-                          <li data-tests=
-                          "payment-request-ctor-currency-code-checks.https.sub.html">
-                            <a>Check and canonicalize total amount</a>
-                            |modifier|.{{PaymentDetailsModifier/total}}.{{PaymentItem/amount}}.
-                            Rethrow any exceptions.
-                          </li>
-                        </ol>
-                      </li>
-                      <li>If the
-                      {{PaymentDetailsModifier/additionalDisplayItems}} member
-                      of |modifier| is present, then for each |item| of
-                      |modifier|.{{PaymentDetailsModifier/additionalDisplayItems}}:
-                        <ol>
-                          <li data-tests=
-                          "payment-request-ctor-currency-code-checks.https.sub.html">
-                            <a>Check and canonicalize amount</a>
-                            |item|.{{PaymentItem/amount}}. Rethrow any
-                            exceptions.
-                          </li>
-                        </ol>
-                      </li>
-                      <li>If the {{PaymentDetailsModifier/data}} member of
-                      |modifier| is missing, let |serializedData| be null.
-                      Otherwise, let |serializedData| be the result of
-                      <a>JSON-serializing</a>
-                      |modifier|.{{PaymentDetailsModifier/data}} into a string.
-                      Rethrow any exceptions.
-                      </li>
-                      <li>Add the tuple
-                      (|modifier|.{{PaymentDetailsModifier/supportedMethods}},
-                      |serializedData|) to |serializedModifierData|.
-                      </li>
-                      <li>Remove the {{PaymentDetailsModifier/data}} member of
-                      |modifier|, if it is present.
-                      </li>
-                    </ol>
-                  </li>
-                </ol>
-              </li>
-              <li>Set |details|.{{PaymentDetailsBase/modifiers}} to
-              |modifiers|.
-              </li>
-            </ol>
-          </li>
           <li>Let |request:PaymentRequest| be a new {{PaymentRequest}}.
           </li>
           <li>Set |request|.{{PaymentRequest/[[handler]]}} to `null`.
@@ -701,9 +602,6 @@
           <li>Set |request|.{{PaymentRequest/[[updating]]}} to false.
           </li>
           <li>Set |request|.{{PaymentRequest/[[details]]}} to |details|.
-          </li>
-          <li>Set |request|.{{PaymentRequest/[[serializedModifierData]]}} to
-          |serializedModifierData|.
           </li>
           <li>Set |request|.{{PaymentRequest/[[serializedMethodData]]}} to
           |serializedMethodData|.
@@ -943,104 +841,16 @@
           <li>Set |request|.{{PaymentRequest/[[handler]]}} be the <a>payment
           handler</a> selected by the end-user.
           </li>
-          <li>Let |modifiers:list| be an empty list.
-          </li>
-          <li>For each |tuple| in
-          {{PaymentRequest/[[serializedModifierData]]}}:
-            <ol>
-              <li>If the first element of |tuple| (a <a>PMI</a>) matches the
-              <a>payment method identifier</a> of
-              |request|.{{PaymentRequest/[[handler]]}}, then append the second
-              element of |tuple| (the serialized method data) to |modifiers|.
-              </li>
-            </ol>
-          </li>
           <li>
             <p>
               Pass the [=converted to an IDL value|converted=] second element
-              in the |paymentMethod| tuple and |modifiers|. Optionally, the
-              user agent SHOULD send the appropriate data from |request| to the
-              user-selected <a>payment handler</a> in order to guide the user
-              through the payment process. This includes the various attributes
-              and other internal slots of |request| (some MAY be excluded for
-              privacy reasons where appropriate).
+              in the |paymentMethod| tuple. Optionally, the user agent SHOULD
+              send the appropriate data from |request| to the user-selected
+              <a>payment handler</a> in order to guide the user through the
+              payment process. This includes the various attributes and other
+              internal slots of |request| (some MAY be excluded for privacy
+              reasons where appropriate).
             </p>
-            <p>
-              Handling of multiple applicable modifiers in the
-              {{PaymentRequest/[[serializedModifierData]]}} internal slot is
-              <a>payment handler</a> specific and beyond the scope of this
-              specification. Nevertheless, it is RECOMMENDED that <a>payment
-              handlers</a> use a "last one wins" approach with items in the
-              {{PaymentRequest/[[serializedModifierData]]}} list: that is to
-              say, an item at the end of the list always takes precedence over
-              any item at the beginning of the list (see example below).
-            </p>
-            <aside class="example" title=
-            "Handling of multiple applicable modifiers">
-              <p>
-                This example uses the "basic-card" payment method to from
-                [[[?payment-method-basic-card]]] demonstrate precedence order
-                of {{PaymentRequest/[[serializedModifierData]]}}. The first
-                modifier applies equally to all cards, irrespective of network.
-                The second modifier applies specifically to cards on the "visa"
-                network.
-              </p>
-              <pre class="js">
-                const details = {
-                  total: {
-                    label: "Total due",
-                    amount: { currency: "USD", value: "65.00" },
-                  },
-                };
-                // All cards incur a $3.00 processing fee.
-                const cardFee = {
-                  label: "Card processing fee",
-                  amount: { currency: "USD", value: "3.00" },
-                };
-
-                // But visa card incurs a $1.00 processing fee.
-                const visaFee = {
-                  label: "Visa processing fee",
-                  amount: { currency: "USD", value: "1.00" },
-                };
-
-                // Modifiers apply when the user chooses to pay with
-                // a credit card.
-                details.modifiers = [
-                  // Applies to all cards...
-                  {
-                    additionalDisplayItems: [cardFee],
-                    supportedMethods: "basic-card",
-                    total: {
-                      label: "Total due",
-                      amount: { currency: "USD", value: "53.00" },
-                    },
-                    data: {
-                      supportedNetworks: [], // All networks
-                    },
-                  },
-                  // Applies only to visa cards...
-                  {
-                    additionalDisplayItems: [visaFee],
-                    supportedMethods: "basic-card",
-                    total: {
-                      label: "Total due",
-                      amount: { currency: "USD", value: "51.00" },
-                    },
-                    data: {
-                      supportedNetworks: ["visa"], // Visa network only
-                    },
-                  },
-                ];
-              </pre>
-              <p>
-                If the modifiers array in the example above was to be reversed
-                (i.e., <code class="js">supportedNetworks: []</code> was to
-                come last in the modifiers list), then it would take precedence
-                over the "visa" modifier even though the visa modifier matches
-                visa cards more specifically. This is because "last one wins".
-              </p>
-            </aside>
             <p>
               The |acceptPromise| will later be resolved or rejected by either
               the <a>user accepts the payment request algorithm</a> or the
@@ -1197,30 +1007,12 @@
           <tr>
             <td>
               <dfn data-export="" data-dfn-for=
-              "PaymentRequest">[[\serializedModifierData]]</dfn>
-            </td>
-            <td>
-              A list containing the serialized string form of each
-              {{PaymentDetailsModifier/data}} member for each corresponding
-              item in the sequence
-              {{PaymentRequest/[[details]]}}.{{PaymentDetailsBase/modifier}},
-              or null if no such member was present.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <dfn data-export="" data-dfn-for=
               "PaymentRequest">[[\details]]</dfn>
             </td>
             <td>
               The current {{PaymentDetailsBase}} for the payment request
               initially supplied to the constructor and then updated with calls
-              to {{PaymentRequestUpdateEvent/updateWith()}}. Note that all
-              {{PaymentDetailsModifier/data}} members of
-              {{PaymentDetailsModifier}} instances contained in the
-              {{PaymentDetailsBase/modifiers}} member will be removed, as they
-              are instead stored in serialized form in the
-              {{PaymentRequest/[[serializedModifierData]]}} internal slot.
+              to {{PaymentRequestUpdateEvent/updateWith()}}.
             </td>
           </tr>
           <tr>
@@ -1520,7 +1312,6 @@
         <pre class="idl">
         dictionary PaymentDetailsBase {
           sequence&lt;PaymentItem&gt; displayItems;
-          sequence&lt;PaymentDetailsModifier&gt; modifiers;
         };
         </pre>
         <dl>
@@ -1535,14 +1326,6 @@
               a {{PaymentRequest}}, to verify that the
               {{PaymentDetailsInit/total}} amount is the sum of these items.
             </aside>
-          </dd>
-          <dt>
-            <dfn>modifiers</dfn> member
-          </dt>
-          <dd>
-            A sequence of {{PaymentDetailsModifier}} dictionaries that contains
-            modifiers for particular payment method identifiers. For example,
-            it allows you to adjust the total amount based on payment method.
           </dd>
         </dl>
       </section>
@@ -1637,71 +1420,6 @@
           </dd>
         </dl>
       </section>
-    </section>
-    <section data-dfn-for="PaymentDetailsModifier">
-      <h2>
-        <dfn>PaymentDetailsModifier</dfn> dictionary
-      </h2>
-      <pre class="idl">
-        dictionary PaymentDetailsModifier {
-          required DOMString supportedMethods;
-          PaymentItem total;
-          sequence&lt;PaymentItem&gt; additionalDisplayItems;
-          object data;
-        };
-      </pre>
-      <p>
-        The {{PaymentDetailsModifier}} dictionary provides details that modify
-        the {{PaymentDetailsBase}} based on a <a>payment method identifier</a>.
-        It contains the following members:
-      </p>
-      <dl>
-        <dt>
-          <dfn>supportedMethods</dfn> member
-        </dt>
-        <dd>
-          A <a>payment method identifier</a>. The members of the
-          {{PaymentDetailsModifier}} only apply if the user selects this
-          <a>payment method</a>.
-        </dd>
-        <dt>
-          <dfn>total</dfn> member
-        </dt>
-        <dd>
-          A {{PaymentItem}} value that overrides the
-          {{PaymentDetailsInit/total}} member in the <a>PaymentDetailsInit</a>
-          dictionary for the <a>payment method identifiers</a> of the
-          {{PaymentDetailsModifier/supportedMethods}} member.
-        </dd>
-        <dt>
-          <dfn>additionalDisplayItems</dfn> member
-        </dt>
-        <dd>
-          A sequence of {{PaymentItem}} dictionaries provides additional
-          display items that are appended to the
-          {{PaymentDetailsBase/displayItems}} member in the
-          {{PaymentDetailsBase}} dictionary for the <a>payment method
-          identifiers</a> in the {{PaymentDetailsModifier/supportedMethods}}
-          member. This member is commonly used to add a discount or surcharge
-          line item indicating the reason for the different
-          {{PaymentDetailsModifier/total}} amount for the selected <a>payment
-          method</a> that the user agent MAY display.
-          <p class="note">
-            It is the developer's responsibility to verify that the
-            {{PaymentDetailsModifier/total}} amount is the sum of the
-            {{PaymentDetailsBase/displayItems}} and the
-            {{PaymentDetailsModifier/additionalDisplayItems}}.
-          </p>
-        </dd>
-        <dt>
-          <dfn>data</dfn> member
-        </dt>
-        <dd>
-          An object that provides optional information that might be needed by
-          the supported payment methods. If supplied, it will be
-          <a>JSON-serialized</a>.
-        </dd>
-      </dl>
     </section>
     <section data-dfn-for="PaymentItem">
       <h2>
@@ -2717,8 +2435,6 @@
               an exception, <a>abort the update</a> with |request| and with the
               thrown exception.
               </li>
-              <li>Let |serializedModifierData| be an empty list.
-              </li>
               <li>Validate and canonicalize the details:
                 <ol>
                   <li>If the {{PaymentDetailsUpdate/total}} member of |details|
@@ -2741,68 +2457,6 @@
                         |item|.{{PaymentItem/amount}}. If an exception is
                         thrown, then <a>abort the update</a> with |request| and
                         that exception.
-                      </li>
-                    </ol>
-                  </li>
-                  <li>If the {{PaymentDetailsBase/modifiers}} member of
-                  |details| is present, then:
-                    <ol>
-                      <li>Let |modifiers| be the sequence
-                      |details|.{{PaymentDetailsBase/modifiers}}.
-                      </li>
-                      <li>Let |serializedModifierData| be an empty list.
-                      </li>
-                      <li>For each {{PaymentDetailsModifier}} |modifier| in
-                      |modifiers|:
-                        <ol>
-                          <li>Run the steps to <a>validate a payment method
-                          identifier</a> with
-                          |modifier|.{{PaymentDetailsModifier/supportedMethods}}.
-                          If it returns false, then <a>abort the update</a>
-                          with |request| and a {{RangeError}} exception.
-                          Optionally, inform the developer that the payment
-                          method identifier is invalid.
-                          </li>
-                          <li>If the {{PaymentDetailsModifier/total}} member of
-                          |modifier| is present, then:
-                            <ol>
-                              <li>
-                                <a>Check and canonicalize total amount</a>
-                                |modifier|.{{PaymentDetailsModifier/total}}.{{PaymentItem/amount}}.
-                                If an exception is thrown, then <a>abort the
-                                update</a> with |request| and that exception.
-                              </li>
-                            </ol>
-                          </li>
-                          <li>If the
-                          {{PaymentDetailsModifier/additionalDisplayItems}}
-                          member of |modifier| is present, then for each
-                          {{PaymentItem}} |item| in
-                          |modifier|.{{PaymentDetailsModifier/additionalDisplayItems}}:
-                            <ol>
-                              <li>
-                                <a>Check and canonicalize amount</a>
-                                |item|.{{PaymentItem/amount}}. If an exception
-                                is thrown, then <a>abort the update</a> with
-                                |request| and that exception.
-                              </li>
-                            </ol>
-                          </li>
-                          <li>If the {{PaymentDetailsModifier/data}} member of
-                          |modifier| is missing, let |serializedData| be null.
-                          Otherwise, let |serializedData| be the result of <a>
-                            JSON-serializing</a>
-                            |modifier|.{{PaymentDetailsModifier/data}} into a
-                            string. If <a>JSON-serializing</a> throws an
-                            exception, then <a>abort the update</a> with
-                            |request| and that exception.
-                          </li>
-                          <li>Add |serializedData| to |serializedModifierData|.
-                          </li>
-                          <li>Remove the {{PaymentDetailsModifier/data}} member
-                          of |modifier|, if it is present.
-                          </li>
-                        </ol>
                       </li>
                     </ol>
                   </li>
@@ -2841,19 +2495,6 @@
                       <li>Set
                       |request|.{{PaymentRequest/[[details]]}}.{{PaymentDetailsBase/displayItems}}
                       to |details|.{{PaymentDetailsBase/displayItems}}.
-                      </li>
-                    </ol>
-                  </li>
-                  <li>If the {{PaymentDetailsBase/modifiers}} member of
-                  |details| is present, then:
-                    <ol>
-                      <li>Set
-                      |request|.{{PaymentRequest/[[details]]}}.{{PaymentDetailsBase/modifiers}}
-                      to |details|.{{PaymentDetailsBase/modifiers}}.
-                      </li>
-                      <li>Set
-                      |request|.{{PaymentRequest/[[serializedModifierData]]}}
-                      to |serializedModifierData|.
                       </li>
                     </ol>
                   </li>
@@ -3066,9 +2707,8 @@
         </p>
         <p>
           The <a>user agent</a> MUST NOT share the values of the
-          {{PaymentDetailsBase/displayItems}} member or
-          {{PaymentDetailsModifier/additionalDisplayItems}} member with a
-          third-party <a>payment handler</a> without user consent.
+          {{PaymentDetailsBase/displayItems}} member with a third-party
+          <a>payment handler</a> without user consent.
         </p>
         <p>
           The {{PaymentMethodChangeEvent}} enables the payee to update the
