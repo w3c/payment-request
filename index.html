@@ -68,6 +68,7 @@
       caniuse: "payment-request",
       lint: {
         "check-punctuation": true,
+        "wpt-tests-exist": true,
       },
       doJsonLd: true,
       xref: "web-platform",
@@ -113,53 +114,14 @@
           Changes since last publication
         </h3>
         <p>
-          Substantive changes to the Payment Request API since the 9 July 2018
-          version are as follows. The complete list of changes, including all
-          editorial changes, is viewable in the <a href=
+          This version of the specification removes data features from the API,
+          essentially pushing data details to payment method descriptions. The
+          complete list of changes, including all editorial changes, is
+          viewable in the <a href=
           "https://github.com/w3c/payment-request/commits/gh-pages">commit
           history</a>. Key set of changes are viewable in the <a href=
           "#changelog">Changelog</a>.
         </p>
-        <ul>
-          <li>Added support for notification when the user selects a payment
-          handler, but before confirming payment. This allows merchant to
-          update totals, validate acceptance, etc.
-          </li>
-          <li>Added support to notify site of billing address selection. This
-          allows a merchant to update a total (e.g., for VAT in Europe). To
-          enhance privacy, only some billing address data is returned to the
-          merchant as long as the user has not confirmed payment.
-          </li>
-          <li>Added support for {{PaymentResponse/retry()}} and fine-grain
-          error reporting to the user.
-          </li>
-          <li>Clearer definition of {{PaymentRequest/canMakePayment()}} and
-          worked to align implementations. {{PaymentRequest/canMakePayment()}}
-          does not reveal whether payment handler is primed to pay.
-          </li>
-          <li>Removed `languageCode` and `regionCode` from {{PaymentAddress}}.
-          </li>
-          <li>Removed `currencySystem`.
-          </li>
-          <li>"<a>Payment request is showing</a>" boolean now attached to
-          top-level browsing context. Previously, only a single payment UI was
-          allowed to be shown at a time across the whole browser. This now
-          allows multiple browser tabs to show a payment UI at the same time
-          (for those payment handlers able to support it).
-          </li>
-          <li>Integrated with [[[permissions-policy]]].
-          </li>
-          <li>Defined handling of multiple applicable modifiers.
-          </li>
-          <li>Removed support for merchant validation because of lack of
-          multi-implementer support.
-          </li>
-          <li>Deprecated `allowpaymentrequest` attribute.
-          </li>
-          <li>Calling {{PaymentRequest/show()}} now consumes the user
-          activation.
-          </li>
-        </ul>
       </section>
     </section>
     <section class='informative'>
@@ -278,15 +240,10 @@
         </li>
         <li>The |details|: The details of the transaction, as a
         <a>PaymentDetailsInit</a> dictionary. This includes total cost, and
-        optionally a list of goods or services being purchased, for physical
-        goods, and shipping options. Additionally, it can optionally include
-        "modifiers" to how payments are made. For example, "if you pay with a
-        card belonging to network X, it incurs a US$3.00 processing fee".
-        </li>
-        <li>The |options|: Optionally, a list of things as {{PaymentOptions}}
-        that the site needs to deliver the good or service (e.g., for physical
-        goods, the merchant will typically need a physical address to ship to.
-        For digital goods, an email will usually suffice).
+        optionally a list of goods or services being purchased. Additionally,
+        it can optionally include "modifiers" to how payments are made. For
+        example, "if you pay with a card belonging to network X, it incurs a
+        US$3.00 processing fee".
         </li>
       </ul>
       <p>
@@ -350,42 +307,18 @@
                 label: "Value-Added Tax (VAT)",
                 amount: { currency: "GBP", value: "5.00" },
               },
+              {
+                label: "Standard shipping",
+                amount: { currency: "GBP", value: "5.00" },
+              },
             ],
             total: {
               label: "Total due",
               // The total is GBP£65.00 here because we need to
-              // add shipping (below). The selected shipping
-              // costs GBP£5.00.
+              // add tax and shipping.
               amount: { currency: "GBP", value: "65.00" },
             },
           };
-        </pre>
-      </section>
-      <section>
-        <h3>
-          Adding shipping options
-        </h3>
-        <p>
-          Here we see an example of how to add two shipping options to the
-          |details|.
-        </p>
-        <pre class="example js" title="Adding shipping options">
-          const shippingOptions = [
-            {
-              id: "standard",
-              // Shipping by truck, 2 days
-              label: "🚛  Envío por camión (2 dias)",
-              amount: { currency: "EUR", value: "5.00" },
-              selected: true,
-            },
-            {
-              id: "drone",
-              // Drone shipping, 2 hours
-              label: "🚀 Drone Express (2 horas)",
-              amount: { currency: "EUR", value: "25.00" }
-            },
-          ];
-          Object.assign(details, { shippingOptions });
         </pre>
       </section>
       <section>
@@ -424,30 +357,6 @@
       </section>
       <section>
         <h3>
-          Requesting specific information from the end user
-        </h3>
-        <p>
-          Some financial transactions require a user to provide specific
-          information in order for a merchant to fulfill a purchase (e.g., the
-          user's shipping address, in case a physical good needs to be
-          shipped). To request this information, a merchant can pass a third
-          optional argument (|options|) to the {{PaymentRequest}} constructor
-          indicating what information they require. When the payment request is
-          shown, the user agent will request this information from the end user
-          and return it to the merchant when the user accepts the payment
-          request.
-        </p>
-        <pre class="example js" title="The `options` argument">
-          const options = {
-            requestPayerEmail: false,
-            requestPayerName: true,
-            requestPayerPhone: false,
-            requestShipping: true,
-          }
-        </pre>
-      </section>
-      <section>
-        <h3>
           Constructing a <code>PaymentRequest</code>
         </h3>
         <p>
@@ -459,9 +368,6 @@
           async function doPaymentRequest() {
             try {
               const request = new PaymentRequest(methodData, details, options);
-              // See below for a detailed example of handling these events
-              request.onshippingaddresschange = ev =&gt; ev.updateWith(details);
-              request.onshippingoptionchange = ev =&gt; ev.updateWith(details);
               const response = await request.show();
               await validateResponse(response);
             } catch (err) {
@@ -485,79 +391,6 @@
           // Must be called as a result of a click
           // or some explicit user action.
           doPaymentRequest();
-        </pre>
-      </section>
-      <section>
-        <h3>
-          Handling events and updating the payment request
-        </h3>
-        <p>
-          Prior to the user accepting to make payment, the site is given an
-          opportunity to update the payment request in response to user input.
-          This can include, for example, providing additional shipping options
-          (or modifying their cost), removing items that cannot ship to a
-          particular address, etc.
-        </p>
-        <pre class="example js" title="Registering event handlers">
-          const request = new PaymentRequest(methodData, details, options);
-          // Async update to details
-          request.onshippingaddresschange = ev =&gt; {
-            ev.updateWith(checkShipping(request));
-          };
-          // Sync update to the total
-          request.onshippingoptionchange = ev =&gt; {
-            // selected shipping option
-            const { shippingOption } = request;
-            const newTotal = {
-              currency: "USD",
-              label: "Total due",
-              value: calculateNewTotal(shippingOption),
-            };
-            ev.updateWith({ total: newTotal });
-          };
-          async function checkShipping(request) {
-            try {
-              const json = request.shippingAddress.toJSON();
-
-              await ensureCanShipTo(json);
-              const { shippingOptions, total } = await calculateShipping(json);
-
-              return { shippingOptions, total };
-            } catch (err) {
-              return { error: `Sorry! we can't ship to your address.` };
-            }
-          }
-        </pre>
-      </section>
-      <section>
-        <h3>
-          Fine-grained error reporting
-        </h3>
-        <p>
-          A developer can use the
-          {{PaymentDetailsUpdate/shippingAddressErrors}} member of the
-          {{PaymentDetailsUpdate}} dictionary to indicate that there are
-          validation errors with specific attributes of a {{PaymentAddress}}.
-          The {{PaymentDetailsUpdate/shippingAddressErrors}} member is a
-          {{AddressErrors}} dictionary, whose members specifically demarcate
-          the fields of a <a>physical address</a> that are erroneous while also
-          providing helpful error messages to be displayed to the end user.
-        </p>
-        <pre class="example js">
-          request.onshippingaddresschange = ev =&gt; {
-            ev.updateWith(validateAddress(request.shippingAddress));
-          };
-          function validateAddress(shippingAddress) {
-            const error = "Can't ship to this address.";
-            const shippingAddressErrors = {
-              city: "FarmVille is not a real place.",
-              postalCode: "Unknown postal code for your country.",
-            };
-            // Empty shippingOptions implies that we can't ship
-            // to this address.
-            const shippingOptions = [];
-            return { error, shippingAddressErrors, shippingOptions };
-          }
         </pre>
       </section>
       <section>
@@ -626,8 +459,7 @@
         interface PaymentRequest : EventTarget {
           constructor(
             sequence&lt;PaymentMethodData&gt; methodData,
-            PaymentDetailsInit details,
-            optional PaymentOptions options = {}
+            PaymentDetailsInit details
           );
           [NewObject]
           Promise&lt;PaymentResponse&gt; show(optional Promise&lt;PaymentDetailsUpdate&gt; detailsPromise);
@@ -637,12 +469,7 @@
           Promise&lt;boolean&gt; canMakePayment();
 
           readonly attribute DOMString id;
-          readonly attribute PaymentAddress? shippingAddress;
-          readonly attribute DOMString? shippingOption;
-          readonly attribute PaymentShippingType? shippingType;
 
-          attribute EventHandler onshippingaddresschange;
-          attribute EventHandler onshippingoptionchange;
           attribute EventHandler onpaymentmethodchange;
         };
       </pre>
@@ -656,12 +483,6 @@
           allows developers to exchange information with the <a>user agent</a>
           while the user is providing input (up to the point of user approval
           or denial of the payment request).
-        </p>
-        <p>
-          The {{PaymentRequest/shippingAddress}},
-          {{PaymentRequest/shippingOption}}, and
-          {{PaymentRequest/shippingType}} attributes are populated during
-          processing if the {{PaymentOptions/requestShipping}} member is set.
         </p>
       </div>
       <p>
@@ -686,15 +507,14 @@
         <p>
           The {{PaymentRequest}} is constructed using the supplied sequence of
           <a>PaymentMethodData</a> |methodData| including any <a>payment
-          method</a> specific {{PaymentMethodData/data}}, the
-          <a>PaymentDetailsInit</a> |details|, and the {{PaymentOptions}}
-          |options|.
+          method</a> specific {{PaymentMethodData/data}}, and the
+          <a>PaymentDetailsInit</a> |details|.
         </p>
         <p data-tests=
-        "payment-request-constructor.https.html, payment-request-insecure.http.html">
+        "payment-request-constructor.https.sub.html, payment-request-insecure.http.html">
           The <code><dfn data-lt=
           "PaymentRequest.PaymentRequest()">PaymentRequest(|methodData|,
-          |details|, |options|)</dfn></code> constructor MUST act as follows:
+          |details|)</dfn></code> constructor MUST act as follows:
         </p>
         <ol class="algorithm">
           <li>If the <a>current settings object</a>'s [=environment settings
@@ -725,8 +545,8 @@
               <li>For each |paymentMethod| of |methodData|:
                 <ol>
                   <li data-tests=
-                  "payment-request-ctor-pmi-handling.https.html">Run the steps
-                  to <a>validate a payment method identifier</a> with
+                  "payment-request-ctor-pmi-handling.https.sub.html">Run the
+                  steps to <a>validate a payment method identifier</a> with
                   |paymentMethod|.{{PaymentMethodData/supportedMethods}}. If it
                   returns false, then throw a {{RangeError}} exception.
                   Optionally, inform the developer that the payment method
@@ -791,7 +611,7 @@
           <li>Process the total:
             <ol>
               <li data-tests=
-              "payment-request-ctor-currency-code-checks.https.html">
+              "payment-request-ctor-currency-code-checks.https.sub.html">
                 <a>Check and canonicalize total amount</a>
                 |details|.{{PaymentDetailsInit/total}}.{{PaymentItem/amount}}.
                 Rethrow any exceptions.
@@ -803,51 +623,9 @@
           |details|.{{PaymentDetailsBase/displayItems}}:
             <ol>
               <li data-tests=
-              "payment-request-ctor-currency-code-checks.https.html">
+              "payment-request-ctor-currency-code-checks.https.sub.html">
                 <a>Check and canonicalize amount</a>
                 |item|.{{PaymentItem/amount}}. Rethrow any exceptions.
-              </li>
-            </ol>
-          </li>
-          <li>Let |selectedShippingOption| be null.
-          </li>
-          <li>If the {{PaymentOptions/requestShipping}} member of |options| is
-          present and set to true, process shipping options:
-            <ol>
-              <li>Let |options:PaymentShippingOption| be an empty
-              <code><a>sequence</a></code>&lt;{{PaymentShippingOption}}&gt;.
-              </li>
-              <li>If the {{PaymentDetailsBase/shippingOptions}} member of
-              |details| is present, then:
-                <ol>
-                  <li>Let |seenIDs| be an empty set.
-                  </li>
-                  <li>For each |option:PaymentShippingOption| in
-                  |details|.{{PaymentDetailsBase/shippingOptions}}:
-                    <ol>
-                      <li data-tests=
-                      "payment-request-ctor-currency-code-checks.https.html">
-                        <a>Check and canonicalize amount</a>
-                        |item|.{{PaymentItem/amount}}. Rethrow any exceptions.
-                      </li>
-                      <li>If |seenIDs| contains
-                      |option|.{{PaymentShippingOption/id}}, then throw a
-                      {{TypeError}}. Optionally, inform the developer that
-                      shipping option IDs must be unique.
-                      </li>
-                      <li>Otherwise, append
-                      |option|.{{PaymentShippingOption/id}} to |seenIDs|.
-                      </li>
-                      <li>If |option|.{{PaymentShippingOption/selected}} is
-                      true, then set |selectedShippingOption| to
-                      |option|.{{PaymentShippingOption/id}}.
-                      </li>
-                    </ol>
-                  </li>
-                </ol>
-              </li>
-              <li>Set |details|.{{PaymentDetailsBase/shippingOptions}} to
-              |options|.
               </li>
             </ol>
           </li>
@@ -870,7 +648,7 @@
                       |modifier| is present, then:
                         <ol>
                           <li data-tests=
-                          "payment-request-ctor-currency-code-checks.https.html">
+                          "payment-request-ctor-currency-code-checks.https.sub.html">
                             <a>Check and canonicalize total amount</a>
                             |modifier|.{{PaymentDetailsModifier/total}}.{{PaymentItem/amount}}.
                             Rethrow any exceptions.
@@ -883,7 +661,7 @@
                       |modifier|.{{PaymentDetailsModifier/additionalDisplayItems}}:
                         <ol>
                           <li data-tests=
-                          "payment-request-ctor-currency-code-checks.https.html">
+                          "payment-request-ctor-currency-code-checks.https.sub.html">
                             <a>Check and canonicalize amount</a>
                             |item|.{{PaymentItem/amount}}. Rethrow any
                             exceptions.
@@ -917,8 +695,6 @@
           </li>
           <li>Set |request|.{{PaymentRequest/[[handler]]}} to `null`.
           </li>
-          <li>Set |request|.{{PaymentRequest/[[options]]}} to |options|.
-          </li>
           <li>Set |request|.{{PaymentRequest/[[state]]}} to
           "[=PaymentRequest/created=]".
           </li>
@@ -933,17 +709,6 @@
           |serializedMethodData|.
           </li>
           <li>Set |request|.{{PaymentRequest/[[response]]}} to null.
-          </li>
-          <li>Set the value of |request|'s {{PaymentRequest/shippingOption}}
-          attribute to |selectedShippingOption|.
-          </li>
-          <li>Set the value of the {{PaymentRequest/shippingAddress}} attribute
-          on |request| to null.
-          </li>
-          <li>If |options|.{{PaymentOptions/requestShipping}} is set to true,
-          then set the value of the {{PaymentRequest/shippingType}} attribute
-          on |request| to |options|.{{PaymentOptions/shippingType}}. Otherwise,
-          set it to null.
           </li>
           <li>Return |request|.
           </li>
@@ -1156,9 +921,8 @@
               </p>
             </aside>
           </li>
-          <li data-tests=
-          "show-method-optional-promise-rejects-manual.https.html, show-method-optional-promise-resolves-manual.https.html">
-          If |detailsPromise| was passed, then:
+          <li data-tests="show-method-optional-promise-rejects.https.html">If
+          |detailsPromise| was passed, then:
             <ol>
               <li>Run the <a>update a <code>PaymentRequest</code>'s details
               algorithm</a> with |detailsPromise|, |request|, and null.
@@ -1394,67 +1158,9 @@
       </section>
       <section data-dfn-for="PaymentRequest">
         <h2>
-          <dfn>shippingAddress</dfn> attribute
-        </h2>
-        <p data-tests="shipping-address-changed-manual.https.html">
-          A {{PaymentRequest}}'s {{PaymentRequest/shippingAddress}} attribute
-          is populated when the user provides a shipping address. It is null by
-          default. When a user provides a shipping address, the <a>shipping
-          address changed algorithm</a> runs.
-        </p>
-      </section>
-      <section data-dfn-for="PaymentRequest">
-        <h2>
-          <dfn>shippingType</dfn> attribute
-        </h2>
-        <p data-tests="payment-request-shippingType-attribute.https.html">
-          A {{PaymentRequest}}'s {{PaymentRequest/shippingType}} attribute is
-          the type of shipping used to fulfill the transaction. Its value is
-          either a {{PaymentShippingType}} enum value, or null if none is
-          provided by the developer during
-          [=PaymentRequest.PaymentRequest()|construction=] (see
-          {{PaymentOptions}}'s {{PaymentOptions/shippingType}} member).
-        </p>
-      </section>
-      <section data-dfn-for="PaymentRequest">
-        <h2>
-          <dfn>onshippingaddresschange</dfn> attribute
-        </h2>
-        <p data-tests=
-        "shipping-address-changed-manual.https.html, payment-request-onshippingaddresschange-attribute.https.html, algorithms-manual.https.html#shipping-address-changed-algo">
-          A {{PaymentRequest}}'s {{PaymentRequest/onshippingaddresschange}}
-          attribute is an {{EventHandler}} for a {{PaymentRequestUpdateEvent}}
-          named <a>shippingaddresschange</a>.
-        </p>
-      </section>
-      <section data-dfn-for="PaymentRequest">
-        <h2>
-          <dfn>shippingOption</dfn> attribute
-        </h2>
-        <p data-tests=
-        "payment-request-shippingOption-attribute.https.html, change-shipping-option-manual.https.html">
-          A {{PaymentRequest}}'s {{PaymentRequest/shippingOption}} attribute is
-          populated when the user chooses a shipping option. It is null by
-          default. When a user chooses a shipping option, the <a>shipping
-          option changed algorithm</a> runs.
-        </p>
-      </section>
-      <section data-dfn-for="PaymentRequest">
-        <h2>
-          <dfn>onshippingoptionchange</dfn> attribute
-        </h2>
-        <p data-tests=
-        "payment-request-onshippingoptionchange-attribute.https.html">
-          A {{PaymentRequest}}'s {{PaymentRequest/onshippingoptionchange}}
-          attribute is an {{EventHandler}} for a {{PaymentRequestUpdateEvent}}
-          named <a>shippingoptionchange</a>.
-        </p>
-      </section>
-      <section data-dfn-for="PaymentRequest">
-        <h2>
           <dfn>onpaymentmethodchange</dfn> attribute
         </h2>
-        <p data-tests="onpaymentmenthodchange-attribute.https.html">
+        <p>
           A {{PaymentRequest}}'s {{PaymentRequest/onpaymentmethodchange}}
           attribute is an {{EventHandler}} for a {{PaymentMethodChangeEvent}}
           named "<a>paymentmethodchange</a>".
@@ -1515,15 +1221,6 @@
               {{PaymentDetailsBase/modifiers}} member will be removed, as they
               are instead stored in serialized form in the
               {{PaymentRequest/[[serializedModifierData]]}} internal slot.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <dfn data-export="" data-dfn-for=
-              "PaymentRequest">[[\options]]</dfn>
-            </td>
-            <td>
-              The {{PaymentOptions}} supplied to the constructor.
             </td>
           </tr>
           <tr>
@@ -1823,7 +1520,6 @@
         <pre class="idl">
         dictionary PaymentDetailsBase {
           sequence&lt;PaymentItem&gt; displayItems;
-          sequence&lt;PaymentShippingOption&gt; shippingOptions;
           sequence&lt;PaymentDetailsModifier&gt; modifiers;
         };
         </pre>
@@ -1838,41 +1534,6 @@
               It is the developer's responsibility, when generating or updating
               a {{PaymentRequest}}, to verify that the
               {{PaymentDetailsInit/total}} amount is the sum of these items.
-            </aside>
-          </dd>
-          <dt>
-            <dfn>shippingOptions</dfn> member
-          </dt>
-          <dd>
-            <p>
-              A sequence containing the different shipping options for the user
-              to choose from.
-            </p>
-            <p data-tests=
-            "change-shipping-option-select-last-manual.https.html">
-              If an item in the sequence has the
-              {{PaymentShippingOption/selected}} member set to true, then this
-              is the shipping option that will be used by default and
-              {{PaymentRequest/shippingOption}} will be set to the
-              {{PaymentShippingOption/id}} of this option without running the
-              <a>shipping option changed algorithm</a>. If more than one item
-              in the sequence has {{PaymentShippingOption/selected}} set to
-              true, then the <a>user agent</a> selects the last one in the
-              sequence.
-            </p>
-            <p>
-              The {{PaymentDetailsBase/shippingOptions}} member is only used if
-              the {{PaymentRequest}} was constructed with {{PaymentOptions}}
-              and {{PaymentOptions/requestShipping}} set to true.
-            </p>
-            <aside class="note">
-              If the sequence has an item with the
-              {{PaymentShippingOption/selected}} member set to true, then
-              authors are responsible for ensuring that the
-              {{PaymentDetailsInit/total}} member includes the cost of the
-              shipping option. This is because no <a>shippingoptionchange</a>
-              event will be fired for this option unless the user selects an
-              alternative option first.
             </aside>
           </dd>
           <dt>
@@ -1938,10 +1599,7 @@
         </h2>
         <pre class="idl">
           dictionary PaymentDetailsUpdate : PaymentDetailsBase {
-            DOMString error;
             PaymentItem total;
-            AddressErrors shippingAddressErrors;
-            PayerErrors payerErrors;
             object paymentMethodErrors;
           };
         </pre>
@@ -1956,21 +1614,6 @@
         </p>
         <dl>
           <dt>
-            <dfn>error</dfn> member
-          </dt>
-          <dd>
-            A human-readable string that explains why goods cannot be shipped
-            to the chosen shipping address, or any other reason why no shipping
-            options are available. When the payment request is updated using
-            {{PaymentRequestUpdateEvent/updateWith()}}, the
-            {{PaymentDetailsUpdate}} can contain a message in the
-            {{PaymentDetailsUpdate/error}} member that will be displayed to the
-            user if the {{PaymentDetailsUpdate}} indicates that there are no
-            valid {{PaymentDetailsBase/shippingOptions}} (and the
-            {{PaymentRequest}} was constructed with the
-            {{PaymentOptions/requestShipping}} option set to true).
-          </dd>
-          <dt>
             <dfn>total</dfn> member
           </dt>
           <dd>
@@ -1981,19 +1624,6 @@
               {{PaymentDetailsUpdate/total}}.{{PaymentItem/amount}}.{{PaymentCurrencyAmount/value}}
               is a negative number.
             </p>
-          </dd>
-          <dt>
-            <dfn>shippingAddressErrors</dfn> member
-          </dt>
-          <dd>
-            Represents validation errors with the shipping address that is
-            associated with the <a>potential event target</a>.
-          </dd>
-          <dt>
-            <dfn>payerErrors</dfn> member
-          </dt>
-          <dd>
-            Validation errors related to the <a>payer details</a>.
           </dd>
           <dt>
             <dfn>paymentMethodErrors</dfn> member
@@ -2073,131 +1703,6 @@
         </dd>
       </dl>
     </section>
-    <section data-dfn-for="PaymentShippingType">
-      <h2>
-        <dfn>PaymentShippingType</dfn> enum
-      </h2>
-      <pre class="idl">
-        enum PaymentShippingType {
-          "shipping",
-          "delivery",
-          "pickup"
-        };
-      </pre>
-      <dl>
-        <dt>
-          "<dfn>shipping</dfn>"
-        </dt>
-        <dd>
-          This is the default and refers to the address being collected as the
-          destination for shipping.
-        </dd>
-        <dt>
-          "<dfn>delivery</dfn>"
-        </dt>
-        <dd>
-          This refers to the address being collected as the destination for
-          delivery. This is commonly faster than shipping. For example, it
-          might be used for food delivery.
-        </dd>
-        <dt>
-          "<dfn>pickup</dfn>"
-        </dt>
-        <dd>
-          This refers to the address being collected as part of a service
-          pickup. For example, this could be the address for laundry pickup.
-        </dd>
-      </dl>
-    </section>
-    <section data-dfn-for="PaymentOptions">
-      <h2>
-        <dfn>PaymentOptions</dfn> dictionary
-      </h2>
-      <pre class="idl">
-        dictionary PaymentOptions {
-          boolean requestPayerName = false;
-          boolean requestBillingAddress = false;
-          boolean requestPayerEmail = false;
-          boolean requestPayerPhone = false;
-          boolean requestShipping = false;
-          PaymentShippingType shippingType = "shipping";
-        };
-      </pre>
-      <p class="note">
-        The {{PaymentOptions}} dictionary is passed to the {{PaymentRequest}}
-        constructor and provides information about the options desired for the
-        payment request.
-      </p>
-      <dl>
-        <dt>
-          <dfn>requestBillingAddress</dfn> member
-        </dt>
-        <dd>
-          A boolean that indicates whether the <a>user agent</a> SHOULD collect
-          and return the billing address associated with a <a>payment
-          method</a> (e.g., the billing address associated with a credit card).
-          Typically, the user agent will return the billing address as part of
-          the {{PaymentMethodChangeEvent}}'s
-          {{PaymentMethodChangeEvent/methodDetails}}. A merchant can use this
-          information to, for example, calculate tax in certain jurisdictions
-          and update the displayed total. See below for privacy considerations
-          regarding <a href="#user-info">exposing user information</a>.
-        </dd>
-        <dt>
-          <dfn>requestPayerName</dfn> member
-        </dt>
-        <dd>
-          A boolean that indicates whether the <a>user agent</a> SHOULD collect
-          and return the payer's name as part of the payment request. For
-          example, this would be set to true to allow a merchant to make a
-          booking in the payer's name.
-        </dd>
-        <dt>
-          <dfn>requestPayerEmail</dfn> member
-        </dt>
-        <dd>
-          A boolean that indicates whether the <a>user agent</a> SHOULD collect
-          and return the payer's email address as part of the payment request.
-          For example, this would be set to true to allow a merchant to email a
-          receipt.
-        </dd>
-        <dt>
-          <dfn>requestPayerPhone</dfn> member
-        </dt>
-        <dd>
-          A boolean that indicates whether the <a>user agent</a> SHOULD collect
-          and return the payer's phone number as part of the payment request.
-          For example, this would be set to true to allow a merchant to phone a
-          customer with a billing enquiry.
-        </dd>
-        <dt>
-          <dfn>requestShipping</dfn> member
-        </dt>
-        <dd>
-          A boolean that indicates whether the <a>user agent</a> SHOULD collect
-          and return a shipping address as part of the payment request. For
-          example, this would be set to true when physical goods need to be
-          shipped by the merchant to the user. This would be set to false for
-          the purchase of digital goods.
-        </dd>
-        <dt>
-          <dfn>shippingType</dfn> member
-        </dt>
-        <dd>
-          A {{PaymentShippingType}} enum value. Some transactions require an
-          address for delivery but the term "shipping" isn't appropriate. For
-          example, "pizza delivery" not "pizza shipping" and "laundry pickup"
-          not "laundry shipping". If {{PaymentOptions/requestShipping}} is set
-          to true, then the {{PaymentOptions/shippingType}} member can
-          influence the way the <a>user agent</a> presents the user interface
-          for gathering the shipping address.
-          <p>
-            The {{PaymentOptions/shippingType}} member only affects the user
-            interface for the payment request.
-          </p>
-        </dd>
-      </dl>
-    </section>
     <section data-dfn-for="PaymentItem">
       <h2>
         <dfn>PaymentItem</dfn> dictionary
@@ -2238,799 +1743,6 @@
           shipping or tax amounts that depend upon selection of shipping
           address or shipping option. <a>User agents</a> MAY indicate pending
           fields in the user interface for the payment request.
-        </dd>
-      </dl>
-    </section>
-    <section>
-      <h2>
-        Physical addresses
-      </h2>
-      <p>
-        A <dfn>physical address</dfn> is composed of the following parts.
-      </p>
-      <dl data-sort="">
-        <dt>
-          <dfn>Country</dfn>
-        </dt>
-        <dd>
-          The country corresponding to the address.
-        </dd>
-        <dt>
-          <dfn>Address line</dfn>
-        </dt>
-        <dd>
-          The most specific part of the address. It can include, for example, a
-          street name, a house number, apartment number, a rural delivery
-          route, descriptive instructions, or a post office box number.
-        </dd>
-        <dt>
-          <dfn>Region</dfn>
-        </dt>
-        <dd>
-          The top level administrative subdivision of the country. For example,
-          this can be a state, a province, an oblast, or a prefecture.
-        </dd>
-        <dt>
-          <dfn>City</dfn>
-        </dt>
-        <dd>
-          The city/town portion of the address.
-        </dd>
-        <dt>
-          <dfn>Dependent locality</dfn>
-        </dt>
-        <dd>
-          The dependent locality or sublocality within a city. For example,
-          neighborhoods, boroughs, districts, or UK dependent localities.
-        </dd>
-        <dt>
-          <dfn>Postal code</dfn>
-        </dt>
-        <dd>
-          The postal code or ZIP code, also known as PIN code in India.
-        </dd>
-        <dt>
-          <dfn>Sorting code</dfn>
-        </dt>
-        <dd>
-          The sorting code system, such as the CEDEX system used in France.
-        </dd>
-        <dt>
-          <dfn>Organization</dfn>
-        </dt>
-        <dd>
-          The organization, firm, company, or institution at the address.
-        </dd>
-        <dt>
-          <dfn>Recipient</dfn>
-        </dt>
-        <dd>
-          The name of the recipient or contact person at the address.
-        </dd>
-        <dt>
-          <dfn>Phone number</dfn>
-        </dt>
-        <dd>
-          The phone number of the recipient or contact person at the address.
-        </dd>
-      </dl>
-      <section data-dfn-for="PaymentAddress">
-        <h2>
-          <dfn>PaymentAddress</dfn> interface
-        </h2>
-        <pre class="idl">
-          [SecureContext, Exposed=(Window)]
-          interface PaymentAddress {
-            [Default] object toJSON();
-            readonly attribute DOMString city;
-            readonly attribute DOMString country;
-            readonly attribute DOMString dependentLocality;
-            readonly attribute DOMString organization;
-            readonly attribute DOMString phone;
-            readonly attribute DOMString postalCode;
-            readonly attribute DOMString recipient;
-            readonly attribute DOMString region;
-            readonly attribute DOMString sortingCode;
-            readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
-          };
-        </pre>
-        <p>
-          The {{PaymentAddress}} interface represents a <a>physical
-          address</a>.
-        </p>
-        <aside class="note" title="What happened to regionCode?">
-          <p>
-            This specification once included a <code>regionCode</code>
-            attribute that provided developers with a [[?ISO3166-2]] country
-            subdivision code element representation of an address' region
-            (e.g., "US-WY" for Wyoming). Unfortunately, the attribute was
-            removed due to lack of implementations. The Web Payments Working
-            Group fully recognizes the importance of the
-            <code>regionCode</code> attribute and is <a href=
-            "https://github.com/w3c/payment-request/issues/663">committed to
-            bringing the attribute back</a> in a future revision of this
-            specification.
-          </p>
-        </aside>
-        <section>
-          <h2>
-            Internal constructor
-          </h2>
-          <p>
-            The steps to <dfn data-lt=
-            "PaymentAddress.PaymentAddress()">internally construct a
-            `PaymentAddress`</dfn> with an optional {{AddressInit}}
-            |details:AddressInit| are given by the following algorithm:
-          </p>
-          <ol>
-            <li>Let |address:PaymentAddress| be a new instance of
-            {{PaymentAddress}}.
-            </li>
-            <li>Set |address|.{{PaymentAddress/[[addressLine]]}} to the empty
-            frozen array, and all other [=PaymentAddress slots|internal slots=]
-            to the empty string.
-            </li>
-            <li>If |details| was not passed, return |address|.
-            </li>
-            <li>If |details|.{{AddressInit/country}} is present and not the
-            empty string:
-              <ol>
-                <li>Set |country| the result of <a>strip leading and trailing
-                ASCII whitespace</a> from |details|.{{AddressInit/country}} and
-                performing <a>ASCII uppercase</a>.
-                </li>
-                <li>If |country| is not a valid [[ISO3166-1]] alpha-2 code,
-                throw a {{RangeError}} exception.
-                </li>
-                <li>Set |address|.{{PaymentAddress/[[country]]}} to |country|.
-                </li>
-              </ol>
-            </li>
-            <li>Let |cleanAddressLines:list| be an empty list.
-            </li>
-            <li>If |details|.{{AddressInit/addressLine}} is present, then for
-            each |item| in |details|.{{AddressInit/addressLine}}:
-              <ol>
-                <li>
-                  <a>Strip leading and trailing ASCII whitespace</a> from
-                  |item| and append the result into |cleanAddressLines|.
-                </li>
-              </ol>
-            </li>
-            <li>Set |address|.{{PaymentAddress/[[addressLine]]}} to a new
-            frozen array created from |cleanAddressLines|.
-            </li>
-            <li>If |details|.{{AddressInit/region}} is present, <a>strip
-            leading and trailing ASCII whitespace</a> from
-            |details|.{{AddressInit/region}} and set
-            |address|.{{PaymentAddress/[[region]]}} to the result.
-            </li>
-            <li>If |details|.{{AddressInit/city}} is present, <a>strip leading
-            and trailing ASCII whitespace</a> from
-            |details|.{{AddressInit/city}} and set
-            |address|.{{PaymentAddress/[[city]]}} to the result.
-            </li>
-            <li>If |details|.{{AddressInit/dependentLocality}} is present, <a>
-              strip leading and trailing ASCII whitespace</a> from
-              |details|.{{AddressInit/dependentLocality}} and set
-              |address|.{{PaymentAddress/[[dependentLocality]]}} to the result.
-            </li>
-            <li>If |details|.{{AddressInit/postalCode}} is present, <a>strip
-            leading and trailing ASCII whitespace</a> from
-            |details|.{{AddressInit/postalCode}} and set
-            |address|.{{PaymentAddress/[[postalCode]]}} to the result.
-            </li>
-            <li>If |details|.{{AddressInit/sortingCode}} is present, <a>strip
-            leading and trailing ASCII whitespace</a> from
-            |details|.{{AddressInit/sortingCode}} and set
-            |address|.{{PaymentAddress/[[sortingCode]]}} to the result.
-            </li>
-            <li>If |details|.{{AddressInit/organization}} is present, <a>strip
-            leading and trailing ASCII whitespace</a> from
-            |details|.{{AddressInit/organization}} and set
-            |address|.{{PaymentAddress/[[organization]]}} to the result.
-            </li>
-            <li>If |details|.{{AddressInit/recipient}} is present, <a>strip
-            leading and trailing ASCII whitespace</a> from
-            |details|.{{AddressInit/recipient}} and set
-            |address|.{{PaymentAddress/[[recipient]]}} to the result.
-            </li>
-            <li>If |details|.{{AddressInit/phone}} is present, <a>strip leading
-            and trailing ASCII whitespace</a> from
-            |details|.{{AddressInit/phone}} and set
-            |address|.{{PaymentAddress/[[phone]]}} to the result.
-            </li>
-            <li>Return |address|.
-            </li>
-          </ol>
-        </section>
-        <section>
-          <h2>
-            <dfn>country</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>country</a> of the address. When getting, returns
-            the value of the {{PaymentAddress}}'s
-            {{PaymentAddress/[[country]]}} internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>addressLine</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>address line</a> of the address. When getting,
-            returns the value of the {{PaymentAddress}}'s
-            {{PaymentAddress/[[addressLine]]}} internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>region</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>region</a> of the address. When getting, returns
-            the value of the {{PaymentAddress}}'s {{PaymentAddress/[[region]]}}
-            internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>city</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>city</a> of the address. When getting, returns
-            the value of the {{PaymentAddress}}'s {{PaymentAddress/[[city]]}}
-            internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>dependentLocality</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>dependent locality</a> of the address. When
-            getting, returns the value of the {{PaymentAddress}}'s
-            {{PaymentAddress/[[dependentLocality]]}} internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>postalCode</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>postal code</a> of the address. When getting,
-            returns the value of the {{PaymentAddress}}'s
-            {{PaymentAddress/[[postalCode]]}} internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>sortingCode</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>sorting code</a> of the address. When getting,
-            returns the value of the {{PaymentAddress}}'s
-            {{PaymentAddress/[[sortingCode]]}} internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>organization</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>organization</a> of the address. When getting,
-            returns the value of the {{PaymentAddress}}'s
-            {{PaymentAddress/[[organization]]}} internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>recipient</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>recipient</a> of the address. When getting,
-            returns the value of the {{PaymentAddress}}'s
-            {{PaymentAddress/[[recipient]]}} internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>phone</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>phone number</a> of the address. When getting,
-            returns the value of the {{PaymentAddress}}'s
-            {{PaymentAddress/[[phone]]}} internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn data-lt="PaymentAddress slots" data-lt-nodefault="">Internal
-            slots</dfn>
-          </h2>
-          <table class="data">
-            <tr>
-              <th>
-                Internal slot
-              </th>
-              <th>
-                Description (<em>non-normative</em>)
-              </th>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\country]]</dfn>
-              </td>
-              <td>
-                A <a>country</a> as an [[ISO3166-1]] alpha-2 code stored in its
-                canonical uppercase form or the empty string. For example,
-                "JP".
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\addressLine]]</dfn>
-              </td>
-              <td>
-                A frozen array, possibly of zero length, representing an
-                <a>address line</a>.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\region]]</dfn>
-              </td>
-              <td>
-                A <a>region</a> as a <a>country subdivision name</a> or the
-                empty string, such as "Victoria", representing the state of
-                Victoria in Australia.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\city]]</dfn>
-              </td>
-              <td>
-                A <a>city</a> or the empty string.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\dependentLocality]]</dfn>
-              </td>
-              <td>
-                A <a>dependent locality</a> or the empty string.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\postalCode]]</dfn>
-              </td>
-              <td>
-                A <a>postal code</a> or the empty string.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\sortingCode]]</dfn>
-              </td>
-              <td>
-                A <a>sorting code</a> or the empty string.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\organization]]</dfn>
-              </td>
-              <td>
-                An <a>organization</a> or the empty string.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\recipient]]</dfn>
-              </td>
-              <td>
-                A <a>recipient</a> or the empty string.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\phone]]</dfn>
-              </td>
-              <td>
-                A <a>phone number</a> or the empty string.
-              </td>
-            </tr>
-          </table>
-        </section>
-      </section>
-      <section data-dfn-for="AddressInit">
-        <h2>
-          <dfn>AddressInit</dfn> dictionary
-        </h2>
-        <pre class="idl">
-          dictionary AddressInit {
-            DOMString country = "";
-            sequence&lt;DOMString&gt; addressLine = [];
-            DOMString region = "";
-            DOMString city = "";
-            DOMString dependentLocality = "";
-            DOMString postalCode = "";
-            DOMString sortingCode = "";
-            DOMString organization = "";
-            DOMString recipient = "";
-            DOMString phone = "";
-          };
-        </pre>
-        <p>
-          An {{AddressInit}} is passed when
-          [=PaymentAddress.PaymentAddress()|constructing=] a
-          {{PaymentAddress}}. Its members are as follows.
-        </p>
-        <dl data-dfn-for="AddressInit" data-sort="ascending">
-          <dt>
-            <dfn>country</dfn> member
-          </dt>
-          <dd>
-            An <a>country</a>, represented as a [[ISO3166-1]] country code.
-          </dd>
-          <dt>
-            <dfn>addressLine</dfn> member
-          </dt>
-          <dd>
-            An <a>address line</a>, represented as a sequence.
-          </dd>
-          <dt>
-            <dfn>region</dfn> member
-          </dt>
-          <dd>
-            A <a>region</a>.
-          </dd>
-          <dt>
-            <dfn>city</dfn> member
-          </dt>
-          <dd>
-            A <a>city</a>.
-          </dd>
-          <dt>
-            <dfn>dependentLocality</dfn> member
-          </dt>
-          <dd>
-            A <a>dependent locality</a>.
-          </dd>
-          <dt>
-            <dfn>postalCode</dfn> member
-          </dt>
-          <dd>
-            A <a>postal code</a>.
-          </dd>
-          <dt>
-            <dfn>sortingCode</dfn> member
-          </dt>
-          <dd>
-            A <a>sorting code</a>.
-          </dd>
-          <dt>
-            <dfn>organization</dfn> member
-          </dt>
-          <dd>
-            An <a>organization</a>.
-          </dd>
-          <dt>
-            <dfn>recipient</dfn> member
-          </dt>
-          <dd>
-            A <a>recipient</a>. Under certain circumstances, this member may
-            contain multiline information. For example, it might contain "care
-            of" information.
-          </dd>
-          <dt>
-            <dfn>phone</dfn> member
-          </dt>
-          <dd>
-            A <a>phone number</a>, optionally structured to adhere to
-            [[E.164]].
-          </dd>
-        </dl>
-      </section>
-      <section data-dfn-for="AddressErrors">
-        <h2>
-          <dfn>AddressErrors</dfn> dictionary
-        </h2>
-        <pre class="idl">
-          dictionary AddressErrors {
-            DOMString addressLine;
-            DOMString city;
-            DOMString country;
-            DOMString dependentLocality;
-            DOMString organization;
-            DOMString phone;
-            DOMString postalCode;
-            DOMString recipient;
-            DOMString region;
-            DOMString sortingCode;
-          };
-        </pre>
-        <p>
-          The members of the {{AddressErrors}} dictionary represent validation
-          errors with specific parts of a <a>physical address</a>. Each
-          dictionary member has a dual function: firstly, its presence denotes
-          that a particular part of an address is suffering from a validation
-          error. Secondly, the string value allows the developer to describe
-          the validation error (and possibly how the end user can fix the
-          error).
-        </p>
-        <p class="note">
-          Developers need to be aware that users might not have the ability to
-          fix certain parts of an address. As such, they need to be mindful not
-          to ask the user to fix things they might not have control over.
-        </p>
-        <dl>
-          <dt>
-            <dfn>addressLine</dfn> member
-          </dt>
-          <dd>
-            Denotes that the <a>address line</a> has a validation error. In the
-            user agent's UI, this member corresponds to the input field that
-            provided the {{PaymentAddress}}'s {{PaymentAddress/addressLine}}
-            attribute's value.
-          </dd>
-          <dt>
-            <dfn>city</dfn> member
-          </dt>
-          <dd>
-            Denotes that the <a>city</a> has a validation error. In the user
-            agent's UI, this member corresponds to the input field that
-            provided the {{PaymentAddress}}'s {{PaymentAddress/city}}
-            attribute's value.
-          </dd>
-          <dt>
-            <dfn>country</dfn> member
-          </dt>
-          <dd>
-            Denotes that the <a>country</a> has a validation error. In the user
-            agent's UI, this member corresponds to the input field that
-            provided the {{PaymentAddress}}'s {{PaymentAddress/country}}
-            attribute's value.
-          </dd>
-          <dt>
-            <dfn>dependentLocality</dfn> member
-          </dt>
-          <dd>
-            Denotes that the <a>dependent locality</a> has a validation error.
-            In the user agent's UI, this member corresponds to the input field
-            that provided the {{PaymentAddress}}'s
-            {{PaymentAddress/dependentLocality}} attribute's value.
-          </dd>
-          <dt>
-            <dfn>organization</dfn> member
-          </dt>
-          <dd>
-            Denotes that the <a>organization</a> has a validation error. In the
-            user agent's UI, this member corresponds to the input field that
-            provided the {{PaymentAddress}}'s {{PaymentAddress/organization}}
-            attribute's value.
-          </dd>
-          <dt>
-            <dfn>phone</dfn> member
-          </dt>
-          <dd>
-            Denotes that the <a>phone number</a> has a validation error. In the
-            user agent's UI, this member corresponds to the input field that
-            provided the {{PaymentAddress}}'s {{PaymentAddress/phone}}
-            attribute's value.
-          </dd>
-          <dt>
-            <dfn>postalCode</dfn> member
-          </dt>
-          <dd>
-            Denotes that the <a>postal code</a> has a validation error. In the
-            user agent's UI, this member corresponds to the input field that
-            provided the {{PaymentAddress}}'s {{PaymentAddress/postalCode}}
-            attribute's value.
-          </dd>
-          <dt>
-            <dfn>recipient</dfn> member
-          </dt>
-          <dd>
-            Denotes that the <a>recipient</a> has a validation error. In the
-            user agent's UI, this member corresponds to the input field that
-            provided the {{PaymentAddress}}'s {{PaymentAddress/addressLine}}
-            attribute's value.
-          </dd>
-          <dt>
-            <dfn>region</dfn> member
-          </dt>
-          <dd>
-            Denotes that the <a>region</a> has a validation error. In the user
-            agent's UI, this member corresponds to the input field that
-            provided the {{PaymentAddress}}'s {{PaymentAddress/region}}
-            attribute's value.
-          </dd>
-          <dt>
-            <dfn>sortingCode</dfn> member
-          </dt>
-          <dd>
-            The <a>sorting code</a> has a validation error. In the user agent's
-            UI, this member corresponds to the input field that provided the
-            {{PaymentAddress}}'s {{PaymentAddress/sortingCode}} attribute's
-            value.
-          </dd>
-        </dl>
-      </section>
-      <section>
-        <h2>
-          Creating a `PaymentAddress` from user-provided input
-        </h2>
-        <p>
-          The steps to <dfn data-export="">create a `PaymentAddress` from
-          user-provided input</dfn> are given by the following algorithm. The
-          algorithm takes a <a>list</a> |redactList|.
-        </p>
-        <div class="note" title=
-        "Privacy of recipient information (the redactList)">
-          <p>
-            The |redactList| optionally gives user agents the possibility to
-            limit the amount of personal information about the recipient that
-            the API shares with the merchant.
-          </p>
-          <p>
-            For merchants, the resulting {{PaymentAddress}} object provides
-            enough information to, for example, calculate shipping costs, but,
-            in most cases, not enough information to physically locate and
-            uniquely identify the recipient.
-          </p>
-          <p>
-            Unfortunately, even with the |redactList|, recipient anonymity
-            cannot be assured. This is because in some countries postal codes
-            are so fine-grained that they can uniquely identify a recipient.
-          </p>
-        </div>
-        <ol>
-          <li>Let |details:AddressInit| be a newly created {{AddressInit}}
-          dictionary.
-          </li>
-          <li>If "addressLine" is not in |redactList|, set
-          |details|.{{AddressInit/addressLine}} to the result of splitting the
-          user-provided address line into a <a>list</a>.
-            <aside class="note">
-              How to split an address line is locale dependent and beyond the
-              scope of this specification.
-            </aside>
-          </li>
-          <li>If "country" is not in |redactList|, set
-          |details|.{{AddressInit/country}} to the user-provided country as an
-          upper case [[ISO3166-1]] alpha-2 code.
-          </li>
-          <li>If "phone" is not in |redactList|, set
-          |details|.{{AddressInit/phone}} to the user-provided phone number.
-            <aside class="note" title="Privacy of phone number">
-              <p>
-                To maintain users' privacy, implementers need to be mindful
-                that a shipping address's associated phone number might be
-                different or the same from that of the end user's. As such,
-                implementers need to take care to not provide the end user's
-                phone number to the merchant without the end user's consent.
-              </p>
-            </aside>
-          </li>
-          <li>If "city" is not in |redactList|, set
-          |details|.{{AddressInit/city}} to the user-provided city, or to the
-          empty string if none was provided.
-          </li>
-          <li>If "dependentLocality" is not in |redactList|, set |
-          details|.{{AddressInit/dependentLocality}} to the user-provided
-          dependent locality.
-          </li>
-          <li>If "organization" is not in |redactList|, set
-          |details|.{{AddressInit/organization}} to the user-provided recipient
-          organization.
-          </li>
-          <li>If "postalCode" is not in |redactList|, set
-          |details|.{{AddressInit/postalCode}} to the user-provided postal
-          code. Optionally, redact part of
-          |details|.{{AddressInit/postalCode}}.
-            <div class="note" title="Privacy of Postal Codes">
-              <p>
-                <a>Postal codes</a> in certain countries can be so specific as
-                to uniquely identify an individual. This being a privacy
-                concern, some user agents only return the part of a postal code
-                that they deem sufficient for a merchant to calculate shipping
-                costs. This varies across countries and regions, and so the
-                choice to redact part, or all, of the postal code is left to
-                the discretion of implementers in the interest of protecting
-                users' privacy.
-              </p>
-            </div>
-          </li>
-          <li>If "recipient" is not in |redactList|, set
-          |details|.{{AddressInit/recipient}} to the user-provided recipient of
-          the transaction.
-          </li>
-          <li>
-            <p>
-              If "region" is not in |redactList|:
-            </p>
-            <p class="note" title=
-            "Countries where regions are not commonly used">
-              In some countries (e.g., Belgium) it is uncommon for users to
-              include a <a>region</a> as part of a <a>physical address</a>
-              (even if all the regions of a country are part of [[ISO3166-2]]).
-              As such, when the user agent knows that the user is inputting the
-              address for a particular country, it might not provide a field
-              for the user to input a <a>region</a>. In such cases, the user
-              agent returns an empty string for both {{PaymentAddress}}'s
-              {{PaymentAddress/region}} attribute - but the address can still
-              serve its intended purpose (e.g., be valid for shipping or
-              billing purposes).
-            </p>
-            <ol>
-              <li>Set |details|.{{AddressInit/region}} to the user-provided
-              region.
-              </li>
-            </ol>
-          </li>
-          <li>If "sortingCode" is not in |redactList|, set
-          |details|.{{AddressInit/sortingCode}} to the user-provided sorting
-          code.
-          </li>
-          <li>[=PaymentAddress.PaymentAddress()|Internally construct a new
-          `PaymentAddress`=] with |details| and return the result.
-          </li>
-        </ol>
-      </section>
-    </section>
-    <section data-dfn-for="PaymentShippingOption">
-      <h2>
-        <dfn>PaymentShippingOption</dfn> dictionary
-      </h2>
-      <pre class="idl">
-        dictionary PaymentShippingOption {
-          required DOMString id;
-          required DOMString label;
-          required PaymentCurrencyAmount amount;
-          boolean selected = false;
-        };
-      </pre>
-      <p>
-        The {{PaymentShippingOption}} dictionary has members describing a
-        shipping option. Developers can provide the user with one or more
-        shipping options by calling the
-        {{PaymentRequestUpdateEvent/updateWith()}} method in response to a
-        change event.
-      </p>
-      <dl>
-        <dt>
-          <dfn>id</dfn> member
-        </dt>
-        <dd>
-          A string identifier used to reference this {{PaymentShippingOption}}.
-          It MUST be unique for a given {{PaymentRequest}}.
-        </dd>
-        <dt>
-          <dfn>label</dfn> member
-        </dt>
-        <dd>
-          A human-readable string description of the item. The <a>user
-          agent</a> SHOULD use this string to display the shipping option to
-          the user.
-        </dd>
-        <dt>
-          <dfn>amount</dfn> member
-        </dt>
-        <dd>
-          A {{PaymentCurrencyAmount}} containing the monetary amount for the
-          item.
-        </dd>
-        <dt>
-          <dfn>selected</dfn> member
-        </dt>
-        <dd>
-          A boolean. When true, it indicates that this is the default selected
-          {{PaymentShippingOption}} in a sequence. <a>User agents</a> SHOULD
-          display this option by default in the user interface.
         </dd>
       </dl>
     </section>
@@ -3081,18 +1793,11 @@
           readonly attribute DOMString requestId;
           readonly attribute DOMString methodName;
           readonly attribute object details;
-          readonly attribute PaymentAddress? shippingAddress;
-          readonly attribute DOMString? shippingOption;
-          readonly attribute DOMString? payerName;
-          readonly attribute DOMString? payerEmail;
-          readonly attribute DOMString? payerPhone;
 
           [NewObject]
           Promise&lt;undefined&gt; complete(optional PaymentComplete result = "unknown");
           [NewObject]
           Promise&lt;undefined&gt; retry(optional PaymentValidationErrors errorFields = {});
-
-          attribute EventHandler onpayerdetailchange;
         };
       </pre>
       <p class="note">
@@ -3132,7 +1837,7 @@
             during {{PaymentResponse/retry()}}.
           </p>
         </aside>
-        <p data-tests="payment-response/retry-method-manual.https.html">
+        <p>
           The <code>retry(|errorFields:PaymentValidationErrors|)</code> method
           MUST act as follows:
         </p>
@@ -3168,35 +1873,6 @@
           </li>
           <li>If |errorFields:PaymentValidationErrors| was passed:
             <ol>
-              <li>Optionally, show a warning in the developer console if any of
-              the following are true:
-                <ol>
-                  <li>
-                  |request|.{{PaymentRequest/[[options]]}}.{{PaymentOptions/requestPayerName}}
-                  is false, and
-                  |errorFields|.{{PaymentValidationErrors/payer}}.{{PayerErrors/name}}
-                  is present.
-                  </li>
-                  <li>
-                  |request|.{{PaymentRequest/[[options]]}}.{{PaymentOptions/requestPayerEmail}}
-                  is false, and
-                  |errorFields|.{{PaymentValidationErrors/payer}}.{{PayerErrors/email}}
-                  is present.
-                  </li>
-                  <li>
-                  |request|.{{PaymentRequest/[[options]]}}.{{PaymentOptions/requestPayerPhone}}
-                  is false, and
-                  |errorFields|.{{PaymentValidationErrors/payer}}.{{PayerErrors/phone}}
-                  is present.
-                  </li>
-                  <li>
-                  |request|.{{PaymentRequest/[[options]]}}.{{PaymentOptions/requestShipping}}
-                  is false, and
-                  |errorFields|.{{PaymentValidationErrors/shippingAddress}} is
-                  present.
-                  </li>
-                </ol>
-              </li>
               <li data-tests=
               "PaymentValidationErrors/retry-shows-error-member-manual.https.html">
               If
@@ -3272,26 +1948,11 @@
           </h3>
           <pre class="idl">
             dictionary PaymentValidationErrors {
-              PayerErrors payer;
-              AddressErrors shippingAddress;
               DOMString error;
               object paymentMethod;
             };
           </pre>
           <dl>
-            <dt>
-              <dfn>payer</dfn> member
-            </dt>
-            <dd>
-              Validation errors related to the <a>payer details</a>.
-            </dd>
-            <dt>
-              <dfn>shippingAddress</dfn> member
-            </dt>
-            <dd>
-              Represents validation errors with the {{PaymentResponse}}'s
-              {{PaymentResponse/shippingAddress}}.
-            </dd>
             <dt>
               <dfn>error</dfn> member
             </dt>
@@ -3313,63 +1974,6 @@
               {{BasicCardErrors}}.</span>
             </dd>
           </dl>
-        </section>
-        <section data-dfn-for="PayerErrors">
-          <h3>
-            <dfn>PayerErrors</dfn> dictionary
-          </h3>
-          <pre class="idl">
-          dictionary PayerErrors {
-            DOMString email;
-            DOMString name;
-            DOMString phone;
-          };
-          </pre>
-          <p>
-            The {{PayerErrors}} is used to represent validation errors with one
-            or more <a>payer details</a>.
-          </p>
-          <p>
-            <dfn>Payer details</dfn> are any of the payer's name, payer's phone
-            number, and payer's email.
-          </p>
-          <dl>
-            <dt>
-              <dfn>email</dfn> member
-            </dt>
-            <dd>
-              Denotes that the payer's email suffers from a validation error.
-              In the user agent's UI, this member corresponds to the input
-              field that provided the {{PaymentResponse}}'s
-              {{PaymentResponse/payerEmail}} attribute's value.
-            </dd>
-            <dt>
-              <dfn>name</dfn> member
-            </dt>
-            <dd>
-              Denotes that the payer's name suffers from a validation error. In
-              the user agent's UI, this member corresponds to the input field
-              that provided the {{PaymentResponse}}'s
-              {{PaymentResponse/payerName}} attribute's value.
-            </dd>
-            <dt>
-              <dfn>phone</dfn> member
-            </dt>
-            <dd>
-              Denotes that the payer's phone number suffers from a validation
-              error. In the user agent's UI, this member corresponds to the
-              input field that provided the {{PaymentResponse}}'s
-              {{PaymentResponse/payerPhone}} attribute's value.
-            </dd>
-          </dl>
-          <pre class="example js" title="Payer-related validation errors">
-            const payer = {
-              email: "The domain is invalid.",
-              phone: "Unknown country code.",
-              name: "Not in database.",
-            };
-            await response.retry({ payer });
-          </pre>
         </section>
       </section>
       <section>
@@ -3408,66 +2012,6 @@
             <a>details</a> object.
           </p>
         </aside>
-      </section>
-      <section>
-        <h2>
-          <dfn>shippingAddress</dfn> attribute
-        </h2>
-        <p data-tests=
-        "payment-response/shippingAddress-attribute-manual.https.html">
-          If the {{PaymentOptions/requestShipping}} member was set to true in
-          the {{PaymentOptions}} passed to the {{PaymentRequest}} constructor,
-          then {{PaymentRequest/shippingAddress}} will be the full and final
-          shipping address chosen by the user.
-        </p>
-      </section>
-      <section>
-        <h2>
-          <dfn>shippingOption</dfn> attribute
-        </h2>
-        <p data-tests=
-        "payment-response/shippingOption-attribute-manual.https.html">
-          If the {{PaymentOptions/requestShipping}} member was set to true in
-          the {{PaymentOptions}} passed to the {{PaymentRequest}} constructor,
-          then {{PaymentRequest/shippingOption}} will be the
-          {{PaymentShippingOption/id}} attribute of the selected shipping
-          option.
-        </p>
-      </section>
-      <section>
-        <h2>
-          <dfn>payerName</dfn> attribute
-        </h2>
-        <p data-tests="payment-response/payerName-attribute-manual.https.html">
-          If the {{PaymentOptions/requestPayerName}} member was set to true in
-          the {{PaymentOptions}} passed to the {{PaymentRequest}} constructor,
-          then {{PaymentResponse/payerName}} will be the name provided by the
-          user.
-        </p>
-      </section>
-      <section>
-        <h2>
-          <dfn>payerEmail</dfn> attribute
-        </h2>
-        <p data-tests=
-        "payment-response/payerEmail-attribute-manual.https.html">
-          If the {{PaymentOptions/requestPayerEmail}} member was set to true in
-          the {{PaymentOptions}} passed to the {{PaymentRequest}} constructor,
-          then {{PaymentResponse/payerEmail}} will be the email address chosen
-          by the user.
-        </p>
-      </section>
-      <section>
-        <h2>
-          <dfn>payerPhone</dfn> attribute
-        </h2>
-        <p data-tests=
-        "payment-response/payerPhone-attribute-manual.https.html">
-          If the {{PaymentOptions/requestPayerPhone}} member was set to true in
-          the {{PaymentOptions}} passed to the {{PaymentRequest}} constructor,
-          then {{PaymentResponse/payerPhone}} will be the phone number chosen
-          by the user.
-        </p>
       </section>
       <section>
         <h2>
@@ -3553,14 +2097,6 @@
             </ol>
           </li>
         </ol>
-      </section>
-      <section data-dfn-for="PaymentResponse">
-        <h2>
-          <dfn>onpayerdetailchange</dfn> attribute
-        </h2>
-        <p>
-          Allows a developer to handle "<a>payerdetailchange</a>" events.
-        </p>
       </section>
       <section>
         <h2>
@@ -3654,49 +2190,6 @@
             <th>
               Target
             </th>
-          </tr>
-          <tr>
-            <td>
-              <code><dfn>shippingaddresschange</dfn></code>
-            </td>
-            <td>
-              {{PaymentRequestUpdateEvent}}
-            </td>
-            <td>
-              The user provides a new shipping address.
-            </td>
-            <td>
-              {{PaymentRequest}}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <code><dfn>shippingoptionchange</dfn></code>
-            </td>
-            <td>
-              {{PaymentRequestUpdateEvent}}
-            </td>
-            <td>
-              The user chooses a new shipping option.
-            </td>
-            <td>
-              {{PaymentRequest}}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <code><dfn>payerdetailchange</dfn></code>
-            </td>
-            <td>
-              {{PaymentRequestUpdateEvent}}
-            </td>
-            <td>
-              The user changes the payer name, the payer email, or the payer
-              phone (see <a>payer detail changed algorithm</a>).
-            </td>
-            <td>
-              {{PaymentResponse}}
-            </td>
           </tr>
           <tr>
             <td>
@@ -3829,50 +2322,13 @@
               changes made by the end user through the UI), developers need to
               immediately call {{PaymentRequestUpdateEvent/updateWith()}}.
             </p>
-            <pre class="example js" title=
-            "how to use `updateWith()` correctly.">
-              // ❌ Bad - this won't work!
-              request.onshippingaddresschange = async ev =&gt; {
-                // await goes to next tick, and updateWith()
-                // was not called.
-                const details = await getNewDetails(oldDetails);
-                // 💥 So it's now too late! updateWith()
-                // throws "InvalidStateError".
-                ev.updateWith(details);
-              };
-
-              // ✅ Good - UI will wait.
-              request.onshippingaddresschange = ev =&gt; {
-                // Calling updateWith() with a promise is ok 👍
-                const promiseForNewDetails = getNewDetails(oldDetails);
-                ev.updateWith(promiseForNewDetails);
-              };
-            </pre>
             <p>
               Additionally, {{PaymentRequestUpdateEvent/[[waitForUpdate]]}}
               prevents reuse of {{PaymentRequestUpdateEvent}}.
             </p>
-            <pre class="example js" title="can only call `updateWith()` once">
-              // ❌ Bad - calling updateWith() twice doesn't work!
-              request.addEventListener("shippingaddresschange", ev =&gt; {
-                ev.updateWith(details); // this is ok.
-                // 💥 [[waitForUpdate]] is true, throws "InvalidStateError".
-                ev.updateWith(otherDetails);
-              });
-
-              // ❌ Bad - this won't work either!
-              request.addEventListener("shippingaddresschange", async ev =&gt; {
-                const p = Promise.resolve({ ...details });
-                ev.updateWith(p);
-                await p;
-                // 💥 Only one call to updateWith() is allowed,
-                // so the following throws "InvalidStateError"
-                ev.updateWith({ ...newDetails });
-              });
-            </pre>
           </aside>
           <p data-tests=
-          "PaymentRequestUpdateEvent/updatewith-method.https.html, PaymentRequestUpdateEvent/updateWith-incremental-update-manual.https.html">
+          "PaymentRequestUpdateEvent/updatewith-method.https.html">
             The {{PaymentRequestUpdateEvent/updateWith()}} with
             |detailsPromise:Promise| method MUST act as follows:
           </p>
@@ -4022,88 +2478,6 @@
       </section>
       <section>
         <h2>
-          Shipping address changed algorithm
-        </h2>
-        <p data-tests=
-        "algorithms-manual.https.html#shipping-address-changed-algo">
-          The <dfn>shipping address changed algorithm</dfn> runs when the user
-          provides a new shipping address. It MUST run the following steps:
-        </p>
-        <ol class="algorithm">
-          <li>Let |request:PaymentRequest| be the {{PaymentRequest}} object
-          that the user is interacting with.
-          </li>
-          <li>
-            <a>Queue a task</a> on the <a>user interaction task source</a> to
-            run the following steps:
-            <ol>
-              <li>
-                <div class="note" title="Privacy of recipient information">
-                  <p>
-                    The |redactList| limits the amount of personal information
-                    about the recipient that the API shares with the merchant.
-                  </p>
-                  <p>
-                    For merchants, the resulting {{PaymentAddress}} object
-                    provides enough information to, for example, calculate
-                    shipping costs, but, in most cases, not enough information
-                    to physically locate and uniquely identify the recipient.
-                  </p>
-                  <p>
-                    Unfortunately, even with the |redactList|, recipient
-                    anonymity cannot be assured. This is because in some
-                    countries postal codes are so fine-grained that they can
-                    uniquely identify a recipient.
-                  </p>
-                </div>
-              </li>
-              <li>Let |redactList:list| be the empty list. Set |redactList| to
-              « "organization", "phone", "recipient", "addressLine" ».
-              </li>
-              <li>Let |address:PaymentAddress| be the result of running the
-              steps to <a>create a `PaymentAddress` from user-provided
-              input</a> with |redactList|.
-              </li>
-              <li>Set |request|.{{PaymentRequest/shippingAddress}} to
-              |address|.
-              </li>
-              <li>Run the <a>PaymentRequest updated algorithm</a> with
-              |request| and "<a>shippingaddresschange</a>".
-              </li>
-            </ol>
-          </li>
-        </ol>
-      </section>
-      <section>
-        <h2>
-          Shipping option changed algorithm
-        </h2>
-        <p data-tests=
-        "algorithms-manual.https.html#shipping-option-changed-algo">
-          The <dfn>shipping option changed algorithm</dfn> runs when the user
-          chooses a new shipping option. It MUST run the following steps:
-        </p>
-        <ol class="algorithm">
-          <li>Let |request:PaymentRequest| be the {{PaymentRequest}} object
-          that the user is interacting with.
-          </li>
-          <li>
-            <a>Queue a task</a> on the <a>user interaction task source</a> to
-            run the following steps:
-            <ol>
-              <li>Set the {{PaymentRequest/shippingOption}} attribute on
-              |request| to the <code>id</code> string of the
-              {{PaymentShippingOption}} provided by the user.
-              </li>
-              <li>Run the <a>PaymentRequest updated algorithm</a> with
-              |request| and "<a>shippingoptionchange</a>".
-              </li>
-            </ol>
-          </li>
-        </ol>
-      </section>
-      <section>
-        <h2>
           Payment method changed algorithm
         </h2>
         <p>
@@ -4114,15 +2488,6 @@
           |methodName|, which is a DOMString that represents the <a>payment
           method identifier</a> of the <a>payment handler</a> the user is
           interacting with.
-        </p>
-        <p class="note" title=
-        "Privacy of information shared by paymentmethodchange event">
-          When the user selects or changes a payment method (e.g., a credit
-          card), the {{PaymentMethodChangeEvent}} includes redacted billing
-          address information for the purpose of performing tax calculations.
-          Redacted attributes include, but are not limited to, <a>address
-          line</a>, <a>dependent locality</a>, <a>organization</a>, <a>phone
-          number</a>, and <a>recipient</a>.
         </p>
         <ol class="algorithm">
           <li>Let |request:PaymentRequest| be the {{PaymentRequest}} object
@@ -4154,7 +2519,7 @@
         <h2>
           PaymentRequest updated algorithm
         </h2>
-        <p data-tests="algorithms-manual.https.html">
+        <p>
           The <dfn>PaymentRequest updated algorithm</dfn> is run by other
           algorithms above to <a>fire an event</a> to indicate that a user has
           made a change to a {{PaymentRequest}} called |request| with an event
@@ -4187,83 +2552,9 @@
       </section>
       <section>
         <h2>
-          Payer detail changed algorithm
-        </h2>
-        <p>
-          The user agent MUST run the <dfn>payer detail changed algorithm</dfn>
-          when the user changes the |payer name|, or the |payer email|, or the
-          |payer phone| in the user interface:
-        </p>
-        <ol class="algorithm">
-          <li>Let |request:PaymentRequest| be the {{PaymentRequest}} object
-          that the user is interacting with.
-          </li>
-          <li>If |request|.{{PaymentRequest/[[response]]}} is null, return.
-          </li>
-          <li>Let |response:PaymentResponse| be
-          |request|.{{PaymentRequest/[[response]]}}.
-          </li>
-          <li>
-            <a>Queue a task</a> on the <a>user interaction task source</a> to
-            run the following steps:
-            <ol>
-              <li>Assert: |request|.{{PaymentRequest/[[updating]]}} is false.
-              </li>
-              <li>Assert: |request|.{{PaymentRequest/[[state]]}} is
-              "[=PaymentRequest/interactive=]".
-              </li>
-              <li>Let |options:PaymentOptions| be
-              |request|.{{PaymentRequest/[[options]]}}.
-              </li>
-              <li>If |payer name| changed and
-              |options|.{{PaymentOptions/requestPayerName}} is true:
-                <ol>
-                  <li>Set |response|.{{PaymentResponse/payerName}} attribute to
-                  |payer name|.
-                  </li>
-                </ol>
-              </li>
-              <li>If |payer email| changed and
-              |options|.{{PaymentOptions/requestPayerEmail}} is true:
-                <ol>
-                  <li>Set |response|.{{PaymentResponse/payerEmail}} to |payer
-                  email|.
-                  </li>
-                </ol>
-              </li>
-              <li>If |payer phone| changed and
-              |options|.{{PaymentOptions/requestPayerPhone}} is true:
-                <ol>
-                  <li>Set |response|.{{PaymentResponse/payerPhone}} to |payer
-                  phone|.
-                  </li>
-                </ol>
-              </li>
-              <li>Let |event:PaymentRequestUpdateEvent| be the result of
-              <a>creating an event</a> using {{PaymentRequestUpdateEvent}}.
-              </li>
-              <li>Initialize |event|'s {{Event/type}} attribute to
-              "<a>payerdetailchange</a>".
-              </li>
-              <li>
-                <a>Dispatch</a> |event| at |response|.
-              </li>
-              <li>If |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} is
-              true, disable any part of the user interface that could cause
-              another change to the payer details to be fired.
-              </li>
-              <li>Otherwise, set
-              |event|.{{PaymentRequestUpdateEvent/[[waitForUpdate]]}} to true.
-              </li>
-            </ol>
-          </li>
-        </ol>
-      </section>
-      <section>
-        <h2>
           User accepts the payment request algorithm
         </h2>
-        <p data-tests="user-accepts-payment-request-algo-manual.https.html">
+        <p>
           The <dfn data-lt="user accepts the payment request">user accepts the
           payment request algorithm</dfn> runs when the user accepts the
           payment request and confirms that they want to pay. It MUST <a>queue
@@ -4282,13 +2573,6 @@
           "[=PaymentRequest/interactive=]", then terminate this algorithm and
           take no further action. The <a>user agent</a> user interface SHOULD
           ensure that this never occurs.
-          </li>
-          <li>If the {{PaymentOptions/requestShipping}} value of
-          |request|.{{PaymentRequest/[[options]]}} is true, then if the
-          {{PaymentRequest/shippingAddress}} attribute of |request| is null or
-          if the {{PaymentRequest/shippingOption}} attribute of |request| is
-          null, then terminate this algorithm and take no further action. The
-          <a>user agent</a> SHOULD ensure that this never occurs.
           </li>
           <li>Let |isRetry:boolean| be true if
           |request|.{{PaymentRequest/[[response]]}} is not null, false
@@ -4323,50 +2607,6 @@
           <li>Set the {{PaymentResponse/details}} attribute value of |response|
           to an object resulting from running the |handler|'s <a>steps to
           respond to a payment request</a>.
-          </li>
-          <li>If the {{PaymentOptions/requestShipping}} value of
-          |request|.{{PaymentRequest/[[options]]}} is false, then set the
-          {{PaymentResponse/shippingAddress}} attribute value of |response| to
-          null. Otherwise:
-            <ol>
-              <li>Let |redactList:list| be the empty <a>list</a>.
-              </li>
-              <li>Let |shippingAddress:PaymentAddress| be the result of
-              <a>create a `PaymentAddress` from user-provided input</a> with
-              |redactList|.
-              </li>
-              <li>Set the {{PaymentResponse/shippingAddress}} attribute value
-              of |response| to |shippingAddress|.
-              </li>
-              <li>Set the {{PaymentResponse/shippingAddress}} attribute value
-              of |request| to |shippingAddress|.
-              </li>
-            </ol>
-          </li>
-          <li>If the {{PaymentOptions/requestShipping}} value of
-          |request|.{{PaymentRequest/[[options]]}} is true, then set the
-          {{PaymentResponse/shippingOption}} attribute of |response| to the
-          value of the {{PaymentResponse/shippingOption}} attribute of
-          |request|. Otherwise, set it to null.
-          </li>
-          <li>If the {{PaymentOptions/requestPayerName}} value of
-          |request|.{{PaymentRequest/[[options]]}} is true, then set the
-          {{PaymentResponse/payerName}} attribute of |response| to the payer's
-          name provided by the user, or to null if none was provided.
-          Otherwise, set it to null.
-          </li>
-          <li>If the {{PaymentOptions/requestPayerEmail}} value of
-          |request|.{{PaymentRequest/[[options]]}} is true, then set the
-          {{PaymentResponse/payerEmail}} attribute of |response| to the payer's
-          email address provided by the user, or to null if none was provided.
-          Otherwise, set it to null.
-          </li>
-          <li>If the {{PaymentOptions/requestPayerPhone}} value of
-          |request|.{{PaymentRequest/[[options]]}} is true, then set the
-          {{PaymentResponse/payerPhone}} attribute of |response| to the payer's
-          phone number provided by the user, or to null if none was provided.
-          When setting the {{PaymentResponse/payerPhone}} value, the user agent
-          SHOULD format the phone number to adhere to [[E.164]].
           </li>
           <li>Set |request|.{{PaymentRequest/[[state]]}} to
           "[=PaymentRequest/closed=]".
@@ -4479,11 +2719,6 @@
               </li>
               <li>Let |serializedModifierData| be an empty list.
               </li>
-              <li>Let |selectedShippingOption| be null.
-              </li>
-              <li>Let |shippingOptions| be an empty
-              <code><a>sequence</a></code>&lt;{{PaymentShippingOption}}&gt;.
-              </li>
               <li>Validate and canonicalize the details:
                 <ol>
                   <li>If the {{PaymentDetailsUpdate/total}} member of |details|
@@ -4509,41 +2744,6 @@
                       </li>
                     </ol>
                   </li>
-                  <li>If the {{PaymentDetailsBase/shippingOptions}} member of
-                  |details| is present, and
-                  |request|.{{PaymentRequest/[[options]]}}.{{PaymentOptions/requestShipping}}
-                  is true, then:
-                    <ol>
-                      <li>Let |seenIDs| be an empty set.
-                      </li>
-                      <li>For each |option| in
-                      |details|.{{PaymentDetailsBase/shippingOptions}}:
-                        <ol>
-                          <li>
-                            <a>Check and canonicalize amount</a>
-                            |option|.{{PaymentShippingOption/amount}}. If an
-                            exception is thrown, then <a>abort the update</a>
-                            with |request| and that exception.
-                          </li>
-                          <li data-tests=
-                          "PaymentRequestUpdateEvent/updateWith-duplicate-shipping-options-manual.https.html">
-                          If |seenIDs|[|option|.{{PaymentShippingOption/id}]
-                          exists, then <a>abort the update</a> with |request|
-                          and a {{TypeError}}.
-                          </li>
-                          <li>Append |option|.{{PaymentShippingOption/id}} to
-                          |seenIDs|.
-                          </li>
-                          <li>Append |option| to |shippingOptions|.
-                          </li>
-                          <li>If |option|.{{PaymentShippingOption/selected}} is
-                          true, then set |selectedShippingOption| to
-                          |option|.{{PaymentShippingOption/id}}.
-                          </li>
-                        </ol>
-                      </li>
-                    </ol>
-                  </li>
                   <li>If the {{PaymentDetailsBase/modifiers}} member of
                   |details| is present, then:
                     <ol>
@@ -4555,9 +2755,7 @@
                       <li>For each {{PaymentDetailsModifier}} |modifier| in
                       |modifiers|:
                         <ol>
-                          <li data-tests=
-                          "updateWith-method-pmi-handling-manual.https.html">
-                          Run the steps to <a>validate a payment method
+                          <li>Run the steps to <a>validate a payment method
                           identifier</a> with
                           |modifier|.{{PaymentDetailsModifier/supportedMethods}}.
                           If it returns false, then <a>abort the update</a>
@@ -4646,21 +2844,6 @@
                       </li>
                     </ol>
                   </li>
-                  <li>If the {{PaymentDetailsBase/shippingOptions}} member of
-                  |details| is present, and
-                  |request|.{{PaymentRequest/[[options]]}}.{{PaymentOptions/requestShipping}}
-                  is true, then:
-                    <ol>
-                      <li>Set
-                      |request|.{{PaymentRequest/[[details]]}}.{{PaymentDetailsBase/shippingOptions}}
-                      to |shippingOptions|.
-                      </li>
-                      <li>Set the value of |request|'s
-                      {{PaymentRequest/shippingOption}} attribute to
-                      |selectedShippingOption|.
-                      </li>
-                    </ol>
-                  </li>
                   <li>If the {{PaymentDetailsBase/modifiers}} member of
                   |details| is present, then:
                     <ol>
@@ -4673,50 +2856,6 @@
                       to |serializedModifierData|.
                       </li>
                     </ol>
-                  </li>
-                  <li>
-                    <p>
-                      If
-                      |request|.{{PaymentRequest/[[options]]}}.{{PaymentOptions/requestShipping}}
-                      is true, and
-                      |request|.{{PaymentRequest/[[details]]}}.{{PaymentDetailsBase/shippingOptions}}
-                      is empty, then the developer has signified that there are
-                      no valid shipping options for the currently-chosen
-                      shipping address (given by |request|'s
-                      {{PaymentRequest/shippingAddress}}).
-                    </p>
-                    <p>
-                      In this case, the user agent SHOULD display an error
-                      indicating this, and MAY indicate that the
-                      currently-chosen shipping address is invalid in some way.
-                      The user agent SHOULD use the
-                      {{PaymentDetailsUpdate/error}} member of |details|, if it
-                      is present, to give more information about why there are
-                      no valid shipping options for that address.
-                    </p>
-                    <p>
-                      Further, if
-                      |details|["{{PaymentDetailsUpdate/shippingAddressErrors}}"]
-                      member is present, the user agent SHOULD display an error
-                      specifically for each erroneous field of the shipping
-                      address. This is done by matching each present member of
-                      the {{AddressErrors}} to a corresponding input field in
-                      the shown user interface.
-                    </p>
-                    <p>
-                      Similarly, if |details|["{{payerErrors}}"] member is
-                      present and |request|.{{PaymentRequest/[[options]]}}'s
-                      {{PaymentOptions/requestPayerName}},
-                      {{PaymentOptions/requestPayerEmail}}, or
-                      {{PaymentOptions/requestPayerPhone}} is true, then
-                      display an error specifically for each erroneous field.
-                    </p>
-                    <p>
-                      Likewise, if
-                      |details|.{{PaymentDetailsUpdate/paymentMethodErrors}} is
-                      present, then display errors specifically for each
-                      erroneous input field for the particular payment method.
-                    </p>
                   </li>
                 </ol>
               </li>
@@ -4910,7 +3049,7 @@
         </h2>
         <p>
           The <a>user agent</a> MUST NOT share information about the user with
-          a developer (e.g., the shipping address) without user consent.
+          a developer without user consent.
         </p>
         <p>
           In particular, the {{PaymentMethodData}}'s {{PaymentMethodData/data}}
@@ -4945,22 +3084,8 @@
           data shared via the {{PaymentMethodChangeEvent}}'s
           {{PaymentMethodChangeEvent/methodDetails}} attribute. Requirements
           and approaches for minimizing shared data are likely to vary by
-          <a>payment method</a> and might include:
+          <a>payment method</a>.
         </p>
-        <ul>
-          <li>Use of a "|redactList|" for <a>physical addresses</a>. The
-          current specification makes use of a "|redactList|" to redact the <a>
-            address line</a>, <a>organization</a>, <a>phone number</a>, and
-            <a>recipient</a> from a {{PaymentRequest/shippingAddress}}.
-          </li>
-          <li>Support for instructions from the payee identifying specific
-          elements to exclude or include from the <a>payment method</a>
-          response data (returned through {{PaymentResponse}}.|details|). The
-          payee might provide these instructions via
-          <a>PaymentMethodData</a>.|data|, enabling a <a>payment method</a>
-          definition to evolve without requiring changes to the current API.
-          </li>
-        </ul>
         <p>
           Where sharing of privacy-sensitive information might not be obvious
           to users (e.g., when [=payment handler/payment method changed
@@ -5012,9 +3137,7 @@
       <p>
         For the user-facing aspects of Payment Request API, implementations
         integrate with platform accessibility APIs via form controls and other
-        input modalities. Furthermore, to increase the intelligibility of
-        total, shipping addresses, and contact information, implementations
-        format data according to system conventions.
+        input modalities.
       </p>
     </section>
     <section id="dependencies">
@@ -5068,7 +3191,7 @@
         way desired, so long as the end result is indistinguishable from the
         result that would be obtained by the specification's algorithms.
       </p>
-      <p data-tests="payment-request-constructor-crash.https.html">
+      <p>
         User agents MAY impose implementation-specific limits on otherwise
         unconstrained inputs, e.g., to prevent denial of service attacks, to
         guard against running out of memory, or to work around
