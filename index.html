@@ -1145,15 +1145,17 @@
               {{Document/dir}} attribute, if any, or an appropriate fallback
               locale if that is not available.
             </p>
-            <aside class="note" title="Localization of the payment sheet">
+            <aside class="note" title=
+            "Localization of the payments user interface">
               <p>
                 The API does not currently provide a way for developers to
                 specify the language and base direction in which the payment
-                sheet is presented to end users. As such, user agents will
-                generally present the payment sheet using the user agent's
-                default language. Future versions of this specification may add
-                support for language and direction metadata via mechanism
-                specified in [[STRING-META]] and [[INTERNATIONAL-SPECS]].
+                sheet is presented to end users. Instead, the API relies on
+                localization information inherited from the document. The
+                working group is considering support for fine-grained
+                localization of the user interface and of individual
+                {{PaymentItems}} and user-facing error messages in a future
+                version of this API.
               </p>
             </aside>
           </li>
