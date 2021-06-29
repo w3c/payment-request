@@ -2032,7 +2032,7 @@
         <p class="note">
           The {{PaymentResponse/complete()}} method is called after the user
           has accepted the payment request and the
-          {{PaymentResponse/[[acceptPromise]]}} has been resolved. Calling the
+          {{PaymentRequest/[[acceptPromise]]}} has been resolved. Calling the
           {{PaymentResponse/complete()}} method tells the <a>user agent</a>
           that the payment interaction is over (and SHOULD cause any remaining
           user interface to be closed).
@@ -2936,15 +2936,17 @@
           <p>
             Consequently, the {{PaymentRequest}} moves to a
             "[=PaymentRequest/closed=]" state. The error is signaled to the
-            developer through the rejection of the <a>[[\acceptPromise]]</a>,
-            i.e., the promise returned by {{PaymentRequest/show()}}.
+            developer through the rejection of the
+            {{PaymentRequest/[[acceptPromise]]}}, i.e., the promise returned by
+            {{PaymentRequest/show()}}.
           </p>
           <p>
             Similarly, <a>abort the update</a> occurring during
             {{PaymentResponse/retry()}} causes the
             {{PaymentResponse/[[retryPromise]]}} to reject, and the
-            corresponding {{PaymentRequest}}'s {{PaymentRequest/[[complete]]}}
-            internal slot will be set to true (i.e., it can no longer be used).
+            corresponding {{PaymentResponse}}'s
+            {{PaymentResponse/[[complete]]}} internal slot will be set to true
+            (i.e., it can no longer be used).
           </p>
         </div>
       </section>
