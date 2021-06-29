@@ -1178,7 +1178,7 @@
           Instances of {{PaymentRequest}} are created with the internal slots
           in the following table:
         </p>
-        <table class="data">
+        <table class="data" data-dfn-for="PaymentRequest">
           <tr>
             <th>
               Internal Slot
@@ -1189,8 +1189,7 @@
           </tr>
           <tr>
             <td>
-              <dfn data-export="" data-dfn-for=
-              "PaymentRequest">[[\serializedMethodData]]</dfn>
+              <dfn data-export="">[[\serializedMethodData]]</dfn>
             </td>
             <td>
               The <code>methodData</code> supplied to the constructor, but
@@ -1229,7 +1228,7 @@
           </tr>
           <tr>
             <td>
-              <dfn>[[\state]]</dfn>
+              <dfn data-dfn-for="PaymentRequest">[[\state]]</dfn>
             </td>
             <td>
               <p>
@@ -2064,9 +2063,8 @@
           <a>a promise rejected with</a> an {{"InvalidStateError"}}
           {{DOMException}}.
           </li>
-          <li>If
-          |response|.{{PaymentResponse/[[retryPromise]]}} is not null, return
-          <a>a promise rejected with</a> an {{"InvalidStateError"}}
+          <li>If |response|.{{PaymentResponse/[[retryPromise]]}} is not null,
+          return <a>a promise rejected with</a> an {{"InvalidStateError"}}
           {{DOMException}}.
           </li>
           <li>Let |promise:Promise| be <a>a new promise</a>.
@@ -2110,7 +2108,7 @@
           Instances of {{PaymentResponse}} are created with the internal slots
           in the following table:
         </p>
-        <table class="data">
+        <table class="data" data-dfn-for="PaymentResponse">
           <tr>
             <th>
               Internal Slot
@@ -2387,7 +2385,7 @@
             Instances of {{PaymentRequestUpdateEvent}} are created with the
             internal slots in the following table:
           </p>
-          <table class="data">
+          <table class="data" data-dfn-for="PaymentRequestUpdateEvent">
             <tr>
               <th>
                 Internal Slot
@@ -2424,9 +2422,10 @@
         Algorithms
       </h2>
       <p>
-        When the internal slot <a>[[\state]]</a> of a {{PaymentRequest}} object
-        is set to "[=PaymentRequest/interactive=]", the <a>user agent</a> will
-        trigger the following algorithms based on user interaction.
+        When the internal slot {{PaymentRequest/[[state]]}} of a
+        {{PaymentRequest}} object is set to "[=PaymentRequest/interactive=]",
+        the <a>user agent</a> will trigger the following algorithms based on
+        user interaction.
       </p>
       <section>
         <h2>
