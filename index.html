@@ -490,14 +490,14 @@
       <p>
         A |request|'s <dfn>payment-relevant browsing context</dfn> is that
         {{PaymentRequest}}'s [=relevant global object=]'s browsing context's
-        <a>top-level browsing context</a>. Every <a>payment-relevant browsing
-        context</a> has a <dfn>payment request is showing</dfn> boolean, which
-        prevents showing more than one payment UI at a time.
+        <a>top-level browsing context</a>. A <a>user agent</a> MAY choose to
+        allow only one payment UI at a time in a given browser tab. When the
+        <a>user agent</a> does so, every <a>payment-relevant browsing
+        context</a> can define a <dfn>payment request is showing</dfn> boolean
+        to prevent showing more than one payment UI at a time.
       </p>
       <p class="Note">
-        The <a>payment request is showing</a> boolean simply prevents more than
-        one payment UI being shown in a single browser tab. However, a
-        <a>payment handler</a> can restrict the <a>user agent</a> to showing
+        A <a>payment handler</a> can restrict the <a>user agent</a> to showing
         only one payment UI across all browser windows and tabs. Other payment
         handlers might allow showing a payment UI across disparate browser
         tabs.
@@ -793,8 +793,8 @@
           "[=PaymentRequest/created=]" then return <a>a promise rejected
           with</a> an {{"InvalidStateError"}} {{DOMException}}.
           </li>
-          <li>If the <a>user agent</a>'s <a>payment request is showing</a>
-          boolean is true, then:
+          <li>If the <a>user agent</a> defines a <a>payment request is
+          showing</a> boolean and it is set to true, then:
             <ol>
               <li>Set |request|.{{PaymentRequest/[[state]]}} to
               "[=PaymentRequest/closed=]".
@@ -833,8 +833,9 @@
               modes or similar, user agents might take advantage of this step.
             </p>
           </li>
-          <li>Set |request|'s <a>payment-relevant browsing context</a>'s
-          <a>payment request is showing</a> boolean to true.
+          <li>If the <a>user agent</a> defines a <a>payment request is
+          showing</a> boolean, set the |request|'s boolean for this
+          <a>payment-relevant browsing context</a> to true.
           </li>
           <li>Return |acceptPromise| and perform the remaining steps <a>in
           parallel</a>.
@@ -863,9 +864,9 @@
                   </li>
                   <li>Reject |acceptPromise| with |error|.
                   </li>
-                  <li>Set |request|'s <a>payment-relevant browsing
-                  context</a>'s <a>payment request is showing</a> boolean to
-                  false.
+                  <li>If the <a>user agent</a> defines a <a>payment request is
+                  showing</a> boolean, set the |request|'s boolean for this <a>
+                    payment-relevant browsing context</a> to false.
                   </li>
                   <li>Terminate this algorithm.
                   </li>
@@ -894,8 +895,9 @@
               <li>Reject |acceptPromise| with {{"NotSupportedError"}}
               {{DOMException}}.
               </li>
-              <li>Set |request|'s <a>payment-relevant browsing context</a>'s
-              <a>payment request is showing</a> boolean to false.
+              <li>If the <a>user agent</a> defines a <a>payment request is
+              showing</a> boolean, set the |request|'s boolean for this
+              <a>payment-relevant browsing context</a> to false.
               </li>
               <li>Terminate this algorithm.
               </li>
@@ -1059,8 +1061,9 @@
             <ol>
               <li>Close down the user interface.
               </li>
-              <li>Set |request|'s <a>payment-relevant browsing context</a>'s
-              <a>payment request is showing</a> boolean to false.
+              <li>If the <a>user agent</a> defines a <a>payment request is
+              showing</a> boolean, set the |request|'s boolean for this
+              <a>payment-relevant browsing context</a> to false.
               </li>
             </ol>
           </li>
@@ -1887,15 +1890,16 @@
               of the type specified there. Otherwise, [=converted to an IDL
               value|convert=] to {{object}}.
               </li>
-              <li>Set |request|'s <a>payment-relevant browsing context</a>'s
-              <a>payment request is showing</a> boolean to false.
+              <li>If the <a>user agent</a> defines a <a>payment request is
+              showing</a> boolean, set the |request|'s boolean for this
+              <a>payment-relevant browsing context</a> to false.
               </li>
               <li>If conversion results in a <a>exception</a> |error|:
                 <ol>
                   <li>Reject |retryPromise| with |error|.
                   </li>
-                  <li>Set <a>user agent</a>'s <a>payment request is showing</a>
-                  boolean to false.
+                  <li>If the <a>user agent</a> defines a <a>payment request is
+                  showing</a> boolean, set it to false.
                   </li>
                   <li>Return.
                   </li>
@@ -1928,8 +1932,9 @@
             <ol>
               <li>Close down the user interface.
               </li>
-              <li>Set |request|'s <a>payment-relevant browsing context</a>'s
-              <a>payment request is showing</a> boolean to false.
+              <li>If the <a>user agent</a> defines a <a>payment request is
+              showing</a> boolean, set the |request|'s boolean for this
+              <a>payment-relevant browsing context</a> to false.
               </li>
             </ol>
           </li>
@@ -2080,8 +2085,9 @@
             <ol>
               <li>Close down the user interface.
               </li>
-              <li>Set |request|'s <a>payment-relevant browsing context</a>'s
-              <a>payment request is showing</a> boolean to false.
+              <li>If the <a>user agent</a> defines a <a>payment request is
+              showing</a> boolean, set the |request|'s boolean for this
+              <a>payment-relevant browsing context</a> to false.
               </li>
             </ol>
           </li>
@@ -2091,8 +2097,9 @@
               agent</a> MAY use the value |result| to influence the user
               experience.
               </li>
-              <li>Set |request|'s <a>payment-relevant browsing context</a>'s
-              <a>payment request is showing</a> boolean to false.
+              <li>If the <a>user agent</a> defines a <a>payment request is
+              showing</a> boolean, set the |request|'s boolean for this
+              <a>payment-relevant browsing context</a> to false.
               </li>
               <li>Resolve |promise| with undefined.
               </li>
@@ -2644,8 +2651,9 @@
           <li>Set |request|.{{PaymentRequest/[[state]]}} to
           "[=PaymentRequest/closed=]".
           </li>
-          <li>Set |request|'s <a>payment-relevant browsing context</a>'s
-          <a>payment request is showing</a> boolean to false.
+          <li>If the <a>user agent</a> defines a <a>payment request is
+          showing</a> boolean, set the |request|'s boolean for this
+          <a>payment-relevant browsing context</a> to false.
           </li>
           <li>Let |error| be an {{"AbortError"}} {{DOMException}}.
           </li>
@@ -2890,8 +2898,9 @@
               <a>Queue a task</a> on the <a>user interaction task source</a> to
               perform the following steps:
               <ol>
-                <li>Set |request|'s <a>payment-relevant browsing context</a>'s
-                <a>payment request is showing</a> boolean to false.
+                <li>If the <a>user agent</a> defines a <a>payment request is
+                showing</a> boolean, set the |request|'s boolean for this
+                <a>payment-relevant browsing context</a> to false.
                 </li>
                 <li>Set |request|.{{PaymentRequest/[[state]]}} to
                 "[=PaymentRequest/closed=]".
