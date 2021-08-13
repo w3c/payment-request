@@ -768,9 +768,6 @@
           If the [=relevant global object=] of [=request=] does not have
           [=transient activation=]:
             <ol>
-              <li>Set |request|.{{PaymentRequest/[[state]]}} to
-              "[=PaymentRequest/closed=]".
-              </li>
               <li>Return [=a promise rejected with=] with a {{"SecurityError"}}
               {{DOMException}}.
               </li>
