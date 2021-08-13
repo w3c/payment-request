@@ -766,8 +766,15 @@
           <li data-tests=
           "payment-request-show-method.https.html, show-method-postmessage-manual.https.html">
           If the [=relevant global object=] of [=request=] does not have
-          [=transient activation=], return [=a promise rejected with=] with a
-          {{"NotAllowedError"}} {{DOMException}}.
+          [=transient activation=]:
+            <ol>
+              <li>Set |request|.{{PaymentRequest/[[state]]}} to
+              "[=PaymentRequest/closed=]".
+              </li>
+              <li>Return [=a promise rejected with=] with a {{"SecurityError"}}
+              {{DOMException}}.
+              </li>
+            </ol>
           </li>
           <li data-tests="show-consume-activation.https.html">[=Consume user
           activation=] of the [=relevant global object=].
