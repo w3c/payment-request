@@ -78,7 +78,7 @@
     };
     </script>
   </head>
-  <body data-cite="payment-method-id payment-method-basic-card">
+  <body data-cite="payment-method-id">
     <h1 id="title">
       Payment Request API
     </h1>
@@ -143,8 +143,8 @@
         and who authenticates and authorizes payment as required.
         </li>
         <li>The <dfn>payment method</dfn>: the means that the payer uses to pay
-        the payee (e.g., a basic card payment). The <dfn>payment method
-        provider</dfn> establishes the ecosystem to support that payment
+        the payee (e.g., a card payment or credit transfer). The <dfn>payment
+        method provider</dfn> establishes the ecosystem to support that payment
         method.
         </li>
       </ul>
@@ -161,8 +161,7 @@
         <dd>
           How a payment handler determines whether it, or the user, can
           potentially "make a payment" is also an implementation detail of a
-          payment handler. For an example, see the [=steps to check if a
-          payment can be made=] of [[[?payment-method-basic-card]]].
+          payment handler.
         </dd>
         <dt>
           <dfn>Steps to respond to a payment request</dfn>:
@@ -170,9 +169,7 @@
         <dd>
           Steps that return an object or <a>dictionary</a> that a merchant uses
           to process or validate the transaction. The structure of this object
-          is specific to each <a>payment method</a>. For an example of such an
-          object, see the {{BasicCardResponse}} dictionary of
-          [[[?payment-method-basic-card]]].
+          is specific to each <a>payment method</a>.
         </dd>
         <dt>
           <dfn>Steps for when a user changes payment method</dfn> (optional)
@@ -271,9 +268,9 @@
         <pre class="example js" title="The `methodData` argument">
           const methodData = [
             {
-              supportedMethods: "basic-card",
+              supportedMethods: "https://example.com/payitforward",
               data: {
-                supportedNetworks: ["visa", "mastercard"],
+                payItForwardField: "ABC",
               },
             },
             {
@@ -344,7 +341,7 @@
           const modifiers = [
             {
               additionalDisplayItems: [cardFee],
-              supportedMethods: "basic-card",
+              supportedMethods: "https://example.com/cardpay",
               total: {
                 label: "Total due",
                 amount: { currency: "AUD", value: "68.00" },
@@ -590,10 +587,7 @@
                           IDL value of the type specified by the specification
                           that defines the
                           |paymentMethod|.{{PaymentMethodData/supportedMethods}}
-                          <span class="informative">(e.g., {{BasicCardRequest}}
-                          in the case of
-                          [[[?payment-method-basic-card]]])</span>. Rethrow any
-                          exceptions.
+                          Rethrow any exceptions.
                         </p>
                         <p class="note">
                           This step assures that any IDL type conversion errors
@@ -986,12 +980,11 @@
             <aside class="example" title=
             "Handling of multiple applicable modifiers">
               <p>
-                This example uses the "basic-card" payment method to from
-                [[[?payment-method-basic-card]]] demonstrate precedence order
-                of {{PaymentRequest/[[serializedModifierData]]}}. The first
+                This example demonstrates precedence order of
+                {{PaymentRequest/[[serializedModifierData]]}}. The first
                 modifier applies equally to all cards, irrespective of network.
-                The second modifier applies specifically to cards on the "visa"
-                network.
+                The second modifier applies specifically to cards on the
+                "coolcard" network.
               </p>
               <pre class="js">
                 const details = {
@@ -1006,9 +999,9 @@
                   amount: { currency: "USD", value: "3.00" },
                 };
 
-                // But visa card incurs a $1.00 processing fee.
-                const visaFee = {
-                  label: "Visa processing fee",
+                // But coolcard incurs a $1.00 processing fee.
+                const coolCardFee = {
+                  label: "Coolcard processing fee",
                   amount: { currency: "USD", value: "1.00" },
                 };
 
@@ -1018,7 +1011,7 @@
                   // Applies to all cards...
                   {
                     additionalDisplayItems: [cardFee],
-                    supportedMethods: "basic-card",
+                    supportedMethods: "https://example.com/cardpay",
                     total: {
                       label: "Total due",
                       amount: { currency: "USD", value: "53.00" },
@@ -1029,14 +1022,14 @@
                   },
                   // Applies only to visa cards...
                   {
-                    additionalDisplayItems: [visaFee],
-                    supportedMethods: "basic-card",
+                    additionalDisplayItems: [coolCardFee],
+                    supportedMethods: ""https://example.com/cardpay",
                     total: {
                       label: "Total due",
                       amount: { currency: "USD", value: "51.00" },
                     },
                     data: {
-                      supportedNetworks: ["visa"], // Visa network only
+                      supportedNetworks: ["coolcard"], // coolcard network only
                     },
                   },
                 ];
@@ -1045,8 +1038,9 @@
                 If the modifiers array in the example above was to be reversed
                 (i.e., <code class="js">supportedNetworks: []</code> was to
                 come last in the modifiers list), then it would take precedence
-                over the "visa" modifier even though the visa modifier matches
-                visa cards more specifically. This is because "last one wins".
+                over the "coolcard" modifier even though the coolcard modifier
+                matches cards more specifically. This is because "last one
+                wins".
               </p>
             </aside>
             <p>
@@ -1637,9 +1631,7 @@
           </dt>
           <dd>
             <p>
-              <a>Payment method</a> specific errors. <span class=
-              "informative">See, for example,
-              [[[?payment-method-basic-card]]]'s {{BasicCardErrors}}</span>.
+              <a>Payment method</a> specific errors.
             </p>
           </dd>
         </dl>
@@ -1976,9 +1968,7 @@
               <dfn>paymentMethod</dfn> member
             </dt>
             <dd>
-              A payment method specific errors. <span class="informative">See,
-              for example, [[[?payment-method-basic-card]]]'s
-              {{BasicCardErrors}}.</span>
+              A payment method specific errors.
             </dd>
           </dl>
         </section>
@@ -2004,12 +1994,11 @@
         </p>
         <aside class="note">
           <p>
-            Each <a>standardized payment method identifier</a>, such as
-            [[[?payment-method-basic-card]]], defines its own unique IDL
-            <a>dictionary</a> for use with the <a>details</a> attribute. The
-            shape of this data (i.e., its members and their corresponding types
-            and formats) differs depending on which standardized payment method
-            identifier is selected by the end user.
+            Each <a>standardized payment method identifier</a> defines its own
+            unique IDL <a>dictionary</a> for use with the <a>details</a>
+            attribute. The shape of this data (i.e., its members and their
+            corresponding types and formats) differs depending on which
+            standardized payment method identifier is selected by the end user.
           </p>
           <p>
             Similarly, a <a>URL-based payment method identifier</a> defines the
