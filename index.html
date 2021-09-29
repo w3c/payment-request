@@ -964,13 +964,13 @@
               user agent SHOULD send the appropriate data from |request| to the
               user-selected <a>payment handler</a> in order to guide the user
               through the payment process. This includes the various attributes
-              and other internal slots of |request| (some MAY be excluded for
-              privacy reasons where appropriate).
+              and other [=internal slots=] of |request| (some MAY be excluded
+              for privacy reasons where appropriate).
             </p>
             <p>
               Handling of multiple applicable modifiers in the
-              {{PaymentRequest/[[serializedModifierData]]}} internal slot is
-              <a>payment handler</a> specific and beyond the scope of this
+              {{PaymentRequest/[[serializedModifierData]]}} [=internal slot=]
+              is <a>payment handler</a> specific and beyond the scope of this
               specification. Nevertheless, it is RECOMMENDED that <a>payment
               handlers</a> use a "last one wins" approach with items in the
               {{PaymentRequest/[[serializedModifierData]]}} list: that is to
@@ -1173,8 +1173,8 @@
           Internal Slots
         </h2>
         <p>
-          Instances of {{PaymentRequest}} are created with the internal slots
-          in the following table:
+          Instances of {{PaymentRequest}} are created with the [=internal
+          slots=] in the following table:
         </p>
         <table class="data" data-dfn-for="PaymentRequest">
           <tr>
@@ -1221,7 +1221,7 @@
               {{PaymentDetailsModifier}} instances contained in the
               {{PaymentDetailsBase/modifiers}} member will be removed, as they
               are instead stored in serialized form in the
-              {{PaymentRequest/[[serializedModifierData]]}} internal slot.
+              {{PaymentRequest/[[serializedModifierData]]}} [=internal slot=].
             </td>
           </tr>
           <tr>
@@ -2098,8 +2098,8 @@
           Internal Slots
         </h2>
         <p>
-          Instances of {{PaymentResponse}} are created with the internal slots
-          in the following table:
+          Instances of {{PaymentResponse}} are created with the [=internal
+          slots=] in the following table:
         </p>
         <table class="data" data-dfn-for="PaymentResponse">
           <tr>
@@ -2376,7 +2376,7 @@
           </h2>
           <p>
             Instances of {{PaymentRequestUpdateEvent}} are created with the
-            internal slots in the following table:
+            [=internal slots=] in the following table:
           </p>
           <table class="data" data-dfn-for="PaymentRequestUpdateEvent">
             <tr>
@@ -2415,7 +2415,7 @@
         Algorithms
       </h2>
       <p>
-        When the internal slot {{PaymentRequest/[[state]]}} of a
+        When the [=internal slot=] {{PaymentRequest/[[state]]}} of a
         {{PaymentRequest}} object is set to "[=PaymentRequest/interactive=]",
         the <a>user agent</a> will trigger the following algorithms based on
         user interaction.
@@ -2938,8 +2938,8 @@
             {{PaymentResponse/retry()}} causes the
             {{PaymentResponse/[[retryPromise]]}} to reject, and the
             corresponding {{PaymentResponse}}'s
-            {{PaymentResponse/[[complete]]}} internal slot will be set to true
-            (i.e., it can no longer be used).
+            {{PaymentResponse/[[complete]]}} [=internal slot=] will be set to
+            true (i.e., it can no longer be used).
           </p>
         </div>
       </section>
@@ -3147,25 +3147,15 @@
       </p>
       <dl data-sort="">
         <dt>
-          ISO 3166-2
-        </dt>
-        <dd>
-          <dfn data-lt="country subdivision names">Country subdivision
-          name</dfn> and <dfn>country subdivision code element</dfn> are
-          defined in [[ISO3166-2]].
-        </dd>
-        <dt>
           ECMAScript
         </dt>
         <dd>
-          The terms <dfn data-cite=
+          The term <dfn data-cite=
           "ECMASCRIPT#sec-object-internal-methods-and-internal-slots">internal
-          slot</dfn>, and <code><dfn data-cite=
-          "ECMASCRIPT#sec-json.stringify">JSON.stringify</dfn></code> are
-          defined by [[ECMASCRIPT]].
+          slot</dfn> is defined [[ECMASCRIPT]].
           <p>
             <dfn data-local-lt="JSON-serialized|JSON-serializing" data-export=
-            "">JSON-serialize</dfn> runs <a>JSON.stringify</a>, passing the
+            "">JSON-serialize</dfn> runs JSON {{JSON/stringify()}}, passing the
             supplied object as the sole argument, and returns the resulting
             string. This can throw an exception.
           </p>
