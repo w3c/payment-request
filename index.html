@@ -111,6 +111,11 @@
         There has been no change in dependencies on other workings groups
         during the development of this specification.
       </p>
+      <div class="correction">
+        This specification includes <a href=
+        "https://www.w3.org/Consortium/Process/#candidate-correction">Candidate
+        corrections</a>, which are marked in the document.
+      </div>
       <section>
         <h3>
           Changes since last publication
@@ -1706,6 +1711,16 @@
       <h2>
         <dfn>PaymentItem</dfn> dictionary
       </h2>
+      <div class="correction" id="c1">
+        <span class="marker">Candidate Correction 1:</span> This dictionary
+        should include definitions for optional members "language" and
+        "direction" to support use cases where document context is insufficient
+        for the proper internationalization of "label". Values for these
+        members would be the same as for "lang" and "dir" in HTML. The Working
+        Group is monitoring progress on <a href=
+        "https://github.com/w3c/string-meta/issues/54">Localizable in
+        WebIDL</a>.
+      </div>
       <pre class="idl">
         dictionary PaymentItem {
           required DOMString label;
@@ -1945,6 +1960,16 @@
           <h3>
             <dfn>PaymentValidationErrors</dfn> dictionary
           </h3>
+          <div class="correction" id="c2">
+            <span class="marker">Candidate Correction 2:</span> This dictionary
+            should include definitions for optional members "language" and
+            "direction" to support use cases where document context is
+            insufficient for the proper internationalization of "error". Values
+            for these members would be the same as for "lang" and "dir" in
+            HTML. The Working Group is monitoring progress on <a href=
+            "https://github.com/w3c/string-meta/issues/54">Localizable in
+            WebIDL</a>.
+          </div>
           <pre class="idl">
             dictionary PaymentValidationErrors {
               DOMString error;
