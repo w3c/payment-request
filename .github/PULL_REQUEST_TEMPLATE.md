@@ -2,7 +2,6 @@ closes #???
 
 The following tasks have been completed:
 
- * [ ] Confirmed there are no ReSpec errors/warnings.
  * [ ] Modified Web platform tests (link)
  * [ ] Modified MDN Docs (link)
  * [ ] Has undergone security/privacy review (link)
