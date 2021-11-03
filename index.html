@@ -990,7 +990,7 @@
                 const details = {
                   total: {
                     label: "Total due",
-                    amount: { currency: "USD", value: "65.00" },
+                    amount: { currency: "USD", value: "50.00" },
                   },
                 };
                 // All cards incur a $3.00 processing fee.
@@ -1020,10 +1020,10 @@
                       supportedNetworks: [], // All networks
                     },
                   },
-                  // Applies only to visa cards...
+                  // Applies only to cool cards...
                   {
                     additionalDisplayItems: [coolCardFee],
-                    supportedMethods: ""https://example.com/cardpay",
+                    supportedMethods: "https://example.com/cardpay",
                     total: {
                       label: "Total due",
                       amount: { currency: "USD", value: "51.00" },
