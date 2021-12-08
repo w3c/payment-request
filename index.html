@@ -3112,19 +3112,20 @@
           For rate-limiting the user agent might look at repeated calls from:
         </p>
         <ul>
-          <li>the same effective top-level domain plus one (eTLD+1).
+          <li>the same [=host/registrable domain=].
           </li>
-          <li>the top-level browsing context. Alternatively, the user agent may
-          block access to the API entirely for origins know to be bad actors.
+          <li>the [=top-level browsing context=]. Alternatively, the user agent
+          may block access to the API entirely for [=origins=] known to be bad
+          actors.
           </li>
-          <li>the origin of an <a>iframe</a> or popup window.
+          <li>the [=origin=] of an [^iframe^] or popup window.
           </li>
         </ul>
         <p>
           These rate-limiting techniques intend to increase the cost associated
           with repeated calls, whether it is the cost of managing multiple
-          eTLDs or the user experience friction of opening multiple windows
-          (tabs or pop-ups).
+          [=host/registrable domains=] or the user experience friction of
+          opening multiple windows (tabs or pop-ups).
         </p>
       </section>
     </section>
