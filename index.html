@@ -871,6 +871,11 @@
               </li>
               <li>Let |registeredHandlers| be a <a>list</a> of registered
               payment handlers for the payment method |identifier|.
+                <aside class="note" title="Payment Handler registration">
+                  Merchanisms to register a payment handler are outside the
+                  scope of this specification. For one mechanism, see
+                  [[[payment-handler]]].
+                </aside>
               </li>
               <li>For each |handler| in |registeredHandlers|:
                 <ol>
@@ -3009,15 +3014,6 @@
           How user agents match payment handlers
         </h2>
         <p>
-          As part of {{PaymentRequest/show()}}, the user agent typically
-          displays a list of matching <a>payment handlers</a> that satisfy the
-          <a>payment methods</a> accepted by the merchant and other conditions.
-          Matching can take into account <a>payment method</a> information
-          provided as input to the API, information provided by the <a>payment
-          method</a> owner, the <a>payment handlers</a> registered by the user,
-          user preferences, and other considerations.
-        </p>
-        <p>
           For security reasons, a user agent can limit matching (in
           {{PaymentRequest/show()}} and {{PaymentRequest/canMakePayment()}}) to
           <a>payment handlers</a> from the same <a data-cite=
@@ -3065,8 +3061,8 @@
         <p>
           The <a>user agent</a> MUST NOT share the values of the
           {{PaymentDetailsBase/displayItems}} member or
-          {{PaymentDetailsModifier/additionalDisplayItems}} member with a
-          third-party <a>payment handler</a> without user consent.
+          {{PaymentDetailsModifier/additionalDisplayItems}} member for any
+          purpose other than to facilitate completion of the transaction.
         </p>
         <p>
           The {{PaymentMethodChangeEvent}} enables the payee to update the
