@@ -920,11 +920,7 @@
                 The API does not currently provide a way for developers to
                 specify the language and base direction in which the payment
                 sheet is presented to end users. Instead, the API relies on
-                localization information inherited from the document. The
-                working group is considering support for requesting specific
-                localization of the user interface and of individual
-                {{PaymentItems}} and user-facing error messages in a future
-                version of this API.
+                localization information inherited from the document.
               </p>
             </aside>
           </li>
@@ -1730,6 +1726,15 @@
         <dd>
           A human-readable description of the item. The <a>user agent</a> may
           display this to the user.
+          <aside class="note" title="Internationalization of the label">
+            <p>
+              The language and direction of the {{PaymentItem/label}} may often
+              be determined from information inherited from the document.
+              However, this approach may not suffice for some use cases. The
+              working group intends to fix this in a future version by aligning
+              with general approaches for the Web that are in development.
+            </p>
+          </aside>
         </dd>
         <dt>
           <dfn>amount</dfn> member
@@ -1968,6 +1973,16 @@
               general overview of validation issues, or it can be passed in
               combination with other members of the {{PaymentValidationErrors}}
               dictionary.
+              <aside class="note" title="Internationalization of the error">
+                <p>
+                  The language and direction of the
+                  {{PaymentValidationErrors/error}} may often be determined
+                  from information inherited from the document. However, this
+                  approach may not suffice for some use cases. The working
+                  group intends to fix this in a future version by aligning
+                  with general approaches for the Web that are in development.
+                </p>
+              </aside>
             </dd>
             <dt>
               <dfn>paymentMethod</dfn> member
