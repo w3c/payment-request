@@ -95,8 +95,8 @@
         The working group maintains <a href=
         "https://github.com/w3c/payment-request/issues?utf8=%E2%9C%93&amp;q=is%3Aopen%20is%3Aissue%20-label%3A%22Priority%3A%20Postponed%22%20">
         a list of all bug reports that the group has not yet addressed</a>.
-        Pull requests with proposed specification text for outstanding issues
-        are strongly encouraged.
+        Pull requests with proposed-addition specification text for outstanding
+        issues are strongly encouraged.
       </p>
       <p>
         The working group will demonstrate implementation experience by
@@ -1761,6 +1761,35 @@
         </dd>
       </dl>
     </section>
+    <section data-dfn-for="PaymentCompleteDetails" class="addition proposed">
+      <h2>
+        <dfn>PaymentCompleteDetails</dfn> dictionary
+      </h2>
+      <pre class="idl">
+        dictionary PaymentCompleteDetails {
+          object? data = null;
+        };
+      </pre>
+      <p>
+        The {{PaymentCompleteDetails}} dictionary provides additional
+        information from the merchant website to the payment handler when the
+        payment request completes.
+      </p>
+      <p>
+        The {{PaymentCompleteDetails}} dictionary contains the following
+        members:
+      </p>
+      <dl>
+        <dt>
+          <dfn>data</dfn> member
+        </dt>
+        <dd>
+          An object that provides optional information that might be needed by
+          the {{PaymentResponse}} associated [=payment method=]. If supplied,
+          it will be <a>JSON-serialized</a>.
+        </dd>
+      </dl>
+    </section>
     <section data-dfn-for="PaymentComplete">
       <h2>
         <dfn>PaymentComplete</dfn> enum
@@ -1810,7 +1839,10 @@
           readonly attribute object details;
 
           [NewObject]
-          Promise&lt;undefined&gt; complete(optional PaymentComplete result = "unknown");
+          Promise&lt;undefined&gt; complete(
+            optional PaymentComplete result = "unknown",
+            optional PaymentCompleteDetails details = {}
+          );
           [NewObject]
           Promise&lt;undefined&gt; retry(optional PaymentValidationErrors errorFields = {});
         };
@@ -2090,6 +2122,40 @@
           </li>
           <li>Set |response|.{{PaymentResponse/[[complete]]}} to true.
           </li>
+          <li class="addition proposed">Let |serializedData| be the result of
+          <a>JSON-serializing</a> |details|.{{PaymentCompleteDetails/data}}
+          into a string.
+          </li>
+          <li class="addition proposed">If serializing [=exception/throws=] an
+          exception, return <a>a promise rejected with</a> that exception.
+            <div class="issue">
+              What should happen if an exception is thrown here? Should we
+              allow developers to recover, or just ignore the error and the
+              sheet closes? Similarly with the exception below...
+            </div>
+          </li>
+          <li class="addition proposed">If required by the specification that
+          defines the |response|.{{PaymentResponse/methodName}}:
+            <ol data-cite="ECMASCRIPT">
+              <li>Let |object| be the result of calling `JSON`'s
+              {{JSON/parse()}} with |serializedData|.
+              </li>
+              <li>[=converted to an IDL value|Convert=] |object| to an IDL
+              value of the type specified by the specification that defines the
+              |response|.{{PaymentResponse/methodName}}.
+              </li>
+              <li>
+                <p>
+                  If the conversion [=exception/throws=] an [=exception=],
+                  return <a>a promise rejected with</a> that exception.
+                </p>
+                <p class="note">
+                  This step assures that any IDL type conversion errors are
+                  caught as early as possible.
+                </p>
+              </li>
+            </ol>
+          </li>
           <li>Return |promise| and perform the remaining steps <a>in
           parallel</a>.
           </li>
@@ -2107,7 +2173,8 @@
           <li>Otherwise:
             <ol>
               <li>Close down any remaining user interface. The <a>user
-              agent</a> MAY use the value |result| to influence the user
+              agent</a> MAY use the value |result| and <ins class=
+              "addition proposed">|serializedData|</ins> to influence the user
               experience.
               </li>
               <li>Set |request|'s <a>payment-relevant browsing context</a>'s
