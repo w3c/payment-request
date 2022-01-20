@@ -2120,41 +2120,44 @@
           </li>
           <li>Let |promise:Promise| be <a>a new promise</a>.
           </li>
-          <li>Set |response|.{{PaymentResponse/[[complete]]}} to true.
-          </li>
           <li class="addition proposed">Let |serializedData| be the result of
           <a>JSON-serializing</a> |details|.{{PaymentCompleteDetails/data}}
           into a string.
           </li>
           <li class="addition proposed">If serializing [=exception/throws=] an
           exception, return <a>a promise rejected with</a> that exception.
-            <div class="issue">
-              What should happen if an exception is thrown here? Should we
-              allow developers to recover, or just ignore the error and the
-              sheet closes? Similarly with the exception below...
-            </div>
           </li>
           <li class="addition proposed">If required by the specification that
           defines the |response|.{{PaymentResponse/methodName}}:
             <ol data-cite="ECMASCRIPT">
-              <li>Let |object| be the result of calling `JSON`'s
-              {{JSON/parse()}} with |serializedData|.
+              <li>Let |json| be the result of calling `JSON`'s {{JSON/parse()}}
+              with |serializedData|.
               </li>
-              <li>[=converted to an IDL value|Convert=] |object| to an IDL
-              value of the type specified by the specification that defines the
+              <li>Let |idl| be the result of [=converted to an IDL
+              value|converting=] |json| to an IDL value of the type specified
+              by the specification that defines the
               |response|.{{PaymentResponse/methodName}}.
               </li>
-              <li>
-                <p>
-                  If the conversion [=exception/throws=] an [=exception=],
-                  return <a>a promise rejected with</a> that exception.
-                </p>
-                <p class="note">
-                  This step assures that any IDL type conversion errors are
-                  caught as early as possible.
-                </p>
+              <li>If the conversion to an IDL value [=exception/throws=] an
+              [=exception=], return <a>a promise rejected with</a> that
+              exception.
+              </li>
+              <li>If required by the specification that defines the
+              |response|.{{PaymentResponse/methodName}}, validate the members
+              of |idl|. If a member's value is invalid, return <a>a promise
+              rejected with</a> a {{TypeError}}.
+                <aside class="note" title="Opportunity to recover">
+                  <p>
+                    The steps above assures that errors that could result from
+                    IDL type conversion and/or validation are caught as early
+                    as possible, giving the developer an opportunity to
+                    recover.
+                  </p>
+                </aside>
               </li>
             </ol>
+          </li>
+          <li>Set |response|.{{PaymentResponse/[[complete]]}} to true.
           </li>
           <li>Return |promise| and perform the remaining steps <a>in
           parallel</a>.
