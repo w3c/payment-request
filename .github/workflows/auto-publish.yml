@@ -21,3 +21,182 @@ jobs:
           W3C_NOTIFICATIONS_CC: "${{ secrets.CC }}"
 #          W3C_BUILD_OVERRIDE: |
 #            specStatus: CRD
+
+
+mentation
+Open Menu
+Article
+Setting Up Your Server
+Set up your server for secure communications with Apple Pay.
+Technologies
+
+Apple Pay JS
+Payment Request API
+Apple Pay JS Button
+On This Page
+
+Overview 
+See Also 
+Overview
+These are the requirements for incorporating Apple Pay on your website:
+
+All pages that include Apple Pay must be served over HTTPS.
+
+Your domain must have a valid SSL certificate.
+
+Your server must support the Transport Layer Security (TLS) protocol version 1.2 or later, and one of the cipher suites listed here:
+
+Cipher suite value
+
+Name
+
+0x13, 0x01
+
+TLS_AES_128_GCM_SHA256
+
+0x13, 0x02
+
+TLS_AES_256_GCM_SHA384
+
+0xC0,0x2B
+
+ECDHE-ECDSA-AES128-GCM-SHA256
+
+0xC0,0x2F
+
+ECDHE-RSA-AES128-GCM-SHA256
+
+0xC0,0x2C
+
+ECDHE-ECDSA-AES256-GCM-SHA384
+
+0xC0,0x30
+
+ECDHE-RSA-AES256-GCM-SHA384
+
+0x00,0x9E
+
+DHE-RSA-AES128-GCM-SHA256
+
+0x00,0x9F
+
+DHE-RSA-AES256-GCM-SHA384
+
+0xC0,0x23
+
+ECDHE-ECDSA-AES128-SHA256
+
+0xC0,0x27
+
+ECDHE-RSA-AES128-SHA256
+
+0xC0,0x09
+
+ECDHE-ECDSA-AES128-SHA
+
+0xC0,0x28
+
+ECDHE-RSA-AES256-SHA384
+
+0xC0,0x13
+
+ECDHE-RSA-AES128-SHA
+
+0xC0,0x24
+
+ECDHE-ECDSA-AES256-SHA384
+
+0xC0,0x0A
+
+ECDHE-ECDSA-AES256-SHA
+
+0xC0,0x14
+
+ECDHE-RSA-AES256-SHA
+
+0x00,0x67
+
+DHE-RSA-AES128-SHA256
+
+0x00,0x33
+
+DHE-RSA-AES128-SHA
+
+0x00,0x6B
+
+DHE-RSA-AES256-SHA256
+
+0x00,0x39
+
+DHE-RSA-AES256-SHA
+
+0x00,0x9C
+
+AES128-GCM-SHA256
+
+0x00,0x9D
+
+AES256-GCM-SHA384
+
+0x00,0x3C
+
+AES128-SHA256
+
+0x00,0x3D
+
+AES256-SHA256
+
+0x00,0x2F
+
+AES128-SHA
+
+0x00,0x35
+
+AES256-SHA
+
+Allow Apple Pay IP Addresses for Merchant Validation
+To enable merchant validation and receive a session object, your server must allow access over HTTPS (TCP over port 443) to the Apple Pay IP addresses and domains provided in Listing 1.
+
+Important
+
+Use a strict allow list for the merchant validation URLs provided by Apple, in Listing 1. Do not allow your server to access any other URLs for merchant validation.
+
+Listing 1 Apple Pay IP addresses and domain names for merchant validation in production and testing
+For production environment:
+Domain
+apple-pay-gateway.apple.com         Global
+cn-apple-pay-gateway.apple.com      China Region
+Additional domain names and IP addresses:
+apple-pay-gateway-nc-pod1.apple.com         17.171.78.7         17.141.128.9
+apple-pay-gateway-nc-pod2.apple.com         17.171.78.71        17.141.128.73
+apple-pay-gateway-nc-pod3.apple.com         17.171.78.135       17.141.128.137
+apple-pay-gateway-nc-pod4.apple.com         17.171.78.199       17.141.128.201
+apple-pay-gateway-nc-pod5.apple.com         17.171.79.12        17.141.129.13
+apple-pay-gateway-pr-pod1.apple.com         17.141.128.7        17.171.78.9
+apple-pay-gateway-pr-pod2.apple.com         17.141.128.71       17.171.78.73
+apple-pay-gateway-pr-pod3.apple.com         17.141.128.135      17.171.78.137
+apple-pay-gateway-pr-pod4.apple.com         17.141.128.199      17.171.78.201
+apple-pay-gateway-pr-pod5.apple.com         17.141.129.12       17.171.79.13
+cn-apple-pay-gateway-sh-pod1.apple.com      101.230.204.232     60.29.205.105
+cn-apple-pay-gateway-sh-pod2.apple.com      101.230.204.242     60.29.205.107
+cn-apple-pay-gateway-sh-pod3.apple.com      101.230.204.240     60.29.205.109
+cn-apple-pay-gateway-tj-pod1.apple.com      60.29.205.104       101.230.204.233
+cn-apple-pay-gateway-tj-pod2.apple.com      60.29.205.106       101.230.204.243
+cn-apple-pay-gateway-tj-pod3.apple.com      60.29.205.108       101.230.204.241
+For sandbox testing only:
+apple-pay-gateway-cert.apple.com            17.171.85.7
+cn-apple-pay-gateway-cert.apple.com         101.230.204.235
+For more information about merchant validation, see Providing Merchant Validation.
+
+Allow Apple IP Addresses for Domain Verification
+Apple uses the following IP addresses when you register or verify your merchant domain. If your domain is protected from public access and you wish to complete domain verification, you should allow the following IP address ranges.
+
+17.32.139.128/27
+17.32.139.160/27
+17.140.126.0/27
+17.140.126.32/27
+17.179.144.128/27
+17.179.144.160/27
+17.179.144.192/27
+17.179.144.224/27
+17.253.0.0/16
