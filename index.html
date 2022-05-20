@@ -3217,7 +3217,17 @@
       </h2>
       <script class="remove">
         function removeCommits({ message }) {
-          return !/^editorial|^Editiorial|^edtiorial|^chore|^fix|^refactor|^tests?|^docs|^typo|^nit/i.test(message);
+          const badCommits = [
+            "for publication as CR",
+            "Merge branch",
+            "Code of Conduct",
+            "prepare the manifest",
+          ];
+          if (badCommits.some(txt => message.startsWith(txt))) {
+            return false;
+          }
+
+          return !/^editorial|^editiorial|^edtiorial|^chore|^fix|^refactor|^tests?|^docs|^typo|^nit|^revert|^merge branch/i.test(message);
         }
       </script>
       <p>
