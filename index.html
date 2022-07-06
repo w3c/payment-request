@@ -583,15 +583,21 @@
                       </li>
                       <li>
                         <p>
-                          [=converted to an IDL value|Convert=] |object| to an
-                          IDL value of the type specified by the specification
-                          that defines the
-                          |paymentMethod|.{{PaymentMethodData/supportedMethods}}
+                          Let |idl| be the result of [=converted to an IDL
+                          value|converting=] |object| to an IDL value of the
+                          type specified by the specification that defines the
+                          |paymentMethod|.{{PaymentMethodData/supportedMethods}}.
                           Rethrow any exceptions.
                         </p>
+                        <p>
+                          If required by the specification that defines the
+                          |paymentMethod|.{{PaymentMethodData/supportedMethods}},
+                          validate the members of |idl|. If a member's value is
+                          invalid, throw a {{TypeError}}.
+                        </p>
                         <p class="note">
-                          This step assures that any IDL type conversion errors
-                          are caught as early as possible.
+                          These step assures that any IDL type conversion and
+                          validation errors are caught as early as possible.
                         </p>
                       </li>
                     </ol>
