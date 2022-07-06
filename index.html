@@ -2120,14 +2120,14 @@
           </li>
           <li>Let |promise:Promise| be <a>a new promise</a>.
           </li>
-          <li class="addition proposed">Let |serializedData| be the result of
+          <li>Let |serializedData| be the result of
           <a>JSON-serializing</a> |details|.{{PaymentCompleteDetails/data}}
           into a string.
           </li>
-          <li class="addition proposed">If serializing [=exception/throws=] an
+          <li>If serializing [=exception/throws=] an
           exception, return <a>a promise rejected with</a> that exception.
           </li>
-          <li class="addition proposed">If required by the specification that
+          <li>If required by the specification that
           defines the |response|.{{PaymentResponse/methodName}}:
             <ol data-cite="ECMASCRIPT">
               <li>Let |json| be the result of calling `JSON`'s {{JSON/parse()}}
