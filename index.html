@@ -153,23 +153,24 @@
       </p>
       <dl>
         <dt>
-          <dfn>Payment Method additional data type</dfn>
+          An optional <dfn data-dfn-for="Payment Method">additional data type</dfn>
         </dt>
         <dd>
-          An IDL type that defines the data the <a>payment method</a> expects
-          to receive in the {{PaymentMethodData/data}} member of the
-          {{PaymentMethodData}}. If not specified for a given payment method,
-          no conversion to IDL is done and the payment method will receive
+          Optionally, an IDL type that the <a>payment method</a> expects
+          to receive as the {{PaymentMethodData}}'s {{PaymentMethodData/data}}
+          member. If not specified for a given payment method, no conversion to
+          IDL is done and the payment method will receive
           {{PaymentMethodData/data}} as JSON.
         </dd>
         <dt>
           <dfn>Steps to validate payment method data</dfn>
         </dt>
         <dd>
-          How a <a>payment method</a> validates the {{PaymentMethodData/data}}
-          member of the {{PaymentMethodData}}, after it is converted to the
-          <a>payment method additional data type</a>. If not specified for a
-          given payment method, no validation is done.
+          Algorithmic steps that specify how a <a>payment method</a> validates
+          the {{PaymentMethodData/data}} member of the {{PaymentMethodData}},
+          after it is converted to the payment method's
+          [=Payment Method/additional data type=]. If not specified for a given
+          payment method, no validation is done.
         </dd>
       </dl>
       <p>
@@ -600,17 +601,18 @@
                   <li>If |serializedData| is not null, and if the specification
                   that defines the
                   |paymentMethod|.{{PaymentMethodData/supportedMethods}}
-                  specifies a <a>payment method additional data type</a>:
+                  specifies an [=Payment Method/additional data type=]:
                     <ol>
                       <li>Let |object| be the result of <a data-cite=
                       "ECMASCRIPT#sec-json.parse">JSON-parsing</a>
                       |serializedData|.
                       </li>
                       <li>
-                        <p>Let |idl| be the result of [=converted to an IDL
+                        <p>
+                          Let |idl| be the result of [=converted to an IDL
                           value|converting=] |object| to an IDL value of the
-                          type specified by the <a>payment method additional
-                          data type</a>. Rethrow any exceptions.
+                          [=Payment Method/additional data type=]. Rethrow any
+                          exceptions.
                         </p>
                       </li>
                       <li>
@@ -880,8 +882,8 @@
               "ECMASCRIPT#sec-json.parse">JSON-parsing</a> the second element
               in the |paymentMethod| tuple.
               </li>
-              <li>If the specification that defines the |identifier| specifies a
-              <a>payment method additional data type</a>, then [=converted to an
+              <li>If the specification that defines the |identifier| specifies
+              an [=Payment Method/additional data type=], then [=converted to an
               IDL value|convert=] |data| to an IDL value of that type.
               Otherwise, [=converted to an IDL value|convert=] |data| to
               {{object}}.
