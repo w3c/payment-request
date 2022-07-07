@@ -1761,6 +1761,35 @@
         </dd>
       </dl>
     </section>
+    <section data-dfn-for="PaymentCompleteDetails">
+      <h2>
+        <dfn>PaymentCompleteDetails</dfn> dictionary
+      </h2>
+      <pre class="idl">
+        dictionary PaymentCompleteDetails {
+          object? data = null;
+        };
+      </pre>
+      <p>
+        The {{PaymentCompleteDetails}} dictionary provides additional
+        information from the merchant website to the payment handler when the
+        payment request completes.
+      </p>
+      <p>
+        The {{PaymentCompleteDetails}} dictionary contains the following
+        members:
+      </p>
+      <dl>
+        <dt>
+          <dfn>data</dfn> member
+        </dt>
+        <dd>
+          An object that provides optional information that might be needed by
+          the {{PaymentResponse}} associated [=payment method=]. If supplied,
+          it will be <a>JSON-serialized</a>.
+        </dd>
+      </dl>
+    </section>
     <section data-dfn-for="PaymentComplete">
       <h2>
         <dfn>PaymentComplete</dfn> enum
@@ -1810,7 +1839,10 @@
           readonly attribute object details;
 
           [NewObject]
-          Promise&lt;undefined&gt; complete(optional PaymentComplete result = "unknown");
+          Promise&lt;undefined&gt; complete(
+            optional PaymentComplete result = "unknown",
+            optional PaymentCompleteDetails details = {}
+          );
           [NewObject]
           Promise&lt;undefined&gt; retry(optional PaymentValidationErrors errorFields = {});
         };
@@ -2088,6 +2120,42 @@
           </li>
           <li>Let |promise:Promise| be <a>a new promise</a>.
           </li>
+          <li>Let |serializedData| be the result of <a>JSON-serializing</a>
+          |details|.{{PaymentCompleteDetails/data}} into a string.
+          </li>
+          <li>If serializing [=exception/throws=] an exception, return <a>a
+          promise rejected with</a> that exception.
+          </li>
+          <li>If required by the specification that defines the
+          |response|.{{PaymentResponse/methodName}}:
+            <ol data-cite="ECMASCRIPT">
+              <li>Let |json| be the result of calling `JSON`'s {{JSON/parse()}}
+              with |serializedData|.
+              </li>
+              <li>Let |idl| be the result of [=converted to an IDL
+              value|converting=] |json| to an IDL value of the type specified
+              by the specification that defines the
+              |response|.{{PaymentResponse/methodName}}.
+              </li>
+              <li>If the conversion to an IDL value [=exception/throws=] an
+              [=exception=], return <a>a promise rejected with</a> that
+              exception.
+              </li>
+              <li>If required by the specification that defines the
+              |response|.{{PaymentResponse/methodName}}, validate the members
+              of |idl|. If a member's value is invalid, return <a>a promise
+              rejected with</a> a {{TypeError}}.
+                <aside class="note" title="Opportunity to recover">
+                  <p>
+                    The steps above assures that errors that could result from
+                    IDL type conversion and/or validation are caught as early
+                    as possible, giving the developer an opportunity to
+                    recover.
+                  </p>
+                </aside>
+              </li>
+            </ol>
+          </li>
           <li>Set |response|.{{PaymentResponse/[[complete]]}} to true.
           </li>
           <li>Return |promise| and perform the remaining steps <a>in
@@ -2107,8 +2175,8 @@
           <li>Otherwise:
             <ol>
               <li>Close down any remaining user interface. The <a>user
-              agent</a> MAY use the value |result| to influence the user
-              experience.
+              agent</a> MAY use the value |result| and |serializedData| to
+              influence the user experience.
               </li>
               <li>Set |request|'s <a>payment-relevant browsing context</a>'s
               <a>payment request is showing</a> boolean to false.
