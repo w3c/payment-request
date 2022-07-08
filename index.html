@@ -153,11 +153,12 @@
       </p>
       <dl>
         <dt>
-          An optional <dfn data-dfn-for="Payment Method">additional data type</dfn>
+          An optional <dfn data-dfn-for="Payment Method">additional data
+          type</dfn>
         </dt>
         <dd>
-          Optionally, an IDL type that the <a>payment method</a> expects
-          to receive as the {{PaymentMethodData}}'s {{PaymentMethodData/data}}
+          Optionally, an IDL type that the <a>payment method</a> expects to
+          receive as the {{PaymentMethodData}}'s {{PaymentMethodData/data}}
           member. If not specified for a given payment method, no conversion to
           IDL is done and the payment method will receive
           {{PaymentMethodData/data}} as JSON.
@@ -168,9 +169,9 @@
         <dd>
           Algorithmic steps that specify how a <a>payment method</a> validates
           the {{PaymentMethodData/data}} member of the {{PaymentMethodData}},
-          after it is converted to the payment method's
-          [=Payment Method/additional data type=]. If not specified for a given
-          payment method, no validation is done.
+          after it is converted to the payment method's [=Payment
+          Method/additional data type=]. If not specified for a given payment
+          method, no validation is done.
         </dd>
       </dl>
       <p>
@@ -883,8 +884,8 @@
               in the |paymentMethod| tuple.
               </li>
               <li>If the specification that defines the |identifier| specifies
-              an [=Payment Method/additional data type=], then [=converted to an
-              IDL value|convert=] |data| to an IDL value of that type.
+              an [=Payment Method/additional data type=], then [=converted to
+              an IDL value|convert=] |data| to an IDL value of that type.
               Otherwise, [=converted to an IDL value|convert=] |data| to
               {{object}}.
               </li>
