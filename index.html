@@ -576,9 +576,9 @@
         </p>
         <ol class="algorithm">
           <li>If [=this=]'s [=relevant global object=]'s [=associated
-          `Document`=] is not <a>allowed to use</a> the
-          <a>"payment"</a> permission, then [=exception/throw=]
-          a {{"SecurityError"}} {{DOMException}}.
+          `Document`=] is not <a>allowed to use</a> the <a>"payment"</a>
+          permission, then [=exception/throw=] a {{"SecurityError"}}
+          {{DOMException}}.
           </li>
           <li>Establish the request's id:
             <ol>
@@ -1987,8 +1987,8 @@
               If
               |errorFields:PaymentValidationErrors|.{{PaymentValidationErrors/paymentMethod}}
               member was passed, and if required by the specification that
-              defines |response|.{{PaymentResponse/methodName}}, then [=converted
-              to an IDL value|convert=] |errorFields|'s
+              defines |response|.{{PaymentResponse/methodName}}, then
+              [=converted to an IDL value|convert=] |errorFields|'s
               {{PaymentValidationErrors/paymentMethod}} member to an IDL value
               of the type specified there. Otherwise, [=converted to an IDL
               value|convert=] to {{object}}.
