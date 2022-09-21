@@ -575,9 +575,9 @@
           |details|)</dfn></code> constructor MUST act as follows:
         </p>
         <ol class="algorithm">
-          <li>If the <a>current settings object</a>'s [=relevant global
-          object=]'s [=associated `Document`=] is not <a>allowed to use</a> the
-          "[=payment-permission|payment=]" permission, then [=exception/throw=]
+          <li>If [=this=]'s [=relevant global object=]'s [=associated
+          `Document`=] is not <a>allowed to use</a> the
+          <a>"payment"</a> permission, then [=exception/throw=]
           a {{"SecurityError"}} {{DOMException}}.
           </li>
           <li>Establish the request's id:
@@ -1957,7 +1957,7 @@
           |response|.{{PaymentResponse/[[request]]}}.
           </li>
           <li>Let |document:Document| be |request|'s <a>relevant global
-          object</a>'s <a>associated Document</a>.
+          object</a>'s <a>associated `Document`</a>.
           </li>
           <li data-tests=
           "payment-response/rejects_if_not_active-manual.https.html">If
@@ -1987,7 +1987,7 @@
               If
               |errorFields:PaymentValidationErrors|.{{PaymentValidationErrors/paymentMethod}}
               member was passed, and if required by the specification that
-              defines |response|.{{PaymentResponse/payment}}, then [=converted
+              defines |response|.{{PaymentResponse/methodName}}, then [=converted
               to an IDL value|convert=] |errorFields|'s
               {{PaymentValidationErrors/paymentMethod}} member to an IDL value
               of the type specified there. Otherwise, [=converted to an IDL
@@ -2305,9 +2305,9 @@
       </h2>
       <p>
         This specification defines a [=policy-controlled feature=] identified
-        by the string "<code><dfn data-lt="payment-permission" data-nodefault=
-        "">payment</dfn></code>" [[permissions-policy]]. Its <a>default
-        allowlist</a> is '<code>self</code>'.
+        by the string <dfn class="permission">"payment"</dfn>
+        [[permissions-policy]]. Its <a>default allowlist</a> is
+        '<code>self</code>'.
       </p>
       <aside class="note">
         <p>
