@@ -551,7 +551,7 @@
           A developer can use the
           {{PaymentDetailsUpdate/shippingAddressErrors}} member of the
           {{PaymentDetailsUpdate}} dictionary to indicate that there are
-          validation errors with specific attributes of a {{PaymentAddress}}.
+          validation errors with specific attributes of a {{ContactAddress}}.
           The {{PaymentDetailsUpdate/shippingAddressErrors}} member is a
           {{AddressErrors}} dictionary, whose members specifically demarcate
           the fields of a <a>physical address</a> that are erroneous while also
@@ -651,7 +651,7 @@
           Promise&lt;boolean&gt; canMakePayment();
 
           readonly attribute DOMString id;
-          readonly attribute PaymentAddress? shippingAddress;
+          readonly attribute ContactAddress? shippingAddress;
           readonly attribute DOMString? shippingOption;
           readonly attribute PaymentShippingType? shippingType;
 
@@ -2414,7 +2414,7 @@
           readonly attribute DOMString requestId;
           readonly attribute DOMString methodName;
           readonly attribute object details;
-          readonly attribute PaymentAddress? shippingAddress;
+          readonly attribute ContactAddress? shippingAddress;
           readonly attribute DOMString? shippingOption;
           readonly attribute DOMString? payerName;
           readonly attribute DOMString? payerEmail;
@@ -3064,338 +3064,6 @@
           The phone number of the recipient or contact person at the address.
         </dd>
       </dl>
-      <section data-dfn-for="PaymentAddress">
-        <h2>
-          <dfn>PaymentAddress</dfn> interface
-        </h2>
-        <pre class="idl">
-          [SecureContext, Exposed=(Window)]
-          interface PaymentAddress {
-            [Default] object toJSON();
-            readonly attribute DOMString city;
-            readonly attribute DOMString country;
-            readonly attribute DOMString dependentLocality;
-            readonly attribute DOMString organization;
-            readonly attribute DOMString phone;
-            readonly attribute DOMString postalCode;
-            readonly attribute DOMString recipient;
-            readonly attribute DOMString region;
-            readonly attribute DOMString sortingCode;
-            readonly attribute FrozenArray&lt;DOMString&gt; addressLine;
-          };
-        </pre>
-        <p>
-          The {{PaymentAddress}} interface represents a <a>physical
-          address</a>.
-        </p>
-        <aside class="note" title="What happened to regionCode?">
-          <p>
-            This specification once included a <code>regionCode</code>
-            attribute that provided developers with a [[?ISO3166-2]] country
-            subdivision code element representation of an address' region
-            (e.g., "US-WY" for Wyoming). Unfortunately, the attribute was
-            removed due to lack of implementations. The Web Payments Working
-            Group fully recognizes the importance of the
-            <code>regionCode</code> attribute and is <a href=
-            "https://github.com/w3c/payment-request/issues/663">committed to
-            bringing the attribute back</a> in a future revision of this
-            specification.
-          </p>
-        </aside>
-        <section>
-          <h2>
-            Internal constructor
-          </h2>
-          <p>
-            The steps to <dfn data-lt=
-            "PaymentAddress.PaymentAddress()">internally construct a
-            `PaymentAddress`</dfn> with an optional {{AddressInit}}
-            |details:AddressInit| are given by the following algorithm:
-          </p>
-          <ol>
-            <li>Let |address:PaymentAddress| be a new instance of
-            {{PaymentAddress}}.
-            </li>
-            <li>Set |address|.{{PaymentAddress/[[addressLine]]}} to the empty
-            frozen array, and all other [=PaymentAddress slots|internal slots=]
-            to the empty string.
-            </li>
-            <li>If |details| was not passed, return |address|.
-            </li>
-            <li>If |details|.{{AddressInit/country}} is present and not the
-            empty string:
-              <ol>
-                <li>Set |country| the result of <a>strip leading and trailing
-                ASCII whitespace</a> from |details|.{{AddressInit/country}} and
-                performing <a>ASCII uppercase</a>.
-                </li>
-                <li>If |country| is not a valid [[ISO3166-1]] alpha-2 code,
-                throw a {{RangeError}} exception.
-                </li>
-                <li>Set |address|.{{PaymentAddress/[[country]]}} to |country|.
-                </li>
-              </ol>
-            </li>
-            <li>Let |cleanAddressLines:list| be an empty list.
-            </li>
-            <li>If |details|.{{AddressInit/addressLine}} is present, then for
-            each |item| in |details|.{{AddressInit/addressLine}}:
-              <ol>
-                <li>
-                  <a>Strip leading and trailing ASCII whitespace</a> from
-                  |item| and append the result into |cleanAddressLines|.
-                </li>
-              </ol>
-            </li>
-            <li>Set |address|.{{PaymentAddress/[[addressLine]]}} to a new
-            frozen array created from |cleanAddressLines|.
-            </li>
-            <li>If |details|.{{AddressInit/region}} is present, <a>strip
-            leading and trailing ASCII whitespace</a> from
-            |details|.{{AddressInit/region}} and set
-            |address|.{{PaymentAddress/[[region]]}} to the result.
-            </li>
-            <li>If |details|.{{AddressInit/city}} is present, <a>strip leading
-            and trailing ASCII whitespace</a> from
-            |details|.{{AddressInit/city}} and set
-            |address|.{{PaymentAddress/[[city]]}} to the result.
-            </li>
-            <li>If |details|.{{AddressInit/dependentLocality}} is present, <a>
-              strip leading and trailing ASCII whitespace</a> from
-              |details|.{{AddressInit/dependentLocality}} and set
-              |address|.{{PaymentAddress/[[dependentLocality]]}} to the result.
-            </li>
-            <li>If |details|.{{AddressInit/postalCode}} is present, <a>strip
-            leading and trailing ASCII whitespace</a> from
-            |details|.{{AddressInit/postalCode}} and set
-            |address|.{{PaymentAddress/[[postalCode]]}} to the result.
-            </li>
-            <li>If |details|.{{AddressInit/sortingCode}} is present, <a>strip
-            leading and trailing ASCII whitespace</a> from
-            |details|.{{AddressInit/sortingCode}} and set
-            |address|.{{PaymentAddress/[[sortingCode]]}} to the result.
-            </li>
-            <li>If |details|.{{AddressInit/organization}} is present, <a>strip
-            leading and trailing ASCII whitespace</a> from
-            |details|.{{AddressInit/organization}} and set
-            |address|.{{PaymentAddress/[[organization]]}} to the result.
-            </li>
-            <li>If |details|.{{AddressInit/recipient}} is present, <a>strip
-            leading and trailing ASCII whitespace</a> from
-            |details|.{{AddressInit/recipient}} and set
-            |address|.{{PaymentAddress/[[recipient]]}} to the result.
-            </li>
-            <li>If |details|.{{AddressInit/phone}} is present, <a>strip leading
-            and trailing ASCII whitespace</a> from
-            |details|.{{AddressInit/phone}} and set
-            |address|.{{PaymentAddress/[[phone]]}} to the result.
-            </li>
-            <li>Return |address|.
-            </li>
-          </ol>
-        </section>
-        <section>
-          <h2>
-            <dfn>country</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>country</a> of the address. When getting, returns
-            the value of the {{PaymentAddress}}'s
-            {{PaymentAddress/[[country]]}} internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>addressLine</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>address line</a> of the address. When getting,
-            returns the value of the {{PaymentAddress}}'s
-            {{PaymentAddress/[[addressLine]]}} internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>region</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>region</a> of the address. When getting, returns
-            the value of the {{PaymentAddress}}'s {{PaymentAddress/[[region]]}}
-            internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>city</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>city</a> of the address. When getting, returns
-            the value of the {{PaymentAddress}}'s {{PaymentAddress/[[city]]}}
-            internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>dependentLocality</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>dependent locality</a> of the address. When
-            getting, returns the value of the {{PaymentAddress}}'s
-            {{PaymentAddress/[[dependentLocality]]}} internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>postalCode</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>postal code</a> of the address. When getting,
-            returns the value of the {{PaymentAddress}}'s
-            {{PaymentAddress/[[postalCode]]}} internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>sortingCode</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>sorting code</a> of the address. When getting,
-            returns the value of the {{PaymentAddress}}'s
-            {{PaymentAddress/[[sortingCode]]}} internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>organization</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>organization</a> of the address. When getting,
-            returns the value of the {{PaymentAddress}}'s
-            {{PaymentAddress/[[organization]]}} internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>recipient</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>recipient</a> of the address. When getting,
-            returns the value of the {{PaymentAddress}}'s
-            {{PaymentAddress/[[recipient]]}} internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn>phone</dfn> attribute
-          </h2>
-          <p>
-            Represents the <a>phone number</a> of the address. When getting,
-            returns the value of the {{PaymentAddress}}'s
-            {{PaymentAddress/[[phone]]}} internal slot.
-          </p>
-        </section>
-        <section>
-          <h2>
-            <dfn data-lt="PaymentAddress slots" data-lt-nodefault="">Internal
-            slots</dfn>
-          </h2>
-          <table class="data">
-            <tr>
-              <th>
-                Internal slot
-              </th>
-              <th>
-                Description (<em>non-normative</em>)
-              </th>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\country]]</dfn>
-              </td>
-              <td>
-                A <a>country</a> as an [[ISO3166-1]] alpha-2 code stored in its
-                canonical uppercase form or the empty string. For example,
-                "JP".
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\addressLine]]</dfn>
-              </td>
-              <td>
-                A frozen array, possibly of zero length, representing an
-                <a>address line</a>.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\region]]</dfn>
-              </td>
-              <td>
-                A <a>region</a> as a country subdivision name or the
-                empty string, such as "Victoria", representing the state of
-                Victoria in Australia.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\city]]</dfn>
-              </td>
-              <td>
-                A <a>city</a> or the empty string.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\dependentLocality]]</dfn>
-              </td>
-              <td>
-                A <a>dependent locality</a> or the empty string.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\postalCode]]</dfn>
-              </td>
-              <td>
-                A <a>postal code</a> or the empty string.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\sortingCode]]</dfn>
-              </td>
-              <td>
-                A <a>sorting code</a> or the empty string.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\organization]]</dfn>
-              </td>
-              <td>
-                An <a>organization</a> or the empty string.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\recipient]]</dfn>
-              </td>
-              <td>
-                A <a>recipient</a> or the empty string.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <dfn>[[\phone]]</dfn>
-              </td>
-              <td>
-                A <a>phone number</a> or the empty string.
-              </td>
-            </tr>
-          </table>
-        </section>
-      </section>
       <section data-dfn-for="AddressInit">
         <h2>
           <dfn>AddressInit</dfn> dictionary
@@ -3416,8 +3084,8 @@
         </pre>
         <p>
           An {{AddressInit}} is passed when
-          [=PaymentAddress.PaymentAddress()|constructing=] a
-          {{PaymentAddress}}. Its members are as follows.
+          [=ContactAddress.ContactAddress()|constructing=] a
+          {{ContactAddress}}. Its members are as follows.
         </p>
         <dl data-dfn-for="AddressInit" data-sort="ascending">
           <dt>
@@ -3524,7 +3192,7 @@
           <dd>
             Denotes that the <a>address line</a> has a validation error. In the
             user agent's UI, this member corresponds to the input field that
-            provided the {{PaymentAddress}}'s {{PaymentAddress/addressLine}}
+            provided the {{ContactAddress}}'s {{ContactAddress/addressLine}}
             attribute's value.
           </dd>
           <dt>
@@ -3533,7 +3201,7 @@
           <dd>
             Denotes that the <a>city</a> has a validation error. In the user
             agent's UI, this member corresponds to the input field that
-            provided the {{PaymentAddress}}'s {{PaymentAddress/city}}
+            provided the {{ContactAddress}}'s {{ContactAddress/city}}
             attribute's value.
           </dd>
           <dt>
@@ -3542,7 +3210,7 @@
           <dd>
             Denotes that the <a>country</a> has a validation error. In the user
             agent's UI, this member corresponds to the input field that
-            provided the {{PaymentAddress}}'s {{PaymentAddress/country}}
+            provided the {{ContactAddress}}'s {{ContactAddress/country}}
             attribute's value.
           </dd>
           <dt>
@@ -3551,8 +3219,8 @@
           <dd>
             Denotes that the <a>dependent locality</a> has a validation error.
             In the user agent's UI, this member corresponds to the input field
-            that provided the {{PaymentAddress}}'s
-            {{PaymentAddress/dependentLocality}} attribute's value.
+            that provided the {{ContactAddress}}'s
+            {{ContactAddress/dependentLocality}} attribute's value.
           </dd>
           <dt>
             <dfn>organization</dfn> member
@@ -3560,7 +3228,7 @@
           <dd>
             Denotes that the <a>organization</a> has a validation error. In the
             user agent's UI, this member corresponds to the input field that
-            provided the {{PaymentAddress}}'s {{PaymentAddress/organization}}
+            provided the {{ContactAddress}}'s {{ContactAddress/organization}}
             attribute's value.
           </dd>
           <dt>
@@ -3569,7 +3237,7 @@
           <dd>
             Denotes that the <a>phone number</a> has a validation error. In the
             user agent's UI, this member corresponds to the input field that
-            provided the {{PaymentAddress}}'s {{PaymentAddress/phone}}
+            provided the {{ContactAddress}}'s {{ContactAddress/phone}}
             attribute's value.
           </dd>
           <dt>
@@ -3578,7 +3246,7 @@
           <dd>
             Denotes that the <a>postal code</a> has a validation error. In the
             user agent's UI, this member corresponds to the input field that
-            provided the {{PaymentAddress}}'s {{PaymentAddress/postalCode}}
+            provided the {{ContactAddress}}'s {{ContactAddress/postalCode}}
             attribute's value.
           </dd>
           <dt>
@@ -3587,7 +3255,7 @@
           <dd>
             Denotes that the <a>recipient</a> has a validation error. In the
             user agent's UI, this member corresponds to the input field that
-            provided the {{PaymentAddress}}'s {{PaymentAddress/addressLine}}
+            provided the {{ContactAddress}}'s {{ContactAddress/addressLine}}
             attribute's value.
           </dd>
           <dt>
@@ -3596,7 +3264,7 @@
           <dd>
             Denotes that the <a>region</a> has a validation error. In the user
             agent's UI, this member corresponds to the input field that
-            provided the {{PaymentAddress}}'s {{PaymentAddress/region}}
+            provided the {{ContactAddress}}'s {{ContactAddress/region}}
             attribute's value.
           </dd>
           <dt>
@@ -3605,17 +3273,17 @@
           <dd>
             The <a>sorting code</a> has a validation error. In the user agent's
             UI, this member corresponds to the input field that provided the
-            {{PaymentAddress}}'s {{PaymentAddress/sortingCode}} attribute's
+            {{ContactAddress}}'s {{ContactAddress/sortingCode}} attribute's
             value.
           </dd>
         </dl>
       </section>
       <section>
         <h2>
-          Creating a `PaymentAddress` from user-provided input
+          Creating a `ContactAddress` from user-provided input
         </h2>
         <p>
-          The steps to <dfn data-export="">create a `PaymentAddress` from
+          The steps to <dfn data-export="">create a `ContactAddress` from
           user-provided input</dfn> are given by the following algorithm. The
           algorithm takes a <a>list</a> |redactList|.
         </p>
@@ -3627,7 +3295,7 @@
             the API shares with the merchant.
           </p>
           <p>
-            For merchants, the resulting {{PaymentAddress}} object provides
+            For merchants, the resulting {{ContactAddress}} object provides
             enough information to, for example, calculate shipping costs, but,
             in most cases, not enough information to physically locate and
             uniquely identify the recipient.
@@ -3711,8 +3379,8 @@
               As such, when the user agent knows that the user is inputting the
               address for a particular country, it might not provide a field
               for the user to input a <a>region</a>. In such cases, the user
-              agent returns an empty string for both {{PaymentAddress}}'s
-              {{PaymentAddress/region}} attribute - but the address can still
+              agent returns an empty string for both {{ContactAddress}}'s
+              {{ContactAddress/region}} attribute - but the address can still
               serve its intended purpose (e.g., be valid for shipping or
               billing purposes).
             </p>
@@ -3726,8 +3394,8 @@
           |details|.{{AddressInit/sortingCode}} to the user-provided sorting
           code.
           </li>
-          <li>[=PaymentAddress.PaymentAddress()|Internally construct a new
-          `PaymentAddress`=] with |details| and return the result.
+          <li>[=ContactAddress.ContactAddress()|Internally construct a new
+          `ContactAddress`=] with |details| and return the result.
           </li>
         </ol>
       </section>
@@ -4165,7 +3833,7 @@
                     about the recipient that the API shares with the merchant.
                   </p>
                   <p>
-                    For merchants, the resulting {{PaymentAddress}} object
+                    For merchants, the resulting {{ContactAddress}} object
                     provides enough information to, for example, calculate
                     shipping costs, but, in most cases, not enough information
                     to physically locate and uniquely identify the recipient.
@@ -4181,8 +3849,8 @@
               <li>Let |redactList:list| be the empty list. Set |redactList| to
               « "organization", "phone", "recipient", "addressLine" ».
               </li>
-              <li>Let |address:PaymentAddress| be the result of running the
-              steps to <a>create a `PaymentAddress` from user-provided
+              <li>Let |address:ContactAddress| be the result of running the
+              steps to <a>create a `ContactAddress` from user-provided
               input</a> with |redactList|.
               </li>
               <li>Set |request|.{{PaymentRequest/shippingAddress}} to
@@ -4452,8 +4120,8 @@
             <ol>
               <li>Let |redactList:list| be the empty <a>list</a>.
               </li>
-              <li>Let |shippingAddress:PaymentAddress| be the result of
-              <a>create a `PaymentAddress` from user-provided input</a> with
+              <li>Let |shippingAddress:ContactAddress| be the result of
+              <a>create a `ContactAddress` from user-provided input</a> with
               |redactList|.
               </li>
               <li>Set the {{PaymentResponse/shippingAddress}} attribute value
