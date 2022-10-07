@@ -594,8 +594,8 @@
                   </li>
                   <li>If the {{PaymentMethodData/data}} member of
                   |paymentMethod| is missing, let |serializedData| be null.
-                  Otherwise, let |serializedData| be the result of
-                  <a>JSON-serializing</a>
+                  Otherwise, let |serializedData| be the result of [=serialize
+                  a JavaScript value to a JSON string|serialize=]
                   |paymentMethod|.{{PaymentMethodData/data}} into a string.
                   Rethrow any exceptions.
                   </li>
@@ -701,7 +701,8 @@
                       <li>If the {{PaymentDetailsModifier/data}} member of
                       |modifier| is missing, let |serializedData| be null.
                       Otherwise, let |serializedData| be the result of
-                      <a>JSON-serializing</a>
+                      [=serialize a JavaScript value to a JSON
+                      string|serialize=]
                       |modifier|.{{PaymentDetailsModifier/data}} into a string.
                       Rethrow any exceptions.
                       </li>
@@ -1380,8 +1381,8 @@
         </dt>
         <dd>
           An object that provides optional information that might be needed by
-          the supported payment methods. If supplied, it will be
-          <a>JSON-serialized</a>.
+          the supported payment methods. If supplied, it will be [=serialize a
+          JavaScript value to a JSON string|serialized=].
         </dd>
       </dl>
       <p class="note">
@@ -1733,8 +1734,8 @@
         </dt>
         <dd>
           An object that provides optional information that might be needed by
-          the supported payment methods. If supplied, it will be
-          <a>JSON-serialized</a>.
+          the supported payment methods. If supplied, it will be [=serialize a
+          JavaScript value to a JSON string|serialized=].
         </dd>
       </dl>
     </section>
@@ -1815,7 +1816,8 @@
         <dd>
           An object that provides optional information that might be needed by
           the {{PaymentResponse}} associated [=payment method=]. If supplied,
-          it will be <a>JSON-serialized</a>.
+          it will be [=serialize a JavaScript value to a JSON
+          string|serialize=].
         </dd>
       </dl>
     </section>
@@ -2149,7 +2151,8 @@
           </li>
           <li>Let |promise:Promise| be <a>a new promise</a>.
           </li>
-          <li>Let |serializedData| be the result of <a>JSON-serializing</a>
+          <li>Let |serializedData| be the result of [=serialize a JavaScript
+          value to a JSON string|serialize=]
           |details|.{{PaymentCompleteDetails/data}} into a string.
           </li>
           <li>If serializing [=exception/throws=] an exception, return <a>a
@@ -2909,12 +2912,12 @@
                           </li>
                           <li>If the {{PaymentDetailsModifier/data}} member of
                           |modifier| is missing, let |serializedData| be null.
-                          Otherwise, let |serializedData| be the result of <a>
-                            JSON-serializing</a>
-                            |modifier|.{{PaymentDetailsModifier/data}} into a
-                            string. If <a>JSON-serializing</a> throws an
-                            exception, then <a>abort the update</a> with
-                            |request| and that exception.
+                          Otherwise, let |serializedData| be the result of
+                          [=serialize a JavaScript value to a JSON
+                          string|serialize=]
+                          |modifier|.{{PaymentDetailsModifier/data}} into a
+                          string. If it throws an exception, then <a>abort the
+                          update</a> with |request| and that exception.
                           </li>
                           <li>Add |serializedData| to |serializedModifierData|.
                           </li>
@@ -3268,12 +3271,6 @@
           The term <dfn data-cite=
           "ECMASCRIPT#sec-object-internal-methods-and-internal-slots">internal
           slot</dfn> is defined [[ECMASCRIPT]].
-          <p>
-            To <dfn
-            data-local-lt="JSON-serialized|JSON-serializing">JSON-serialize</dfn>
-            a value, [=serialize a JavaScript value to a JSON string=] given
-            that value. This can throw an exception.
-          </p>
         </dd>
       </dl>
     </section>
