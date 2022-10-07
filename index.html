@@ -629,8 +629,8 @@
                   |paymentMethod| is missing, let |serializedData| be null.
                   Otherwise, let |serializedData| be the result of [=serialize
                   a JavaScript value to a JSON string|serialize=]
-                  |paymentMethod|.{{PaymentMethodData/data}} into a string.
-                  Rethrow any exceptions.
+                  |paymentMethod|.{{PaymentMethodData/data}} into a JSON
+                  string. Rethrow any exceptions.
                   </li>
                   <li>If |serializedData| is not null, and if the specification
                   that defines the
@@ -736,8 +736,8 @@
                       Otherwise, let |serializedData| be the result of
                       [=serialize a JavaScript value to a JSON
                       string|serialize=]
-                      |modifier|.{{PaymentDetailsModifier/data}} into a string.
-                      Rethrow any exceptions.
+                      |modifier|.{{PaymentDetailsModifier/data}} into a JSON
+                      string. Rethrow any exceptions.
                       </li>
                       <li>Add the tuple
                       (|modifier|.{{PaymentDetailsModifier/supportedMethods}},
@@ -2186,7 +2186,7 @@
           </li>
           <li>Let |serializedData| be the result of [=serialize a JavaScript
           value to a JSON string|serialize=]
-          |details|.{{PaymentCompleteDetails/data}} into a string.
+          |details|.{{PaymentCompleteDetails/data}} into a JSON string.
           </li>
           <li>If serializing [=exception/throws=] an exception, return <a>a
           promise rejected with</a> that exception.
@@ -2949,8 +2949,8 @@
                           [=serialize a JavaScript value to a JSON
                           string|serialize=]
                           |modifier|.{{PaymentDetailsModifier/data}} into a
-                          string. If it throws an exception, then <a>abort the
-                          update</a> with |request| and that exception.
+                          JSON string. If it throws an exception, then <a>abort
+                          the update</a> with |request| and that exception.
                           </li>
                           <li>Add |serializedData| to |serializedModifierData|.
                           </li>
