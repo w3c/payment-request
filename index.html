@@ -78,7 +78,7 @@
     };
     </script>
   </head>
-  <body data-cite="payment-method-id">
+  <body data-cite="payment-method-id contact-api">
     <h1 id="title">
       Payment Request API 1.1
     </h1>
@@ -2995,6 +2995,17 @@
       <h2>
         Physical addresses
       </h2>
+      <aside class="note">
+        The Web Payments Working Group removed support for shipping and billing
+        addresses from the original version of Payment Request API due to
+        <a href="https://github.com/w3c/payment-request/issues/842">privacy
+        concerns</a>. In order to provide documentation for implementations
+        that continue to support this capability, the Working Group is now
+        restoring the feature with an expectation of addressing privacy issues.
+        In doing so the Working Group may also make changes to Payment Request
+        API based on the evolution of other APIs (e.g., the
+        [[[contact-picker]]])
+      </aside>
       <p>
         A <dfn>physical address</dfn> is composed of the following parts.
       </p>
