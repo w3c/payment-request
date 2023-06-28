@@ -822,15 +822,22 @@
           <li data-tests=
           "payment-request-show-method.https.html, show-method-postmessage-manual.https.html">
           If the [=relevant global object=] of [=request=] does not have
-          [=transient activation=]:
+          [=transient activation=], the user agent MAY:
             <ol>
               <li>Return [=a promise rejected with=] with a {{"SecurityError"}}
               {{DOMException}}.
               </li>
             </ol>
+            <p class="note">
+              This allows the user agent to not require user activation, for
+              example to support redirect flows where a user activation may not
+              be present upon redirect. See
+              <a href="#user-activation-requirement"></a> for security
+              considerations.
+            </p>
           </li>
-          <li data-tests="show-consume-activation.https.html">[=Consume user
-          activation=] of the [=relevant global object=].
+          <li data-tests="show-consume-activation.https.html">Otherwise,
+          [=consume user activation=] of the [=relevant global object=].
           </li>
           <li>Let |document| be |request|'s [=relevant global object=]'s
           [=associated `Document`=].
@@ -3274,6 +3281,32 @@
           with repeated calls, whether it is the cost of managing multiple
           [=host/registrable domains=] or the user experience friction of
           opening multiple windows (tabs or pop-ups).
+        </p>
+      </section>
+      <section>
+        <h2 id="user-activation-requirement">
+          User activation requirement
+        </h2>
+        <p>
+          If the user agent does not require user activation as part of the
+          {{PaymentRequest/show()}} method, some additional security mitigations
+          should be considered. Not requiring user activation increases the risk
+          of spam and click-jacking attacks, by allowing a Payment Request UI
+          to be initiated without the user interacting with the page immediately
+          beforehand.
+        </p>
+        <p>
+          In order to mitigate spam, the user agent may decide to enforce a user
+          activation requirement after some threshold, for example after the
+          user has already been shown a Payment Request UI without a user
+          activation on the current page. In order to mitigate click-jacking
+          attacks, the user agent may implement a time threshold in which clicks
+          are ignored immediately after a dialog is shown.
+        </p>
+        <p>
+          Another relevant mitigation exists in step 6 of
+          {{PaymentRequest/show()}}, where the document must be visible in order
+          to initiate the user interaction.
         </p>
       </section>
     </section>
