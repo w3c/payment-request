@@ -615,7 +615,8 @@
                   </li>
                   <li>If |seenPMIs| [=set/contain|contains=] |pmi| throw a
                   {{RangeError}} {{DOMException}} optionally informing the
-                  developer that this [=payment method identifier=] is a duplicate.
+                  developer that this [=payment method identifier=] is a
+                  duplicate.
                   </li>
                   <li>[=set/Append=] |pmi| to |seenPMIs|.
                   </li>
@@ -3254,9 +3255,9 @@
           The {{PaymentRequest/canMakePayment()}} method provides feature
           detection for different payment methods. It may become a
           fingerprinting vector if in the future, a large number of payment
-          methods are available. User agents are expected to protect
-          the user from abuse of the method. For example, user agents can
-          reduce user fingerprinting by:
+          methods are available. User agents are expected to protect the user
+          from abuse of the method. For example, user agents can reduce user
+          fingerprinting by:
         </p>
         <ul>
           <li>Rate-limiting the frequency of calls with different parameters.
