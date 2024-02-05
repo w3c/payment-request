@@ -78,7 +78,7 @@
     };
     </script>
   </head>
-  <body data-cite="payment-method-id contact-api">
+  <body data-cite="payment-method-id contact-picker">
     <h1 id="title">
       Payment Request API 1.1
     </h1>
@@ -3095,7 +3095,7 @@
         </pre>
         <p>
           An {{AddressInit}} is passed when
-          [=ContactAddress.ContactAddress()|constructing=] a
+          constructing a
           {{ContactAddress}}. Its members are as follows.
         </p>
         <dl data-dfn-for="AddressInit" data-sort="ascending">
@@ -3405,8 +3405,8 @@
           |details|.{{AddressInit/sortingCode}} to the user-provided sorting
           code.
           </li>
-          <li>[=ContactAddress.ContactAddress()|Internally construct a new
-          `ContactAddress`=] with |details| and return the result.
+          <li>Internally construct a new
+          {{ContactAddress}} with |details| and return the result.
           </li>
         </ol>
       </section>
