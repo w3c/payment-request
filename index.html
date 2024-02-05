@@ -544,7 +544,7 @@
         <ol class="algorithm">
           <li>If the <a>current settings object</a>'s [=relevant global
           object=]'s [=associated `Document`=] is not <a>allowed to use</a> the
-          "[=payment-permission|payment=]" permission, then [=exception/throw=]
+          <a>"payment"</a> permission, then [=exception/throw=]
           a {{"SecurityError"}} {{DOMException}}.
           </li>
           <li>Establish the request's id:
@@ -1954,7 +1954,7 @@
               If
               |errorFields:PaymentValidationErrors|.{{PaymentValidationErrors/paymentMethod}}
               member was passed, and if required by the specification that
-              defines |response|.{{PaymentResponse/payment}}, then [=converted
+              defines |response|.{{PaymentResponse/methodName}}, then [=converted
               to an IDL value|convert=] |errorFields|'s
               {{PaymentValidationErrors/paymentMethod}} member to an IDL value
               of the type specified there. Otherwise, [=converted to an IDL
@@ -2272,9 +2272,9 @@
       </h2>
       <p>
         This specification defines a [=policy-controlled feature=] identified
-        by the string "<code><dfn data-lt="payment-permission" data-nodefault=
-        "">payment</dfn></code>" [[permissions-policy]]. Its <a>default
-        allowlist</a> is '<code>self</code>'.
+        by the string <dfn class="permission">"payment"</dfn>
+        [[permissions-policy]]. Its [=policy-controlled feature/default
+        allowlist=] is [=default allowlist/'self'=].
       </p>
       <aside class="note">
         <p>
