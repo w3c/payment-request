@@ -16,8 +16,8 @@ jobs:
       - uses: w3c/spec-prod@v2
         with:
           TOOLCHAIN: respec
-#          W3C_ECHIDNA_TOKEN: ${{ secrets.ECHIDNA_TOKEN }}
-#          W3C_WG_DECISION_URL: "https://www.w3.org/2016/04/14-wpwg-minutes.html#item02"
+          W3C_ECHIDNA_TOKEN: ${{ secrets.ECHIDNA_TOKEN }}
+          W3C_WG_DECISION_URL: "https://www.w3.org/2016/04/14-wpwg-minutes.html#item02"
           W3C_NOTIFICATIONS_CC: "${{ secrets.CC }}"
-#          W3C_BUILD_OVERRIDE: |
-#            specStatus: CRD
+          W3C_BUILD_OVERRIDE: |
+            specStatus: WD

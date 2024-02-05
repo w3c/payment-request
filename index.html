@@ -3,13 +3,13 @@
   <head>
     <meta charset='utf-8'>
     <title>
-      Payment Request API
+      Payment Request API 1.1
     </title>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class=
     'remove'></script>
     <script class='remove'>
     var respecConfig = {
-      shortName: "payment-request",
+      shortName: "payment-request-1.1",
       github: "w3c/payment-request",
       specStatus: "ED",
       group: "payments",
@@ -74,13 +74,13 @@
       },
       doJsonLd: true,
       xref: "web-platform",
-      mdn: true,
+      mdn: "payment-request",
     };
     </script>
   </head>
   <body data-cite="payment-method-id">
     <h1 id="title">
-      Payment Request API
+      Payment Request API 1.1
     </h1>
     <section id='abstract'>
       <p>
@@ -91,6 +91,33 @@
       </p>
     </section>
     <section id='sotd' class="updateable-rec">
+      <p>
+        The W3C <a href=
+        "https://www.w3.org/TR/2021/PR-payment-request-20210930/">published
+        Payment Request API 1.0</a> as a Proposed Recommendation in September
+        2021. Since then, W3C has been working to resolve two Formal Objections
+        from W3C Members; see the <a href=
+        "https://www.w3.org/2022/03/prapi-fo-report.html">Team Report</a> for
+        details. At this time, a Council is evaluating the Formal Objections to
+        determine whether Payment Request API 1.0 should advance to
+        Recommendation or be returned to the Working Group for changes.
+      </p>
+      <p>
+        In the meantime, the Editors have continued to update this
+        specification with new features (see change log below). To provide
+        devellopers and implementers with more confidence about these features,
+        the working group has decided to formally publish the a new W3C Working
+        Draft. This will also provide the group with a foundation for potential
+        discussion at TPAC about the future of Payment Request.
+      </p>
+      <p>
+        It is not uncommon for a Working Group to work on different revisions
+        of a specification simultaneously (e.g., see the CSS WG). With that in
+        mind, and because our current <a href=
+        "https://www.w3.org/Payments/WG/charter-201912.html">charter</a>
+        anticipates enhancements to Payment Request 1.0, we've publish this 1.1
+        draft.
+      </p>
       <p>
         The working group maintains <a href=
         "https://github.com/w3c/payment-request/issues?utf8=%E2%9C%93&amp;q=is%3Aopen%20is%3Aissue%20-label%3A%22Priority%3A%20Postponed%22%20">
@@ -542,10 +569,10 @@
           |details|)</dfn></code> constructor MUST act as follows:
         </p>
         <ol class="algorithm">
-          <li>If the <a>current settings object</a>'s [=relevant global
-          object=]'s [=associated `Document`=] is not <a>allowed to use</a> the
-          <a>"payment"</a> permission, then [=exception/throw=]
-          a {{"SecurityError"}} {{DOMException}}.
+          <li>If [=this=]'s [=relevant global object=]'s [=associated
+          `Document`=] is not <a>allowed to use</a> the <a>"payment"</a>
+          permission, then [=exception/throw=] a {{"SecurityError"}}
+          {{DOMException}}.
           </li>
           <li>Establish the request's id:
             <ol>
@@ -587,17 +614,18 @@
                     </ol>
                   </li>
                   <li>If |seenPMIs| [=set/contain|contains=] |pmi| throw a
-                  {{RangeError}} {{DOMException}} optionally letting the
-                  developer this [=payment method identifier=] is a duplicate.
+                  {{RangeError}} {{DOMException}} optionally informing the
+                  developer that this [=payment method identifier=] is a
+                  duplicate.
                   </li>
                   <li>[=set/Append=] |pmi| to |seenPMIs|.
                   </li>
                   <li>If the {{PaymentMethodData/data}} member of
                   |paymentMethod| is missing, let |serializedData| be null.
-                  Otherwise, let |serializedData| be the result of
-                  <a>JSON-serializing</a>
-                  |paymentMethod|.{{PaymentMethodData/data}} into a string.
-                  Rethrow any exceptions.
+                  Otherwise, let |serializedData| be the result of [=serialize
+                  a JavaScript value to a JSON string|serialize=]
+                  |paymentMethod|.{{PaymentMethodData/data}} into a JSON
+                  string. Rethrow any exceptions.
                   </li>
                   <li>If |serializedData| is not null, and if the specification
                   that defines the
@@ -701,9 +729,10 @@
                       <li>If the {{PaymentDetailsModifier/data}} member of
                       |modifier| is missing, let |serializedData| be null.
                       Otherwise, let |serializedData| be the result of
-                      <a>JSON-serializing</a>
-                      |modifier|.{{PaymentDetailsModifier/data}} into a string.
-                      Rethrow any exceptions.
+                      [=serialize a JavaScript value to a JSON
+                      string|serialize=]
+                      |modifier|.{{PaymentDetailsModifier/data}} into a JSON
+                      string. Rethrow any exceptions.
                       </li>
                       <li>Add the tuple
                       (|modifier|.{{PaymentDetailsModifier/supportedMethods}},
@@ -794,15 +823,21 @@
           <li data-tests=
           "payment-request-show-method.https.html, show-method-postmessage-manual.https.html">
           If the [=relevant global object=] of [=request=] does not have
-          [=transient activation=]:
+          [=transient activation=], the user agent MAY:
             <ol>
               <li>Return [=a promise rejected with=] with a {{"SecurityError"}}
               {{DOMException}}.
               </li>
             </ol>
+            <p class="note">
+              This allows the user agent to not require user activation, for
+              example to support redirect flows where a user activation may not
+              be present upon redirect. See <a href=
+              "#user-activation-requirement"></a> for security considerations.
+            </p>
           </li>
-          <li data-tests="show-consume-activation.https.html">[=Consume user
-          activation=] of the [=relevant global object=].
+          <li data-tests="show-consume-activation.https.html">Otherwise,
+          [=consume user activation=] of the [=relevant global object=].
           </li>
           <li>Let |document| be |request|'s [=relevant global object=]'s
           [=associated `Document`=].
@@ -810,6 +845,10 @@
           <li data-tests="rejects_if_not_active.https.html">If |document| is
           not [=Document/fully active=], then return <a>a promise rejected
           with</a> an {{"AbortError"}} {{DOMException}}.
+          </li>
+          <li>If |document|'s [=Document/visibility state=] is not `"visible"`,
+          then return <a>a promise rejected with</a> an {{"AbortError"}}
+          {{DOMException}}.
           </li>
           <li>
             <p>
@@ -1380,8 +1419,8 @@
         </dt>
         <dd>
           An object that provides optional information that might be needed by
-          the supported payment methods. If supplied, it will be
-          <a>JSON-serialized</a>.
+          the supported payment methods. If supplied, it will be [=serialize a
+          JavaScript value to a JSON string|serialized=].
         </dd>
       </dl>
       <p class="note">
@@ -1733,8 +1772,8 @@
         </dt>
         <dd>
           An object that provides optional information that might be needed by
-          the supported payment methods. If supplied, it will be
-          <a>JSON-serialized</a>.
+          the supported payment methods. If supplied, it will be [=serialize a
+          JavaScript value to a JSON string|serialized=].
         </dd>
       </dl>
     </section>
@@ -1815,7 +1854,8 @@
         <dd>
           An object that provides optional information that might be needed by
           the {{PaymentResponse}} associated [=payment method=]. If supplied,
-          it will be <a>JSON-serialized</a>.
+          it will be [=serialize a JavaScript value to a JSON
+          string|serialize=].
         </dd>
       </dl>
     </section>
@@ -1924,7 +1964,7 @@
           |response|.{{PaymentResponse/[[request]]}}.
           </li>
           <li>Let |document:Document| be |request|'s <a>relevant global
-          object</a>'s <a>associated Document</a>.
+          object</a>'s <a>associated `Document`</a>.
           </li>
           <li data-tests=
           "payment-response/rejects_if_not_active-manual.https.html">If
@@ -1954,8 +1994,8 @@
               If
               |errorFields:PaymentValidationErrors|.{{PaymentValidationErrors/paymentMethod}}
               member was passed, and if required by the specification that
-              defines |response|.{{PaymentResponse/methodName}}, then [=converted
-              to an IDL value|convert=] |errorFields|'s
+              defines |response|.{{PaymentResponse/methodName}}, then
+              [=converted to an IDL value|convert=] |errorFields|'s
               {{PaymentValidationErrors/paymentMethod}} member to an IDL value
               of the type specified there. Otherwise, [=converted to an IDL
               value|convert=] to {{object}}.
@@ -2149,8 +2189,9 @@
           </li>
           <li>Let |promise:Promise| be <a>a new promise</a>.
           </li>
-          <li>Let |serializedData| be the result of <a>JSON-serializing</a>
-          |details|.{{PaymentCompleteDetails/data}} into a string.
+          <li>Let |serializedData| be the result of [=serialize a JavaScript
+          value to a JSON string|serialize=]
+          |details|.{{PaymentCompleteDetails/data}} into a JSON string.
           </li>
           <li>If serializing [=exception/throws=] an exception, return <a>a
           promise rejected with</a> that exception.
@@ -2701,7 +2742,7 @@
           |request|.{{PaymentRequest/[[response]]}} if |isRetry| is true, or a
           new {{PaymentResponse}} otherwise.
           </li>
-          <li>If |isRetry| if false, initialize the newly created |response|:
+          <li>If |isRetry| is false, initialize the newly created |response|:
             <ol>
               <li>Set |response|.{{PaymentResponse/[[request]]}} to |request|.
               </li>
@@ -2909,12 +2950,12 @@
                           </li>
                           <li>If the {{PaymentDetailsModifier/data}} member of
                           |modifier| is missing, let |serializedData| be null.
-                          Otherwise, let |serializedData| be the result of <a>
-                            JSON-serializing</a>
-                            |modifier|.{{PaymentDetailsModifier/data}} into a
-                            string. If <a>JSON-serializing</a> throws an
-                            exception, then <a>abort the update</a> with
-                            |request| and that exception.
+                          Otherwise, let |serializedData| be the result of
+                          [=serialize a JavaScript value to a JSON
+                          string|serialize=]
+                          |modifier|.{{PaymentDetailsModifier/data}} into a
+                          JSON string. If it throws an exception, then <a>abort
+                          the update</a> with |request| and that exception.
                           </li>
                           <li>Add |serializedData| to |serializedModifierData|.
                           </li>
@@ -3214,9 +3255,9 @@
           The {{PaymentRequest/canMakePayment()}} method provides feature
           detection for different payment methods. It may become a
           fingerprinting vector if in the future, a large number of payment
-          methods are available. purposes. User agents are expected to protect
-          the user from abuse of the method. For example, user agents can
-          reduce user fingerprinting by:
+          methods are available. User agents are expected to protect the user
+          from abuse of the method. For example, user agents can reduce user
+          fingerprinting by:
         </p>
         <ul>
           <li>Rate-limiting the frequency of calls with different parameters.
@@ -3240,6 +3281,32 @@
           with repeated calls, whether it is the cost of managing multiple
           [=host/registrable domains=] or the user experience friction of
           opening multiple windows (tabs or pop-ups).
+        </p>
+      </section>
+      <section>
+        <h2 id="user-activation-requirement">
+          User activation requirement
+        </h2>
+        <p>
+          If the user agent does not require user activation as part of the
+          {{PaymentRequest/show()}} method, some additional security
+          mitigations should be considered. Not requiring user activation
+          increases the risk of spam and click-jacking attacks, by allowing a
+          Payment Request UI to be initiated without the user interacting with
+          the page immediately beforehand.
+        </p>
+        <p>
+          In order to mitigate spam, the user agent may decide to enforce a
+          user activation requirement after some threshold, for example after
+          the user has already been shown a Payment Request UI without a user
+          activation on the current page. In order to mitigate click-jacking
+          attacks, the user agent may implement a time threshold in which
+          clicks are ignored immediately after a dialog is shown.
+        </p>
+        <p>
+          Another relevant mitigation exists in step 6 of
+          {{PaymentRequest/show()}}, where the document must be visible in
+          order to initiate the user interaction.
         </p>
       </section>
     </section>
@@ -3268,12 +3335,6 @@
           The term <dfn data-cite=
           "ECMASCRIPT#sec-object-internal-methods-and-internal-slots">internal
           slot</dfn> is defined [[ECMASCRIPT]].
-          <p>
-            <dfn data-local-lt="JSON-serialized|JSON-serializing" data-export=
-            "">JSON-serialize</dfn> runs JSON {{JSON/stringify()}}, passing the
-            supplied object as the sole argument, and returns the resulting
-            string. This can throw an exception.
-          </p>
         </dd>
       </dl>
     </section>
