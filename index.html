@@ -739,8 +739,8 @@
               <li>For each |paymentMethod| of |methodData|:
                 <ol>
                   <li data-tests=
-                  "payment-request-ctor-pmi-handling.https.sub.html">Run the steps
-                  to <a>validate a payment method identifier</a> with
+                  "payment-request-ctor-pmi-handling.https.sub.html">Run the
+                  steps to <a>validate a payment method identifier</a> with
                   |paymentMethod|.{{PaymentMethodData/supportedMethods}}. If it
                   returns false, then throw a {{RangeError}} exception.
                   Optionally, inform the developer that the payment method
@@ -2993,88 +2993,13 @@
     </section>
     <section>
       <h2>
-        Physical addresses
+        Shipping and billing addresses
       </h2>
-      <aside class="note">
-        The Web Payments Working Group removed support for shipping and billing
-        addresses from the original version of Payment Request API due to
-        <a href="https://github.com/w3c/payment-request/issues/842">privacy
-        concerns</a>. In order to provide documentation for implementations
-        that continue to support this capability, the Working Group is now
-        restoring the feature with an expectation of addressing privacy issues.
-        In doing so the Working Group may also make changes to Payment Request
-        API based on the evolution of other APIs (e.g., the
-        [[[contact-picker]]])
-      </aside>
       <p>
-        A <dfn>physical address</dfn> is composed of the following parts.
+        The {{PaymentRequest}} interface allows a merchant to request from the
+        user [=physical address|physical addresses=] for the purposes of
+        shipping and/or billing.
       </p>
-      <dl data-sort="">
-        <dt>
-          <dfn>Country</dfn>
-        </dt>
-        <dd>
-          The country corresponding to the address.
-        </dd>
-        <dt>
-          <dfn>Address line</dfn>
-        </dt>
-        <dd>
-          The most specific part of the address. It can include, for example, a
-          street name, a house number, apartment number, a rural delivery
-          route, descriptive instructions, or a post office box number.
-        </dd>
-        <dt>
-          <dfn>Region</dfn>
-        </dt>
-        <dd>
-          The top level administrative subdivision of the country. For example,
-          this can be a state, a province, an oblast, or a prefecture.
-        </dd>
-        <dt>
-          <dfn>City</dfn>
-        </dt>
-        <dd>
-          The city/town portion of the address.
-        </dd>
-        <dt>
-          <dfn>Dependent locality</dfn>
-        </dt>
-        <dd>
-          The dependent locality or sublocality within a city. For example,
-          neighborhoods, boroughs, districts, or UK dependent localities.
-        </dd>
-        <dt>
-          <dfn>Postal code</dfn>
-        </dt>
-        <dd>
-          The postal code or ZIP code, also known as PIN code in India.
-        </dd>
-        <dt>
-          <dfn>Sorting code</dfn>
-        </dt>
-        <dd>
-          The sorting code system, such as the CEDEX system used in France.
-        </dd>
-        <dt>
-          <dfn>Organization</dfn>
-        </dt>
-        <dd>
-          The organization, firm, company, or institution at the address.
-        </dd>
-        <dt>
-          <dfn>Recipient</dfn>
-        </dt>
-        <dd>
-          The name of the recipient or contact person at the address.
-        </dd>
-        <dt>
-          <dfn>Phone number</dfn>
-        </dt>
-        <dd>
-          The phone number of the recipient or contact person at the address.
-        </dd>
-      </dl>
       <section data-dfn-for="AddressInit">
         <h2>
           <dfn>AddressInit</dfn> dictionary
@@ -3094,9 +3019,8 @@
           };
         </pre>
         <p>
-          An {{AddressInit}} is passed when
-          constructing a
-          {{ContactAddress}}. Its members are as follows.
+          An {{AddressInit}} is passed when constructing a {{ContactAddress}}.
+          Its members are as follows.
         </p>
         <dl data-dfn-for="AddressInit" data-sort="ascending">
           <dt>
@@ -3405,8 +3329,8 @@
           |details|.{{AddressInit/sortingCode}} to the user-provided sorting
           code.
           </li>
-          <li>Internally construct a new
-          {{ContactAddress}} with |details| and return the result.
+          <li>Internally construct a new {{ContactAddress}} with |details| and
+          return the result.
           </li>
         </ol>
       </section>
