@@ -392,7 +392,7 @@
         <pre class="example js" title="Constructing a `PaymentRequest`">
           async function doPaymentRequest() {
             try {
-              const request = new PaymentRequest(methodData, details, options);
+              const request = new PaymentRequest(methodData, details);
               const response = await request.show();
               await validateResponse(response);
             } catch (err) {
@@ -432,7 +432,7 @@
         </p>
         <pre class="example js" title="POSTing with `fetch()`">
           async function doPaymentRequest() {
-            const payRequest = new PaymentRequest(methodData, details, options);
+            const payRequest = new PaymentRequest(methodData, details);
             const payResponse = await payRequest.show();
             let result = "";
             try {
