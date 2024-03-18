@@ -3,13 +3,13 @@
   <head>
     <meta charset='utf-8'>
     <title>
-      Payment Request API 1.1
+      Payment Request API
     </title>
     <script src='https://www.w3.org/Tools/respec/respec-w3c' class=
     'remove'></script>
     <script class='remove'>
     var respecConfig = {
-      shortName: "payment-request-1.1",
+      shortName: "payment-request",
       github: "w3c/payment-request",
       specStatus: "ED",
       group: "payments",
@@ -74,13 +74,13 @@
       },
       doJsonLd: true,
       xref: "web-platform",
-      mdn: "payment-request",
+      mdn: true,
     };
     </script>
   </head>
   <body data-cite="payment-method-id">
     <h1 id="title">
-      Payment Request API 1.1
+      Payment Request API
     </h1>
     <section id='abstract'>
       <p>
@@ -90,34 +90,7 @@
         facilitate the payment flow between merchant and user.
       </p>
     </section>
-    <section id='sotd' class="updateable-rec">
-      <p>
-        The W3C <a href=
-        "https://www.w3.org/TR/2021/PR-payment-request-20210930/">published
-        Payment Request API 1.0</a> as a Proposed Recommendation in September
-        2021. Since then, W3C has been working to resolve two Formal Objections
-        from W3C Members; see the <a href=
-        "https://www.w3.org/2022/03/prapi-fo-report.html">Team Report</a> for
-        details. At this time, a Council is evaluating the Formal Objections to
-        determine whether Payment Request API 1.0 should advance to
-        Recommendation or be returned to the Working Group for changes.
-      </p>
-      <p>
-        In the meantime, the Editors have continued to update this
-        specification with new features (see change log below). To provide
-        devellopers and implementers with more confidence about these features,
-        the working group has decided to formally publish the a new W3C Working
-        Draft. This will also provide the group with a foundation for potential
-        discussion at TPAC about the future of Payment Request.
-      </p>
-      <p>
-        It is not uncommon for a Working Group to work on different revisions
-        of a specification simultaneously (e.g., see the CSS WG). With that in
-        mind, and because our current <a href=
-        "https://www.w3.org/Payments/WG/charter-201912.html">charter</a>
-        anticipates enhancements to Payment Request 1.0, we've publish this 1.1
-        draft.
-      </p>
+    <section id='sotd'>
       <p>
         The working group maintains <a href=
         "https://github.com/w3c/payment-request/issues?utf8=%E2%9C%93&amp;q=is%3Aopen%20is%3Aissue%20-label%3A%22Priority%3A%20Postponed%22%20">
@@ -823,21 +796,15 @@
           <li data-tests=
           "payment-request-show-method.https.html, show-method-postmessage-manual.https.html">
           If the [=relevant global object=] of [=request=] does not have
-          [=transient activation=], the user agent MAY:
+          [=transient activation=]:
             <ol>
               <li>Return [=a promise rejected with=] with a {{"SecurityError"}}
               {{DOMException}}.
               </li>
             </ol>
-            <p class="note">
-              This allows the user agent to not require user activation, for
-              example to support redirect flows where a user activation may not
-              be present upon redirect. See <a href=
-              "#user-activation-requirement"></a> for security considerations.
-            </p>
           </li>
-          <li data-tests="show-consume-activation.https.html">Otherwise,
-          [=consume user activation=] of the [=relevant global object=].
+          <li data-tests="show-consume-activation.https.html">[=Consume user
+          activation=] of the [=relevant global object=].
           </li>
           <li>Let |document| be |request|'s [=relevant global object=]'s
           [=associated `Document`=].
@@ -3281,32 +3248,6 @@
           with repeated calls, whether it is the cost of managing multiple
           [=host/registrable domains=] or the user experience friction of
           opening multiple windows (tabs or pop-ups).
-        </p>
-      </section>
-      <section>
-        <h2 id="user-activation-requirement">
-          User activation requirement
-        </h2>
-        <p>
-          If the user agent does not require user activation as part of the
-          {{PaymentRequest/show()}} method, some additional security
-          mitigations should be considered. Not requiring user activation
-          increases the risk of spam and click-jacking attacks, by allowing a
-          Payment Request UI to be initiated without the user interacting with
-          the page immediately beforehand.
-        </p>
-        <p>
-          In order to mitigate spam, the user agent may decide to enforce a
-          user activation requirement after some threshold, for example after
-          the user has already been shown a Payment Request UI without a user
-          activation on the current page. In order to mitigate click-jacking
-          attacks, the user agent may implement a time threshold in which
-          clicks are ignored immediately after a dialog is shown.
-        </p>
-        <p>
-          Another relevant mitigation exists in step 6 of
-          {{PaymentRequest/show()}}, where the document must be visible in
-          order to initiate the user interaction.
         </p>
       </section>
     </section>
