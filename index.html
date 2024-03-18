@@ -44,7 +44,7 @@
         {
           name: "Marcos Cáceres",
           url: "https://github.com/marcoscaceres",
-          company: "W3C",
+          company: "Apple Inc.",
           companyURL: "https://www.w3.org",
           w3cid: 39125,
         },
@@ -75,6 +75,7 @@
       doJsonLd: true,
       xref: "web-platform",
       mdn: true,
+      errata: "https://www.w3.org/Payments/WG/errata.html",
     };
     </script>
   </head>
@@ -116,13 +117,36 @@
           Changes since last publication
         </h3>
         <p>
-          This version of the specification removes data features from the API,
-          essentially pushing data details to payment method descriptions. The
-          complete list of changes, including all editorial changes, is
-          viewable in the <a href=
-          "https://github.com/w3c/payment-request/commits/gh-pages">commit
-          history</a>. Key set of changes are viewable in the <a href=
-          "#changelog">Changelog</a>.
+          In September 2022 the Web Payments Working Group published a <a href=
+          "https://www.w3.org/TR/2022/REC-payment-request-20220908/">Payment
+          Request Recommendation</a>. Following privacy and
+          internationalization reviews, the Recommendation excluded <a href=
+          "https://lists.w3.org/Archives/Public/public-payments-wg/2021Jun/0000.html">
+          capabilities&lt;/&gt; related to billing and shipping addresses.
+          However, implementations have continued to support those features
+          interoperably, and so the Working Group has decided to try to
+          re-align the specification with implementations, and re-engage the
+          community on associated issues.
+          <p>
+            This document is a Candidate Recommendation Snapshot based on the
+            text of the original Recommendation. A subsequent Candidate
+            Recommendation Draft will add back address capabilities and a small
+            number of other changes made since publication of the
+            Recommendation.
+          </p>
+          <p>
+            In adding back support for addresses, the group plans to refer to
+            the address components defined in the
+          </p></a><a href="https://w3c.github.io/contact-picker/">Contact
+          Picker API</a> rather than define those components itself. Indeed,
+          the Contact Picker API is derived from the original definitions found
+          in Payment Request API, and pulled out of the specification because
+          addresses are useful on the Web beyond payments.
+        </p>
+        <p>
+          The Working Group would engage in discussion and follow the usual
+          review process before advancing the specification to Proposed
+          Recommendation status.
         </p>
       </section>
     </section>
@@ -2170,8 +2194,8 @@
       <p>
         This specification defines a [=policy-controlled feature=] identified
         by the string "<code><dfn data-lt="payment-permission" data-nodefault=
-        "">payment</dfn></code>" [[permissions-policy]]. Its <a>default
-        allowlist</a> is '<code>self</code>'.
+        "">payment</dfn></code>" [[permissions-policy]]. Its
+        [=policy-controlled feature/default allowlist=] is '<code>self</code>'.
       </p>
       <aside class="note">
         <p>
@@ -2536,10 +2560,10 @@
           PaymentRequest updated algorithm
         </h2>
         <p>
-          The <dfn>PaymentRequest updated algorithm</dfn> is run by other
-          algorithms above to <a>fire an event</a> to indicate that a user has
-          made a change to a {{PaymentRequest}} called |request| with an event
-          name of |name|:
+          The <dfn class="lint-ignore">PaymentRequest updated algorithm</dfn>
+          is run by other algorithms above to <a>fire an event</a> to indicate
+          that a user has made a change to a {{PaymentRequest}} called
+          |request| with an event name of |name|:
         </p>
         <ol class="algorithm">
           <li>Assert: |request|.{{PaymentRequest/[[updating]]}} is false. Only
@@ -3232,7 +3256,9 @@
       </script>
       <p>
         Changes from between CR2 until now:
-      </p><rs-changelog from="CR2" filter="removeCommits"></rs-changelog>
+      </p><rs-changelog from="CR2" to=
+      "b1c141192858464d2d2c31bfd9d702b3685b8ef8" filter=
+      "removeCommits"></rs-changelog>
       <p>
         Changes from between CR1 and CR2:
       </p><rs-changelog from="CR" to="CR2" filter=
