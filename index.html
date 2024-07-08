@@ -67,6 +67,7 @@
       testSuiteURI: "https://wpt.live/payment-request/",
       implementationReportURI:
         "https://w3c.github.io/test-results/payment-request/all.html",
+      prevRecURI: "https://www.w3.org/TR/2022/REC-payment-request-20220908/",
       caniuse: "payment-request",
       lint: {
         "check-punctuation": true,
@@ -92,38 +93,36 @@
     </section>
     <section id='sotd' class="updateable-rec">
       <p>
-        The W3C <a href=
-        "https://www.w3.org/TR/2021/PR-payment-request-20210930/">published
-        Payment Request API 1.0</a> as a Proposed Recommendation in September
-        2021. Since then, W3C has been working to resolve two Formal Objections
-        from W3C Members; see the <a href=
-        "https://www.w3.org/2022/03/prapi-fo-report.html">Team Report</a> for
-        details. At this time, a Council is evaluating the Formal Objections to
-        determine whether Payment Request API 1.0 should advance to
-        Recommendation or be returned to the Working Group for changes.
+        In September 2022 the Web Payments Working Group published a <a href=
+        "https://www.w3.org/TR/2022/REC-payment-request-20220908/">Payment
+        Request Recommendation</a>. Following privacy and internationalization
+        reviews, the Recommendation excluded <a href=
+        "https://lists.w3.org/Archives/Public/public-payments-wg/2021Jun/0000.html">
+        capabilities</a> related to billing and shipping addresses. However,
+        implementations have continued to support those features interoperably,
+        and so the Working Group has decided to try to re-align the
+        specification with implementations, and re-engage the community on
+        associated issues.
       </p>
       <p>
-        In the meantime, the Editors have continued to update this
-        specification with new features (see change log below). To provide
-        devellopers and implementers with more confidence about these features,
-        the working group has decided to formally publish the a new W3C Working
-        Draft. This will also provide the group with a foundation for potential
-        discussion at TPAC about the future of Payment Request.
+        This document is a Candidate Recommendation Snapshot based on the text
+        of the original Recommendation. A subsequent Candidate Recommendation
+        Draft will add back address capabilities and a small number of other
+        changes made since publication of the Recommendation.
       </p>
       <p>
-        It is not uncommon for a Working Group to work on different revisions
-        of a specification simultaneously (e.g., see the CSS WG). With that in
-        mind, and because our current <a href=
-        "https://www.w3.org/Payments/WG/charter-201912.html">charter</a>
-        anticipates enhancements to Payment Request 1.0, we've publish this 1.1
-        draft.
+        As part of adding back support for addresses, this specification now
+        refers to the address components defined in the <a href=
+        "https://w3c.github.io/contact-picker/">Contact Picker API</a> rather
+        than define those components itself. Indeed, the Contact Picker API is
+        derived from the original definitions found in Payment Request API, and
+        pulled out of the specification because addresses are useful on the Web
+        beyond payments.
       </p>
       <p>
-        The working group maintains <a href=
-        "https://github.com/w3c/payment-request/issues?utf8=%E2%9C%93&amp;q=is%3Aopen%20is%3Aissue%20-label%3A%22Priority%3A%20Postponed%22%20">
-        a list of all bug reports that the group has not yet addressed</a>.
-        Pull requests with proposed specification text for outstanding issues
-        are strongly encouraged.
+        The Working Group plans to engage in discussion and follow the usual
+        review process before advancing the specification to Proposed
+        Recommendation status.
       </p>
       <p>
         The working group will demonstrate implementation experience by
@@ -134,47 +133,6 @@
         "https://wpt.live/payment-request/">test suite</a> (i.e., each test
         corresponds to a MUST requirement of the specification).
       </p>
-      <p>
-        There has been no change in dependencies on other workings groups
-        during the development of this specification.
-      </p>
-      <section>
-        <h3>
-          Changes since last publication
-        </h3>
-        <p>
-          In September 2022 the Web Payments Working Group published a <a href=
-          "https://www.w3.org/TR/2022/REC-payment-request-20220908/">Payment
-          Request Recommendation</a>. Following privacy and
-          internationalization reviews, the Recommendation excluded <a href=
-          "https://lists.w3.org/Archives/Public/public-payments-wg/2021Jun/0000.html">
-          capabilities</a> related to billing and shipping addresses. However,
-          implementations have continued to support those features
-          interoperably, and so the Working Group has decided to try to
-          re-align the specification with implementations, and re-engage the
-          community on associated issues.
-        </p>
-        <p>
-          This document is a Candidate Recommendation Snapshot based on the
-          text of the original Recommendation. A subsequent Candidate
-          Recommendation Draft will add back address capabilities and a small
-          number of other changes made since publication of the Recommendation.
-        </p>
-        <p>
-          In adding back support for addresses, the group plans to refer to the
-          address components defined in the <a href=
-          "https://w3c.github.io/contact-picker/">Contact Picker API</a> rather
-          than define those components itself. Indeed, the Contact Picker API
-          is derived from the original definitions found in Payment Request
-          API, and pulled out of the specification because addresses are useful
-          on the Web beyond payments.
-        </p>
-        <p>
-          The Working Group would engage in discussion and follow the usual
-          review process before advancing the specification to Proposed
-          Recommendation status.
-        </p>
-      </section>
     </section>
     <section class='informative'>
       <h2>
