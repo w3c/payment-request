@@ -2999,12 +2999,11 @@
         </pre>
         <p>
           The members of the {{AddressErrors}} dictionary represent validation
-          errors with specific parts of a [=physical address=]. Each
-          dictionary member has a dual function: firstly, its presence denotes
-          that a particular part of an address is suffering from a validation
-          error. Secondly, the string value allows the developer to describe
-          the validation error (and possibly how the end user can fix the
-          error).
+          errors with specific parts of a [=physical address=]. Each dictionary
+          member has a dual function: firstly, its presence denotes that a
+          particular part of an address is suffering from a validation error.
+          Secondly, the string value allows the developer to describe the
+          validation error (and possibly how the end user can fix the error).
         </p>
         <p class="note">
           Developers need to be aware that users might not have the ability to
@@ -3555,8 +3554,8 @@
               « "organization", "phone", "recipient", "addressLine" ».
               </li>
               <li>Let |address:ContactAddress| be the result of running the
-              steps to [=create a `ContactAddress` from user-provided input=]
-              with |redactList|.
+              steps to [=ContactsManager/create a contactaddress from
+              user-provided input=] with |redactList|.
               </li>
               <li>Set |request|.{{PaymentRequest/shippingAddress}} to
               |address|.
@@ -3825,7 +3824,8 @@
           null. Otherwise:
             <ol>
               <li>Let |shippingAddress:ContactAddress| be the result of
-              <a>create a `ContactAddress` from user-provided input</a>.
+              [=ContactsManager/create a contactaddress from user-provided
+              input=]
               </li>
               <li>Set the {{PaymentResponse/shippingAddress}} attribute value
               of |response| to |shippingAddress|.
