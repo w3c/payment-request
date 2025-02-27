@@ -20,4 +20,4 @@ jobs:
           W3C_WG_DECISION_URL: "https://www.w3.org/2016/04/14-wpwg-minutes.html#item02"
           W3C_NOTIFICATIONS_CC: "${{ secrets.CC }}"
           W3C_BUILD_OVERRIDE: |
-            specStatus: WD
+            specStatus: CRD
