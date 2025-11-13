@@ -1318,10 +1318,11 @@
               </p>
             </aside>
             <p>
-              The |acceptPromise| will later be resolved or rejected by either
-              the <a>user accepts the payment request algorithm</a> or the
-              <a>user aborts the payment request algorithm</a>, which are
-              triggered through interaction with the user interface.
+              The |acceptPromise| will later be resolved or rejected by
+              the <a>user accepts the payment request algorithm</a>, the
+              <a>user aborts the payment request algorithm</a> (which are
+              triggered through interaction with the user interface), or
+              the <a>payment handler indicates an internal error algorithm</a>.
             </p>
             <p data-tests="rejects_if_not_active.https.html">
               If |document| stops being [=Document/fully active=] while the
@@ -2600,9 +2601,10 @@
           <li>Return |retryPromise|.
             <p class="note">
               The |retryPromise| will later be resolved by the <a>user accepts
-              the payment request algorithm</a>, or rejected by either the
-              <a>user aborts the payment request algorithm</a> or <a>abort the
-              update</a>.
+              the payment request algorithm</a>, or rejected by the <a>user
+              aborts the payment request algorithm</a>, <a>abort the update</a>,
+              or the <a>payment handler indicates an internal error
+              algorithm</a>.
             </p>
           </li>
         </ol>
@@ -3946,6 +3948,56 @@
           user interface.
           </li>
         </ol>
+      </section>
+      <section>
+        <h2>
+          Payment handler indicates an internal error algorithm
+        </h2>
+        <p>
+	  The <dfn>payment handler indicates an internal error algorithm</dfn>
+          runs when the payment handler that the user has selected reports an
+          internal error to the user agent. It MUST <a>queue a task</a> on the
+          <a>user interaction task source</a> to perform the following steps:
+        </p>
+        <ol class="algorithm">
+          <li>Let |request:PaymentRequest| be the {{PaymentRequest}} object
+          that the user is interacting with.
+          </li>
+          <li>If |request|.{{PaymentRequest/[[state]]}} is not
+          "[=PaymentRequest/interactive=]", then terminate this algorithm and
+          take no further action.
+          </li>
+          <li>Set |request|.{{PaymentRequest/[[state]]}} to
+          "[=PaymentRequest/closed=]".
+          </li>
+          <li>Set |request|'s <a>payment-relevant browsing context</a>'s
+          <a>payment request is showing</a> boolean to false.
+          </li>
+          <li>Let |error| be an {{"OperationError"}} {{DOMException}}.
+          </li>
+          <li>Let |response:PaymentResponse| be
+          |request|.{{PaymentRequest/[[response]]}}.
+          </li>
+          <li>If |response| is not null:
+            <ol>
+              <li>Set |response|.{{PaymentResponse/[[complete]]}} to true.
+              </li>
+              <li>Assert: |response|.{{PaymentResponse/[[retryPromise]]}} is
+              not null.
+              </li>
+              <li>Reject |response|.{{PaymentResponse/[[retryPromise]]}} with
+              |error|.
+              </li>
+            </ol>
+          </li>
+          <li>Otherwise, reject |request|.{{PaymentRequest/[[acceptPromise]]}}
+          with |error|.
+          </li>
+          <li>Abort the current user interaction and close down any remaining
+          user interface.
+          </li>
+        </ol>
+        </p>
       </section>
       <section>
         <h2>
