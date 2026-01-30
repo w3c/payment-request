@@ -3956,7 +3956,8 @@
         <p>
 	  The <dfn>payment handler indicates an internal error algorithm</dfn>
           runs when the payment handler that the user has selected reports an
-          internal error to the user agent.
+          internal error to the user agent. It takes in a {{DOMException}}
+          |error| from the payment handler to report back to the website.
         </p>
         <ol class="algorithm">
           <li><a>Queue a task</a> on the <a>user interaction task source</a> to
@@ -3974,9 +3975,6 @@
             </li>
             <li>Set |request|'s <a>payment-relevant browsing context</a>'s
             <a>payment request is showing</a> boolean to false.
-            </li>
-            <li>Let |error| be the appropriate {{DOMException}} for the error
-            reported by the payment handler.
             </li>
             <li>Let |response:PaymentResponse| be
             |request|.{{PaymentRequest/[[response]]}}.
