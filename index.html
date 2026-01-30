@@ -3956,8 +3956,8 @@
         <p>
 	  The <dfn>payment handler indicates an internal error algorithm</dfn>
           runs when the payment handler that the user has selected reports an
-          internal error to the user agent. It takes in a {{DOMException}}
-          |error| from the payment handler to report back to the website.
+          internal error to the user agent. It takes in a Javascript value
+          |reason| from the payment handler, to report back to the website.
         </p>
         <ol class="algorithm">
           <li><a>Queue a task</a> on the <a>user interaction task source</a> to
@@ -3987,12 +3987,12 @@
                 not null.
                 </li>
                 <li>Reject |response|.{{PaymentResponse/[[retryPromise]]}} with
-                |error|.
+                |reason|.
                 </li>
               </ol>
             </li>
             <li>Otherwise, reject |request|.{{PaymentRequest/[[acceptPromise]]}}
-            with |error|.
+            with |reason|.
             </li>
             <li>Abort the current user interaction and close down any remaining
             user interface.
