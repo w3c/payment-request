@@ -1043,7 +1043,7 @@
           </li>
           <li data-tests="rejects_if_not_active.https.html">If |document| is
           not [=Document/fully active=], then return <a>a promise rejected
-          with</a> an {{"AbortError"}} {{DOMException}}.
+          with</a> an {{"InvalidStateError"}} {{DOMException}}.
           </li>
           <li>If |document|'s [=Document/visibility state=] is not `"visible"`,
           then return <a>a promise rejected with</a> an {{"AbortError"}}
@@ -2488,7 +2488,7 @@
           <li data-tests=
           "payment-response/rejects_if_not_active-manual.https.html">If
           |document| is not [=Document/fully active=], then return <a>a promise
-          rejected with</a> an {{"AbortError"}} {{DOMException}}.
+          rejected with</a> an {{"InvalidStateError"}} {{DOMException}}.
           </li>
           <li>If |response|.{{PaymentResponse/[[complete]]}} is true, return
           <a>a promise rejected with</a> an {{"InvalidStateError"}}
