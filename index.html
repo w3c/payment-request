@@ -1318,11 +1318,11 @@
               </p>
             </aside>
             <p>
-              The |acceptPromise| will later be resolved or rejected by
-              the <a>user accepts the payment request algorithm</a>, or the
-              <a>user aborts the payment request algorithm</a> (which are
-              triggered through interaction with the user interface), or
-              the <a>payment handler indicates an internal error algorithm</a>.
+              The |acceptPromise| will later be resolved or rejected by the
+              <a>user accepts the payment request algorithm</a>, or the <a>user
+              aborts the payment request algorithm</a> (which are triggered
+              through interaction with the user interface), or the <a>payment
+              handler indicates an internal error algorithm</a>.
             </p>
             <p data-tests="rejects_if_not_active.https.html">
               If |document| stops being [=Document/fully active=] while the
@@ -3954,52 +3954,66 @@
           Payment handler indicates an internal error algorithm
         </h2>
         <p>
-	  The <dfn>payment handler indicates an internal error algorithm</dfn>
-          runs when the payment handler that the user has selected reports an
-          internal error to the user agent. It takes in a Javascript value
-          |reason| from the payment handler, to report back to the website.
+          The <dfn>payment handler indicates an internal error algorithm</dfn>
+          runs when the <a>payment handler</a> that the user has selected
+          encounters an internal error that prevents it from completing the
+          payment. This can occur due to reasons such as the operating system
+          terminating the payment handler (e.g., due to memory pressure), or
+          the payment handler itself encountering an unrecoverable error.
         </p>
         <ol class="algorithm">
-          <li><a>Queue a task</a> on the <a>user interaction task source</a> to
-          perform the following steps:
-          <ol>
-            <li>Let |request:PaymentRequest| be the {{PaymentRequest}} object
-            that the user is interacting with.
-            </li>
-            <li>If |request|.{{PaymentRequest/[[state]]}} is not
-            "[=PaymentRequest/interactive=]", then terminate this algorithm and
-            take no further action.
-            </li>
-            <li>Set |request|.{{PaymentRequest/[[state]]}} to
-            "[=PaymentRequest/closed=]".
-            </li>
-            <li>Set |request|'s <a>payment-relevant browsing context</a>'s
-            <a>payment request is showing</a> boolean to false.
-            </li>
-            <li>Let |response:PaymentResponse| be
-            |request|.{{PaymentRequest/[[response]]}}.
-            </li>
-            <li>If |response| is not null:
-              <ol>
-                <li>Set |response|.{{PaymentResponse/[[complete]]}} to true.
-                </li>
-                <li>Assert: |response|.{{PaymentResponse/[[retryPromise]]}} is
-                not null.
-                </li>
-                <li>Reject |response|.{{PaymentResponse/[[retryPromise]]}} with
-                |reason|.
-                </li>
-              </ol>
-            </li>
-            <li>Otherwise, reject |request|.{{PaymentRequest/[[acceptPromise]]}}
-            with |reason|.
-            </li>
-            <li>Abort the current user interaction and close down any remaining
-            user interface.
-            </li>
-          </ol>
+          <li>
+            <a>Queue a task</a> on the <a>user interaction task source</a> to
+            perform the following steps:
+            <ol>
+              <li>Let |request:PaymentRequest| be the {{PaymentRequest}} object
+              that the user is interacting with.
+              </li>
+              <li>If |request|.{{PaymentRequest/[[state]]}} is not
+              "[=PaymentRequest/interactive=]", then terminate this algorithm
+              and take no further action.
+              </li>
+              <li>Let |error| be an {{"OperationError"}} {{DOMException}}.
+              </li>
+              <li>Set |request|.{{PaymentRequest/[[state]]}} to
+              "[=PaymentRequest/closed=]".
+              </li>
+              <li>Set |request|'s <a>payment-relevant browsing context</a>'s
+              <a>payment request is showing</a> boolean to false.
+              </li>
+              <li>Let |response:PaymentResponse| be
+              |request|.{{PaymentRequest/[[response]]}}.
+              </li>
+              <li>If |response| is not null:
+                <ol>
+                  <li>Set |response|.{{PaymentResponse/[[complete]]}} to true.
+                  </li>
+                  <li>Assert: |response|.{{PaymentResponse/[[retryPromise]]}}
+                  is not null.
+                  </li>
+                  <li>Reject |response|.{{PaymentResponse/[[retryPromise]]}}
+                  with |error|.
+                  </li>
+                </ol>
+              </li>
+              <li>Otherwise, reject
+              |request|.{{PaymentRequest/[[acceptPromise]]}} with |error|.
+              </li>
+              <li>Optionally, show a generic error message to the user
+              indicating that the payment could not be completed.
+              </li>
+              <li>Optionally, log detailed error information to the developer
+              console for debugging purposes.
+              </li>
+              <li>Abort the current user interaction and close down any
+              remaining user interface.
+              </li>
+            </ol>
           </li>
         </ol>
+        <p class="note">
+          The {{"OperationError"}} type allows merchants to distinguish payment
+          handler errors from user cancellation (which uses {{"AbortError"}}).
         </p>
       </section>
       <section>
@@ -4311,8 +4325,8 @@
             {{PaymentRequest}} |request| and <a>exception</a> |exception|:
           </p>
           <ol class="algorithm">
-            <li>Optionally, show an error message to the user when letting them
-            know an error has occurred.
+            <li>Optionally, inform the developer via the console that an error
+            occurred while updating the payment request.
             </li>
             <li>Abort the current user interaction and close down any remaining
             user interface.
