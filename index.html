@@ -1331,8 +1331,16 @@
             <ol>
               <li>Close down the user interface.
               </li>
+              <li>Set |request|.{{PaymentRequest/[[state]]}} to
+              "[=PaymentRequest/closed=]".
+              </li>
               <li>Set |request|'s <a>payment-relevant browsing context</a>'s
               <a>payment request is showing</a> boolean to false.
+              </li>
+              <li>
+                <a>Queue a task</a> on the <a>user interaction task source</a>
+                to [=reject=] |acceptPromise| with an {{"AbortError"}}
+                {{DOMException}}.
               </li>
             </ol>
           </li>
@@ -2589,8 +2597,16 @@
             <ol>
               <li>Close down the user interface.
               </li>
+              <li>Set |request|.{{PaymentRequest/[[state]]}} to
+              "[=PaymentRequest/closed=]".
+              </li>
               <li>Set |request|'s <a>payment-relevant browsing context</a>'s
               <a>payment request is showing</a> boolean to false.
+              </li>
+              <li>
+                <a>Queue a task</a> on the <a>user interaction task source</a>
+                to [=reject=] |retryPromise| with an {{"AbortError"}}
+                {{DOMException}}.
               </li>
             </ol>
           </li>
@@ -2919,6 +2935,11 @@
               </li>
               <li>Set |request|'s <a>payment-relevant browsing context</a>'s
               <a>payment request is showing</a> boolean to false.
+              </li>
+              <li>
+                <a>Queue a task</a> on the <a>user interaction task source</a>
+                to [=reject=] |promise| with an {{"AbortError"}}
+                {{DOMException}}.
               </li>
             </ol>
           </li>
@@ -4430,11 +4451,11 @@
           data models used by existing payment methods, prescribing data
           specifics in this API would limit its usefulness. The
           {{PaymentResponse/details}} member carries data from the payment
-          handler, whether Web-based (as defined by the [[[web-based-payment-handler]]])
-          or proprietary. The [=user agent=] MUST NOT support payment handlers
-          unless they include adequate user consent mechanisms (such as
-          awareness of parties to the transaction and mechanisms for
-          demonstrating the intention to share data).
+          handler, whether Web-based (as defined by the
+          [[[web-based-payment-handler]]]) or proprietary. The [=user agent=]
+          MUST NOT support payment handlers unless they include adequate user
+          consent mechanisms (such as awareness of parties to the transaction
+          and mechanisms for demonstrating the intention to share data).
         </p>
         <p>
           The <a>user agent</a> MUST NOT share the values of the
