@@ -3786,11 +3786,11 @@
           User accepts the payment request algorithm
         </h2>
         <p data-tests="user-accepts-payment-request-algo-manual.https.html">
-          The <dfn class="export" data-local-lt="user accepts the payment
-          request">user accepts the payment request algorithm</dfn> runs
-          when the user accepts the payment request and confirms that they want
-          to pay. It MUST <a>queue a task</a> on the <a>user interaction task
-          source</a> to perform the following steps:
+          The <dfn class="export" data-local-lt=
+          "user accepts the payment request">user accepts the payment request
+          algorithm</dfn> runs when the user accepts the payment request and
+          confirms that they want to pay. It MUST <a>queue a task</a> on the
+          <a>user interaction task source</a> to perform the following steps:
         </p>
         <ol class="algorithm">
           <li>Let |request:PaymentRequest| be the {{PaymentRequest}} object
@@ -3903,11 +3903,12 @@
           User aborts the payment request algorithm
         </h2>
         <p data-tests="user-abort-algorithm-manual.https.html">
-          The <dfn class="export" data-local-lt="user aborts the payment
-          request">user aborts the payment request algorithm</dfn> runs when the
-          user aborts the payment request through the currently interactive user
-          interface. It MUST <a>queue a task</a> on the <a>user interaction task
-          source</a> to perform the following steps:
+          The <dfn class="export" data-local-lt=
+          "user aborts the payment request">user aborts the payment request
+          algorithm</dfn> runs when the user aborts the payment request through
+          the currently interactive user interface. It MUST <a>queue a task</a>
+          on the <a>user interaction task source</a> to perform the following
+          steps:
         </p>
         <ol class="algorithm">
           <li>Let |request:PaymentRequest| be the {{PaymentRequest}} object
@@ -3955,11 +3956,12 @@
         </h2>
         <p>
           The <dfn class="export">payment handler indicates an internal error
-          algorithm</dfn> runs when the <a>payment handler</a> that the user has
-          selected encounters an internal error that prevents it from completing
-          the payment. This can occur due to reasons such as the operating
-          system terminating the payment handler (e.g., due to memory pressure),
-          or the payment handler itself encountering an unrecoverable error.
+          algorithm</dfn> runs when the <a>payment handler</a> that the user
+          has selected encounters an internal error that prevents it from
+          completing the payment. This can occur due to reasons such as the
+          operating system terminating the payment handler (e.g., due to memory
+          pressure), or the payment handler itself encountering an
+          unrecoverable error.
         </p>
         <ol class="algorithm">
           <li>
