@@ -187,13 +187,14 @@
       </dl>
       <p>
         The details of how to fulfill a payment request for a given <a>payment
-        method</a> is an implementation detail of a <dfn data-export="">payment
+        method</a> is an implementation detail of a <dfn class="export">payment
         handler</dfn>, which is an application or service that handles requests
         for payment. Concretely, a payment handler defines:
       </p>
       <dl>
         <dt>
-          <dfn>Steps to check if a payment can be made</dfn>:
+          <dfn class="export" data-dfn-for="Payment Handler">Steps to check if
+          a payment can be made</dfn>:
         </dt>
         <dd>
           How a payment handler determines whether it, or the user, can
@@ -201,7 +202,8 @@
           payment handler.
         </dd>
         <dt>
-          <dfn>Steps to respond to a payment request</dfn>:
+          <dfn class="export" data-dfn-for="Payment Handler">Steps to respond
+          to a payment request</dfn>:
         </dt>
         <dd>
           Steps that return an object or <a>dictionary</a> that a merchant uses
@@ -209,7 +211,8 @@
           is specific to each <a>payment method</a>.
         </dd>
         <dt>
-          <dfn>Steps for when a user changes payment method</dfn> (optional)
+          <dfn class="export" data-dfn-for="Payment Handler">Steps for when a
+          user changes payment method</dfn> (optional)
         </dt>
         <dd>
           <p>
@@ -1147,7 +1150,8 @@
               <li>For each |handler| in |registeredHandlers|:
                 <ol>
                   <li>Let |canMakePayment| be the result of running |handler|'s
-                  <a>steps to check if a payment can be made</a> with |data|.
+                  [=Payment Handler/steps to check if a payment can be made=]
+                  with |data|.
                   </li>
                   <li>If |canMakePayment| is true, then append |handler| to
                   |handlers|.
@@ -3865,8 +3869,8 @@
           |response| to the <a>payment method identifier</a> of |handler|.
           </li>
           <li>Set the {{PaymentResponse/details}} attribute value of |response|
-          to an object resulting from running the |handler|'s <a>steps to
-          respond to a payment request</a>.
+          to an object resulting from running the |handler|'s [=Payment
+          Handler/steps to respond to a payment request=].
           </li>
           <li>If the {{PaymentOptions/requestShipping}} value of
           |request|.{{PaymentRequest/[[options]]}} is false, then set the
@@ -4544,9 +4548,10 @@
           accurately display the total before the payer completes the
           transaction. At the same time, it is desirable to share as little
           information as possible prior to completion of the payment.
-          Therefore, when a <a>payment method</a> defines the <a>steps for when
-          a user changes payment method</a>, it is important to minimize the
-          data shared via the {{PaymentMethodChangeEvent}}'s
+          Therefore, when a <a>payment method</a> defines the [=Payment
+          Handler/steps for when a user changes payment method=], it is
+          important to minimize the data shared via the
+          {{PaymentMethodChangeEvent}}'s
           {{PaymentMethodChangeEvent/methodDetails}} attribute. Requirements
           and approaches for minimizing shared data are likely to vary by
           <a>payment method</a> and might include:
