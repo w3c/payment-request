@@ -3016,6 +3016,300 @@
         </table>
       </section>
     </section>
+    <section data-dfn-for="PaymentHandlerAppError">
+      <h2>
+        <dfn>PaymentHandlerAppError</dfn> interface
+      </h2>
+      <pre class="idl">
+        [Exposed=(Window,Worker), Serializable]
+        interface PaymentHandlerAppError : DOMException {
+          constructor(optional DOMString message = "", optional PaymentHandlerAppErrorInit options = {});
+
+          readonly attribute PaymentHandlerAppErrorReasons? reason;
+          readonly attribute object? details;
+        };
+      </pre>
+      <p>
+        The {{PaymentHandlerAppError}} error type is used to pass back detailed
+        error information from a <a>payment handler</a> to the website that
+        invoked it.
+      </p>
+      <section>
+        <h2>
+          Constructor
+        </h2>
+        <p>
+          The <code><dfn class="export" data-lt=
+          "PaymentHandlerAppError.PaymentHandlerAppError()">PaymentHandlerAppError(|message|,
+          |options|)</dfn></code> constructor MUST act as follows:
+        </p>
+        <ol class="algorithm">
+          <li>Let |e:PaymentHandlerAppError| be [=this=].
+          </li>
+          <li>Set |e|'s message to |message| and |e|'s name to
+          `"PaymentHandlerAppError"`.
+            <p class="note">
+              This name does not have a mapping to a legacy code, so
+              |e|.{{DOMException/code}} will return 0.
+            </p>
+            <p class="issue" data-number="1076">
+              Whether {{DOMException/name}} should be
+              `"PaymentHandlerAppError"` or {{"OperationError"}} is under
+              discussion. Using {{"OperationError"}} (similar to
+              <code>RTCError</code>) would preserve backwards compatibility
+              with existing code that checks `err.name === "OperationError"`.
+            </p>
+          </li>
+          <li>If |options|.{{PaymentHandlerAppErrorInit/reason}} is present and
+          is a member of {{PaymentHandlerAppErrorReasons}}, set
+          |e|.{{PaymentHandlerAppError/[[reason]]}} to
+          |options|.{{PaymentHandlerAppErrorInit/reason}}. Otherwise, set
+          |e|.{{PaymentHandlerAppError/[[reason]]}} to null.
+          </li>
+          <li>If |options|.{{PaymentHandlerAppErrorInit/details}} is present:
+            <ol>
+              <li>Let |serializedDetails| be the result of [=serialize a
+              JavaScript value to a JSON string|serializing=]
+              |options|.{{PaymentHandlerAppErrorInit/details}} into a JSON
+              string. Rethrow any exceptions.
+              </li>
+              <li>Let |detailsObject| be the result of <a data-cite=
+              "ECMASCRIPT#sec-json.parse">JSON-parsing</a> |serializedDetails|.
+              </li>
+              <li>Set |e|.{{PaymentHandlerAppError/[[serializedDetails]]}} to
+              |serializedDetails|.
+              </li>
+              <li>Set |e|.{{PaymentHandlerAppError/[[details]]}} to
+              |detailsObject|.
+              </li>
+            </ol>
+          </li>
+          <li>Otherwise:
+            <ol>
+              <li>Set |e|.{{PaymentHandlerAppError/[[serializedDetails]]}} to
+              null.
+              </li>
+              <li>Set |e|.{{PaymentHandlerAppError/[[details]]}} to null.
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h2>
+          <dfn>reason</dfn> attribute
+        </h2>
+        <p>
+          When getting, the {{PaymentHandlerAppError/reason}} attribute returns
+          [=this=]'s {{PaymentHandlerAppError/[[reason]]}} [=internal slot=].
+        </p>
+      </section>
+      <section>
+        <h2>
+          <dfn>details</dfn> attribute
+        </h2>
+        <p>
+          When getting, the {{PaymentHandlerAppError/details}} attribute
+          returns [=this=]'s {{PaymentHandlerAppError/[[details]]}} [=internal
+          slot=].
+        </p>
+      </section>
+      <section>
+        <h2>
+          Internal Slots
+        </h2>
+        <p>
+          Instances of {{PaymentHandlerAppError}} are created with the
+          [=internal slots=] in the following table:
+        </p>
+        <table class="data" data-dfn-for="PaymentHandlerAppError">
+          <tr>
+            <th>
+              Internal Slot
+            </th>
+            <th>
+              Description (<em>non-normative</em>)
+            </th>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\reason]]</dfn>
+            </td>
+            <td>
+              Null, or a {{PaymentHandlerAppErrorReasons}} value representing
+              the high-level reason that the error was raised.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\serializedDetails]]</dfn>
+            </td>
+            <td>
+              Null, or a JSON string representing the serialized form of the
+              payment-handler-specific error details.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <dfn>[[\details]]</dfn>
+            </td>
+            <td>
+              Null, or an {{object}} containing payment-handler-specific error
+              details.
+            </td>
+          </tr>
+        </table>
+      </section>
+      <section>
+        <h2>
+          Serialization
+        </h2>
+        <p>
+          {{PaymentHandlerAppError}} objects are [=serializable objects=].
+          Their [=serialization steps=], given |value| and |serialized|, are:
+        </p>
+        <ol class="algorithm">
+          <li>Set |serialized|.[[\Name]] to |value|'s {{DOMException/name}}.
+          </li>
+          <li>Set |serialized|.[[\Message]] to |value|'s
+          {{DOMException/message}}.
+          </li>
+          <li>Set |serialized|.[[\Reason]] to
+          |value|.{{PaymentHandlerAppError/[[reason]]}}.
+          </li>
+          <li>Set |serialized|.[[\SerializedDetails]] to
+          |value|.{{PaymentHandlerAppError/[[serializedDetails]]}}.
+          </li>
+        </ol>
+        <p>
+          Their [=deserialization steps=], given |serialized|, |value|, and
+          |targetRealm|, are:
+        </p>
+        <ol class="algorithm">
+          <li>Set |value|'s {{DOMException/name}} to |serialized|.[[\Name]].
+          </li>
+          <li>Set |value|'s {{DOMException/message}} to
+          |serialized|.[[\Message]].
+          </li>
+          <li>Set |value|.{{PaymentHandlerAppError/[[reason]]}} to
+          |serialized|.[[\Reason]].
+          </li>
+          <li>Set |value|.{{PaymentHandlerAppError/[[serializedDetails]]}} to
+          |serialized|.[[\SerializedDetails]].
+          </li>
+          <li>If |serialized|.[[\SerializedDetails]] is not null, set
+          |value|.{{PaymentHandlerAppError/[[details]]}} to the result of
+          <a data-cite="ECMASCRIPT#sec-json.parse">JSON-parsing</a>
+          |serialized|.[[\SerializedDetails]] in |targetRealm|. Otherwise, set
+          |value|.{{PaymentHandlerAppError/[[details]]}} to null.
+          </li>
+        </ol>
+      </section>
+      <section data-dfn-for="PaymentHandlerAppErrorInit">
+        <h2>
+          <dfn>PaymentHandlerAppErrorInit</dfn> dictionary
+        </h2>
+        <pre class="idl">
+          dictionary PaymentHandlerAppErrorInit {
+            DOMString reason;
+            object details;
+          };
+        </pre>
+        <p>
+          The {{PaymentHandlerAppErrorInit}} dictionary provides input details
+          for the {{PaymentHandlerAppError}} interface, and has the following
+          members:
+        </p>
+        <dl>
+          <dt>
+            <dfn>reason</dfn> member
+          </dt>
+          <dd>
+            <p>
+              The high level reason that an error was raised. The user agent
+              MAY use this value to customize the experience for the user or
+              collect metrics on error reasons.
+            </p>
+            <p>
+              The value SHOULD be a member of
+              {{PaymentHandlerAppErrorReasons}}, but user agents MUST ignore
+              unknown values, treating an unknown value as if the member does
+              not exist.
+            </p>
+            <p class="note">
+              {{PaymentHandlerAppErrorInit/reason}} is typed as a {{DOMString}}
+              rather than {{PaymentHandlerAppErrorReasons}} so that if new enum
+              values are standardized in the future, constructing a
+              {{PaymentHandlerAppError}} with a newer reason on an older user
+              agent will ignore the unrecognized value rather than throwing a
+              {{TypeError}}.
+            </p>
+          </dd>
+          <dt>
+            <dfn>details</dfn> member
+          </dt>
+          <dd>
+            A payment handler specific data object containing details about the
+            specific error that is being raised, for the merchant website to
+            consume. If supplied, it will be [=serialize a JavaScript value to
+            a JSON string|serialized=].
+          </dd>
+        </dl>
+      </section>
+      <section data-dfn-for="PaymentHandlerAppErrorReasons">
+        <h2>
+          <dfn>PaymentHandlerAppErrorReasons</dfn> enum
+        </h2>
+        <pre class="idl">
+          enum PaymentHandlerAppErrorReasons {
+            "user-not-supported",
+            "merchant-config-error",
+            "service-unavailable",
+            "internal-error",
+          };
+        </pre>
+        <p class="issue" data-number="1076">
+          The enum values below are initial placeholders; the exact set of
+          standardized error reasons is still under discussion.
+        </p>
+        <p>
+          The {{PaymentHandlerAppErrorReasons}} enum describes high level
+          reasons that a payment handler has thrown an error.
+        </p>
+        <dl>
+          <dt>
+            <dfn>user-not-supported</dfn>
+          </dt>
+          <dd>
+            The user or their account is not eligible or supported for this
+            payment method (e.g., due to regional restrictions, account limits,
+            or missing device capabilities).
+          </dd>
+          <dt>
+            <dfn>merchant-config-error</dfn>
+          </dt>
+          <dd>
+            The payment handler detected an unrecoverable configuration or
+            integration error in the merchant's payment request data (e.g., an
+            invalid merchant identifier or expired order token).
+          </dd>
+          <dt>
+            <dfn>service-unavailable</dfn>
+          </dt>
+          <dd>
+            The payment handler or its backend service is temporarily
+            unavailable (e.g., due to a network timeout or service outage).
+          </dd>
+          <dt>
+            <dfn>internal-error</dfn>
+          </dt>
+          <dd>
+            The payment handler encountered an unexpected internal error from
+            which it could not recover.
+          </dd>
+        </dl>
+      </section>
+    </section>
     <section>
       <h2>
         Shipping and billing addresses
@@ -3987,9 +4281,14 @@
           completing the payment. This can occur due to reasons such as the
           operating system terminating the payment handler (e.g., due to memory
           pressure), or the payment handler itself encountering an
-          unrecoverable error.
+          unrecoverable error. It optionally takes a
+          {{PaymentHandlerAppError}}, |appError|, which contains error details
+          from the payment handler.
         </p>
         <ol class="algorithm">
+          <li>Let |serializedError| be [=StructuredSerialize=](|appError|) if
+          |appError| was provided, else null.
+          </li>
           <li>
             <a>Queue a task</a> on the <a>user interaction task source</a> to
             perform the following steps:
@@ -4001,7 +4300,10 @@
               "[=PaymentRequest/interactive=]", then terminate this algorithm
               and take no further action.
               </li>
-              <li>Let |error| be an {{"OperationError"}} {{DOMException}}.
+              <li>Let |error| be [=StructuredDeserialize=](|serializedError|,
+              |request|'s [=relevant Realm=]) if |serializedError| is not null,
+              else an {{"OperationError"}} {{DOMException}} created in
+              |request|'s [=relevant Realm=].
               </li>
               <li>Set |request|.{{PaymentRequest/[[state]]}} to
               "[=PaymentRequest/closed=]".
@@ -4040,8 +4342,9 @@
           </li>
         </ol>
         <p class="note">
-          The {{"OperationError"}} type allows merchants to distinguish payment
-          handler errors from user cancellation (which uses {{"AbortError"}}).
+          The {{"OperationError"}} and {{PaymentHandlerAppError}} types allow
+          merchants to distinguish payment handler errors from user
+          cancellation (which uses {{"AbortError"}}).
         </p>
       </section>
       <section>
@@ -4577,6 +4880,19 @@
           algorithm | changing payment methods =]), it is RECOMMENDED that user
           agents inform the user of exactly what information is being shared
           with a merchant.
+        </p>
+        <p>
+          Similarly, {{PaymentHandlerAppError}} (in particular, its
+          {{DOMException/message}}, {{PaymentHandlerAppError/reason}}, and
+          {{PaymentHandlerAppError/details}} members) allows a <a>payment
+          handler</a> to return arbitrary diagnostic information to the payee
+          when an error occurs—potentially before the user has consented to
+          share information with the payee. <a>Payment handlers</a> MUST NOT
+          include personally identifiable information (PII), account status, or
+          cross-site tracking identifiers in a {{PaymentHandlerAppError}}
+          without user consent, and SHOULD limit error details to technical
+          diagnostics (such as correlation identifiers or configuration error
+          details).
         </p>
       </section>
       <section>
