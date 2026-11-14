@@ -568,11 +568,10 @@
         </h3>
         <p>
           It's expected that data in a {{PaymentResponse}} will be POSTed back
-          to a server for processing. To make this as easy as possible,
-          {{PaymentResponse}} can use the [=default toJSON steps=] (i.e.,
-          `.toJSON()`) to serializes the object directly into JSON. This makes
-          it trivial to POST the resulting JSON back to a server using the
-          [[[fetch]]]:
+          to a server for processing. {{PaymentResponse}}'s `.toJSON()` method
+          uses the [=default toJSON steps=] to return an object. `JSON.stringify()`
+          calls that method and serializes the result to a JSON string that can
+          be sent to the server using [[[fetch]]]:
         </p>
         <pre class="example js" title="POSTing with `fetch()`">
           async function doPaymentRequest() {
@@ -583,7 +582,7 @@
               const httpResponse = await fetch("/process-payment", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: payResponse.toJSON(),
+                body: JSON.stringify(payResponse),
               });
               result = httpResponse.ok ? "success" : "fail";
             } catch (err) {
