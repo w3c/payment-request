@@ -568,10 +568,9 @@
         </h3>
         <p>
           It's expected that data in a {{PaymentResponse}} will be POSTed back
-          to a server for processing. {{PaymentResponse}}'s `.toJSON()` method
-          uses the [=default toJSON steps=] to return an object. `JSON.stringify()`
-          calls that method and serializes the result to a JSON string that can
-          be sent to the server using [[[fetch]]]:
+          to a server for processing. Developers can call `JSON.stringify()` on
+          the {{PaymentResponse}} object to serialize it to a JSON string that
+          can be sent to the server using {{WindowOrWorkerGlobalScope/fetch()}}:
         </p>
         <pre class="example js" title="POSTing with `fetch()`">
           async function doPaymentRequest() {
